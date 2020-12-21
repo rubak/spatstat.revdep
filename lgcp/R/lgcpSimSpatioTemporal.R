@@ -48,7 +48,7 @@
 ##'     \item Moller J, Syversveen AR, Waagepetersen RP (1998). Log Gaussian Cox Processes. Scandinavian Journal of Statistics, 25(3), 451-482.
 ##' }
 ##' @seealso \link{lgcpPredict}, \link{showGrid.stppp}, \link{stppp}
-##' @examples \dontrun{library(spatstat); library(spatstat.utils); xyt <- lgcpSim()}
+##' @examples \dontrun{library(spatstat.core); library(spatstat.utils); xyt <- lgcpSim()}
 ##' @export
 
 lgcpSim <- function(owin=NULL,

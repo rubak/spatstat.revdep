@@ -14,10 +14,10 @@
 ##' Package \pkg{polyCub} implements \code{coerce}-methods
 ##' (\code{as(object, Class)}) to convert \code{"\linkS4class{SpatialPolygons}"}
 ##' (or \code{"\linkS4class{Polygons}"} or \code{"\linkS4class{Polygon}"})
-##' to \code{"\link[spatstat:owin.object]{owin}"}.
+##' to \code{"\link[spatstat.geom:owin.object]{owin}"}.
 ##' They are also available as \code{as.owin.*} functions to support
 ##' \code{\link{polyCub.midpoint}}. However, these are no registered S3 methods
-##' for \code{\link[spatstat]{as.owin}}, since package \pkg{spatstat} is
+##' for \code{\link[spatstat.geom]{as.owin}}, since package \pkg{spatstat} is
 ##' optional.
 ##' Note that the \pkg{maptools} package contains an alternative implementation
 ##' of coercion from \code{"SpatialPolygons"} to \code{"owin"} (and reverse),
@@ -32,7 +32,7 @@
 ##' @importClassesFrom sp Polygon Polygons SpatialPolygons owin
 ##' @exportMethod coerce
 ##' @examples
-##' if (require("spatstat") && require("sp")) {
+##' if (require("spatstat.core") && require("sp")) {
 ##'     diamond <- list(x = c(1,2,1,0), y = c(1,2,3,2))  # anti-clockwise
 ##'     diamond.owin <- owin(poly = diamond)
 ##'     diamond.sp <- Polygon(lapply(diamond, rev))      # clockwise
@@ -49,7 +49,7 @@ NULL
 
 ##' @param W an object of class \code{"SpatialPolygons"},
 ##' \code{"Polygons"}, or \code{"Polygon"}.
-##' @param ... further arguments passed to \code{\link[spatstat]{owin}}.
+##' @param ... further arguments passed to \code{\link[spatstat.geom]{owin}}.
 ##' @rdname coerce-sp-methods
 ##' @export
 ##' @rawNamespace if(getRversion() >= "3.6.0") {  # delayed registration
@@ -58,17 +58,17 @@ NULL
 ##'     S3method(spatstat::as.owin, Polygon)
 ##' }
 as.owin.SpatialPolygons <- function (W, ...)
-    spatstat::owin(poly = xylist.SpatialPolygons(W), ...)
+    spatstat.geom::owin(poly = xylist.SpatialPolygons(W), ...)
 
 ##' @rdname coerce-sp-methods
 ##' @export
 as.owin.Polygons <- function (W, ...)
-    spatstat::owin(poly = xylist.Polygons(W), ...)
+    spatstat.geom::owin(poly = xylist.Polygons(W), ...)
 
 ##' @rdname coerce-sp-methods
 ##' @export
 as.owin.Polygon <- function (W, ...)
-    spatstat::owin(poly = xylist.Polygon(W), ...)
+    spatstat.geom::owin(poly = xylist.Polygon(W), ...)
 
 
 ##' @name coerce,SpatialPolygons,owin-method

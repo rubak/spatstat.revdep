@@ -232,7 +232,7 @@ plot_ind <- function(fit, burnin = floor(fit$L / 10),
 #'
 #' @param fit An object the contains all posterior realizations, e.g., the return
 #' value from \code{\link{est_mix_damcmc}} or \code{\link{est_mix_bdmcmc}}.
-#' @param win An object of class \code{\link[spatstat]{owin}}.
+#' @param win An object of class \code{\link[spatstat.geom]{owin}}.
 #' @param LL Length of the side of the square grid.
 #' The density or intensity is calculated on an L * L grid.
 #' The larger this value is, the slower the calculation,
@@ -240,8 +240,8 @@ plot_ind <- function(fit, burnin = floor(fit$L / 10),
 #' @param burnin Number of initial realizations to discard. By default, it is 1/10 of the total number of iterations.
 #' @param zlims The limits of the z axis. Defaults to [0,1.1*max(intensity)].
 #' @param grayscale Logical flag to request a gray scale plot.
-#' @param showplot Logical flag to request that the plot will be shown. Set to FALSE if you want to return the \code{\link[spatstat]{im.object}}, but do not want to produce the 3d plot.
-#' @return An image as an object of class \code{\link[spatstat]{im.object}}.
+#' @param showplot Logical flag to request that the plot will be shown. Set to FALSE if you want to return the \code{\link[spatstat.geom]{im.object}}, but do not want to produce the 3d plot.
+#' @return An image as an object of class \code{\link[spatstat.geom]{im.object}}.
 #' @author Jiaxun Chen, Sakis Micheas
 #' @seealso \code{\link{rnormmix}},
 #' \code{\link{to_int_surf}},
@@ -255,7 +255,7 @@ plot_ind <- function(fit, burnin = floor(fit$L / 10),
 #' @examples
 #' \donttest{
 #' truemix <- rnormmix(m = 5, sig0 = .1, df = 5, xlim= c(-1, 1), ylim =c(0, 3))
-#' trueintsurf=to_int_surf(truemix, lambda = 200, win =spatstat::owin( c(-1, 1),c(0, 3)))
+#' trueintsurf=to_int_surf(truemix, lambda = 200, win =spatstat.geom::owin( c(-1, 1),c(0, 3)))
 #' plot(trueintsurf, main = "True Poisson intensity surface (mixture of normal components)")
 #' pp1 <- rsppmix(trueintsurf)
 #' # Run Data augmentation MCMC and get posterior realizations
@@ -449,7 +449,7 @@ plot.damcmc_res <- function(
 #'
 #' @param x Object of class \code{bdmcmc_res}.
 #' @param burnin Number of initial realizations to discard. By default, it is 1/10 of the total number of iterations.
-#' @param win An object of class \code{\link[spatstat]{owin}}.
+#' @param win An object of class \code{\link[spatstat.geom]{owin}}.
 #' @param LL Length of the side of the square grid.
 #' The density or intensity is calculated on an L * L grid.
 #' The larger this value is, the slower the calculation,
@@ -466,7 +466,7 @@ plot.damcmc_res <- function(
 #' @return A list with the following objects
 #'  \item{FreqTab}{Frequency table for the number of components.}
 #'  \item{Mapsurf}{The Maximum A Posteriori (MAP) Poisson intensity surface based on the corresponding posterior means (label switching might be present). The MAP is the mode of the distribution of the number of components.}
-#'  \item{BMA}{The Bayesian Model Average is returned only if we answer "Y" to request it. Alternatively, use function \code{\link{GetBMA}} to compute the BMA. This is an image, i.e., an object of class \code{\link[spatstat]{im.object}}.}
+#'  \item{BMA}{The Bayesian Model Average is returned only if we answer "Y" to request it. Alternatively, use function \code{\link{GetBMA}} to compute the BMA. This is an image, i.e., an object of class \code{\link[spatstat.geom]{im.object}}.}
 #' @author Jiaxun Chen, Sakis Micheas, Yuchen Wang
 #' @seealso \code{\link{est_mix_bdmcmc}},
 #' \code{\link{PlotUSAStates}},

@@ -15,7 +15,7 @@ BugReports: https://github.com/envirometrix/landmap/issues/
 Imports: methods, utils, parallel, matrixStats, ranger, glmnet, mlr,
         parallelMap, sp, rgdal, gdalUtils, raster
 Suggests: geoR, ParamHelpers, mda, psych, spdep, fossil, xgboost, plyr,
-        kernlab, nnet, rjson, spatstat, maptools, maxlike, RCurl, aqp,
+        kernlab, nnet, rjson, spatstat.geom, spatstat.core, spatstat.linnet, maptools, maxlike, RCurl, aqp,
         deepnet, RSAGA, soiltexture, snowfall, plotKML, boot
 RoxygenNote: 7.1.1
 SystemRequirements: C++11, GDAL (>= 2.0.1), GEOS (>= 3.4.0), PROJ (>=

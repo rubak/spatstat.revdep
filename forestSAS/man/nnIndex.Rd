@@ -70,7 +70,7 @@ Zongzheng Chai, chaizz@126.com
 The function "nnmark" in the package spatstat
 }
 \examples{
-library(spatstat)
+library(spatstat.core)
 data(finpines)
 #### Based on specific number (N=4) of nearest neighbour####
 ## Basic usage

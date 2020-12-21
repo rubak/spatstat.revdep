@@ -23,7 +23,7 @@ Additionally, the package contains functions for simulating datasets given these
 We have designed the objects of \code{spagmix} to use and be compatible with standard object classes of the \code{\link[spatstat:spatstat-package]{spatstat}} (Baddeley & Turner, 2005; Baddeley et al., 2015) and \code{\link[sparr:sparr-package]{sparr}} (Davies et al., 2018b) packages. The content of \code{spagmix} can be broken up as follows:\cr
 
 \emph{Artificial polygonal windows}\cr
-Some pre-made synthetic spatial windows; these are all single closed polygons as objects of class \code{\link[spatstat]{owin}} and are lazy-loaded:\cr
+Some pre-made synthetic spatial windows; these are all single closed polygons as objects of class \code{\link[spatstat.geom]{owin}} and are lazy-loaded:\cr
 \code{\link{bx}}, \code{\link{heart}}, \code{\link{shp1}}, \code{\link{shp2}}, \code{\link{star}}, \code{\link{toywin}}\cr
 
 
@@ -40,7 +40,7 @@ Some pre-made synthetic spatial windows; these are all single closed polygons as
 
 
 \emph{Data generation}\cr
-To generate purely spatial data for a single spatial density, the user is directed to \code{\link[spatstat]{rpoint}} of the \code{\link[spatstat:spatstat-package]{spatstat}} package or \code{\link[sparr]{rimpoly}} of the \code{\link[sparr:sparr-package]{sparr}} package.\cr
+To generate purely spatial data for a single spatial density, the user is directed to \code{\link[spatstat.core]{rpoint}} of the \code{\link[spatstat:spatstat-package]{spatstat}} package or \code{\link[sparr]{rimpoly}} of the \code{\link[sparr:sparr-package]{sparr}} package.\cr
 \code{\link{rpoispoly}} is a wrapper of \code{\link[sparr]{rimpoly}}, and is used to generate realisations of Poisson point processes in space, given an intensity function.
 \code{\link{rrpoint}} is a wrapper of \code{\link[sparr]{rimpoly}}, and is used to generate iid datasets based on a synthetic spatial relative risk surface object.\cr
 \code{\link{rstpoint}} is a 3D rejection algorithm for sampling iid data from a supplied spatiotemporal density.\cr
@@ -49,7 +49,7 @@ To generate purely spatial data for a single spatial density, the user is direct
 \emph{Miscellaneous}\cr
 \code{\link{plot.stim}} is an \code{S3} plotting method for spatiotemporal density objects.\cr
 \code{\link{stintegral}} computes the 3D integral of a spatiotemporal density object.\cr
-\code{\link{unify.owin}} is a wrapper for \code{\link[spatstat]{affine}} that transforms any spatial \code{\link[spatstat]{owin}} to fall inside the unit square.
+\code{\link{unify.owin}} is a wrapper for \code{\link[spatstat.geom]{affine}} that transforms any spatial \code{\link[spatstat.geom]{owin}} to fall inside the unit square.
 }
 
 \section{Dependencies/Imports}{

@@ -8,7 +8,7 @@ Maintainer: Jeff Laake <Jeff.Laake@noaa.gov>
 Description: Fits inhomogeneous Poisson process spatial models
     to line transect sampling data and provides estimate of
     abundance within a region.
-Depends: R (>= 2.0.0), spatstat (>= 1.22-0), RandomFields
+Depends: R (>= 2.0.0), spatstat.geom, spatstat.core, spatstat.linnet, RandomFields
 Imports: rgeos, mgcv, sp
 License: GPL (>= 2)
 Packaged: 2014-12-11 21:32:18 UTC; JLaake

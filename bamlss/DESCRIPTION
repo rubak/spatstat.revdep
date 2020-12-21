@@ -22,7 +22,7 @@ Depends: R (>= 3.5.0), coda, colorspace, mgcv
 Imports: Formula, MBA, mvtnorm, sp, Matrix, survival, methods,
         parallel, raster
 Suggests: akima, ff, ffbase, fields, gamlss, geoR, rjags, BayesX,
-        BayesXsrc, R2BayesX, mapdata, maps, maptools, nnet, spatstat,
+        BayesXsrc, R2BayesX, mapdata, maps, maptools, nnet, spatstat.geom, spatstat.core, spatstat.linnet,
         spdep, zoo, keras, splines2, sdPrior, statmod, glogis, glmnet,
         scoringRules, knitr, MASS
 License: GPL-2 | GPL-3

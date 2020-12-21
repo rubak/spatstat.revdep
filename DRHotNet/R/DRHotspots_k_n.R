@@ -11,7 +11,7 @@
 #' @return Returns a list that contains the differential risk hotspots found for \code{X} and the type of event specified by \code{rel_probs}
 #' @examples 
 #' library(DRHotNet)
-#' library(spatstat)
+#' library(spatstat.core)
 #' library(spdep)
 #' library(raster)
 #' library(maptools)

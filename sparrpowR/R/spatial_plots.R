@@ -10,7 +10,7 @@
 #' @param sizes Vector of integers of length two (2) for the size of the symbols for case and control locations. Default is \code{c(1,1)}. 
 #' @param plot_pts Logical. If TRUE (the default), the points from the first simulation iteration will be added to second plot. Not if FALSE.
 #' @param plot_text Logical. If TRUE, the local statistical power will be printed at each grid cell. Not if FALSE (the default).
-#' @param ... Arguments passed to \code{\link[spatstat]{plot.ppp}} and \code{\link[fields]{image.plot}} for additional graphical features.
+#' @param ... Arguments passed to \code{\link[spatstat.geom]{plot.ppp}} and \code{\link[fields]{image.plot}} for additional graphical features.
 #'
 #' @return This function produces up to three plots: 1) example input, 2) local power, and 3) local power above a threshold. If the input is from the \code{\link{spatial_data}} function, this function will only display the first plot. 
 #' 
@@ -41,7 +41,7 @@ spatial_plots <- function(input,
   
   
   if("ppplist" %in% class(input)){
-    return(spatstat::plot.anylist(input[1:n_sim], 
+    return(spatstat.geom::plot.anylist(input[1:n_sim], 
                     pch = chars,
                     cex = sizes,
                     cols = c(cols[4], cols[5]),
@@ -54,7 +54,7 @@ spatial_plots <- function(input,
   }
   
   # Plot 1: Example input
-  p1 <- spatstat::plot.ppp(input$sim, 
+  p1 <- spatstat.geom::plot.ppp(input$sim, 
                            pch = chars, 
                            cex = sizes,
                            cols = c(cols[4], cols[5]),
@@ -81,7 +81,7 @@ spatial_plots <- function(input,
                     length.out = length(raster::values(pvalprop_raster))+1
   )
   ## Continuous Output
-  p2 <- spatstat::plot.ppp(input$sim, 
+  p2 <- spatstat.geom::plot.ppp(input$sim, 
                            pch = chars, 
                            cex = sizes,
                            cols = c(cols[4], cols[5]),
@@ -108,7 +108,7 @@ spatial_plots <- function(input,
                      ),
                      ...)
   if(plot_pts == TRUE) {
-    spatstat::plot.ppp(input$sim, 
+    spatstat.geom::plot.ppp(input$sim, 
                        pch = chars, 
                        cex = sizes,
                        cols = c(cols[4], cols[5]),
@@ -130,7 +130,7 @@ spatial_plots <- function(input,
   pvalprop_raster <- NULL # conserve memory
   
   ## Categorical Output
-  p3 <- spatstat::plot.ppp(input$sim, 
+  p3 <- spatstat.geom::plot.ppp(input$sim, 
                            pch = chars, 
                            # cex = sizes,
                            cols = c("transparent", "transparent"),

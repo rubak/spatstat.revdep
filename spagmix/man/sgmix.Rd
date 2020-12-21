@@ -13,7 +13,7 @@ sgmix(mean, vcv, window, p0 = 0, p = NULL, resolution = 128, int = 1)
   Either a \eqn{2 \times 2 \times N} array specifying the variance-covariance matrices of each contributing density, or a numeric vector of length \eqn{N} giving the isotropic \bold{standard deviations} of each contributing density. An error is thrown if the function encounters anything but a symmetric, positive-definite covariation specification for each component.
   }
   \item{window}{
-  An object of class \code{\link[spatstat]{owin}} giving the observational window on which the mixture density is defined.
+  An object of class \code{\link[spatstat.geom]{owin}} giving the observational window on which the mixture density is defined.
   }
   \item{p0}{
   The proportion of uniform density that contributes to the mixture (default is 0).
@@ -30,10 +30,10 @@ sgmix(mean, vcv, window, p0 = 0, p = NULL, resolution = 128, int = 1)
 }
 
 \details{
-This function generates a pixel \code{\link[spatstat]{im}}age of a 2D density function made of a mixture of \eqn{N} bivariate normals; each component is restricted to conserve probability mass over a bounded subset of the plane. A warning will appear if less than 1\% of the integral of each Gaussian bump is inside the observational window.}
+This function generates a pixel \code{\link[spatstat.geom]{im}}age of a 2D density function made of a mixture of \eqn{N} bivariate normals; each component is restricted to conserve probability mass over a bounded subset of the plane. A warning will appear if less than 1\% of the integral of each Gaussian bump is inside the observational window.}
 
 \value{
-An object of class \code{\link[spatstat]{im}} giving the mixture density.
+An object of class \code{\link[spatstat.geom]{im}} giving the mixture density.
 }
 
 \author{

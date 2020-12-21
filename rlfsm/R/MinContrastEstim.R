@@ -60,7 +60,7 @@ MinContrastEstim <- function(path, k, p, order_GH) {
     integrand_eval <- function(t){
       integrand(t = t, path = path, sigma = a1, alpha = a2, k = k, H = H_est)
     }
-    spatstat::gauss.hermite(integrand_eval, mu = 0, sd = 1, order = order_GH)
+    spatstat.core::gauss.hermite(integrand_eval, mu = 0, sd = 1, order = order_GH)
   }
 
   # Arg-minimize the integral over sigma and alpha, i.e., calculate the minimal contrast estimator

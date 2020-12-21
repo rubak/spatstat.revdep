@@ -79,7 +79,7 @@
   and Health Informatics}, Newport Beach, CA, USA, September 2014.
 }
 \examples{
-  if(require(spatstat)) {
+  if(require(spatstat.core)) {
 plot(vesicles)
 with(vesicles.extra,
      plot(activezone, add=TRUE, col="red"))

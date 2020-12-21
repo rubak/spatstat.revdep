@@ -21,7 +21,7 @@ Location of food stores in Dallas County, TX, in the longitude and
   latitude format (see \code{proj4string=CRS("+proj=longlat +ellps=WGS84")})..
 }
 \examples{
-library(spatstat)
+library(spatstat.core)
 library(rgdal)
 library(sp)
 proj4string(bndShp)                                     # Current system

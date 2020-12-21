@@ -295,7 +295,7 @@ adj.GET_helper <- function(curve_sets, type, alpha, alternative, ties, probs, Mr
 #' #================================
 #' # Test the fit of a Matern cluster process.
 #' \donttest{
-#' if(require("spatstat", quietly=TRUE)) {
+#' if(require("spatstat.core", quietly=TRUE)) {
 #'   data("saplings")
 #'   saplings <- as.ppp(saplings, W=square(75))
 #'

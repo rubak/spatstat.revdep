@@ -102,7 +102,7 @@ Wiegand and Moloney 2014. Handbook of Spatial Point-Pattern Analysis in Ecology.
 CRC Press
 }
 \seealso{
-\code{\link[spatstat]{rThomas}}
+\code{\link[spatstat.core]{rThomas}}
 }
 \author{
 Felix May

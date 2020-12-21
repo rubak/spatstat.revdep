@@ -10,8 +10,8 @@ polyCub.midpoint(polyregion, f, ..., eps = NULL, dimyx = NULL,
 \arguments{
 \item{polyregion}{a polygonal integration domain.
 It can be any object coercible to the \pkg{spatstat} class
-\code{"\link[spatstat]{owin}"} via a corresponding
-\code{\link[spatstat]{as.owin}}-method.
+\code{"\link[spatstat.geom]{owin}"} via a corresponding
+\code{\link[spatstat.geom]{as.owin}}-method.
 Note that this includes polygons of the classes \code{"gpc.poly"} and
 \code{"\linkS4class{SpatialPolygons}"}, because \pkg{polyCub} defines
 methods \code{\link{as.owin.gpc.poly}} and
@@ -25,10 +25,10 @@ length the number of coordinates.}
 \item{...}{further arguments for \code{f}.}
 
 \item{eps}{width and height of the pixels (squares),
-see \code{\link[spatstat]{as.mask}}.}
+see \code{\link[spatstat.geom]{as.mask}}.}
 
 \item{dimyx}{number of subdivisions in each dimension,
-see \code{\link[spatstat]{as.mask}}.}
+see \code{\link[spatstat.geom]{as.mask}}.}
 
 \item{plot}{logical indicating if an illustrative plot of the numerical
 integration should be produced.}
@@ -39,7 +39,7 @@ The approximated value of the integral of \code{f} over
 }
 \description{
 The surface is converted to a binary pixel image
-using the \code{\link[spatstat]{as.im.function}} method from package
+using the \code{\link[spatstat.geom]{as.im.function}} method from package
 \pkg{spatstat} (Baddeley and Turner, 2005).
 The integral under the surface is then approximated as the
 sum over (pixel area * f(pixel midpoint)).
@@ -55,7 +55,7 @@ hexagon <- list(
          y = c(-0.5, 4.5, 7, 4.5, -0.5, -3))
 )
 
-if (require("spatstat")) {
+if (require("spatstat.core")) {
     hexagon.owin <- owin(poly = hexagon)
 
     show_midpoint <- function (eps)

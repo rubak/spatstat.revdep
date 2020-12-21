@@ -8,7 +8,7 @@ Description: An implementation of distributional random forests as introduced in
 License: GPL-3
 LinkingTo: Rcpp, RcppEigen
 Depends: R (>= 3.5.0)
-Imports: fastDummies, Matrix, methods, Rcpp (>= 0.12.15), spatstat
+Imports: fastDummies, Matrix, methods, Rcpp (>= 0.12.15), spatstat.geom, spatstat.core, spatstat.linnet
 RoxygenNote: 7.1.0
 Suggests: DiagrammeR, testthat
 SystemRequirements: GNU make

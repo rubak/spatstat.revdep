@@ -49,8 +49,8 @@ existing graphics device parameters prior to plotting, resetting
 disable this.}
 
 \item{...}{Additional graphical parameters to be passed to
-\code{\link[spatstat]{plot.im}}, or in one instance, to
-\code{\link[spatstat]{plot.ppp}} (see `Details').}
+\code{\link[spatstat.geom]{plot.im}}, or in one instance, to
+\code{\link[spatstat.geom]{plot.ppp}} (see `Details').}
 
 \item{sleep}{Single positive numeric value giving the amount of time (in
 seconds) to \code{\link[base]{Sys.sleep}} before drawing the next image in
@@ -67,7 +67,7 @@ the animation.}
 \item{type}{A character string to select plotting of joint/unconditional spatiotemporal
 estimate (default) or conditional spatial density given time.}
 
-\item{fix.range}{Logical value indicating whether use the same color scale limits for each plot in the sequence. Ignored if the user supplies a pre-defined \code{\link[spatstat]{colourmap}} to the \code{col} argument, which is matched to \code{...} above and passed to \code{\link[spatstat]{plot.im}}. See `Examples'.}
+\item{fix.range}{Logical value indicating whether use the same color scale limits for each plot in the sequence. Ignored if the user supplies a pre-defined \code{\link[spatstat.geom]{colourmap}} to the \code{col} argument, which is matched to \code{...} above and passed to \code{\link[spatstat.geom]{plot.im}}. See `Examples'.}
 
 \item{expscale}{Logical value indicating whether to force a raw-risk scale. Useful for users
 wishing to plot a log-relative risk surface, but to have the raw-risk displayed on the colour ribbon.}
@@ -81,7 +81,7 @@ Plots to the relevant graphics device.
 }
 \details{
 In all instances, visualisation is deferred to
-\code{\link[spatstat]{plot.im}}, for which there are a variety of
+\code{\link[spatstat.geom]{plot.im}}, for which there are a variety of
 customisations available the user can access via \code{...}. The one
 exception is when plotting observation-specific \code{"diggle"} edge
 correction factors---in this instance, a plot of the spatial observations is

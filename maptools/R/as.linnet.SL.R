@@ -15,11 +15,11 @@ if (!isClass("linnet"))
 as.linnet.SpatialLines <- function(X, ..., fuse=TRUE) {
   if (!is.na(sp::is.projected(X)) && !sp::is.projected(X))
     stop("Only projected coordinates may be converted to spatstat class objects")
-  if(!requireNamespace("spatstat", quietly = TRUE)) 
+  if(!requireNamespace("spatstat.core", quietly = TRUE)) 
     stop("package spatstat is required for as.linnet.SpatialLines")
   #' extract bounding box to use as window
   bb <- bbox(X)
-  BB <- spatstat::owin(bb[1,], bb[2,])
+  BB <- spatstat.geom::owin(bb[1,], bb[2,])
   #' 
   n <- length(X)
   xx <- yy <- numeric(0)
@@ -50,7 +50,7 @@ as.linnet.SpatialLines <- function(X, ..., fuse=TRUE) {
     }
   }
   #' extract vertices 
-  V <- spatstat::ppp(xx, yy, window=BB, check=!fuse)
+  V <- spatstat.geom::ppp(xx, yy, window=BB, check=!fuse)
   nV <- length(xx)
   #' join them
   edges <- NULL
@@ -65,7 +65,7 @@ as.linnet.SpatialLines <- function(X, ..., fuse=TRUE) {
     iii  <- ii[c(ok, FALSE)] #' indices backward
     jjj  <- jj[c(ok, FALSE)]
     if(fuse) {
-      umap <- spatstat::uniquemap(V)
+      umap <- spatstat.geom::uniquemap(V)
       retain <- (umap == seq_along(umap))
       V <- V[retain]
       renumber <- cumsum(retain)
@@ -85,14 +85,14 @@ as.linnet.SpatialLines <- function(X, ..., fuse=TRUE) {
       jjj  <- jjj[u]
     }
   }
-  result <- spatstat::linnet(vertices=V, edges = edges, sparse=TRUE)
-  if(spatstat::nsegments(result) == length(iii)) {
+  result <- spatstat.linnet::linnet(vertices=V, edges = edges, sparse=TRUE)
+  if(spatstat.geom::nsegments(result) == length(iii)) {
     df <- data.frame(LinesIndex=iii, LineIndex=jjj)
     if(.hasSlot(X, "data")) {
       DF <- slot(X, "data")
       df <- cbind(DF[iii,,drop=FALSE], df)
     }
-    spatstat::marks(result$lines) <- df
+    spatstat.geom::marks(result$lines) <- df
   } else warning("Internal error: could not map data frame to lines")
   return(result)
 }

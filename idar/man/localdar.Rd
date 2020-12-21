@@ -18,14 +18,14 @@ raoDmap(comm, phy = NULL)
 }
 
 \arguments{
- \item{mippp}{A multitype (a.k.a. multivariate) marked point pattern. An object with the \link[spatstat]{ppp} format of \pkg{spatstat}.}
- \item{mippp.sp}{Univariate point pattern of the focal species. An object with the \link[spatstat]{ppp} format of \pkg{spatstat}.}
+ \item{mippp}{A multitype (a.k.a. multivariate) marked point pattern. An object with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}.}
+ \item{mippp.sp}{Univariate point pattern of the focal species. An object with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}.}
  \item{nx}{Number of points of the grid along the x axis.}
  \item{ny}{Number of points of the grid along the y axis.}
  \item{mimark}{Character. Name of the focal species in the multitype \code{mippp}.}
  \item{idar}{Character. The name of the idar function to be computed. Either "isar", "ipsvar", "ipsrar", "ipsear", "ipscar", "icwmar", "icwmar.O",  "iraodar"or "imntdar"}
  \item{buffer}{One of "adapt", i.e., compute an adaptive buffer, or a number indicating the width of a fixed buffer area around the plot border}
- \item{bfw}{An \link[spatstat]{owin} object indicating the limits of the buffer area.}
+ \item{bfw}{An \link[spatstat.geom]{owin} object indicating the limits of the buffer area.}
  \item{r}{Vector of distances to compute IDAR(r) functions}
  \item{cross.idar}{Logical. If \code{TRUE}, the focal pattern will be excluded form the community being measured. }
   \item{tree}{A phylogenetic tree in \code{phylo} format (\pkg{ape}) or a phylogenetic covariance matrix}
@@ -46,7 +46,7 @@ raoDmap(comm, phy = NULL)
 
 }
 \value{
-If a focal point patternn has been provided by the arguments \code{mippp.sp} or \code{mimark}, \code{localdar} will return a list of marked point patterns (as long as the vector \code{r}) with the marks showing the estimation of the selected diversity index for the local community defined by a circle of radius \emph{r} around each of the points of the focal pattern. If no focal point pattern is provided, it will return a list of maps (as long as the vector \code{r})  each with the format \link[spatstat]{im} of \pkg{spatstat}, each pixel showing the estimation of the selected diversity index for the local community defined by a circle of radius \emph{r} around the pixel center.
+If a focal point patternn has been provided by the arguments \code{mippp.sp} or \code{mimark}, \code{localdar} will return a list of marked point patterns (as long as the vector \code{r}) with the marks showing the estimation of the selected diversity index for the local community defined by a circle of radius \emph{r} around each of the points of the focal pattern. If no focal point pattern is provided, it will return a list of maps (as long as the vector \code{r})  each with the format \link[spatstat.geom]{im} of \pkg{spatstat}, each pixel showing the estimation of the selected diversity index for the local community defined by a circle of radius \emph{r} around the pixel center.
 }
 
 \author{ Marcelino de la Cruz \email{marcelino.delacruz@urjc.es}}

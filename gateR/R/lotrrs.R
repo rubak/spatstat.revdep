@@ -94,7 +94,7 @@ lotrrs <- function(dat,
     dat <- dat[!is.na(dat[ , 4]) & !is.na(dat[ , 5]) , ]
     chul <- grDevices::chull(dat[ , 4:5])
     chul_coords <- dat[ , 4:5][c(chul, chul[1]), ]
-    win <- spatstat::owin(poly = list(x = rev(chul_coords[ , 1]),
+    win <- spatstat.geom::owin(poly = list(x = rev(chul_coords[ , 1]),
                                            y = rev(chul_coords[ , 2])))
   }
   
@@ -112,15 +112,15 @@ lotrrs <- function(dat,
   # Create two PPPs
   numer_df <- dat[dat$G2 == levels(dat$G2)[1], ]
   denom_df <- dat[dat$G2 == levels(dat$G2)[2], ]
-  suppressMessages(suppressWarnings(both_ppp <- spatstat::ppp(x = dat$V1,
+  suppressMessages(suppressWarnings(both_ppp <- spatstat.geom::ppp(x = dat$V1,
                                                                 y = dat$V2,
                                                                 marks = dat$G1,
                                                                 window = win)))
-  suppressMessages(suppressWarnings(denom_ppp <- spatstat::ppp(x = denom_df$V1,
+  suppressMessages(suppressWarnings(denom_ppp <- spatstat.geom::ppp(x = denom_df$V1,
                                                                  y = denom_df$V2,
                                                                  marks = denom_df$G1,
                                                                  window = win)))
-  suppressMessages(suppressWarnings(numer_ppp <- spatstat::ppp(x = numer_df$V1,
+  suppressMessages(suppressWarnings(numer_ppp <- spatstat.geom::ppp(x = numer_df$V1,
                                                                  y = numer_df$V2,
                                                                  marks = numer_df$G1,
                                                                  window = win)))

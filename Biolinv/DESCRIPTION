@@ -12,7 +12,7 @@ Description: Analysing and forecasting biological invasions time series
 License: GPL-3
 LazyData: TRUE
 Depends: R (>= 3.2.4)
-Imports: raster (>= 2.5-2), fields (>= 8.3-6), spatstat (>= 1.48-0), sp
+Imports: raster (>= 2.5-2), fields (>= 8.3-6), spatstat.geom, spatstat.core, spatstat.linnet, sp
         (>= 1.2-4), grDevices (>= 3.3.2), stats (>= 3.3.2), classInt
         (>= 0.1-23)
 RoxygenNote: 5.0.1

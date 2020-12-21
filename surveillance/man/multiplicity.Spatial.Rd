@@ -33,7 +33,7 @@ Count Number of Instances of Points
 }
 
 \seealso{
-  \code{\link[spatstat]{multiplicity}} in package \pkg{spatstat}.
+  \code{\link[spatstat.geom]{multiplicity}} in package \pkg{spatstat}.
   See the Examples of the \code{\link{hagelloch}} data for a specific
   use of \code{multiplicity}.
 }

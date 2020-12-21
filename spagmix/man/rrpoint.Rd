@@ -19,7 +19,7 @@ The number of points to be generated. This must be a numeric vector of length 2 
 The relative risk surface object containing the definitions of the case and control probability densities: an object of class \code{\link{rrim}} or \code{\link[sparr:risk]{rrs}} for \code{rrpoint}, or an object of class \code{\link{rrstim}} or \code{\link[sparr:spattemp.risk]{rrst}} for \code{rrstpoint}.
 }
   \item{W}{
-The polygonal \code{\link[spatstat]{owin}} defining the spatial window on which the density is defined. If \code{NULL}, this will be set to the \code{\link[spatstat]{as.polygonal}} version of the pixel images stored in \code{r}. See `Details'.
+The polygonal \code{\link[spatstat.geom]{owin}} defining the spatial window on which the density is defined. If \code{NULL}, this will be set to the \code{\link[spatstat.geom]{as.polygonal}} version of the pixel images stored in \code{r}. See `Details'.
 }
   \item{correction}{
 An adjustment to the number of points generated at the initial pass of the internal loop in an effort to minimise the total number of passes required to reach \code{n} points.
@@ -31,10 +31,10 @@ The maximum number of passes allowed before the function exits. If this is reach
 \details{
 These functions randomly generate a pair of independent spatial or spatiotemporal point patterns of \code{n} points based on the case and control density functions stored in \code{r}. At any given pass for each density, \code{n} * \code{correction} points are generated and rejection sampling is used to accept some of the points; this is repeated until the required number of points is found.
 
-The argument \code{W} is optional, but is useful when the user wants the spatial window of the resulting point pattern to be a corresponding irregular polygon, as opposed to being based on the boundary of a binary image mask (which, when the pixel \code{\link[spatstat]{im}}ages in \code{r} are converted to a polygon directly, gives jagged edges based on the union of the pixels).
+The argument \code{W} is optional, but is useful when the user wants the spatial window of the resulting point pattern to be a corresponding irregular polygon, as opposed to being based on the boundary of a binary image mask (which, when the pixel \code{\link[spatstat.geom]{im}}ages in \code{r} are converted to a polygon directly, gives jagged edges based on the union of the pixels).
 }
 \value{
-A list with two components, \code{cases} and \code{controls}, each of which is an object of class \code{\link[spatstat]{ppp}} containing the \code{n} generated points. for spatiotemporal densities, the \code{\link[spatstat]{marks}} of the object will contain the correspondingly generated observation times.
+A list with two components, \code{cases} and \code{controls}, each of which is an object of class \code{\link[spatstat.geom]{ppp}} containing the \code{n} generated points. for spatiotemporal densities, the \code{\link[spatstat.geom]{marks}} of the object will contain the correspondingly generated observation times.
 }
 \author{
 T.M. Davies

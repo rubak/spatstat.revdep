@@ -5,26 +5,26 @@
 Generate a Poisson point pattern in a polygonal window
 }
 \description{
-Generates a single realisation of a spatial Poisson point process based on a pixel \code{\link[spatstat]{im}}age and a polygonal \code{\link[spatstat]{owin}}.
+Generates a single realisation of a spatial Poisson point process based on a pixel \code{\link[spatstat.geom]{im}}age and a polygonal \code{\link[spatstat.geom]{owin}}.
 }
 \usage{
 rpoispoly(z, w = NULL, correction = 1.1, maxpass = 50)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{z}{A pixel image of class \code{\link[spatstat]{im}} defining the spatial intensity function of the points. The number of points generated, \eqn{n}, will be found as a randomly generated Poisson variate with mean parameter equal to the integral of \code{z}.}
-\item{w}{A polygonal window of class \code{\link[spatstat]{owin}}. See `Details'.}
+  \item{z}{A pixel image of class \code{\link[spatstat.geom]{im}} defining the spatial intensity function of the points. The number of points generated, \eqn{n}, will be found as a randomly generated Poisson variate with mean parameter equal to the integral of \code{z}.}
+\item{w}{A polygonal window of class \code{\link[spatstat.geom]{owin}}. See `Details'.}
 
 \item{correction}{An adjustment to the number of points generated at the initial pass of the internal loop in an effort to minimise the total number of passes required to reach \eqn{n} points. See `Details' and `Warning'.}
 
 \item{maxpass}{The maximum number of passes allowed before the function exits. If this is reached before \eqn{n} points are found that fall within \code{w}, a warning is issued.}
 }
 \details{
-This is a wrapper function for \code{\link[sparr]{rimpoly}} that operates much like \code{\link[spatstat]{rpoispp}}, but with artificial corrections at the edges of boundary pixels. This allows the user to generate a realisation of a 2D Poisson point process using a supplied pixel \code{\link[spatstat]{im}}age as the spatial intensity function, but return the result with a polygonal \code{\link[spatstat]{owin}} instead of a binary image mask.
+This is a wrapper function for \code{\link[sparr]{rimpoly}} that operates much like \code{\link[spatstat.core]{rpoispp}}, but with artificial corrections at the edges of boundary pixels. This allows the user to generate a realisation of a 2D Poisson point process using a supplied pixel \code{\link[spatstat.geom]{im}}age as the spatial intensity function, but return the result with a polygonal \code{\link[spatstat.geom]{owin}} instead of a binary image mask.
 
 Let \eqn{n} be a randomly generated integer from a Poisson distribution with mean given by the integral of the intensity function \code{z}. When the user specifies their own polygonal window in \code{w}, a \code{while} loop is called and repeated as many
 times as necessary (up to \code{maxpass} times) to find \eqn{n} points inside \code{w} (when \code{w = NULL}, then the union of the pixels of \code{z}
-is used, obtained via \code{as.polygonal(Window(z))}). The loop is necessary because the standard behaviour of \code{\link[spatstat]{rpoispp}} can (and often does)
+is used, obtained via \code{as.polygonal(Window(z))}). The loop is necessary because the standard behaviour of \code{\link[spatstat.core]{rpoispp}} can (and often does)
 yield points that sit in corners of pixels which lie outside a corresponding irregular polygon \code{w}.
 
 The \code{correction} argument is used to determine how many points are generated initially,
@@ -33,7 +33,7 @@ which will be \code{ceiling(correction*n)}; to minimise the number of required p
 An error is thrown if \code{Window(z)} and \code{w} do not overlap.
 }
 \value{
-An object of class \code{\link[spatstat]{ppp}} containing the Poisson-generated points, defined with the polygonal \code{\link[spatstat]{owin}}, \code{w}.
+An object of class \code{\link[spatstat.geom]{ppp}} containing the Poisson-generated points, defined with the polygonal \code{\link[spatstat.geom]{owin}}, \code{w}.
 }
 
 \references{
@@ -51,7 +51,7 @@ Note that this is an artificial correction that forces the Poisson-generated num
 }
 
 \seealso{
-\code{\link[spatstat]{rpoint}}, \code{\link[sparr]{rimpoly}}, \code{\link[spatstat]{rpoispp}}
+\code{\link[spatstat.core]{rpoint}}, \code{\link[sparr]{rimpoly}}, \code{\link[spatstat.core]{rpoispp}}
 }
 
 \examples{

@@ -2,7 +2,7 @@
 export("aic.function" , "ipc.estK2", "select.model2","select.model.gof", "envelope.selectedmod", "simulate.selectedmod","envelope.selectedmodgof", "simulate.selectedmodgof", "LF.gof")
 
 # imports
-import(spatstat, ecespa)
+import(spatstat.geom,spatstat.core,spatstat.linnet,ecespa)
 # ToDo: "importFrom" only required functions 
 
 

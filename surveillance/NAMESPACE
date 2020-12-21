@@ -76,10 +76,7 @@ export(fixef, ranef)  # we define corresponding methods for "hhh4" models
 
 ### twinstim-specific
 
-importFrom(spatstat, area.owin, as.im.function, coords.ppp, diameter, diameter.owin, disc, edges, inside.owin, intersect.owin, is.polygonal, as.polygonal, bdist.points, ppp, runifpoint, shift.owin, spatstat.options, vertices)
-importFrom(spatstat, marks)
 export(marks)                           # we define an epidataCS-method
-importFrom(spatstat, multiplicity)
 export(multiplicity)                    # we define a Spatial-method
 
 importFrom(polyCub, polyCub, .polyCub.iso, polyCub.SV, polyCub.midpoint, xylist)
@@ -477,3 +474,22 @@ S3method(scores, hhh4simslist)
 
 ## internal functions for use by add-on packages
 export(meanHHH, sizeHHH, decompose.hhh4)
+importFrom(spatstat.geom,  area.owin)
+importFrom(spatstat.geom,  as.im.function)
+importFrom(spatstat.geom,  coords.ppp)
+importFrom(spatstat.geom,  diameter)
+importFrom(spatstat.geom,  diameter.owin)
+importFrom(spatstat.geom,  disc)
+importFrom(spatstat.geom,  edges)
+importFrom(spatstat.geom,  inside.owin)
+importFrom(spatstat.geom,  intersect.owin)
+importFrom(spatstat.geom,  is.polygonal)
+importFrom(spatstat.geom,  as.polygonal)
+importFrom(spatstat.geom,  bdist.points)
+importFrom(spatstat.geom,  ppp)
+importFrom(spatstat.core,  runifpoint)
+importFrom(spatstat.geom,  shift.owin)
+importFrom(spatstat.geom,  spatstat.options)
+importFrom(spatstat.geom,  vertices)
+importFrom(spatstat.geom,  marks)
+importFrom(spatstat.geom,  multiplicity)

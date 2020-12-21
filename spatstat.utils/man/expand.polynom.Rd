@@ -47,7 +47,7 @@
   \spatstatAuthors.
 }
 \seealso{
-   \code{\link[spatstat]{polynom}}
+   \code{\link[spatstat.core]{polynom}}
 }
 \examples{
    sympoly(A, 4)

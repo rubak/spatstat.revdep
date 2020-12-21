@@ -1,7 +1,7 @@
 library(checkmate)
 library(testthat)
 library(raster)
-library(spatstat)
+library(spatstat.core)
 context("getGroups")
 
 

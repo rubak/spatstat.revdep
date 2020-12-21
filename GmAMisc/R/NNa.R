@@ -98,7 +98,7 @@ NNa <- function(feature, studyplot=NULL, buffer=0, B=199, cov.var=NULL, addmap=T
     }
 
     #calculate the density of points
-    pointdensity <- length(feature) / spatstat::area(region)
+    pointdensity <- length(feature) / spatstat.geom::area(region)
 
     #calculate the observed R value, and store it
     obs.Rindex <- obs.NNdist / (1/(2*sqrt(pointdensity)))
@@ -118,10 +118,10 @@ NNa <- function(feature, studyplot=NULL, buffer=0, B=199, cov.var=NULL, addmap=T
   } else {
 
     #tranform the cov.var from a RasterLayer to an object of class im, which is needed by spatstat
-    cov.var.im <- spatstat::as.im(cov.var)
+    cov.var.im <- spatstat.geom::as.im(cov.var)
 
     #calculate the density of points
-    pointdensity <- length(feature) / spatstat::area(cov.var.im)
+    pointdensity <- length(feature) / spatstat.geom::area(cov.var.im)
 
     #calculate the observed R value, and store it
     obs.Rindex <- obs.NNdist / (1/(2*sqrt(pointdensity)))

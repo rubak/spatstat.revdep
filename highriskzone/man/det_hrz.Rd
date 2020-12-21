@@ -29,11 +29,11 @@ have.}
 
 \item{distancemap}{(optional) distance map: distance of every pixel to the nearest observation 
 of the point pattern; only needed for \code{type="dist"}. If not given, 
-it will be computed by \code{\link[spatstat]{distmap}}.}
+it will be computed by \code{\link[spatstat.geom]{distmap}}.}
 
 \item{intens}{(optional) estimated intensity of the observed process (object of class "im"), 
 only needed for type="intens". If not given,
-it will be estimated using \code{\link[spatstat]{density.ppp}}.}
+it will be estimated using \code{\link[spatstat.core]{density.ppp}}.}
 
 \item{nxprob}{Probability of having unobserved events.
 Default value is 0.1.}
@@ -46,7 +46,7 @@ using \code{\link[ks]{Hscv}}.}
 An object of class "\code{highriskzone}", which is a list of
    \item{ typehrz, criterion, cutoff, nxprob }{ see arguments}
    \item{ zone }{ Determined high-risk zone: Object of class "owin" based on a binary mask. 
-                  See \code{\link[spatstat]{owin}}. }
+                  See \code{\link[spatstat.geom]{owin}}. }
    \item{ threshold }{ determined threshold. If type = "dist" and criterion = "direct" it is the specified radius.
    If criterion = "indirect" or "area" the determined radius used to construct a risk zone fulfilling the specified criterion 
    and cutoff. If type = "dist" it is the specified or calculated threshold c, the maximum intensitiy of unexploded bombs 
@@ -107,7 +107,7 @@ instead. For estimation of intensity based highrikszones with a bigger observati
 \examples{
  data(craterA)
 ## change npixel to 1000 to obtain nicer plots
-spatstat::spatstat.options(npixel=100)
+spatstat.geom::spatstat.options(npixel=100)
 ## type: dist
 hrzd1 <- det_hrz(craterA, type = "dist", criterion = "area", cutoff = 1000000, nxprob = 0.1)
 hrzd2 <- det_hrz(craterA, type = "dist", criterion = "indirect", cutoff = 0.9, nxprob = 0.1)
@@ -153,6 +153,6 @@ Ph.D. thesis, Cuvillier Verlag \enc{Goettingen}{Goettingen},
 available online: http://edoc.ub.uni-muenchen.de/15886/
 }
 \seealso{
-\code{\link[spatstat]{distmap}}, \code{\link[spatstat]{eval.im}}, \code{\link[spatstat]{owin}},
+\code{\link[spatstat.geom]{distmap}}, \code{\link[spatstat.geom]{eval.im}}, \code{\link[spatstat.geom]{owin}},
                \code{\link{eval_method}}, \code{\link[highriskzone]{det_hrz_restr}}
 }

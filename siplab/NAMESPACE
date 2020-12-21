@@ -1,2 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-import(spatstat)
+import(spatstat.geom,spatstat.core,spatstat.linnet)

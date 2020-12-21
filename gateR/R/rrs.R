@@ -84,7 +84,7 @@ rrs <- function(dat,
     dat <- dat[!is.na(dat[ , 4]) & !is.na(dat[ , 5]) , ]
     chul <- grDevices::chull(dat[ , 4:5])
     chul_coords <- dat[ , 4:5][c(chul, chul[1]), ]
-    win <- spatstat::owin(poly = list(x = rev(chul_coords[ , 1]),
+    win <- spatstat.geom::owin(poly = list(x = rev(chul_coords[ , 1]),
                                            y = rev(chul_coords[ , 2])))
   }
   
@@ -96,7 +96,7 @@ rrs <- function(dat,
   }
 
   # Create PPP
-  suppressMessages(suppressWarnings(c1_ppp <- spatstat::ppp(x = dat$V1,
+  suppressMessages(suppressWarnings(c1_ppp <- spatstat.geom::ppp(x = dat$V1,
                                                                  y = dat$V2,
                                                                  marks = dat$G1,
                                                                  window = win)))

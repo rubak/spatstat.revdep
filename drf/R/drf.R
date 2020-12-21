@@ -379,7 +379,7 @@ predict.drf <- function(object,
       # in case of quantile regression
       if (!is.null(add.param$quantiles)) {
         
-        functional.val <- lapply(1:ncol(functional.t), function(j) t(apply(w, 1, function(ww) spatstat::weighted.quantile(x = functional.t[ww!=0, j], 
+        functional.val <- lapply(1:ncol(functional.t), function(j) t(apply(w, 1, function(ww) spatstat.geom::weighted.quantile(x = functional.t[ww!=0, j], 
                                                                                                                           w = ww[ww!=0], 
                                                                                                                           probs = add.param$quantiles))))
         quantile.array <- array(dim = c(nrow(w), ncol(functional.t), length(add.param$quantiles)), 
@@ -521,7 +521,7 @@ predict.drf <- function(object,
     }
     
     funs <- lapply(1:nrow(w), function(i) {
-      return(function(y) spatstat::ewcdf(x = functional.t, weights = as.numeric(w[i,]))(y))
+      return(function(y) spatstat.geom::ewcdf(x = functional.t, weights = as.numeric(w[i,]))(y))
     })
     
     return(list(cdf = funs))

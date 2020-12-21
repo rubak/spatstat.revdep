@@ -24,7 +24,7 @@ options(SweaveHooks=list(fig=function() par(mar=c(1,1,1,1))))
 \thispagestyle{empty}
 
 <<echo=FALSE,results=hide>>=
-library(spatstat)
+library(spatstat.core)
 options(useFancyQuotes=FALSE)
 sdate <- read.dcf(file = system.file("DESCRIPTION", package = "overlapptest"),
          fields = "Date")
@@ -146,7 +146,7 @@ in order to convert the data.
 
 <<>>=
 library(maptools)
-library(spatstat)
+library(spatstat.core)
 @ 
 
 In addition, for applications of the \pkg{overlapptest} package, it is 

@@ -73,18 +73,18 @@
 areapart=function(win, G, data.coords){
   if(length(G)==1){
     #areas' centroids
-    dummy=spatstat::runifpoint(G, win)
+    dummy=spatstat.core::runifpoint(G, win)
     dummy.coord=cbind(x=dummy$x, y=dummy$y, id=1:G)} else {
 
-      dummy=spatstat::ppp(G[,1], G[,2], win)
+      dummy=spatstat.geom::ppp(G[,1], G[,2], win)
       dummy.coord=cbind(x=dummy$x, y=dummy$y, id=1:nrow(G))
     }
 
   #create data point pattern
-  data.pp=spatstat::ppp(data.coords[,1], data.coords[,2], window=win)
+  data.pp=spatstat.geom::ppp(data.coords[,1], data.coords[,2], window=win)
 
   #match data to the nearest area centroid
-  near.neigh=spatstat::nncross(data.pp, dummy)
+  near.neigh=spatstat.geom::nncross(data.pp, dummy)
   data.coord.area=cbind(data.coords, near.neigh$which)
   colnames(data.coord.area)=c("x", "y", "area")
 
@@ -212,20 +212,20 @@ plot_areapart=function(data.assign, win, is.pointdata=FALSE, add.data=FALSE, dat
   } else { #for a point pattern
 
     if (is.null(G.coords)) cat("ERROR: centroid coordinates of the G sub-areas must be provided")
-    if (spatstat::is.ppp(G.coords)) {
-      dirich=spatstat::dirichlet(G.coords)} else{
-        G.pp=spatstat::ppp(G.coords[,1], G.coords[,2], window=win)
-        dirich=spatstat::dirichlet(G.pp)}
+    if (spatstat.geom::is.ppp(G.coords)) {
+      dirich=spatstat.geom::dirichlet(G.coords)} else{
+        G.pp=spatstat.geom::ppp(G.coords[,1], G.coords[,2], window=win)
+        dirich=spatstat.geom::dirichlet(G.pp)}
 
     if (add.data==F){
-      spatstat::plot.tess(dirich, main=main)
+      spatstat.geom::plot.tess(dirich, main=main)
     } else{
-      spatstat::plot.tess(dirich, main=main)
+      spatstat.geom::plot.tess(dirich, main=main)
       if (data.bin==T){
-        ind=which(spatstat::marks(data)==category)
-        bindata.pp=spatstat::ppp(data$x[ind], data$y[ind], data$win)
-        spatstat::plot.ppp(bindata.pp, add=TRUE, pch=19)
-      } else spatstat::plot.ppp(data, add=TRUE)
+        ind=which(spatstat.geom::marks(data)==category)
+        bindata.pp=spatstat.geom::ppp(data$x[ind], data$y[ind], data$win)
+        spatstat.geom::plot.ppp(bindata.pp, add=TRUE, pch=19)
+      } else spatstat.geom::plot.ppp(data, add=TRUE)
     }
   }
 }
@@ -314,8 +314,8 @@ batty=function(data, data.assign, is.pointdata=FALSE, category, win=NULL, G.coor
   ch=sum(datavec) #total number of 1s
 
   #Gx2 table matching each area id to the number of 1 values in it
-  if(spatstat::is.ppp(G.coords))
-    G.count=1:(spatstat::npoints(G.coords)) else G.count=1:nrow(G.coords)
+  if(spatstat.geom::is.ppp(G.coords))
+    G.count=1:(spatstat.geom::npoints(G.coords)) else G.count=1:nrow(G.coords)
   sums=by(data.cat[,4],data.cat[,3], sum); sums=cbind(as.numeric(names(sums)), as.numeric(sums))
   col2=numeric(length(G.count))
   for(i in 1:length(G.count))
@@ -328,14 +328,14 @@ batty=function(data, data.assign, is.pointdata=FALSE, category, win=NULL, G.coor
 
   #add Tg=sub-areas size
   if(is.pointdata==F){
-    pix.size=spatstat::area.owin(win)/length(c(data))
+    pix.size=spatstat.geom::area.owin(win)/length(c(data))
     Tg=as.numeric(table(data.cat[,3]))*pix.size
     G.count=cbind(G.count, Tg)
   } else{
-    if (spatstat::is.ppp(G.coords)) {
-      dirich=spatstat::dirichlet(G.coords)} else{
-        G.pp=spatstat::ppp(G.coords[,1], G.coords[,2], window=win)
-        dirich=spatstat::dirichlet(G.pp)}
+    if (spatstat.geom::is.ppp(G.coords)) {
+      dirich=spatstat.geom::dirichlet(G.coords)} else{
+        G.pp=spatstat.geom::ppp(G.coords[,1], G.coords[,2], window=win)
+        dirich=spatstat.geom::dirichlet(G.pp)}
     Tg=as.numeric(lapply(dirich$tiles, spatstat::area.owin))
     G.count=cbind(G.count, Tg)
   }
@@ -431,8 +431,8 @@ karlstrom=function(data, data.assign, category, G.coords, neigh.dist){
   ch=sum(datavec) #total number of 1s
 
   #Gx2 table matching each area id to the number of 1 values in it
-  if(spatstat::is.ppp(G.coords))
-    G.count=1:(spatstat::npoints(G.coords)) else G.count=1:nrow(G.coords)
+  if(spatstat.geom::is.ppp(G.coords))
+    G.count=1:(spatstat.geom::npoints(G.coords)) else G.count=1:nrow(G.coords)
   sums=by(data.cat[,4],data.cat[,3], sum); sums=cbind(as.numeric(names(sums)), as.numeric(sums))
   col2=numeric(length(G.count))
   for(i in 1:length(G.count))
@@ -444,8 +444,8 @@ karlstrom=function(data, data.assign, category, G.coords, neigh.dist){
   G.count=cbind(G.count, G.count[,2]/ch)
 
   #compute p tilde according to neighbourhood
-  distances=spatstat::pairdist(G.coords)
-  G=spatstat::npoints(G.coords)
+  distances=spatstat.geom::pairdist(G.coords)
+  G=spatstat.geom::npoints(G.coords)
   p.tilde=rep(1,G)
   for (g in 1:G)
   {

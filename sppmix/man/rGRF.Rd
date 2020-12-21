@@ -26,14 +26,14 @@ chi-square random field when \code{gentype=1}.}
 parameters. See \code{\link{MaternCov}} for details.}
 
 \item{pattern}{Optionally, a point pattern
-as an object of type \code{\link[spatstat]{ppp}}
+as an object of type \code{\link[spatstat.geom]{ppp}}
 containing locations within the window. The
 values of the generated GRF over these
 locations are returned as the marks of
 the point pattern \code{pattern}.}
 }
 \value{
-An image as an object of class \code{\link[spatstat]{im.object}},
+An image as an object of class \code{\link[spatstat.geom]{im.object}},
 containing the realization of the field over the grid. If
 argument \code{pattern} was supplied, the return
 value is now a list contaning the realization of the field as

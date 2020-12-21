@@ -13,7 +13,7 @@ rrstmix(g, rhotspots, rsds, rweights, rbase = 1, log = TRUE,
 }
 \arguments{
   \item{g}{
-The control density as a \code{\link{stim}}, \code{\link[sparr:spattemp.density]{stden}}, or \code{\link[spatstat]{im}} object; this will be internally rescaled to integrate to 1 if it does not already do so. When a \code{\link{stim}} or \code{\link[sparr:spattemp.density]{stden}} object, the resolution and domain of the final result will be the same as this. When this argument is passed an object of class \code{\link[spatstat]{im}}, the function assumes a static (unchanging) control density over time (see Fernando and Hazelton, 2014), and the user must additionally specify \code{tlim} and \code{tres}.
+The control density as a \code{\link{stim}}, \code{\link[sparr:spattemp.density]{stden}}, or \code{\link[spatstat.geom]{im}} object; this will be internally rescaled to integrate to 1 if it does not already do so. When a \code{\link{stim}} or \code{\link[sparr:spattemp.density]{stden}} object, the resolution and domain of the final result will be the same as this. When this argument is passed an object of class \code{\link[spatstat.geom]{im}}, the function assumes a static (unchanging) control density over time (see Fernando and Hazelton, 2014), and the user must additionally specify \code{tlim} and \code{tres}.
 }
   \item{rhotspots}{
 A \eqn{3 \times N} matrix specifying the spatiotemporal coordinates of the \eqn{N} peaks and troughs in the relative risk density. The three entries down each column will be respectively interpreted as \eqn{x}-coord., \eqn{y}-coord., and time-coordinate of each Gaussian bump.
@@ -31,10 +31,10 @@ The base level of the relative risk surface (default is 1). The peaks and trough
   A logical value. If \code{TRUE} (default), the relative risk surface is returned logged.
 }
   \item{tlim}{
-Only used if \code{g} is a pixel \code{\link[spatstat]{im}}age object. A vector of length 2 giving the boundaries of the time interval on which the relative risk surface will be defined.
+Only used if \code{g} is a pixel \code{\link[spatstat.geom]{im}}age object. A vector of length 2 giving the boundaries of the time interval on which the relative risk surface will be defined.
 }
   \item{tres}{
-Only used if \code{g} is a pixel \code{\link[spatstat]{im}}age object. The resolution along the temporal axis of the final result.
+Only used if \code{g} is a pixel \code{\link[spatstat.geom]{im}}age object. The resolution along the temporal axis of the final result.
 }
 }
 
@@ -49,7 +49,7 @@ Fernando, W.T.P.S. and Hazelton, M.L. (2014), Generalizing the spatial relative 
 \value{
 An oject of class \code{rrstim}. This is a list with the following components:
 \item{f}{An object of class \code{\link{stim}} giving the case density.}
-\item{g}{A copy of the object passed to the argument \code{g}, possibly renormalised to integrate to 1 if this was necessary. If \code{g} was originally an \code{\link[spatstat]{im}}, this will be converted to an object of class \code{\link{stim}}.}
+\item{g}{A copy of the object passed to the argument \code{g}, possibly renormalised to integrate to 1 if this was necessary. If \code{g} was originally an \code{\link[spatstat.geom]{im}}, this will be converted to an object of class \code{\link{stim}}.}
 \item{r}{An object of class \code{\link{stim}} giving the (log) relative risk surface.}
 }
 \author{A.K. Redmond and T.M. Davies}

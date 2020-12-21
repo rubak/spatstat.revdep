@@ -1,5 +1,5 @@
 geoshape <- function(longvar,latvar,linefile=NULL,pointfile=NULL,coormatrix=NULL) {
-  library(spatstat)
+  library(spatstat.core)
 
   if (!identical(linefile,NULL)) {
     filetype = "line"

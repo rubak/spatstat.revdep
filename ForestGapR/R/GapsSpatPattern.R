@@ -11,8 +11,8 @@
 #'@param chm_layer ALS-derived Canopy Height Model (CHM) RasterLayer (\code{\link[raster:raster]{raster}}) object. An object of the classs RasterLayer.
 #'@return A plot with Ripley's K- and L-functions. Value of Clark-Evans index (R) and test for randomness (R=1), aggregation (R<1) or uniform distribution (R>1).
 #'@author Ruben Valbuena and Carlos Alberto Silva.
-#'@references \emph{spatstat} package,see \code{\link[spatstat]{Kest}},\code{\link[spatstat]{Lest}},
-#'and \code{\link[spatstat]{clarkevans.test}}.
+#'@references \emph{spatstat} package,see \code{\link[spatstat.core]{Kest}},\code{\link[spatstat.core]{Lest}},
+#'and \code{\link[spatstat.core]{clarkevans.test}}.
 #'
 #'@examples
 #'\dontrun{
@@ -42,12 +42,12 @@
 #'}
 #'@export
 GapsSpatPattern<-function(gap_SPDF_layer, chm_layer){
-  P  <- spatstat::as.ppp(sp::coordinates(gap_SPDF_layer),raster::extent(chm_layer)[])
-  K <- spatstat::envelope(P, spatstat::Kest, nsim=99, verbose=F)
-  L <- spatstat::envelope(P, spatstat::Lest, nsim=99, verbose=F)
+  P  <- spatstat.geom::as.ppp(sp::coordinates(gap_SPDF_layer),raster::extent(chm_layer)[])
+  K <- spatstat.core::envelope(P, spatstat::Kest, nsim=99, verbose=F)
+  L <- spatstat.core::envelope(P, spatstat::Lest, nsim=99, verbose=F)
   graphics::par(mfrow=c(1,2), mar=c(6, 5, 4, 2))
   graphics::plot(K); graphics::plot(L) 
-  CE <- spatstat::clarkevans.test(P)
+  CE <- spatstat.core::clarkevans.test(P)
   return(CE)
 }
 

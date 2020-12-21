@@ -38,7 +38,7 @@
   This function converts an object of class \code{SpatialLines}
   or \code{SpatialLinesDataFrame} into an object of class \code{linnet}.
   It is not a method for the \pkg{spatstat} generic function
-  \code{\link[spatstat]{as.linnet}}, but like other S4 coercion functions for
+  \code{\link[spatstat.linnet]{as.linnet}}, but like other S4 coercion functions for
   \pkg{sp} classes to \pkg{spatstat} classes, it may be called directly as a function.
 
   An object of class {SpatialLines}
@@ -70,11 +70,11 @@
   Adrian Baddeley.
 }
 \seealso{
-  \code{\link[spatstat]{as.linnet}}
+  \code{\link[spatstat.linnet]{as.linnet}}
 }
 \examples{
   run <- FALSE
-  if(require(spatstat, quietly=TRUE)) run <- TRUE
+  if(require(spatstat.core, quietly=TRUE)) run <- TRUE
 if (run) {
    dname <- system.file("shapes", package="maptools")
    fname <- file.path(dname, "fylk-val.shp")

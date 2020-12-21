@@ -8,7 +8,7 @@ Get_Rdiag(pp, m, truncate = FALSE, L = 20000, numofchains = 2,
   permute = 0)
 }
 \arguments{
-\item{pp}{Point pattern object of class \code{\link[spatstat]{ppp}}.}
+\item{pp}{Point pattern object of class \code{\link[spatstat.geom]{ppp}}.}
 
 \item{m}{The number of components to fit.}
 

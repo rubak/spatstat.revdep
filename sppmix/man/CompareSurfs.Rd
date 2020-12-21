@@ -8,7 +8,7 @@ CompareSurfs(surf1, surf2, LL = 100, truncate = FALSE)
 }
 \arguments{
 \item{surf1, surf2}{Either IPPP intensity surfaces (objects of type \code{intensity_surface})
-or images (objects of type \code{\link[spatstat]{im}}) that represent intensity surfaces.}
+or images (objects of type \code{\link[spatstat.geom]{im}}) that represent intensity surfaces.}
 
 \item{LL}{Length of the side of the square grid.
 The intensities are calculated on an L * L grid.
@@ -23,7 +23,7 @@ within the observation window.}
 \value{
 Returns a list containing all distances
 computed and the window of comparison, an object
-of class \code{\link[spatstat]{owin}}.
+of class \code{\link[spatstat.geom]{owin}}.
 }
 \description{
 This function can be used to compare two
@@ -91,7 +91,7 @@ comp=CompareSurfs(truemixsurf,avgsurfMAPcomp_plus1,LL=100)}
 }
 \seealso{
 \code{\link{rmixsurf}},
-\code{\link[spatstat]{owin}},
+\code{\link[spatstat.geom]{owin}},
 \code{\link{rsppmix}},
 \code{\link{est_mix_bdmcmc}},
 \code{\link{drop_realization}},

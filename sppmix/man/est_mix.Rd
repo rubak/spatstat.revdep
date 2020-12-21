@@ -12,7 +12,7 @@ est_mix_bdmcmc(pp, m, truncate = FALSE, lambda1 = 1, lambda2 = 10,
   hyper = c(m/2, 1/36, 3, 2, 1, 1), L = 30000)
 }
 \arguments{
-\item{pp}{Point pattern object of class \code{\link[spatstat]{ppp}}.}
+\item{pp}{Point pattern object of class \code{\link[spatstat.geom]{ppp}}.}
 
 \item{m}{Either the number of components to fit in DAMCMC or
 the maximum number of components requested for a BDMCMC fit.}
@@ -134,12 +134,12 @@ truncate=FALSE
 truemix4=rnormmix(m = 4, sig0 = .1, df = 5,xlim= c(-2,2), ylim = c(-2,2))
 plot(truemix4,xlim= c(-2,2), ylim = c(-2,2),whichplots=0, open_new_window=
  open_new_plot)+add_title("True mixture of normals density")
-trueintsurfmix4=to_int_surf(truemix4,lambda = 150,win =spatstat::owin( c(-2,2),c(-2,2)))
+trueintsurfmix4=to_int_surf(truemix4,lambda = 150,win =spatstat.geom::owin( c(-2,2),c(-2,2)))
 #not truncating so let us use a larger window
-bigwin=spatstat::owin(c(-4,4),c(-4,4))
+bigwin=spatstat.geom::owin(c(-4,4),c(-4,4))
 ppmix4 <- rsppmix(intsurf = trueintsurfmix4,truncate = truncate,win=bigwin)# draw points
 print(plotmix_2d(trueintsurfmix4,ppmix4, open_new_window=open_new_plot,
- win=spatstat::owin(c(-4,4),c(-4,4)))+add_title(
+ win=spatstat.geom::owin(c(-4,4),c(-4,4)))+add_title(
  "True Poisson intensity surface along with the point pattern, W=[-4,4]x[-4,4]",
  lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n))
 BDMCMCfit=est_mix_bdmcmc(pp = ppmix4, m = 5,L=30000,truncate = truncate)
@@ -220,7 +220,7 @@ The Annals of Statistics, 28, 1, 40-74.
 \code{\link{plot.intensity_surface}},
 \code{\link{plot.bdmcmc_res}},
 \code{\link{to_int_surf}},
-\code{\link[spatstat]{owin}},
+\code{\link[spatstat.geom]{owin}},
 \code{\link{plot_CompDist}},
 \code{\link{drop_realization}},
 \code{\link{plot_chains}},

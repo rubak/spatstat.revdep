@@ -7,7 +7,7 @@
 det_threshold(intens, alpha = 1e-05, nxprob = 0.1)
 }
 \arguments{
-\item{intens}{estimated intensity of the observed process (object of class "im", see \code{\link[spatstat]{density.ppp}})}
+\item{intens}{estimated intensity of the observed process (object of class "im", see \code{\link[spatstat.core]{density.ppp}})}
 
 \item{alpha}{failure probability: probability to have at least one unobserved event
 outside the high-risk zone}

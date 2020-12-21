@@ -64,7 +64,7 @@ For \code{regular} or \code{hexagonal} sampling of polygons, the resulting size 
 As parameter called \code{offset} can be passed to control ("fix") regular or hexagonal sampling: for polygons a length 2 numeric vector (by default: a random point from \code{st_bbox(x)}); for lines use a number like \code{runif(1)}.
 
 Sampling methods from package \code{spatstat} are interfaced (see examples), and need their own parameters to be set. 
-For instance, to use \code{spatstat::rThomas()}, set \code{type = "Thomas"}.
+For instance, to use \code{spatstat.core::rThomas()}, set \code{type = "Thomas"}.
 }
 \examples{
 nc = st_read(system.file("shape/nc.shp", package="sf"))
@@ -113,9 +113,9 @@ ls = st_sfc(st_linestring(rbind(c(0,0),c(0,1))),
 st_sample(ls, 80)
 plot(st_sample(ls, 80))
 # spatstat example:
-if (require(spatstat)) {
+if (require(spatstat.core)) {
  x <- sf::st_sfc(sf::st_polygon(list(rbind(c(0, 0), c(10, 0), c(10, 10), c(0, 0)))))
- # for spatstat::rThomas(), set type = "Thomas":
+ # for spatstat.core::rThomas(), set type = "Thomas":
  pts <- st_sample(x, kappa = 1, mu = 10, scale = 0.1, type = "Thomas") 
 }
 }

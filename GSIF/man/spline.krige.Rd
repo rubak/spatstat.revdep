@@ -48,7 +48,7 @@ Spline interpolation is implemented via the SAGA GIS v2.1 function \code{"Multil
 \examples{
 \dontrun{
 library(plotKML)
-library(spatstat)
+library(spatstat.core)
 library(RSAGA)
 library(gstat)
 library(raster)

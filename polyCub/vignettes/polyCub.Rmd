@@ -169,7 +169,7 @@ To use `polyCub.midpoint()`, we need to convert our polygon to
 **spatstat**'s "owin" class:
 
 ```{R, message = FALSE}
-library("spatstat")
+library("spatstat.core")
 hexagon.owin <- owin(poly = hexagon)
 ```
 

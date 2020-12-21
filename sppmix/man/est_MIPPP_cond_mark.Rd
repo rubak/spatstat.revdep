@@ -10,7 +10,7 @@ est_MIPPP_cond_mark(pp, m = 10, L = 50000, burnin = floor(L/10), hyper_da,
   show_plots = TRUE, compute_surfaces = TRUE)
 }
 \arguments{
-\item{pp}{Marked point pattern of class \code{\link[spatstat]{ppp}}.}
+\item{pp}{Marked point pattern of class \code{\link[spatstat.geom]{ppp}}.}
 
 \item{m}{A vector representing the number
 of components to fit for the ground
@@ -64,7 +64,7 @@ An object of class \code{MIPPP_fit}, which is simply a list containing the follo
 \item{discrete_mark}{Same logical flag as the input argument.}
 \item{pp}{Same as the input argument.}
 \item{ground_fits}{A List of objects of type \code{damcmc_res} which contain the results of the DAMCMC (or the BDMCMC for MAP number of components) fits to the ground process for each discrete mark value.}
-\item{ground_fitsAoS}{A List of objects of type \code{\link[spatstat]{im}} which contain the AoS (average of surfaces) surface based on the DAMCMC (or the BMA from BDMCMC) fits to the ground process for each discrete mark value.}
+\item{ground_fitsAoS}{A List of objects of type \code{\link[spatstat.geom]{im}} which contain the AoS (average of surfaces) surface based on the DAMCMC (or the BMA from BDMCMC) fits to the ground process for each discrete mark value.}
 \item{post_surf}{A List of \code{intensity_surface} objects, one for each mark, representing the surface of posterior means, after fixing label switching using SEL permutation.}
 \item{condition_on_loc}{Logical variable indicating the type of conditioning used in order to produce this MIPPP fit. For this function it is set to FALSE.}
 \item{fit_DAMCMC}{Logical variable indicating whether or not a DAMCMC or BDMCMC fit was requested.}
@@ -90,7 +90,7 @@ For examples see
 \examples{
 \donttest{
 #Create a marked point pattern; use randomization and 3 discrete marks
-newMPP=rMIPPP_cond_mark( params=c(.2,.5,.3),bigwin = spatstat::owin(c(-10,10),c(-10,10)))
+newMPP=rMIPPP_cond_mark( params=c(.2,.5,.3),bigwin = spatstat.geom::owin(c(-10,10),c(-10,10)))
 newMPP$params
 #supply the true number of components for each ground process
 m=c(newMPP$groundsurfs[[1]]$m, newMPP$groundsurfs[[2]]$m, newMPP$groundsurfs[[3]]$m)

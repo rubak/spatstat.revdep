@@ -3,7 +3,7 @@ Type: Package
 Title: Extension to 'spatstat' for Local Composite Likelihood
 Version: 3.6-0
 Date: 2019-04-13
-Depends: R (>= 3.3.0), spatstat (>= 1.57-0), stats, graphics
+Depends: R (>= 3.3.0), spatstat.geom, spatstat.core, spatstat.linnet, stats, graphics
 Imports: tensor, spatstat.utils
 Authors@R: c(person("Adrian", "Baddeley", 
                     role = c("aut", "cre"),

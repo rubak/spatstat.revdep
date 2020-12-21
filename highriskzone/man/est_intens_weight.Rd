@@ -15,17 +15,17 @@ est_intens_weight(ppdata, covmatrix = NULL, weights = NULL)
 }
 \value{
 A list of 
-   \item{ intensest }{ Estimated intensity (object of class "im", see \code{\link[spatstat]{density.ppp}}). }
+   \item{ intensest }{ Estimated intensity (object of class "im", see \code{\link[spatstat.core]{density.ppp}}). }
    \item{ covmatrix }{ Covariance matrix. If \code{covmatrix = NULL} the matrix is estimated by \code{\link[ks]{Hscv}}. }
 }
 \description{
 Estimates the intensity of the point pattern by a kernel method 
-(See \code{\link[spatstat]{density.ppp}}).
+(See \code{\link[spatstat.core]{density.ppp}}).
 }
 \examples{
 data(craterA)
 #change npixel = 50 to 1000 to get a nicer picture
-spatstat::spatstat.options(npixel=50)
+spatstat.geom::spatstat.options(npixel=50)
 # use only ten observations for fast computation
 thin.craterA <- craterA[1:10]
 # weight first 5 observations twice
@@ -36,5 +36,5 @@ plot(craterA$window, main = "contour plot of intensity")
 contour(int$intensest, add =TRUE)
 }
 \seealso{
-\code{\link[spatstat]{density.ppp}}, \code{\link[ks]{Hscv}}, \code{\link[spatstat]{eval.im}}
+\code{\link[spatstat.core]{density.ppp}}, \code{\link[ks]{Hscv}}, \code{\link[spatstat.geom]{eval.im}}
 }

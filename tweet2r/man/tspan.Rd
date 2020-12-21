@@ -41,7 +41,7 @@ Pau Aragó
 }
 \examples{
 library(sp)
-library(spatstat)
+library(spatstat.core)
 
 #loada a SpatialPointsDataFrame
 data("meuse.grid_ll")

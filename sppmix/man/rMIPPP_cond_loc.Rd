@@ -50,9 +50,9 @@ to have all their mass within the window defined
 in the window \code{win}. This affects the mixture model for the
 intensity surface of the ground process.}
 
-\item{win}{Object of type \code{\link[spatstat]{owin}} defining the window of observation.}
+\item{win}{Object of type \code{\link[spatstat.geom]{owin}} defining the window of observation.}
 
-\item{bigwin}{Object of type \code{\link[spatstat]{owin}}. If supplied, this will be the
+\item{bigwin}{Object of type \code{\link[spatstat.geom]{owin}}. If supplied, this will be the
 window of observation, even if the pattern is generated over \code{win}. Useful if we
 do not truncate (\code{truncate=FALSE}) and we want better presentation of the generated MIPPP.}
 
@@ -102,9 +102,9 @@ See \code{\link{MaternCov}} for details. Used only if
 A list containing the following components:
 \item{surf}{The generated or supplied intensity surface object \code{surf} for the ground process.}
 \item{gammas}{The generated or supplied parameters \code{gammas}. Returned only if \code{discrete_mark=TRUE}.}
-\item{genMPP}{The generated point pattern as an object of class \code{\link[spatstat]{ppp}} and \code{sppmix}. The member \code{$marks} contains the marks at each of the generated locations. If the ground PP \code{locPP} was supplied, this is also the ground process for the MIPPP and only the marks are generated (at those locations).}
+\item{genMPP}{The generated point pattern as an object of class \code{\link[spatstat.geom]{ppp}} and \code{sppmix}. The member \code{$marks} contains the marks at each of the generated locations. If the ground PP \code{locPP} was supplied, this is also the ground process for the MIPPP and only the marks are generated (at those locations).}
 \item{r}{The generated or supplied parameter \code{r}. Returned only if \code{discrete_mark=TRUE}.}
-\item{prob_fields}{In the continuous mark case this is the realization of the random field (as an image \code{\link[spatstat]{im}} object). For discrete marks, this is a list of size equal to the number of marks containing the probability fields for each mark value.}
+\item{prob_fields}{In the continuous mark case this is the realization of the random field (as an image \code{\link[spatstat.geom]{im}} object). For discrete marks, this is a list of size equal to the number of marks containing the probability fields for each mark value.}
 \item{prob_field_params}{A list of the parameters used to create the continuous valued mark fields.  Returned only if \code{discrete_mark=FALSE}.}
 }
 \description{

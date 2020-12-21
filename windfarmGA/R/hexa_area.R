@@ -12,7 +12,7 @@
 #' @return Returns a SpatialPolygons. (SpatialPolygons)
 #' 
 tess2SPdf <- function(x) {
-  stopifnot(spatstat::is.tess(x))
+  stopifnot(spatstat.geom::is.tess(x))
   sp.obj <- methods::as(x, "SpatialPolygons")
   return(sp.obj)
 }
@@ -38,7 +38,7 @@ tess2SPdf <- function(x) {
 #'   SpatialPolygons object of the hexagons
 #'   
 #' @examples
-#' library(spatstat)
+#' library(spatstat.core)
 #' library(sp)
 #' library(raster)
 #' Polygon1 <- Polygon(rbind(c(4498482, 2668272), c(4498482, 2669343),
@@ -60,11 +60,11 @@ hexa_area <- function(Polygon1, size, plotTrue = FALSE){
 
   ## Make a Tesselation Object from the Polygon with the size parameter.
   owin_sp <- owin_spatialPolygons(Polygon1)
-  hexa_grid <- spatstat::hextess(owin_sp, s = size)
+  hexa_grid <- spatstat.geom::hextess(owin_sp, s = size)
   ## Convert it to a SpatialPolygons object.
   hexa_grid <- tess2SPdf(hexa_grid)
   ## Make Points inside every hexagonal grid cell
-  points <- spatstat::hexgrid(owin_sp, s = size)
+  points <- spatstat.geom::hexgrid(owin_sp, s = size)
   ## Convert the planar point pattern to a data frame
   points_hexa <- cbind(X = points$x, Y = points$y)
   ## Add an ID Column and reorder and rename the data frame
@@ -106,7 +106,7 @@ owin_spatialPolygons <- function(SP) {
     if (rD == 1) 
       crds <- crds[nrow(crds):1, ]
     crds <- crds[-nrow(crds), ]
-    res <- spatstat::owin(poly = list(x = crds[, 1], y = crds[, 2]))
+    res <- spatstat.geom::owin(poly = list(x = crds[, 1], y = crds[, 2]))
   }
   else if (nOwin > 1) {
     opls <- vector(mode = "list", length = nOwin)
@@ -127,7 +127,7 @@ owin_spatialPolygons <- function(SP) {
         io <- io + 1
       }
     }
-    res <- spatstat::owin(bbox(SP)[1, ], bbox(SP)[2, ], 
+    res <- spatstat.geom::owin(bbox(SP)[1, ], bbox(SP)[2, ], 
                           poly = opls, check = FALSE)
   }
   res

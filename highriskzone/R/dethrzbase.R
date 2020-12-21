@@ -7,11 +7,11 @@
 #' Used in function det_radius.
 #'
 #' @param cutoffval  distance used as radius of the discs
-#' @param distancemap  distance map (object of class "im", see \code{\link[spatstat]{distmap}}): 
+#' @param distancemap  distance map (object of class "im", see \code{\link[spatstat.geom]{distmap}}): 
 #'                     distance of every location in the observation window to the nearest event
 #' @param win  observation window of class owin 
 #' @return A numerical value giving the area of the window.
-#' @seealso \code{\link[spatstat]{eval.im}}, \code{\link[spatstat]{owin}}, \code{\link[spatstat]{area.owin}}
+#' @seealso \code{\link[spatstat.geom]{eval.im}}, \code{\link[spatstat.geom]{owin}}, \code{\link[spatstat.geom]{area.owin}}
 
 
 #- fr?her area_dist
@@ -29,7 +29,7 @@ det_nnarea <- function(cutoffval, distancemap, win){
 #' Used in function det_hrz.
 #'
 #' @param ppdata  observed spatial point pattern of class ppp.
-#' @param distancemap  distance map (object of class "im", see \code{\link[spatstat]{distmap}}): 
+#' @param distancemap  distance map (object of class "im", see \code{\link[spatstat.geom]{distmap}}): 
 #'                     distance of every location in the observation window to the nearest event
 #' @param areahrz  given area of the high-risk zone
 #' @param win  observation window of class owin 
@@ -89,7 +89,7 @@ det_radius <- function(ppdata, distancemap, areahrz, win){
 #' A Poisson distribution is used for the number of unobserved events in a certain area or field.
 #' Used in functions det_threshold, det_thresholdfromarea.
 #'
-#' @param intens  estimated intensity of the observed process (object of class "im", see \code{\link[spatstat]{density.ppp}})
+#' @param intens  estimated intensity of the observed process (object of class "im", see \code{\link[spatstat.core]{density.ppp}})
 #' @param threshold  threshold c: The high-risk zone is the field in which the estimated intensity 
 #'                   exceeds this value.
 #' @param nxprob  probability of having unobserved events   
@@ -129,7 +129,7 @@ det_alpha <- function(intens, threshold, nxprob=0.1) {
 #' alpha.
 #' This function is for the intensity-based method. Used in function det_hrz.
 #'
-#' @param intens  estimated intensity of the observed process (object of class "im", see \code{\link[spatstat]{density.ppp}})
+#' @param intens  estimated intensity of the observed process (object of class "im", see \code{\link[spatstat.core]{density.ppp}})
 #' @param alpha   failure probability: probability to have at least one unobserved event
 #'                outside the high-risk zone
 #' @param nxprob  probability of having unobserved events
@@ -167,7 +167,7 @@ det_threshold <- function(intens, alpha=1e-5, nxprob=0.1){
 #' @param threshold  threshold c: The high-risk zone is the field in which the estimated intensity 
 #'                   exceeds this value
 #' @return A numerical value giving the area of the high-risk zone.
-#' @seealso \code{\link[spatstat]{owin}}, \code{\link[spatstat]{area.owin}}
+#' @seealso \code{\link[spatstat.geom]{owin}}, \code{\link[spatstat.geom]{area.owin}}
 
 
 #- fr?her intens_areahrz 
@@ -196,7 +196,7 @@ det_area <- function(win, intensmatrix, threshold){
 #' @param hole specified hole
 #' @param integratehole Should the \code{hole} be part of the resulting high-risk zone? Defaults to \code{TRUE}                 
 #' @return A numerical value giving the area of the high-risk zone.
-#' @seealso \code{\link[spatstat]{owin}}, \code{\link[spatstat]{area.owin}}
+#' @seealso \code{\link[spatstat.geom]{owin}}, \code{\link[spatstat.geom]{area.owin}}
 
 
 #- fr?her intens_areahrz 
@@ -220,7 +220,7 @@ det_area_hole <- function(win, intensmatrix, threshold, hole, integratehole = TR
 #'
 #' This function is used for the intensity-based method. Used in function det_hrz.
 #'
-#' @param intens  estimated intensity of the observed process (object of class "im", see \code{\link[spatstat]{density.ppp}}) 
+#' @param intens  estimated intensity of the observed process (object of class "im", see \code{\link[spatstat.core]{density.ppp}}) 
 #' @param areahrz  area of the high-risk zone 
 #' @param win  observation window
 #' @param nxprob  probability of having unbserved events  
@@ -270,7 +270,7 @@ det_thresholdfromarea <- function(intens, areahrz, win, nxprob=0.1){
 #'
 #' This function is used for the intensity-based method. Used in function det_hrz_restr.
 #'
-#' @param intens  estimated intensity of the observed process (object of class "im", see \code{\link[spatstat]{density.ppp}}) 
+#' @param intens  estimated intensity of the observed process (object of class "im", see \code{\link[spatstat.core]{density.ppp}}) 
 #' @param areahrz area of the high-risk zone 
 #' @param win     observation window
 #' @param nxprob  probability of having unbserved events  

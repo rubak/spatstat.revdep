@@ -1,14 +1,14 @@
 shrinkedge <-
 function(X,xwidth,ywidth,id){
-  stopifnot(spatstat::is.ppp(X))
+  stopifnot(spatstat.geom::is.ppp(X))
   x<-y<-NULL
   df.X<-as.data.frame(X)
-  df.X.ppp<-spatstat::ppp(x=df.X$x,y=df.X$y,
+  df.X.ppp<-spatstat.geom::ppp(x=df.X$x,y=df.X$y,
                           xrange=X$window$xrange,yrange=X$window$yrange)
   if(is.null(X$marks)){
     df.X.ppp<-df.X.ppp
   }else{
-    spatstat::marks(df.X.ppp)<-spatstat::marks(df.X.ppp)
+    spatstat.geom::marks(df.X.ppp)<-spatstat.geom::marks(df.X.ppp)
   }
   if(xwidth>(df.X.ppp$window$xrange[2]-df.X.ppp$window$xrange[1])/2)
     stop("xwidth beyond the xrange")

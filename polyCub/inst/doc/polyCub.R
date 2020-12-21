@@ -40,7 +40,7 @@ for (nGQ in c(1:5, 10, 20)) {
 }
 
 ## ---- message = FALSE----------------------------------------------------
-library("spatstat")
+library("spatstat.core")
 hexagon.owin <- owin(poly = hexagon)
 
 ## ----midpoint, echo = -1, fig.show = "hold"------------------------------

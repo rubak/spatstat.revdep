@@ -18,7 +18,7 @@ alpha) or \code{"direct"} (threshold, i.e. maximum intensity of unexploded bombs
 \item{cutoff}{Value of criterion (alpha or threshold)}
 
 \item{intens}{(optional) estimated intensity of the observed process (object of class "im") in (bigger) 
-observation area, if not given, it will be estimated using \code{\link[spatstat]{density.ppp}}.}
+observation area, if not given, it will be estimated using \code{\link[spatstat.core]{density.ppp}}.}
 
 \item{nxprob}{Probability of having unobserved events.
 Default value is 0.1.}
@@ -42,12 +42,12 @@ evaluation area (criterion = "direct").
 }
 \examples{
 set.seed(12412)
-spatstat::spatstat.options(npixel=300)
+spatstat.geom::spatstat.options(npixel=300)
 data(craterB)
 # reduce number of observations for faster computation
 thin.craterB <- craterB[sample(1:craterB$n, 40)]
 # define evaluation area of interest
-eval.ar <- spatstat::owin(xrange = c(0, 1900), yrange = c(0, 3400), 
+eval.ar <- spatstat.geom::owin(xrange = c(0, 1900), yrange = c(0, 3400), 
                poly = matrix(c(250,250, 1200,1000,250,1000), byrow = TRUE, ncol = 2))
 
 hrzi1 <- det_hrz_eval_ar(thin.craterB, eval_ar = eval.ar, criterion = "direct",

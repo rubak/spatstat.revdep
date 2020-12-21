@@ -25,7 +25,7 @@
 #' }
 #' \item{\code{\link{polyCub.midpoint}}:}{
 #' Simple \emph{two-dimensional midpoint rule} based on
-#' \code{\link[spatstat]{as.im.function}} from \pkg{spatstat}
+#' \code{\link[spatstat.geom]{as.im.function}} from \pkg{spatstat}
 #' (Baddeley and Turner, 2005)
 #' }
 #' \item{\code{\link{polyCub.iso}}:}{

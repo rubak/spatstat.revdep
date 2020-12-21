@@ -13,10 +13,10 @@ lgcpmix(lambda, covmodel = "exp", covpars = NULL)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{lambda}{
-A pixel \code{\link[spatstat]{im}}age giving the deterministic spatial intensity as the mean structure of the process. The generated Gaussian field will match the dimensions, resolution and domain of this object.
+A pixel \code{\link[spatstat.geom]{im}}age giving the deterministic spatial intensity as the mean structure of the process. The generated Gaussian field will match the dimensions, resolution and domain of this object.
 }
   \item{covmodel}{
-A character string giving the short name of a spatial covariance model available in the \code{\link[RandomFields]{RandomFields}} package (Schlather et al., 2015). The code searches for a function of this name after adding the prefix \code{"RM"}, piggybacking on the internals of \code{\link[spatstat]{rLGCP}}. See `Details'.
+A character string giving the short name of a spatial covariance model available in the \code{\link[RandomFields]{RandomFields}} package (Schlather et al., 2015). The code searches for a function of this name after adding the prefix \code{"RM"}, piggybacking on the internals of \code{\link[spatstat.core]{rLGCP}}. See `Details'.
 }
   \item{covpars}{
 A named list of values for the parameters required by the chosen \code{covmodel}. This will normally include \code{var} and \code{scale}. Both variance and scale parameters default to 1 if this argument is left \code{NULL}.
@@ -31,13 +31,13 @@ for \eqn{x \in W}, where \eqn{\lambda(x)} (passed to \code{lambda}) is the deter
 
 The mean parameter \eqn{\mu} of the Gaussian field \eqn{Y} is internally fixed at \eqn{-\sigma^2/2}; negative half the variance. This is for identifiability of the mean structure, forcing \eqn{E[Y(x)] = 1} for all \eqn{x \in W} (see theoretical properties in \enc{Møller}{Moller} et al., 1998). This means the deterministic intensity function \eqn{\lambda(x)} is solely responsible for describing fixed heterogeneity in spatial intensity over \eqn{W}, with the randomly generated Gaussian field left to describe residual stochastic spatial correlation. This presents a highly flexible class of model, even with stationarity and isotropy of the Gaussian field itself, and is intuitively sensible in a variety of applications. See Diggle et al. (2005) and Davies & Hazelton (2013) for example.
 
-As such, the pixel \code{\link[spatstat]{im}}age supplied to \code{lambda} as \eqn{\lambda(x)} must be non-negatively-valued and yield a finite integral. The choice of covariance model and correspondingly required parameters as well as actual simulation of the Gaussian field is deferred to functionality in the \code{\link[RandomFields]{RandomFields}} package; see \code{\link[RandomFields]{RMmodel}} for possible choices. For example, requesting \code{covmodel = "exp"} (default) will search for the \code{\link[RandomFields]{RandomFields}} function \code{\link[RandomFields]{RMexp}} and imposes an exponential covariance structure on the generated field whereby \eqn{Cov(u) = \sigma^2\exp(-u/\phi)} for the Euclidean distance between any two spatial locations \eqn{u}.
+As such, the pixel \code{\link[spatstat.geom]{im}}age supplied to \code{lambda} as \eqn{\lambda(x)} must be non-negatively-valued and yield a finite integral. The choice of covariance model and correspondingly required parameters as well as actual simulation of the Gaussian field is deferred to functionality in the \code{\link[RandomFields]{RandomFields}} package; see \code{\link[RandomFields]{RMmodel}} for possible choices. For example, requesting \code{covmodel = "exp"} (default) will search for the \code{\link[RandomFields]{RandomFields}} function \code{\link[RandomFields]{RMexp}} and imposes an exponential covariance structure on the generated field whereby \eqn{Cov(u) = \sigma^2\exp(-u/\phi)} for the Euclidean distance between any two spatial locations \eqn{u}.
 
-To generate a subsequent dataset, use e.g. \code{\link[spatstat]{rpoispp}} or \code{\link{rpoispoly}}.
+To generate a subsequent dataset, use e.g. \code{\link[spatstat.core]{rpoispp}} or \code{\link{rpoispoly}}.
 }
 
 \value{
-A pixel \code{\link[spatstat]{im}}age giving the generated intensity function, comprised of the product of \code{lambda} (fixed, and unchanging in repeated calls to this function) and the exponentiated Gaussian field (with expected value 1, this is stochastic and varies in repeated calls).
+A pixel \code{\link[spatstat.geom]{im}}age giving the generated intensity function, comprised of the product of \code{lambda} (fixed, and unchanging in repeated calls to this function) and the exponentiated Gaussian field (with expected value 1, this is stochastic and varies in repeated calls).
 }
 
 \references{
@@ -51,12 +51,12 @@ Schlather, M., Malinowski, A., Menck, P.J., Oesting, M. and Strokorb, K. (2015) 
 }
 
 \author{
-T.M. Davies, based partially on code written for the \code{\link[spatstat]{rLGCP}} function by A. Jalilian, R. Waagepetersen, A. Baddeley, R. Turner and E. Rubak.
+T.M. Davies, based partially on code written for the \code{\link[spatstat.core]{rLGCP}} function by A. Jalilian, R. Waagepetersen, A. Baddeley, R. Turner and E. Rubak.
 }
 
 
 \seealso{
-\code{\link[spatstat]{rLGCP}}, \code{\link[spatstat]{rpoispp}}, \code{\link{rpoispoly}}
+\code{\link[spatstat.core]{rLGCP}}, \code{\link[spatstat.core]{rpoispp}}, \code{\link{rpoispoly}}
 }
 
 \examples{

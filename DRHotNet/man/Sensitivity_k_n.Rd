@@ -23,7 +23,7 @@ Given a set of \code{ks} and \code{ns} parameters, this function allows the user
 }
 \examples{
 library(DRHotNet)
-library(spatstat)
+library(spatstat.core)
 library(spdep)
 library(raster)
 library(maptools)

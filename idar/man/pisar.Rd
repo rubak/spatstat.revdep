@@ -19,12 +19,12 @@ controldis(d, m, mimark)
 
 
 \arguments{
-  \item{mippp}{A multitype (a.k.a. multivariate) marked point pattern. An object with the \link[spatstat]{ppp} format of \pkg{spatstat}.}
-  \item{mippp.sp}{Univariate point pattern of the focal species. An object with the \link[spatstat]{ppp} format of \pkg{spatstat}.}
+  \item{mippp}{A multitype (a.k.a. multivariate) marked point pattern. An object with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}.}
+  \item{mippp.sp}{Univariate point pattern of the focal species. An object with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}.}
   \item{mimark}{Character. Name of the focal species in the multitype \code{mippp}.}
   \item{namesmark}{Character. If the marks in \code{mippp} are within a \code{data.frame}, the name of the column with the species names.}
   \item{buffer}{One of "adapt", i.e., compute an adaptive buffer, or a number indicating the width of a fixed buffer area around the plot border.}
-  \item{bfw}{An \link[spatstat]{owin} object indicating the limits of the buffer area.}
+  \item{bfw}{An \link[spatstat.geom]{owin} object indicating the limits of the buffer area.}
   \item{r}{Vector of distances to compute PIDAR(r) functions.}
   \item{d}{A matrix expresing relationships (usually functional or phylogenetic) between species present in the multivariate point pattern.}
   \item{d0}{Another matrix expresing relationships (usually functional or phylogenetic) between species present in the multivariate point pattern.}
@@ -59,7 +59,7 @@ The function \code{controldis} controls that the order of species in the phyloge
 
 }
 \value{
-  \code{pisar} and \code{risar} return an object of class \code{fv}, see  \link[spatstat]{fv.object}, which can be plotted directly using  \link[spatstat]{plot.fv}. 
+  \code{pisar} and \code{risar} return an object of class \code{fv}, see  \link[spatstat.geom]{fv.object}, which can be plotted directly using  \link[spatstat.core]{plot.fv}. 
 
 Essentially a data frame containing a column named \emph{r} with the vector of values of the argument r at which the PISAR(r) or rISAR(r) function had been estimated and  another column, named \emph{"risar"} or \emph{"pidar"},which  contains an estimate of the selected function.
 
@@ -68,7 +68,7 @@ Essentially a data frame containing a column named \emph{r} with the vector of v
 }
 
 \section{Simulation envelopes}{
-To compute simulation envelopes for  \code{pisar} or \code{risar} functions,  use \code{\link[spatstat]{envelope}}. See the examples in this help page and in \code{\link[idar]{multifocalsimulator}} to know how to compute simulation envelopes from appropriate null models.
+To compute simulation envelopes for  \code{pisar} or \code{risar} functions,  use \code{\link[spatstat.core]{envelope}}. See the examples in this help page and in \code{\link[idar]{multifocalsimulator}} to know how to compute simulation envelopes from appropriate null models.
 }
 
 

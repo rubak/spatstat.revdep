@@ -13,7 +13,7 @@
 \alias{MOAggIncomeLevelsPerCounty}
 \alias{USAStatesCounties2016}
 \title{Datasets}
-\format{All datasets are objects of type \code{\link[spatstat]{ppp}} and \code{sppmix}, except for object \code{USAStatesCounties2016}.}
+\format{All datasets are objects of type \code{\link[spatstat.geom]{ppp}} and \code{sppmix}, except for object \code{USAStatesCounties2016}.}
 \usage{
 Datasets()
 
@@ -39,7 +39,7 @@ USAStatesCounties2016
 Several datasets have been included in the
 \code{sppmix} package. They are all open source
 datasets that have been processed into
-\code{\link[spatstat]{ppp}} objects. Many examples and tutorials
+\code{\link[spatstat.geom]{ppp}} objects. Many examples and tutorials
 use these datasets.
 
 For basic examples see

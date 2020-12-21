@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(collapse = TRUE, comment = "R>", cache=FALSE, fig.width=7.2)
 rm(list=ls())
 library(TexMix)
-library(spatstat)        # Key library for spatial point pattern analysis
+library(spatstat.core)        # Key library for spatial point pattern analysis
 library(smacpod)         # Relative risk kernel densities based on statstat
 library(colorspace)      # Used for thematic mapping of kernel densities
 library(car)             # Regression diagnostics

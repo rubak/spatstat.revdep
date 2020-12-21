@@ -6,21 +6,21 @@
 #' 
 #' @param x An object of class \code{logrrenv}.
 #' @param ... Additional graphical parameters passed to the 
-#'   \code{\link[spatstat]{image.im}} function.  See
+#'   \code{\link[spatstat.geom]{image.im}} function.  See
 #'   Details.
 #' @param conlist Additional argument passed to the 
-#'   \code{\link[spatstat]{contour.im}} function.
+#'   \code{\link[spatstat.geom]{contour.im}} function.
 #' @param main A main title for the plot.  Default is blank.
 #' @details An important aspect of this plot is the
 #'   color argument (\code{col}) used for displaying
 #'   the regions outside the non-rejection envelopes.  If NULL
 #'   (the implicit default), then the default color palette
-#'   used by \code{\link[spatstat]{image.im}} will be used. 
+#'   used by \code{\link[spatstat.geom]{image.im}} will be used. 
 #'   Simpler schemes, e.g., c("blue", "white", "orange") can
 #'   suffice. See the examples.
 #' @method plot logrrenv
-#' @seealso \code{\link[spatstat]{plot.im}},
-#'   \code{\link[spatstat]{contour.im}}
+#' @seealso \code{\link[spatstat.geom]{plot.im}},
+#'   \code{\link[spatstat.geom]{contour.im}}
 #' @export
 #' @examples
 #' data(grave)
@@ -33,10 +33,10 @@
 plot.logrrenv = function(x, ..., conlist = list(), main = "") {
   # if there were no simulations
   if (is.null(x$nrenv)) {
-    spatstat::image.im(x, ...)
+    spatstat.geom::image.im(x, ...)
   } else {
     # create temporary im object for plotting
-    xtemp = spatstat::im(mat = x$v, xcol = x$xcol, yrow = x$yrow)
+    xtemp = spatstat.geom::im(mat = x$v, xcol = x$xcol, yrow = x$yrow)
     # determine which locations within non-rejection intervals or are NA
     which_na = rbind(which(x$nrenv$v == 0, arr.ind = TRUE),
                      which(is.na(x$v), arr.ind = TRUE))

@@ -95,7 +95,7 @@
 #' #mark distribution is discrete uniform
 #' m <- sample(1:2, 100, replace=TRUE)
 #' m <- factor(m, levels=1:2)
-#' pp <- spatstat::ppp(x, y, c(0,1), c(0,1), marks=m)
+#' pp <- spatstat.geom::ppp(x, y, c(0,1), c(0,1), marks=m)
 #' # estimate the probability fields for each mark; since we have a discrete
 #' # uniform for the mark distribution we should see probabilities about .5
 #' # for both marks, as well as, the gamma credible sets should include 0,
@@ -362,7 +362,7 @@ plot_MPP_probs <- function(MPPfit,
 #' #plot_MPP_fields}
 #'
 #' @param MPP A marked point pattern as an
-#' object of class \code{\link[spatstat]{ppp}}.
+#' object of class \code{\link[spatstat.geom]{ppp}}.
 #' @param discrete_mark Logical flag indicating whether the mark is discrete or not.
 #' Default is TRUE. For continuous marks set this to FALSE.
 #' @param gammas For discrete marks (\code{discrete_mark=TRUE}), this is
@@ -512,8 +512,8 @@ plot_MPP_fields <- function(MPP,gammas,r,
 #' to have all their mass within the window defined
 #' in the window \code{win}. This affects the mixture model for the
 #' intensity surface of the ground process.
-#' @param win Object of type \code{\link[spatstat]{owin}} defining the window of observation.
-#' @param bigwin Object of type \code{\link[spatstat]{owin}}. If supplied, this will be the
+#' @param win Object of type \code{\link[spatstat.geom]{owin}} defining the window of observation.
+#' @param bigwin Object of type \code{\link[spatstat.geom]{owin}}. If supplied, this will be the
 #' window of observation, even if the pattern is generated over \code{win}. Useful if we
 #' do not truncate (\code{truncate=FALSE}) and we want better presentation of the generated MIPPP.
 #' @param discrete_mark Logical flag indicating whether the mark is discrete or not.
@@ -601,9 +601,9 @@ plot_MPP_fields <- function(MPP,gammas,r,
 #' @return A list containing the following components:
 #' \item{surf}{The generated or supplied intensity surface object \code{surf} for the ground process.}
 #' \item{gammas}{The generated or supplied parameters \code{gammas}. Returned only if \code{discrete_mark=TRUE}.}
-#' \item{genMPP}{The generated point pattern as an object of class \code{\link[spatstat]{ppp}} and \code{sppmix}. The member \code{$marks} contains the marks at each of the generated locations. If the ground PP \code{locPP} was supplied, this is also the ground process for the MIPPP and only the marks are generated (at those locations).}
+#' \item{genMPP}{The generated point pattern as an object of class \code{\link[spatstat.geom]{ppp}} and \code{sppmix}. The member \code{$marks} contains the marks at each of the generated locations. If the ground PP \code{locPP} was supplied, this is also the ground process for the MIPPP and only the marks are generated (at those locations).}
 #' \item{r}{The generated or supplied parameter \code{r}. Returned only if \code{discrete_mark=TRUE}.}
-#' \item{prob_fields}{In the continuous mark case this is the realization of the random field (as an image \code{\link[spatstat]{im}} object). For discrete marks, this is a list of size equal to the number of marks containing the probability fields for each mark value.}
+#' \item{prob_fields}{In the continuous mark case this is the realization of the random field (as an image \code{\link[spatstat.geom]{im}} object). For discrete marks, this is a list of size equal to the number of marks containing the probability fields for each mark value.}
 #' \item{prob_field_params}{A list of the parameters used to create the continuous valued mark fields.  Returned only if \code{discrete_mark=FALSE}.}
 #' @author Sakis Micheas
 #' @seealso \code{\link{plot_MPP_fields}}
@@ -1044,8 +1044,8 @@ summary.MIPPP_fit <- function(object,...)
 #' intensity surface of the ground process.
 #' @param discrete_mark Logical flag indicating whether the mark is discrete or not.
 #' Default is TRUE. For continuous marks set this to FALSE.
-#' @param win Object of type \code{\link[spatstat]{owin}} defining the window of observation.
-#' @param bigwin Object of type \code{\link[spatstat]{owin}}. If supplied, this will be the
+#' @param win Object of type \code{\link[spatstat.geom]{owin}} defining the window of observation.
+#' @param bigwin Object of type \code{\link[spatstat.geom]{owin}}. If supplied, this will be the
 #' window of observation, even if the pattern is generated over \code{win}. Useful if we
 #' do not truncate (\code{truncate=FALSE}) and we want better presentation of the generated MIPPP.
 #' @param open_new_window Open a new window for a plot.
@@ -1080,8 +1080,8 @@ summary.MIPPP_fit <- function(object,...)
 #' @references Hierarchical Bayesian Modeling of Marked Non-Homogeneous Poisson Processes with finite mixtures and inclusion of covariate information. Micheas, A.C. (2014). Journal of Applied Statistics, 41, 12, 2596-2615, DOI: 10.1080/02664763.2014.922167.
 #' @return A list containing the following components:
 #' \item{groundsurfs}{A list of \code{intensity_surface} objects containing the surfaces of the ground processes (one for each discrete mark value).}
-#' \item{groundPPs}{A list of \code{\link[spatstat]{ppp}} objects containing the locations of the ground processes (one for each discrete mark value).}
-#' \item{genMPP}{The generated point pattern as an object of class \code{\link[spatstat]{ppp}} and \code{sppmix}. The member \code{$marks} contains the marks at each of the generated locations.}
+#' \item{groundPPs}{A list of \code{\link[spatstat.geom]{ppp}} objects containing the locations of the ground processes (one for each discrete mark value).}
+#' \item{genMPP}{The generated point pattern as an object of class \code{\link[spatstat.geom]{ppp}} and \code{sppmix}. The member \code{$marks} contains the marks at each of the generated locations.}
 #' \item{mark_distr_choice}{The choice of mark distribution. Same as the supplied parameter.}
 #' \item{params}{The default or supplied parameter \code{params}.}
 #' @author Sakis Micheas
@@ -1090,7 +1090,7 @@ summary.MIPPP_fit <- function(object,...)
 #' \donttest{
 #' # Create a marked point pattern; use randomization and 2 discrete uniform
 #' # marks (default values)
-#' newMPP=rMIPPP_cond_mark(bigwin = spatstat::owin(c(-10,10),c(-10,10)))
+#' newMPP=rMIPPP_cond_mark(bigwin = spatstat.geom::owin(c(-10,10),c(-10,10)))
 #' newMPP$params
 #' plot(newMPP$genMPP, showmarks=TRUE)+add_title("Marked Poisson point pattern",
 #'  n=newMPP$genMPP$n, nmarks=2)
@@ -1211,7 +1211,7 @@ rMIPPP_cond_mark<- function(
 #' \url{http://faculty.missouri.edu/~micheasa/sppmix/sppmix_all_examples.html
 #' #est_MIPPP_cond_mark}
 #'
-#' @param pp Marked point pattern of class \code{\link[spatstat]{ppp}}.
+#' @param pp Marked point pattern of class \code{\link[spatstat.geom]{ppp}}.
 #' @param m A vector representing the number
 #' of components to fit for the ground
 #' process corresponding to each mark. Since in
@@ -1250,7 +1250,7 @@ rMIPPP_cond_mark<- function(
 #' \item{discrete_mark}{Same logical flag as the input argument.}
 #' \item{pp}{Same as the input argument.}
 #' \item{ground_fits}{A List of objects of type \code{damcmc_res} which contain the results of the DAMCMC (or the BDMCMC for MAP number of components) fits to the ground process for each discrete mark value.}
-#' \item{ground_fitsAoS}{A List of objects of type \code{\link[spatstat]{im}} which contain the AoS (average of surfaces) surface based on the DAMCMC (or the BMA from BDMCMC) fits to the ground process for each discrete mark value.}
+#' \item{ground_fitsAoS}{A List of objects of type \code{\link[spatstat.geom]{im}} which contain the AoS (average of surfaces) surface based on the DAMCMC (or the BMA from BDMCMC) fits to the ground process for each discrete mark value.}
 #' \item{post_surf}{A List of \code{intensity_surface} objects, one for each mark, representing the surface of posterior means, after fixing label switching using SEL permutation.}
 #' \item{condition_on_loc}{Logical variable indicating the type of conditioning used in order to produce this MIPPP fit. For this function it is set to FALSE.}
 #' \item{fit_DAMCMC}{Logical variable indicating whether or not a DAMCMC or BDMCMC fit was requested.}
@@ -1261,7 +1261,7 @@ rMIPPP_cond_mark<- function(
 #' @examples
 #' \donttest{
 #' #Create a marked point pattern; use randomization and 3 discrete marks
-#' newMPP=rMIPPP_cond_mark( params=c(.2,.5,.3),bigwin = spatstat::owin(c(-10,10),c(-10,10)))
+#' newMPP=rMIPPP_cond_mark( params=c(.2,.5,.3),bigwin = spatstat.geom::owin(c(-10,10),c(-10,10)))
 #' newMPP$params
 #' #supply the true number of components for each ground process
 #' m=c(newMPP$groundsurfs[[1]]$m, newMPP$groundsurfs[[2]]$m, newMPP$groundsurfs[[3]]$m)

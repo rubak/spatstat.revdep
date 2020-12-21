@@ -77,7 +77,7 @@ get_states_info <- function(states,stateonly=TRUE)
 #' show only the continental USA states.
 #' @param showcentroids Logical requesting to
 #' show centroids for each state or county. These centroids are returned in
-#' a \code{\link[spatstat]{ppp}} object. The centroid is chosen
+#' a \code{\link[spatstat.geom]{ppp}} object. The centroid is chosen
 #' so that it is always within the state or county boundaries.
 #' @param typecentroid If \code{showcentroids=TRUE}
 #' we can display either the average of the boundary (\code{typecentroid=0})
@@ -118,13 +118,13 @@ get_states_info <- function(states,stateonly=TRUE)
 #' A mark is an integer pointing to an element from the vector
 #' \code{levels} for \code{discretelevels=TRUE},
 #' otherwise a real number.
-#' @param pp Optionally, a point pattern as an object of type \code{\link[spatstat]{ppp}}
+#' @param pp Optionally, a point pattern as an object of type \code{\link[spatstat.geom]{ppp}}
 #' to be displayed over the created plot. The window of this point pattern will be used as
 #' the window of observation (overrides the window in the
 #' \code{surf} parameter).
 #' @param surf Optionally, an intensity surface
 #' as an object of type \code{intensity_surface}
-#' or an image object of class \code{\link[spatstat]{im}}
+#' or an image object of class \code{\link[spatstat.geom]{im}}
 #' to be plotted first and then the map will be
 #' displayed over this field. Supplying this
 #' parameter sets the flag \code{plotlevels=FALSE}
@@ -287,7 +287,7 @@ PlotUSAStates=function(showcounties=FALSE,
       ylims=pp$window$yrange
     }
   }
-  win=spatstat::owin(xlims,ylims)
+  win=spatstat.geom::owin(xlims,ylims)
   centers=matrix(0,n_info,2)
   #lower-left points
   ll_pt=matrix(0,n_info,2)

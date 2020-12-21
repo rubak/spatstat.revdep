@@ -7,7 +7,7 @@ Authors@R: c(
   person(c("Tilman", "M."), "Davies", role = c("aut", "cre"), email = "tdavies@maths.otago.ac.nz"),
   person(c("Jonathan", "C."), "Marshall", role = c("aut"), email = "j.c.marshall@massey.ac.nz"))
 Description: Provides functions to estimate kernel-smoothed spatial and spatio-temporal densities and relative risk functions, and perform subsequent inference. Methodological details can be found in the accompanying tutorial: Davies et al. (2018) <DOI:10.1002/sim.7577>.
-Depends: R (>= 2.10.1), spatstat
+Depends: R (>= 2.10.1), spatstat.geom, spatstat.core, spatstat.linnet
 Imports: spatstat.utils, doParallel, parallel, foreach, misc3d
 Suggests: fftwtools (>= 0.9.8)
 License: GPL (>= 2)

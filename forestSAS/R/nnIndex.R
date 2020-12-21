@@ -1,24 +1,24 @@
 nnIndex<-function(X,id=1:(X$n),smark=NULL,N=NULL,R=NULL,
                   rm.id=NULL,add.X=NULL,add.id=paste("add",1:(add.X$n),sep=""),
                   buffer=FALSE,buf.xwid=5,buf.ywid=5,exclusion=FALSE){
-  stopifnot(spatstat::is.ppp(X))
+  stopifnot(spatstat.geom::is.ppp(X))
   pppx=rebuild.ppp(X=X,id=id,rm.id=rm.id,add.X=add.X,add.id=add.id)
   buf.ppp<-buffer(X=pppx,buf.xwid=buf.xwid,buf.ywid=buf.ywid)
   zone=as.data.frame(buf.ppp)[c("id","x","y","zone")]
   data<-as.data.frame(buf.ppp)
   nnid<-nnid(X=pppx,N=N,R=R,id=as.data.frame(pppx)$id,exclude=FALSE)
   if (!is.null(N)){
-    nndist <-spatstat::applynbd(X=pppx,N=N,function(dists, ...){sort(dists)},exclude=TRUE)
+    nndist <-spatstat.geom::applynbd(X=pppx,N=N,function(dists, ...){sort(dists)},exclude=TRUE)
     if(N==1){
       nndist.id<-cbind(id=as.data.frame(pppx)$id,data.frame(nndist))
     }else{
       nndist.id<-cbind(id=as.data.frame(pppx)$id,data.frame(t(nndist)))}
   }
   if(!is.null(R)){
-    minnndist=spatstat::minnndist(X=pppx)
-    if(R<=spatstat::minnndist(X=pppx))
+    minnndist=spatstat.geom::minnndist(X=pppx)
+    if(R<=spatstat.geom::minnndist(X=pppx))
       stop(paste("R must exceed the minimum nearest-neighbour distance (",minnndist,")",sep=""))
-    nndist <- spatstat::applynbd(X=pppx,R=R,function(dists, ...){sort(dists)},exclude=TRUE)
+    nndist <- spatstat.geom::applynbd(X=pppx,R=R,function(dists, ...){sort(dists)},exclude=TRUE)
     nndist<-list_to_matrix(nndist)
     if(nrow(nndist)==1){
       nndist.id<-cbind(id=as.data.frame(pppx)$id,data.frame(t(nndist)))

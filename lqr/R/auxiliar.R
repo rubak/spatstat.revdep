@@ -1,6 +1,6 @@
 # require(ghyp)
 # require(LaplacesDemon)
-# require(spatstat)
+# require(spatstat.core)
 
 # GENERATE FROM SKD
 

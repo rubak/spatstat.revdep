@@ -48,9 +48,9 @@ function(formLatticeOutput, Z, locations){
 #
   temp <- sp::bbox(rbind(locations,nodes))
   bound_vect <- c(temp[1,1], temp[1,2], temp[2,1], temp[2,2])
-  X <- spatstat::as.ppp(locations, W=bound_vect)
-  Y <- spatstat::as.ppp(nodes, W=bound_vect)
-  closest <- spatstat::nncross(X,Y)$which
+  X <- spatstat.geom::as.ppp(locations, W=bound_vect)
+  Y <- spatstat.geom::as.ppp(nodes, W=bound_vect)
+  closest <- spatstat.geom::nncross(X,Y)$which
 #
 #  The output will be a vector that gives an initial prob
 #  at each node, depending on number of corresponding

@@ -7,7 +7,7 @@ export("dixon2002", "getis","haz.ppp", "ipc.estK","K1K2","K012","Kci","Kclust","
 # Import all packages listed as Imports or Depends
 # ToDo: "importFrom" only required functions
 # Elliminated imports from splancs in ecespa 1.1.10 (and Depends in Description)
-import(spatstat)
+import(spatstat.geom,spatstat.core,spatstat.linnet)
 importFrom("grDevices", "topo.colors")
 
 ## Registration of S3 methods

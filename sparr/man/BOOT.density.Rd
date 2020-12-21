@@ -16,7 +16,7 @@ BOOT.density(pp, hlim = NULL, eta = NULL, type = c("fixed", "adaptive"),
 
 \arguments{
   \item{pp}{
-An object of class \code{\link[spatstat]{ppp}} giving the observed 2D data to be smoothed.
+An object of class \code{\link[spatstat.geom]{ppp}} giving the observed 2D data to be smoothed.
 }
   \item{hlim}{
 An optional vector of length 2 giving the limits of the optimisation routine with respect to the bandwidth. If \code{NULL}, the function attempts to choose this automatically.

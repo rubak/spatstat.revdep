@@ -17,7 +17,7 @@ Kfun(x, r, ...)
 \code{\link{fv}}-object.
 }
 \description{
-See \code{\link[spatstat]{Kest}} for more rigorous implementation in 2D.
+See \code{\link[spatstat.core]{Kest}} for more rigorous implementation in 2D.
 }
 \details{
 Border correction is translation correction. 

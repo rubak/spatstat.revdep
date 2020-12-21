@@ -10,7 +10,7 @@
 #' @return Returns a list that contains the relative probability values estimated along the network for the type of event specified by \code{mark} and \code{category_mark}
 #' @examples 
 #' library(DRHotNet)
-#' library(spatstat)
+#' library(spatstat.core)
 #' library(spdep)
 #' library(raster)
 #' library(maptools)

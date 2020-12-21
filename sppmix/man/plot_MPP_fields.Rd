@@ -9,7 +9,7 @@ plot_MPP_fields(MPP, gammas, r, discrete_mark = TRUE, grayscale = FALSE,
 }
 \arguments{
 \item{MPP}{A marked point pattern as an
-object of class \code{\link[spatstat]{ppp}}.}
+object of class \code{\link[spatstat.geom]{ppp}}.}
 
 \item{gammas}{For discrete marks (\code{discrete_mark=TRUE}), this is
 a vector of length equal to the number of marks.

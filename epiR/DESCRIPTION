@@ -8,7 +8,7 @@ Description: Tools for the analysis of epidemiological and surveillance data. Co
 Depends: R (>= 3.0.0), survival
 Imports: BiasedUrn, pander, methods, lubridate
 Suggests: MASS (>= 3.1-20), knitr, rmarkdown, RColorBrewer, ggplot2,
-        plyr, rgdal, scales, spData, spatstat, foreign, maptools,
+        plyr, rgdal, scales, spData, spatstat.geom, spatstat.core, spatstat.linnet, foreign, maptools,
         rgeos, mapproj
 VignetteBuilder: knitr
 License: GPL (>= 2)

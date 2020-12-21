@@ -13,7 +13,7 @@ rgmix(N, window, v = 4, S = NULL, extras = FALSE, ...)
 }
 
 \item{window}{
-  An object of class \code{\link[spatstat]{owin}} giving the observational window on which the mixture density is defined.
+  An object of class \code{\link[spatstat.geom]{owin}} giving the observational window on which the mixture density is defined.
 }
 
 \item{v}{
@@ -23,7 +23,7 @@ rgmix(N, window, v = 4, S = NULL, extras = FALSE, ...)
   A symmetric, positive-definite \eqn{2 \times 2} scale matrix for the inverse-Wishart distribution of the variance-covariance matrices.
 }
 \item{extras}{
-  A logical value indicating whether, in addition to returning the pixel \code{\link[spatstat]{im}}age of the final mixture density, to also return the randomly realised mean locations and corresponding variance-covariance matrices. See `Value'.
+  A logical value indicating whether, in addition to returning the pixel \code{\link[spatstat.geom]{im}}age of the final mixture density, to also return the randomly realised mean locations and corresponding variance-covariance matrices. See `Value'.
 }
 \item{...}{
   Additional arguments to be passed to \code{\link{sgmix}}. See `Details'.
@@ -36,7 +36,7 @@ Once the above steps are completed, the function calls \code{\link{sgmix}} with 
 }
 
 \value{
-If \code{extras = FALSE} (default), then a pixel \code{\link[spatstat]{im}}age of the final mixture density. If \code{extras = TRUE}, a list is returned with members \code{f} (the pixel \code{\link[spatstat]{im}}age of the final mixture density); \code{mn} (a \eqn{2 \times} \code{N} matrix with each column giving the mean location of each of the \code{N} Gaussian bumps); and \code{vcv} (a \eqn{2 \times 2 \times} \code{N} array with layers giving the covariance matrices associated with the means in the columns of \code{mn}).
+If \code{extras = FALSE} (default), then a pixel \code{\link[spatstat.geom]{im}}age of the final mixture density. If \code{extras = TRUE}, a list is returned with members \code{f} (the pixel \code{\link[spatstat.geom]{im}}age of the final mixture density); \code{mn} (a \eqn{2 \times} \code{N} matrix with each column giving the mean location of each of the \code{N} Gaussian bumps); and \code{vcv} (a \eqn{2 \times 2 \times} \code{N} array with layers giving the covariance matrices associated with the means in the columns of \code{mn}).
 }
 
 \author{A.K. Redmond and T.M. Davies}

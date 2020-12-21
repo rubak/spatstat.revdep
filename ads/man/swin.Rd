@@ -59,7 +59,7 @@ A sampling window may be of simple or complex type. A simple sampling window may
 }
 \note{
 There are printing, summary and plotting methods for \code{"swin"} objects.\cr
-Function \code{owin2swin} converts an \code{\link[spatstat]{owin.object}} from package \code{spatstat} into an \code{"swin"} object.
+Function \code{owin2swin} converts an \code{\link[spatstat.geom]{owin.object}} from package \code{spatstat} into an \code{"swin"} object.
 }
 \seealso{
   \code{\link{area.swin}},

@@ -21,5 +21,5 @@ Generation of a random point pattern using the inhomogeneous Poisson process (if
 and thinning of this data, to obtain "observed" and "unobserved" events.
 }
 \seealso{
-\code{\link{thin}}, \code{\link[spatstat]{rpoispp}}
+\code{\link{thin}}, \code{\link[spatstat.core]{rpoispp}}
 }

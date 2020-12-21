@@ -12,7 +12,7 @@ Description: Functions for displaying multiple images  or scatterplots with a co
     rendered rapidly.
 Depends: R (>= 2.10)
 Imports: colorspace, fields, mapproj, ggplot2, maps, MBA
-Suggests: abind, testthat, spatstat, gear, broom, gridExtra, knitr,
+Suggests: abind, testthat, spatstat.geom, spatstat.core, spatstat.linnet, gear, broom, gridExtra, knitr,
         rmarkdown
 License: GPL (>= 2)
 LazyData: TRUE

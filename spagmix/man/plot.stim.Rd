@@ -6,7 +6,7 @@
 }
 \arguments{
 \item{x}{An object of class \code{\link{stim}}.}
-\item{fix.range}{Logical value indicating whether use the same color scale limits for each plot in the sequence. Ignored if the user supplies a pre-defined \code{\link[spatstat]{colourmap}} to the \code{col} argument, which is matched to \code{...} and passed to \code{\link[spatstat]{plot.im}}.}
+\item{fix.range}{Logical value indicating whether use the same color scale limits for each plot in the sequence. Ignored if the user supplies a pre-defined \code{\link[spatstat.geom]{colourmap}} to the \code{col} argument, which is matched to \code{...} and passed to \code{\link[spatstat.geom]{plot.im}}.}
 \item{sleep}{Single positive numeric value giving the amount of time (in
 seconds) to \code{\link[base]{Sys.sleep}} before drawing the next image in
 the animation.}
@@ -15,7 +15,7 @@ existing graphics device parameters prior to plotting, resetting
 \code{mfrow} and \code{mar}. See `Details' for when you might want to
 disable this.}
 \item{...}{Additional graphical parameters to be passed to
-\code{\link[spatstat]{plot.im}} (see `Details').}
+\code{\link[spatstat.geom]{plot.im}} (see `Details').}
 }
 
 \value{
@@ -28,7 +28,7 @@ Plots to the active graphics device.
 
 \details{
 Actual visualisation is deferred to
-\code{\link[spatstat]{plot.im}}, for which there are a variety of
+\code{\link[spatstat.geom]{plot.im}}, for which there are a variety of
 customisations available the user can access via \code{...}.
 
 The \code{\link{stim}} object is plotted as an animation, one pixel image

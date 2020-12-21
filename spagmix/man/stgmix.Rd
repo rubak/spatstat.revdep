@@ -14,7 +14,7 @@ A \eqn{3 x N} matrix specifying the means of each of \eqn{N} contributing normal
 A \eqn{3 x 3 x N} array specifying the variance-covariance matrices of each contributing density.
 }
   \item{window}{
-An object of class \code{\link[spatstat]{owin}} giving the spatial observational window on which the mixture density is defined.
+An object of class \code{\link[spatstat.geom]{owin}} giving the spatial observational window on which the mixture density is defined.
 }
   \item{tlim}{
 A vector of length 2 giving the boundaries of the time interval on which the mixture density is defined.
@@ -44,11 +44,11 @@ This function creates a 3D array of a density function made up of a mixture of \
 \value{
 An object of class \code{stim} giving the trivariate density. This is a list with six components:
 \item{a}{The \code{sres} \eqn{x} \code{sres} \eqn{x} \code{tres} array of the specified density.}
-\item{v}{A pixel \code{\link[spatstat]{im}}age version of \code{a}, provided as a \code{\link[spatstat]{solist}} of length \code{tres}, with each member being the spatial \code{\link[spatstat]{im}}age slice of the 3D density at each of the time-coordinate values.}
-\item{xcol}{Grid coordinates in the spatial x-axis (corresponds to each spatial \code{\link[spatstat]{im}}age in \code{v}).}
-\item{yrow}{Grid coordinates in the spatial y-axis (corresponds to each spatial \code{\link[spatstat]{im}}age in \code{v}).}
-\item{tlay}{Grid coordinates in the temporal axis (corresponds to the order of the spatial \code{\link[spatstat]{im}}ages in \code{v}).}
-\item{W}{A copy of \code{window}, the spatial \code{\link[spatstat]{owin}} upon which the density is defined.}
+\item{v}{A pixel \code{\link[spatstat.geom]{im}}age version of \code{a}, provided as a \code{\link[spatstat.geom]{solist}} of length \code{tres}, with each member being the spatial \code{\link[spatstat.geom]{im}}age slice of the 3D density at each of the time-coordinate values.}
+\item{xcol}{Grid coordinates in the spatial x-axis (corresponds to each spatial \code{\link[spatstat.geom]{im}}age in \code{v}).}
+\item{yrow}{Grid coordinates in the spatial y-axis (corresponds to each spatial \code{\link[spatstat.geom]{im}}age in \code{v}).}
+\item{tlay}{Grid coordinates in the temporal axis (corresponds to the order of the spatial \code{\link[spatstat.geom]{im}}ages in \code{v}).}
+\item{W}{A copy of \code{window}, the spatial \code{\link[spatstat.geom]{owin}} upon which the density is defined.}
 }
 
 \author{A.K. Redmond and T.M. Davies}

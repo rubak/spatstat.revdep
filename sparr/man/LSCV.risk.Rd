@@ -13,9 +13,9 @@ LSCV.risk(f, g = NULL, hlim = NULL, hseq = NULL, type = c("fixed",
 \arguments{
 \item{f}{Either a pre-calculated object of class \code{\link{bivden}}
 representing the `case' (numerator) density estimate, or an object of class
-\code{\link[spatstat]{ppp}} giving the observed case data. Alternatively, if
-\code{f} is \code{\link[spatstat]{ppp}} object with dichotomous
-factor-valued \code{\link[spatstat]{marks}}, the function treats the first
+\code{\link[spatstat.geom]{ppp}} giving the observed case data. Alternatively, if
+\code{f} is \code{\link[spatstat.geom]{ppp}} object with dichotomous
+factor-valued \code{\link[spatstat.geom]{marks}}, the function treats the first
 level as the case data, and the second as the control data, obviating the
 need to supply \code{g}.}
 

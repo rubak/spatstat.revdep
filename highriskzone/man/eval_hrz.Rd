@@ -7,7 +7,7 @@
 eval_hrz(hrz, unobspp, obspp = NULL)
 }
 \arguments{
-\item{hrz}{High-risk zone of class owin based on a binary mask (see \code{\link[spatstat]{area.owin}})}
+\item{hrz}{High-risk zone of class owin based on a binary mask (see \code{\link[spatstat.geom]{area.owin}})}
 
 \item{unobspp}{Unobserved spatial point process}
 
@@ -49,5 +49,5 @@ of the unobserved events have been revealed..
  par(op)
 }
 \seealso{
-\code{\link[spatstat]{inside.owin}}, \code{\link[spatstat]{area.owin}}
+\code{\link[spatstat.geom]{inside.owin}}, \code{\link[spatstat.geom]{area.owin}}
 }

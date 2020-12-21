@@ -17,7 +17,7 @@
 \arguments{
  \item{tree}{A phylogenetic tree in \code{phylo} format (\pkg{ape}) or a phylogenetic covariance matrix}
   \item{traits}{A \link[base]{data.frame} of traits, or a distance matrix among species (in \link[stats]{dist} or \link[base]{matrix} format) computed on a data.frame of traits.} 
-  \item{mippp}{A multitype (a.k.a. multivariate) marked point pattern . An object with the \link[spatstat]{ppp} format of \pkg{spatstat}, with the names of species as marks.}
+  \item{mippp}{A multitype (a.k.a. multivariate) marked point pattern . An object with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}, with the names of species as marks.}
   \item{idar}{Character. The name of the idar fucntion to be computed. Either "isar", "ipsvar", "ipsrar", "ipsear", "ipscar", or "imntdar"}
   \item{correct.phylo}{Character. Either \code{"mean"} meaning \emph{"include missing species in the tree with a constant mean phylogenetic covariance"} or \code{"exclude"}, meaning \emph{"exclude missing species in the tree from the analysis"} }
    \item{correct.trait.na}{Logical flag indicating whether \code{NA} values in the matrix of traits should be "corrected": NA values will be assigned the mean trait value.}

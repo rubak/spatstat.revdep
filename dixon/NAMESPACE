@@ -10,5 +10,5 @@ importFrom("stats", "pchisq", "pnorm")
 # ToDo: "importFrom" only required functions 
 import(
   splancs,
-  spatstat
+spatstat
 )

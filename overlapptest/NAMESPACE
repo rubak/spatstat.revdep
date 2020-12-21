@@ -3,7 +3,7 @@ export("centroidiam", "check.ventana", "pval", "rotawin", "test.auto.intersectio
 "test.auto.intersection.p", "test.intersection.p")
 
 # imports
-import(spatstat)
+import(spatstat.geom,spatstat.core,spatstat.linnet)
 importFrom("stats", "dist", "median", "runif")
 importFrom("parallel", "makeCluster", "clusterExport", "parSapplyLB", "stopCluster")
 # ToDo: "importFrom" only required functions 

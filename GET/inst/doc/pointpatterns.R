@@ -11,7 +11,7 @@ set.seed(123)
 ### code chunk number 2: r_setup
 ###################################################
 library("GET")
-library("spatstat")
+library("spatstat.core")
 library("ggplot2")
 theme_set(theme_bw(base_size = 9))
 

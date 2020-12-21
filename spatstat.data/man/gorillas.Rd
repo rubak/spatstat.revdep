@@ -49,8 +49,8 @@
   }
   Note that the data contain duplicated points (two points at the
   same location). To determine which points are duplicates,
-  use \code{\link[spatstat]{duplicated.ppp}}.
-  To remove the duplication, use \code{\link[spatstat]{unique.ppp}}.
+  use \code{\link[spatstat.geom]{duplicated.ppp}}.
+  To remove the duplication, use \code{\link[spatstat.geom]{unique.ppp}}.
 
   The accompanying dataset \code{gorillas.extra} contains
   spatial covariate information. It is a named list containing
@@ -144,7 +144,7 @@
   \bold{26} (6), 793--811.
 }
 \examples{
-  if(require(spatstat)) {
+  if(require(spatstat.core)) {
   summary(gorillas)
   plot(gorillas)
   plot(gorillas.extra)

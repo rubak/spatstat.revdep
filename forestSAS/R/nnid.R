@@ -1,7 +1,7 @@
 nnid <-
 function(X,N=NULL,R=NULL,id,exclude=TRUE){
-  stopifnot(spatstat::is.ppp(X))
-  dists <- spatstat::applynbd(X, N=X$n,R=NULL,function(dists, ...){dists},exclude=FALSE)
+  stopifnot(spatstat.geom::is.ppp(X))
+  dists <- spatstat.geom::applynbd(X, N=X$n,R=NULL,function(dists, ...){dists},exclude=FALSE)
   colnames(dists)=id
   addCol<-as.data.frame(cbind(T=1:X$n,dists))
   sortDists<-lapply(split(addCol[,-c(which(colnames(addCol)=="T"))],list(addCol$T)),sort)
@@ -11,8 +11,8 @@ function(X,N=NULL,R=NULL,id,exclude=TRUE){
     nnid<-cbind(id=id,data.frame(extractName))
   }
   if(!is.null(R)){
-    minnndist=spatstat::minnndist(X=X)
-    if(R<=spatstat::minnndist(X=X))
+    minnndist=spatstat.geom::minnndist(X=X)
+    if(R<=spatstat.geom::minnndist(X=X))
       stop(paste("R must exceed the minimum nearest-neighbour distance (",minnndist,")",sep=""))
     selectR<-lapply(excludeid,function(x) x[which(x<=R)])
     extractName<-list_to_matrix(lapply(selectR,names))

@@ -12,7 +12,7 @@ Description: This package contains R functions for estimating the blood
         implemented simulations make use of efficient Markov Chain
         Monte Carlo methods.
 License: GPL-2
-Depends: R(>= 2.15.2), Matrix, coda, mvtnorm, MCMCpack, spatstat,
+Depends: R(>= 2.15.2), Matrix, coda, mvtnorm, MCMCpack, spatstat.geom, spatstat.core, spatstat.linnet,
         parallel
 Collate: 'adaptive-gmrf-2covar.R' 'adaptive-gmrf.R'
         'plot-weights-real.R' 'plot-weights-sim.R'

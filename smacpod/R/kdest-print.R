@@ -8,7 +8,7 @@
 #' @param ... Not currently implemented.
 #' @param extra A logical value indicating whether extra
 #'   information related to the internal
-#'   \code{\link[spatstat]{fv}} object should be printed.
+#'   \code{\link[spatstat.core]{fv}} object should be printed.
 #'   The default is \code{FALSE}.
 #' @return Information about the \code{kdest}
 #' @author Joshua French

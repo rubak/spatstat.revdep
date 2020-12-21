@@ -66,7 +66,7 @@ siberKapow <- function(dtf, isoNames = c("iso1", "iso2"),
   
   # Define a short custom function and then apply it over the list
   # using map()
-  ell2owin <- function(x){spatstat::owin(poly = list(x = x$X1, y = x$X2))}
+  ell2owin <- function(x){spatstat.geom::owin(poly = list(x = x$X1, y = x$X2))}
   owin.coords <- purrr::map(ellCoords.list, ell2owin)
   
   # pass the list of ellipses for each individal to spatstat::union.owin

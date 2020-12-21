@@ -78,7 +78,7 @@ should be visualized. Read only when \code{method = "KS"}.}
 generated.}
 
 \item{...}{additional parameters compatible with the \code{statspat} functions.
-See \link[spatstat]{cdf.test} for "KS" and \link[spatstat]{clarkevans.test}.
+See \link[spatstat.core]{cdf.test} for "KS" and \link[spatstat.core]{clarkevans.test}.
 for "ClarkEvans"}
 }
 \description{

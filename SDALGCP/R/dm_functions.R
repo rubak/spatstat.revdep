@@ -374,9 +374,9 @@ SDALGCPCreatePoint <- function(my_shp, delta, weighted=FALSE, lambdamax=NULL, po
 
   if (plot==TRUE) {
     if (class(my_shp)[1]=="Polygon"){
-      sampled_locations <- spatstat::ppp(x = xycand$xy[,1], y = xycand$xy[,2], window = maptools::as.owin.SpatialPolygons(bound))
+      sampled_locations <- spatstat.geom::ppp(x = xycand$xy[,1], y = xycand$xy[,2], window = maptools::as.owin.SpatialPolygons(bound))
     }else{
-      sampled_locations <- spatstat::ppp(x = xycand$xy[,1], y = xycand$xy[,2], window = spatstat::as.owin(bound))
+      sampled_locations <- spatstat.geom::ppp(x = xycand$xy[,1], y = xycand$xy[,2], window = spatstat.geom::as.owin(bound))
     }
     plot(sampled_locations)
     graphics::axis(1)

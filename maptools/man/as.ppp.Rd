@@ -47,7 +47,7 @@ rarely be used; using \code{\link{as.owin.SpatialGridDataFrame}} is more transpa
 region. The \pkg{sp} formats contain no such information and by default the
 bounding box of the points is simply used. This is almost never the correct
 thing to do! Rather, information about the sampling region should be converted
-into \pkg{spatstat}s \code{\link[spatstat]{owin}} format and assigned as the
+into \pkg{spatstat}s \code{\link[spatstat.geom]{owin}} format and assigned as the
 observation window. Usually conversion from \code{ppp} to \pkg{sp} format simply
 discards the \code{owin}. However, \code{as.SpatialGridDataFrame.ppp} actually
 first discards the points(!), second checks that the corresponding \code{owin}
@@ -70,7 +70,7 @@ and finally converts the TRUE/FALSE grid to a \code{SpatialGridDataFrame}.}
 \author{Edzer Pebesma \email{edzer.pebesma@uni-muenster.de}, Roger Bivand}
 \examples{
 run <- FALSE
-if (require(spatstat, quietly=TRUE)) run <- TRUE
+if (require(spatstat.core, quietly=TRUE)) run <- TRUE
 if (run) {
 ## Convert SpatialPointsDataFrame into a marked ppp
 data(meuse)

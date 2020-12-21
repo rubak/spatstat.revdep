@@ -12,7 +12,7 @@ importFrom(depth,depth)
 importFrom(ldbod,ldbod)
 importFrom("stats", "density")
  importFrom("stats", "princomp")
-importFrom(spatstat,CDF)
 importFrom(plotly,plot_ly)
 
 import(ggplot2)
+importFrom(spatstat.core, CDF)

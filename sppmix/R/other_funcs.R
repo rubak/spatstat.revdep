@@ -11,7 +11,7 @@ FixLS_daRetBestPerm<- function(fit, burnin = floor(fit$L / 10),
     burnin = floor(fit$L/10)
   }
   fit <- drop_realization(fit, burnin)
-  win <- spatstat::domain(fit$data)
+  win <- spatstat.geom::domain(fit$data)
   if(class(fit)=="bdmcmc_res")
   {
     tab=GetBDTable(fit,F)
@@ -139,7 +139,7 @@ testit<-function(truncate=FALSE,open_new_plot=FALSE)
     ,"New Hampshire"
     ,"New Jersey"  )
   truemix <- rnormmix(m = 5, sig0 = .1, df = 5,xlim=c(-2,2),ylim=c(-2,2))
-  trueintsurf=to_int_surf(truemix,lambda = 100, win = spatstat::owin(c(-2,2),c(-2,2)))
+  trueintsurf=to_int_surf(truemix,lambda = 100, win = spatstat.geom::owin(c(-2,2),c(-2,2)))
   plot(trueintsurf,main = "True Poisson intensity surface (mixture of normal components)")
   genPPP <- rsppmix(trueintsurf,truncate=FALSE)
   ModelSel1=selectMix(genPPP,1:7,runallperms=0,truncate=FALSE)
@@ -148,10 +148,10 @@ testit<-function(truncate=FALSE,open_new_plot=FALSE)
 {
   truemix4=rnormmix(m = 4, sig0 = .1, df = 5,xlim= c(-2,2), ylim = c(-2,2))
 #  plot(truemix4,xlim= c(-2,2), ylim = c(-2,2),whichplots=0,open_new_window=open_new_plot)+add_title("True mixture of normals density")
-  trueintsurfmix4=to_int_surf(truemix4,lambda = 150,win =spatstat::owin( c(-2,2),c(-2,2)))
-  bigwin=spatstat::owin(c(-4,4),c(-4,4))
+  trueintsurfmix4=to_int_surf(truemix4,lambda = 150,win =spatstat.geom::owin( c(-2,2),c(-2,2)))
+  bigwin=spatstat.geom::owin(c(-4,4),c(-4,4))
   ppmix4 <- rsppmix(intsurf = trueintsurfmix4,truncate = truncate,win=bigwin)# draw points
-  print(plotmix_2d(trueintsurfmix4,ppmix4,open_new_window=open_new_plot,win=spatstat::owin(c(-4,4),c(-4,4)))+add_title("True Poisson intensity surface along with the point pattern, W=[-4,4]x[-4,4]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n))
+  print(plotmix_2d(trueintsurfmix4,ppmix4,open_new_window=open_new_plot,win=spatstat.geom::owin(c(-4,4),c(-4,4)))+add_title("True Poisson intensity surface along with the point pattern, W=[-4,4]x[-4,4]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n))
   BDMCMCfit=est_mix_bdmcmc(pp = ppmix4, m = 10,
                            L=10000,truncate = truncate)
   BDtab=GetBDTable(BDMCMCfit)#retrieve frequency table and MAP estimate for number of components
@@ -260,7 +260,7 @@ CreateDemoSurfs<- function()
                  .2*diag(2)))
   demo_intsurf3comp=to_int_surf(
     demo_truemix3comp,lambda = 200,
-    win = spatstat::owin(c(-1,1),c(-2,3)))
+    win = spatstat.geom::owin(c(-1,1),c(-2,3)))
   #generate a point pattern
   PP<-rsppmix(demo_intsurf3comp)
   #normmix plots
@@ -576,7 +576,7 @@ MaternCov=function(grid,nu=.5,theta=1,sig=1)
 #' @param nu,theta,sig Matern model
 #' parameters. See \code{\link{MaternCov}} for details.
 #' @param pattern Optionally, a point pattern
-#' as an object of type \code{\link[spatstat]{ppp}}
+#' as an object of type \code{\link[spatstat.geom]{ppp}}
 #' containing locations within the window. The
 #' values of the generated GRF over these
 #' locations are returned as the marks of
@@ -586,7 +586,7 @@ MaternCov=function(grid,nu=.5,theta=1,sig=1)
 #' \code{\link[ggplot2]{ggtitle}},
 #' \code{\link{add_title}}
 #'
-#' @return An image as an object of class \code{\link[spatstat]{im.object}},
+#' @return An image as an object of class \code{\link[spatstat.geom]{im.object}},
 #' containing the realization of the field over the grid. If
 #' argument \code{pattern} was supplied, the return
 #' value is now a list contaning the realization of the field as
@@ -740,7 +740,7 @@ rGRF=function(mu=0,gentype=0,
         break
     }
     MPP=ppp(pattern$x,pattern$y,window=
-              spatstat::owin(xrange=xlims,yrange=ylims),
+              spatstat.geom::owin(xrange=xlims,yrange=ylims),
             check=FALSE,marks=marks)
     RETVAL<-list(dens_image=as.im(list(x=grid$x,
                         y=grid$y,z=pxyG)),

@@ -75,7 +75,7 @@ setMethod("autopredict", signature(target = "SpatialPointsDataFrame", covariates
 
 makePixels <- function(x, y, factors, pixel.size=1e2, t.dens=.2, min.dim=50, max.dim=2000, gdalwarp, sigma=1e3, show.progress=TRUE, area.poly=NULL, remove.files=TRUE, ncores=1){
   
-  if(requireNamespace("spatstat", quietly = TRUE)&requireNamespace("maptools", quietly = TRUE)&requireNamespace("snowfall", quietly = TRUE)){
+  if(requireNamespace("spatstat.core", quietly = TRUE)&requireNamespace("maptools", quietly = TRUE)&requireNamespace("snowfall", quietly = TRUE)){
     if(!is.null(x)){
       if(!class(x)=="SpatialPoints"){ stop("object of class 'SpatialPoints' expected") }
       if(is.na(proj4string(x))){ stop("Object 'x' missing SRS / proj4string") }
@@ -97,9 +97,9 @@ makePixels <- function(x, y, factors, pixel.size=1e2, t.dens=.2, min.dim=50, max
         ncol = round(abs(diff(x@bbox[1,]))/pixel.size); nrow = round(abs(diff(x@bbox[2,]))/pixel.size)
         if(nrow>max.dim|ncol>max.dim){ stop("Grid too large. Consider increasing 'pixel.size'") }
         if(nrow<min.dim|ncol<min.dim){ stop("Grid too small. Consider reducing 'pixel.size'") }
-        grid.owin <- spatstat::owin(x@bbox[1,], x@bbox[2,], mask=matrix(TRUE,nrow,ncol))
-        x.ppp <- spatstat::ppp(x=x@coords[,1], y=x@coords[,2], window=grid.owin)
-        dens <- spatstat::density.ppp(x.ppp, sigma=sigma)
+        grid.owin <- spatstat.geom::owin(x@bbox[1,], x@bbox[2,], mask=matrix(TRUE,nrow,ncol))
+        x.ppp <- spatstat.geom::ppp(x=x@coords[,1], y=x@coords[,2], window=grid.owin)
+        dens <- spatstat.core::density.ppp(x.ppp, sigma=sigma)
         dens <- maptools::as.SpatialGridDataFrame.im(dens)
         if(is.null(area.poly)){
           dx <- quantile(dens@data[,1], t.dens, na.rm=TRUE)

@@ -5,10 +5,10 @@ setMethod("spsample.prob", signature(observations = "SpatialPoints", covariates 
   ov <- over(observations, covariates)
   observations <- observations[stats::complete.cases(ov),]
    
-  if(requireNamespace("spatstat", quietly = TRUE)&requireNamespace("maxlike", quietly = TRUE)){
-    mg_owin <- spatstat::as.owin(data.frame(x = covariates@coords[,1], y = covariates@coords[,2], window = TRUE))
-    suppressWarnings( locs.ppp <- spatstat::ppp(x=coordinates(observations)[,1], y=coordinates(observations)[,2], window=mg_owin) )
-    dist.locs <- spatstat::nndist(locs.ppp)                    
+  if(requireNamespace("spatstat.core", quietly = TRUE)&requireNamespace("maxlike", quietly = TRUE)){
+    mg_owin <- spatstat.geom::as.owin(data.frame(x = covariates@coords[,1], y = covariates@coords[,2], window = TRUE))
+    suppressWarnings( locs.ppp <- spatstat.geom::ppp(x=coordinates(observations)[,1], y=coordinates(observations)[,2], window=mg_owin) )
+    dist.locs <- spatstat.geom::nndist(locs.ppp)                    
     ## inlcusion probabilities geographical space:
     if(missing(n.sigma)){
       n.sigma <- quantile(dist.locs, quant.nndist)

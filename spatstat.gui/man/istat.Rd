@@ -29,11 +29,11 @@
   \code{x} and plotted in a popup window.
 
   The selection of functions includes
-  \code{\link[spatstat]{Kest}}, \code{\link[spatstat]{Lest}},
-  \code{\link[spatstat]{pcf}},
-  \code{\link[spatstat]{Fest}} ,\code{\link[spatstat]{Gest}}
-  and \code{\link[spatstat]{Jest}}.
-  For the function \code{\link[spatstat]{pcf}} it is possible to control
+  \code{\link[spatstat.core]{Kest}}, \code{\link[spatstat.core]{Lest}},
+  \code{\link[spatstat.core]{pcf}},
+  \code{\link[spatstat.core]{Fest}} ,\code{\link[spatstat.core]{Gest}}
+  and \code{\link[spatstat.core]{Jest}}.
+  For the function \code{\link[spatstat.core]{pcf}} it is possible to control
   the bandwidth parameter \code{bw}.
   
   There is also an option to show simulation envelopes of

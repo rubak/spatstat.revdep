@@ -24,5 +24,5 @@ the intensity matrix and the threshold c. Used in function
 det_thresholdfromarea.
 }
 \seealso{
-\code{\link[spatstat]{owin}}, \code{\link[spatstat]{area.owin}}
+\code{\link[spatstat.geom]{owin}}, \code{\link[spatstat.geom]{area.owin}}
 }

@@ -10,7 +10,7 @@
 \arguments{
 \item{x}{Object of class \code{bdmcmc_res}.}
 
-\item{win}{An object of class \code{\link[spatstat]{owin}}.}
+\item{win}{An object of class \code{\link[spatstat.geom]{owin}}.}
 
 \item{burnin}{Number of initial realizations to discard. By default, it is 1/10 of the total number of iterations.}
 
@@ -27,7 +27,7 @@ but the better the approximation as well as the smoother the resulting plots.}
 A list with the following objects
  \item{FreqTab}{Frequency table for the number of components.}
  \item{Mapsurf}{The Maximum A Posteriori (MAP) Poisson intensity surface based on the corresponding posterior means (label switching might be present). The MAP is the mode of the distribution of the number of components.}
- \item{BMA}{The Bayesian Model Average is returned only if we answer "Y" to request it. Alternatively, use function \code{\link{GetBMA}} to compute the BMA. This is an image, i.e., an object of class \code{\link[spatstat]{im.object}}.}
+ \item{BMA}{The Bayesian Model Average is returned only if we answer "Y" to request it. Alternatively, use function \code{\link{GetBMA}} to compute the BMA. This is an image, i.e., an object of class \code{\link[spatstat.geom]{im.object}}.}
 }
 \description{
 This function uses the posterior realizations

@@ -5,7 +5,7 @@ Title: Generalization of the Convex Hull of a Sample of Points in the
         Plane
 Author: Beatriz Pateiro-Lopez [aut, cre], Alberto Rodriguez-Casal, [aut].
 Maintainer: Beatriz Pateiro-Lopez <beatriz.pateiro@usc.es>
-Imports: ggplot2, tripack, R.utils, sgeostat, spatstat, splancs
+Imports: ggplot2, tripack, R.utils, sgeostat, spatstat.geom, spatstat.core, spatstat.linnet, splancs
 Description: Computation of the alpha-shape and alpha-convex
         hull of a given sample of points in the plane. The concepts of
         alpha-shape and alpha-convex hull generalize the definition of

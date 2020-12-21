@@ -16,7 +16,7 @@
 }
 
 \arguments{
-  \item{envlist}{A list whose elements are the result of applying \link[spatstat]{envelope} to a set of point patterns.}
+  \item{envlist}{A list whose elements are the result of applying \link[spatstat.core]{envelope} to a set of point patterns.}
   \item{alfa}{alpha value to calculate deviations from null model}
   \item{x}{The result of \code{proportion.idar}}
   \item{cols}{A vector (length =3) with the color names or codes for the curves of each of the 3 categories: "neutral", "accumulator", "repeller".}

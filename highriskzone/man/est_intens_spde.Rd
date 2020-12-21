@@ -13,7 +13,7 @@ est_intens_spde(coords, win = NULL, npixel = 50, fine_mesh = FALSE,
 \item{win}{observation window, either of class owin or a matrix with the x and y coordinates of the boundary,
 not neccessary if coords is a ppp object}
 
-\item{npixel}{number of pixel per dimension (see \code{\link[spatstat]{spatstat.options}})}
+\item{npixel}{number of pixel per dimension (see \code{\link[spatstat.geom]{spatstat.options}})}
 
 \item{fine_mesh}{logical, if FALSE a coarse mesh will be created, if TRUE a fine mesh will be created, 
 only used if argument mesh is NULL}

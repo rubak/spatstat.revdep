@@ -63,7 +63,7 @@ does not suffer from the label switching problem.
 # generate data
 mix1 = normmix(ps=c(.4, .2,.4), mus=list(c(0.3, 0.3), c(.5,.5),c(0.7, 0.7)),
  sigmas = list(.02*diag(2),.05*diag(2), .02*diag(2)),lambda = 100,
- win = spatstat::square(1))
+ win = spatstat.geom::square(1))
 plot(mix1,main="True Poisson intensity surface (mixture of normal components)")
 pp1 = rsppmix(mix1)
 # Run Data augmentation MCMC and get posterior realizations

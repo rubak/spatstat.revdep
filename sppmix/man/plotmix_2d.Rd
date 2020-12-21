@@ -13,7 +13,7 @@ plotmix_2d(intsurf, pattern, estcomp, contour = FALSE, truncate = TRUE,
 
 \item{pattern}{Optional spatial point pattern
 to add to the plot. This is an object of
-class \code{\link[spatstat]{ppp}}.}
+class \code{\link[spatstat.geom]{ppp}}.}
 
 \item{estcomp}{The estimated component label should be a vector whose length
 should be the same as number of points. If \code{estcomp} is not missing, the function will plot the
@@ -55,7 +55,7 @@ For examples see
 # plot normmix density
 truemix<- rnormmix(m = 3, sig0 = .1, df = 5, xlim= c(0, 5), ylim = c(0, 5))
 summary(truemix)
-intsurf=to_int_surf(truemix, lambda = 100, win =spatstat::owin( c(0, 5),c(0, 5)))
+intsurf=to_int_surf(truemix, lambda = 100, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #plot the intensity surface
 plotmix_2d(intsurf)
 plotmix_2d(intsurf,contour = TRUE)
@@ -74,7 +74,7 @@ ret=PlotUSAStates(states=c('California','Nevada','Arizona'), showcentroids=FALSE
  surf=CAfit, boundarycolor="white", namescolor="white")
 #plotting the points with different colors depending on the component they belong to
 truemix <- rnormmix(m = 5, sig0 = .1, df = 5, xlim=c(-2,2), ylim=c(-2,2))
-intsurf=to_int_surf(truemix, lambda = 100, win = spatstat::owin(c(-2,2),c(-2,2)))
+intsurf=to_int_surf(truemix, lambda = 100, win = spatstat.geom::owin(c(-2,2),c(-2,2)))
 pp1 <- rsppmix(intsurf)
 #plot the points with different colors depending on the true component label
 plotmix_2d(intsurf,pp1, colors = TRUE)
@@ -88,7 +88,7 @@ plotmix_2d(intsurf,pp1, estcomp = est_comp, contour = TRUE,colors = TRUE)}
 \seealso{
 \code{\link{normmix}},
 \code{\link{to_int_surf}},
-\code{\link[spatstat]{owin}},
+\code{\link[spatstat.geom]{owin}},
 \code{\link{rsppmix}},
 \code{\link{GetMAPLabels}},
 \code{\link{est_mix_damcmc}},

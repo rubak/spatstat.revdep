@@ -31,7 +31,7 @@
     
   for (i in 1:length(bal_cov)) {
     den_b = density(dat[, bal_cov[i]])
-    den_a = spatstat::unnormdensity(dat[, bal_cov[i]], weights = weights)
+    den_a = spatstat.geom::unnormdensity(dat[, bal_cov[i]], weights = weights)
     max_y = max(den_b$y, den_a$y)
     plot(den_b$x, den_b$y, type = 'l', lwd = 1, lty = 3, col = "gray48",
          ylim = range(c(0, max_y)),
@@ -112,8 +112,8 @@
   for (i in 1:length(bal_cov)) {
     den_b0 = density(dat[dat[, ind] == 0, bal_cov[i]])
     den_b1 = density(dat[dat[, ind] == 1, bal_cov[i]])
-    den_a0 = spatstat::unnormdensity(dat[, bal_cov[i]], weights = weights0)
-    den_a1 = spatstat::unnormdensity(dat[, bal_cov[i]], weights = weights1)
+    den_a0 = spatstat.geom::unnormdensity(dat[, bal_cov[i]], weights = weights0)
+    den_a1 = spatstat.geom::unnormdensity(dat[, bal_cov[i]], weights = weights1)
     max_y = max(den_b0$y, den_b1$y, den_a0$y, den_a1$y)
     par(mfrow=c(1,2))
     plot(den_b1$x, den_b1$y, type = 'l', lwd = 1, lty = 3,
@@ -192,7 +192,7 @@
     
   for (i in 1:length(bal_cov)) {
     den_b0 = density(dat[dat[, ind] == 0, bal_cov[i]])
-    den_a0 = spatstat::unnormdensity(dat[, bal_cov[i]], weights = weights0)
+    den_a0 = spatstat.geom::unnormdensity(dat[, bal_cov[i]], weights = weights0)
     max_y = max(den_b0$y, den_a0$y)
     plot(den_b0$x, den_b0$y, type = 'l', lwd = 1, lty = 3, col = "gray48",
          ylim = range(c(0, max_y)),

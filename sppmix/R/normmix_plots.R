@@ -26,7 +26,7 @@
 #' @examples
 #' \donttest{
 #' truemix <- rnormmix(m = 5, sig0 = .1, df = 5, xlim= c(-1, 5), ylim =c(2, 5))
-#' intsurf=to_int_surf(truemix, lambda = 200, win =spatstat::owin( c(-1, 5),c(2, 5)))
+#' intsurf=to_int_surf(truemix, lambda = 200, win =spatstat.geom::owin( c(-1, 5),c(2, 5)))
 #' plot(intsurf,main = "True Poisson intensity surface (mixture of normal components)")
 #' #use the demo intensity surface
 #' demo_intsurf
@@ -112,7 +112,7 @@ plot.intensity_surface <- function(x, truncate = TRUE, L = 256,
 #' @description
 #' Plot a spatial point pattern generated from a Poisson with
 #' mixture intensity surface. Alternatively, the function can
-#' plot a spatstat \code{\link[spatstat]{ppp}} object.
+#' plot a spatstat \code{\link[spatstat.geom]{ppp}} object.
 #'
 #' For examples see
 #'
@@ -120,7 +120,7 @@ plot.intensity_surface <- function(x, truncate = TRUE, L = 256,
 #' #plot.sppmix}
 #'
 #' @param x A point pattern of class \code{\link{sppmix}} or
-#' \code{\link[spatstat]{ppp}}.
+#' \code{\link[spatstat.geom]{ppp}}.
 #' @param mus An optional list of the theoretical means of the mixture components.
 #' @param estcomp The estimated component label should be a vector whose length
 #' should be the same as number of points. If \code{estcomp} is not missing, the function will plot the
@@ -140,7 +140,7 @@ plot.intensity_surface <- function(x, truncate = TRUE, L = 256,
 #' @author Jiaxun Chen, Sakis Micheas, Yuchen Wang
 #' @seealso \code{\link{normmix}},
 #' \code{\link{to_int_surf}},
-#' \code{\link[spatstat]{owin}},
+#' \code{\link[spatstat.geom]{owin}},
 #' \code{\link{rsppmix}},
 #' \code{\link{est_mix_damcmc}},
 #' \code{\link{GetMAPLabels}},
@@ -148,7 +148,7 @@ plot.intensity_surface <- function(x, truncate = TRUE, L = 256,
 #' @examples
 #' \donttest{
 #' mix1 <- rnormmix(5, sig0 = .01, df = 5, xlim=c(0, 5), ylim=c(0, 5))
-#' intsurf1=to_int_surf(mix1, lambda = 40, win =spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf1=to_int_surf(mix1, lambda = 40, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' pp1 <- rsppmix(intsurf1)
 #' plot(pp1)
 #' plot(pp1, mus=intsurf1$mus)
@@ -261,7 +261,7 @@ plot.sppmix <- function(x, mus, estcomp,
 #' #plot2dPP}
 #'
 #' @param pp A point pattern of class sppmix or
-#' \code{\link[spatstat]{ppp}}.
+#' \code{\link[spatstat.geom]{ppp}}.
 #' @param mus An optional list of the theoretical means of the mixture components.
 #' @param add2plot Logical variable to indicate if the function should add the points to an existing plot.
 #' @param title1 Title for the plot.
@@ -269,12 +269,12 @@ plot.sppmix <- function(x, mus, estcomp,
 #' @author Sakis Micheas
 #' @seealso \code{\link{normmix}},
 #' \code{\link{to_int_surf}},
-#' \code{\link[spatstat]{owin}},
+#' \code{\link[spatstat.geom]{owin}},
 #' \code{\link{rsppmix}}
 #' @examples
 #' \donttest{
 #' mix1 <- rnormmix(5, sig0 = .01, df = 5, xlim=c(0, 5), ylim=c(0, 5))
-#' intsurf1=to_int_surf(mix1, lambda = 40, win =spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf1=to_int_surf(mix1, lambda = 40, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' pp1 <- rsppmix(intsurf1)
 #' plot2dPP(pp1)
 #' plot2dPP(pp1, mus = intsurf1$mus)}
@@ -329,7 +329,7 @@ plot2dPP <- function(pp, mus,add2plot=FALSE,
 #' @inheritParams rsppmix
 #' @param pattern Optional spatial point pattern
 #' to add to the plot. This is an object of
-#' class \code{\link[spatstat]{ppp}}.
+#' class \code{\link[spatstat.geom]{ppp}}.
 #' @param estcomp The estimated component label should be a vector whose length
 #' should be the same as number of points. If \code{estcomp} is not missing, the function will plot the
 #' points using different colors according to \code{estcomp}. See the example on how
@@ -348,7 +348,7 @@ plot2dPP <- function(pp, mus,add2plot=FALSE,
 #' @import ggplot2
 #' @seealso \code{\link{normmix}},
 #' \code{\link{to_int_surf}},
-#' \code{\link[spatstat]{owin}},
+#' \code{\link[spatstat.geom]{owin}},
 #' \code{\link{rsppmix}},
 #' \code{\link{GetMAPLabels}},
 #' \code{\link{est_mix_damcmc}},
@@ -359,7 +359,7 @@ plot2dPP <- function(pp, mus,add2plot=FALSE,
 #' # plot normmix density
 #' truemix<- rnormmix(m = 3, sig0 = .1, df = 5, xlim= c(0, 5), ylim = c(0, 5))
 #' summary(truemix)
-#' intsurf=to_int_surf(truemix, lambda = 100, win =spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf=to_int_surf(truemix, lambda = 100, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' #plot the intensity surface
 #' plotmix_2d(intsurf)
 #' plotmix_2d(intsurf,contour = TRUE)
@@ -378,7 +378,7 @@ plot2dPP <- function(pp, mus,add2plot=FALSE,
 #'  surf=CAfit, boundarycolor="white", namescolor="white")
 #' #plotting the points with different colors depending on the component they belong to
 #' truemix <- rnormmix(m = 5, sig0 = .1, df = 5, xlim=c(-2,2), ylim=c(-2,2))
-#' intsurf=to_int_surf(truemix, lambda = 100, win = spatstat::owin(c(-2,2),c(-2,2)))
+#' intsurf=to_int_surf(truemix, lambda = 100, win = spatstat.geom::owin(c(-2,2),c(-2,2)))
 #' pp1 <- rsppmix(intsurf)
 #' #plot the points with different colors depending on the true component label
 #' plotmix_2d(intsurf,pp1, colors = TRUE)
@@ -534,7 +534,7 @@ plotmix_2d <- function(intsurf, pattern,estcomp, contour = FALSE, truncate = TRU
 #' @author Jiaxun Chen, Sakis Micheas, Yuchen Wang
 #' @seealso \code{\link{normmix}},
 #' \code{\link{to_int_surf}},
-#' \code{\link[spatstat]{owin}},
+#' \code{\link[spatstat.geom]{owin}},
 #' \code{\link{rsppmix}}
 #' @examples
 #' \donttest{
@@ -549,7 +549,7 @@ plotmix_2d <- function(intsurf, pattern,estcomp, contour = FALSE, truncate = TRU
 #'  "Contour plot of the true mixture of normals density")
 #' #build a mixture intensity surface for the Poisson point process
 #' trueintsurf=to_int_surf(truemix, lambda = 100, win=
-#'  spatstat::owin( c(-1, 2),c(-1, 2)))
+#'  spatstat.geom::owin( c(-1, 2),c(-1, 2)))
 #' plot(trueintsurf)#plot the surface, it is lambda*normmix}
 #'
 #' @export
@@ -605,11 +605,11 @@ plot.normmix <- function(x, xlim, ylim, contour = FALSE,
 #' \url{http://faculty.missouri.edu/~micheasa/sppmix/sppmix_all_examples.html
 #' #plot_density}
 #'
-#' @param density_df A data frame. Typically density_df=as.data.frame(imdens), where imdens an \code{\link[spatstat]{im}} object.
+#' @param density_df A data frame. Typically density_df=as.data.frame(imdens), where imdens an \code{\link[spatstat.geom]{im}} object.
 #' @param contour Logical flag requesting the countour plot only.
 #' @param grayscale Plot in gray scale. Default is FALSE (use colors).
 #' @param main A title for the 2d plot.
-#' @param pp Optional point pattern to display (a \code{\link[spatstat]{ppp}} or \code{sppmix} object).
+#' @param pp Optional point pattern to display (a \code{\link[spatstat.geom]{ppp}} or \code{sppmix} object).
 #' @param surf Optional \code{intensity_surface} object containing means to be displayed in the plot.
 #' @param ppsize Size of the points in the plot.
 #' @details This function does not open a new window for the plot.
@@ -708,7 +708,7 @@ plot_density <- function(density_df,
 #' @examples
 #' \donttest{
 #' truemix = rnormmix(m = 5, sig0 = .1, df = 5,xlim= c(0, 3), ylim = c(0, 3))
-#' intsurf=to_int_surf(truemix,lambda = 100,win=spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf=to_int_surf(truemix,lambda = 100,win=spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' #plot the intensity surface
 #' plotmix_2d(intsurf)+add_title("A pretty projection of the 3d surface to 2 dimensions")}
 #'
@@ -755,7 +755,7 @@ add_title <- function(title, lambda = "",
 #' \url{http://faculty.missouri.edu/~micheasa/sppmix/sppmix_all_examples.html
 #' #plotmix_3d}
 #'
-#' @param dens_image An image as an object of class \code{\link[spatstat]{im}}.
+#' @param dens_image An image as an object of class \code{\link[spatstat.geom]{im}}.
 #' @param title1 A title for the 3d plot.
 #' @param zlims The limits of the z axis. Defaults to [0,1.1*max(dens_image)].
 #' @param grayscale Plot in gray scale. Default is FALSE (use colors).
@@ -865,13 +865,13 @@ plotmix_3d<-function(dens_image,
 #'
 #' @seealso \code{\link{rnormmix}},
 #' \code{\link{to_int_surf}},
-#' \code{\link[spatstat]{owin}},
+#' \code{\link[spatstat.geom]{owin}},
 #' \code{\link{rsppmix}}
 #' @author Sakis Micheas
 #' @examples
 #' \donttest{
 #' truemix <- rnormmix(m = 5, sig0 = .1, df = 5, xlim= c(-3, 3), ylim = c(-3, 3))
-#' intsurf=to_int_surf(truemix, lambda = 100, win =spatstat::owin( c(-3, 3),c(-3, 3)))
+#' intsurf=to_int_surf(truemix, lambda = 100, win =spatstat.geom::owin( c(-3, 3),c(-3, 3)))
 #' pp1 <- rsppmix(intsurf,FALSE)
 #' plot_true_labels(pp1)}
 #'

@@ -5,10 +5,10 @@
 #' \code{\link[sp]{SpatialPolygons}} or a vector containing id-s located at the boundary.
 #' @param x         A \code{\link{SpatialPointsBreeding}} object.
 #' @param boundary  A \code{\link[sp]{SpatialPolygons}} or a vector of integers containing the id-s located at the boundary. 
-#'                  When missing boundary is inferred using \code{\link[spatstat]{ripras}} in \code{spatstat} .
+#'                  When missing boundary is inferred using \code{\link[spatstat.geom]{ripras}} in \code{spatstat} .
 #' @param width     argument passed to \code{\link[rgeos]{gBuffer}}. It defines the distance between boundary boxes and the boundary polygon; 
 #'                  it is set by default to half of the average distance between boundary boxes.
-#' @param \dots     passed to \code{\link[spatstat]{ripras}}
+#' @param \dots     passed to \code{\link[spatstat.geom]{ripras}}
 #' @export
 #' @include SpatialPointsBreeding.R
 #' @examples
@@ -97,7 +97,7 @@ setMethod("DirichletPolygons",
           definition = function(x, ...) {
             coords = coordinates(x)
             ids = x@id
-            rr = spatstat::ripras(coords, shape = "convex", ...)
+            rr = spatstat.geom::ripras(coords, shape = "convex", ...)
             rr = cbind(x = rr$bdry[[1]]$x, y = rr$bdry[[1]]$y)
             boundary =  SpatialPolygons(list( Polygons(list( Polygon(rbind(rr, rr[1, ] )) ) , 1) ) )
             proj4string(boundary) = proj4string(x)

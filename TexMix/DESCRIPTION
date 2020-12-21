@@ -20,7 +20,7 @@ Description: A collection of functions and data - mostly from Texas - is provide
   data handling functions are provided.
 Depends: R (>= 3.5.0)
 Imports: sp, maptools, RColorBrewer, classInt, Formula
-Suggests: spatstat, smacpod, colorspace, car, effects, rgdal, spdep,
+Suggests: spatstat.geom, spatstat.core, spatstat.linnet, smacpod, colorspace, car, effects, rgdal, spdep,
         DMwR, ClustGeo, knitr, rmarkdown, testthat
 License: GPL-3
 Encoding: UTF-8

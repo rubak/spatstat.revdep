@@ -77,7 +77,7 @@ set.seed(190503)
 ###################################################
 ### code chunk number 10: adulttrees_sims
 ###################################################
-library("spatstat")
+library("spatstat.core")
 data("adult_trees")
 X <- as.ppp(adult_trees, W = square(75))
 nsim <- 999

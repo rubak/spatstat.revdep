@@ -9,12 +9,12 @@ Kmulti.ls(X, I, J, r = NULL, corre = "isotropic")
 }
 
 \arguments{
-  \item{X}{ Multitype marked point pattern. An object with the \code{\link[spatstat]{ppp}} format of \pkg{spatstat}.}
+  \item{X}{ Multitype marked point pattern. An object with the \code{\link[spatstat.geom]{ppp}} format of \pkg{spatstat}.}
   \item{I}{ Subset index specifying the points of the first pattern.  }
   \item{J}{ Subset index specifying the points of the second pattern. }
   \item{r}{ Numeric vector. The values of the argument r at which the multitype K function \eqn{K^*ij(r)} should be evaluated. }
   \item{corre}{ A character item selecting any of the options "border", "bord.modif", "isotropic", "Ripley" or
- "translate", as described in \code{\link[spatstat]{Kest}}. It specifies the edge correction(s) to be applied. }
+ "translate", as described in \code{\link[spatstat.core]{Kest}}. It specifies the edge correction(s) to be applied. }
 }
 \details{
   As a consequence of edge effects, the estimators  \eqn{Kij(r)} and \eqn{Kji(r)} of the same bivariate pattern could differ.
@@ -22,7 +22,7 @@ Kmulti.ls(X, I, J, r = NULL, corre = "isotropic")
 \eqn{ni} and \eqn{nj} being respectively the number of points in \eqn{I} and \eqn{J}. 
 }
 \value{
-  An object of class "fv"  (see \code{\link[spatstat]{fv.object}}). Essentially a data frame containing numeric columns 
+  An object of class "fv"  (see \code{\link[spatstat.geom]{fv.object}}). Essentially a data frame containing numeric columns 
   \item{r }{The values of the argument r at which the function \eqn{K^*ij(r)}  has been estimated}.
   \item{theo }{The theoretical value of \eqn{K*ij(r)} for a marked Poisson process, namely \eqn{pi * r^2}}.
 
@@ -37,7 +37,7 @@ Lotwick,H.W. & Silverman, B. W. 1982. Methods for analysing spatial processes of
  
  }
 \author{ Marcelino de la Cruz }
-\note{ \code{Kmulti.ls} is a wrapper for a convenient use of the \code{\link[spatstat]{Kmulti}} function of \pkg{spatstat}. 
+\note{ \code{Kmulti.ls} is a wrapper for a convenient use of the \code{\link[spatstat.core]{Kmulti}} function of \pkg{spatstat}. 
 Please refer to its help page for additional documentation.}
 \examples{
 

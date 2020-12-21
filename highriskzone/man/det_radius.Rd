@@ -9,7 +9,7 @@ det_radius(ppdata, distancemap, areahrz, win)
 \arguments{
 \item{ppdata}{observed spatial point pattern of class ppp.}
 
-\item{distancemap}{distance map (object of class "im", see \code{\link[spatstat]{distmap}}): 
+\item{distancemap}{distance map (object of class "im", see \code{\link[spatstat.geom]{distmap}}): 
 distance of every location in the observation window to the nearest event}
 
 \item{areahrz}{given area of the high-risk zone}

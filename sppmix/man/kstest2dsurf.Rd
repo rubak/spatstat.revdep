@@ -7,7 +7,7 @@
 kstest2dsurf(pp, intsurf, truncate = FALSE, iters = 500)
 }
 \arguments{
-\item{pp}{Object of class \code{\link[spatstat]{ppp}}.}
+\item{pp}{Object of class \code{\link[spatstat.geom]{ppp}}.}
 
 \item{intsurf}{Object of class \code{intensity_surface}.}
 

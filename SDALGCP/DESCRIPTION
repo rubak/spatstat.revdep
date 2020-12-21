@@ -12,7 +12,7 @@ License: GPL-2 | GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: pdist(>= 1.2), Matrix(>= 1.2.14), PrevMap(>= 1.4.1), raster(>=
-        2.6.7), sp(>= 1.2.7), spatstat(>= 1.55.1), splancs(>= 2.1.40),
+        2.6.7), sp(>= 1.2.7), spatstat.geom, spatstat.core, spatstat.linnet,
         maptools(>= 0.9.2), progress(>= 1.1.2), methods, spacetime(>=
         1.2.2), mapview(>= 2.6.0), geoR(>= 1.7-5.2.1)
 RoxygenNote: 7.0.0

@@ -18,7 +18,7 @@ costras[160:170,1:80] <- 10000
 
 ## ----avg_nearest_neigh, message = FALSE---------------------------------------
 # find average nearest neighbor
-library(spatstat)
+library(spatstat.core)
 
 W              <- owin(range(coordinates(pnts)[,1]), range(coordinates(pnts)[,2]))
 kat.pp         <- ppp(coordinates(pnts)[,1], coordinates(pnts)[,2], window = W)

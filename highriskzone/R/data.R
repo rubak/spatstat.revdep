@@ -5,7 +5,7 @@
 #' @docType data
 #' @keywords datasets
 #' @format An object of class \code{"ppp"} representing a point pattern of bomb craters. The Cartesian coordinates are in meters.
-#'         See \code{\link[spatstat]{ppp.object}} for details of the format of a point pattern object.
+#'         See \code{\link[spatstat.geom]{ppp.object}} for details of the format of a point pattern object.
 NULL
 
 
@@ -18,5 +18,5 @@ NULL
 #' @docType data
 #' @keywords datasets
 #' @format An object of class \code{"ppp"} representing a point pattern of bomb craters. The Cartesian coordinates are in meters.
-#'         See \code{\link[spatstat]{ppp.object}} for details of the format of a point pattern object.
+#'         See \code{\link[spatstat.geom]{ppp.object}} for details of the format of a point pattern object.
 NULL

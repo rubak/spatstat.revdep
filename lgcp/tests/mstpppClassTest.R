@@ -1,5 +1,5 @@
 library(lgcp)
-library(spatstat)
+library(spatstat.core)
 
 xyt <- cbind(matrix(runif(200,-5,5),100,2),runif(100,0,5))
 tlim <- c(0,5) 

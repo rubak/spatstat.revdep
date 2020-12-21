@@ -9,7 +9,7 @@ plotmix_3d(dens_image, title1 = "3d Surface (Density or Intensity)",
   zlims = NULL, grayscale = FALSE)
 }
 \arguments{
-\item{dens_image}{An image as an object of class \code{\link[spatstat]{im}}.}
+\item{dens_image}{An image as an object of class \code{\link[spatstat.geom]{im}}.}
 
 \item{title1}{A title for the 3d plot.}
 

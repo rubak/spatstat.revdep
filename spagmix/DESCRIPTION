@@ -7,7 +7,7 @@ Date: 2020-06-24
 Author: Anna K. Redmond and Tilman M. Davies
 Maintainer: Tilman M. Davies <tdavies@maths.otago.ac.nz>
 Description: A utility package containing some simple tools to design and generate density functions on bounded regions in space and space-time, and simulate iid data therefrom. See Davies & Hazelton (2010) <doi:10.1002/sim.3995> for example.
-Depends: R (>= 3.5.0), spatstat
+Depends: R (>= 3.5.0), spatstat.geom, spatstat.core, spatstat.linnet, spatstat
 Imports: RandomFields, abind, sparr, mvtnorm
 Suggests: rgl
 License: GPL (>= 2)

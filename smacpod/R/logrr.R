@@ -68,7 +68,7 @@
 #'   produce warnings due to numerical underflow. Increasing
 #'   the bandwidth (sigma) may help.
 #' @author Joshua French (and a small chunk by the authors 
-#'   of the \code{\link[spatstat]{density.ppp}}) function 
+#'   of the \code{\link[spatstat.core]{density.ppp}}) function 
 #'   for consistency with the default behavior of that 
 #'   function)
 #' @export

@@ -11,7 +11,7 @@
 #' @param weights (optional) integration weights for the spde model, only used if argument mesh is NULL
 #' @param alpha (optional) alpha value for the spde model, only used if argument spde is NULL
 #' @param ... additional arguments for the construction of the spde model (see INLA/inla.spde2.matern documentation)
-#' @param npixel number of pixel per dimension (see \code{\link[spatstat]{spatstat.options}})
+#' @param npixel number of pixel per dimension (see \code{\link[spatstat.geom]{spatstat.options}})
 #' @importFrom methods as
 #' @importFrom deldir deldir
 #' @importFrom deldir tile.list
@@ -54,7 +54,7 @@ See www.r-inla.org for more information!")
     else{boundary <- cbind(win$xrange[c(1,2,2,1)], win$yrange[c(1,1,2,2)])}
   }
   
-  spatstat::spatstat.options(npixel=npixel)
+  spatstat.geom::spatstat.options(npixel=npixel)
   
   if(!is.null(mesh) && attributes(mesh)$class != "inla.mesh"){
     warning("argument mesh is not of class inla.mesh, est_intens_spde creates a new mesh")

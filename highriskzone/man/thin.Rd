@@ -24,5 +24,5 @@ The thinning is done by drawing independently from a Bernoulli distribution. Thi
  plot(thdata$observed); points(thdata$unobserved, col=4)
 }
 \seealso{
-\code{\link[stats]{rbinom}}, \code{\link[spatstat]{ppp}}
+\code{\link[stats]{rbinom}}, \code{\link[spatstat.geom]{ppp}}
 }

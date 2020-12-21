@@ -30,7 +30,7 @@
 
   The functions documented here provided methods for this class,
   for the generic functions
-  \code{\link[spatstat]{as.ppp}}
+  \code{\link[spatstat.geom]{as.ppp}}
   and
   \code{\link{print}}.
 }

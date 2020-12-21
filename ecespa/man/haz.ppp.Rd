@@ -19,10 +19,10 @@ It establishes the window of observation as the rectangle defined by the xy rang
 A point pattern with the format of spatstat v. < 2.0
 }
 \note{
-This window is an underestimate of the real sampling window of the observed points. For a less biassed estimate, use function \code{\link[spatstat]{ripras}} in spatstat.
+This window is an underestimate of the real sampling window of the observed points. For a less biassed estimate, use function \code{\link[spatstat.geom]{ripras}} in spatstat.
 }
 \author{ Marcelino de la Cruz }
-\seealso{ \code{\link[spatstat]{ppp}}, \code{\link[spatstat]{as.ppp}}  }
+\seealso{ \code{\link[spatstat.geom]{ppp}}, \code{\link[spatstat.geom]{as.ppp}}  }
 \examples{
 
 

@@ -16,7 +16,7 @@
     \code{"locppm"}). 
   }
   \item{\dots}{
-    Arguments passed to \code{\link[spatstat]{Smooth.ppp}}
+    Arguments passed to \code{\link[spatstat.core]{Smooth.ppp}}
     to control the smoothing.
   }
   \item{what}{

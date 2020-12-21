@@ -99,10 +99,10 @@ pointsCovarModel <- function(feature, cov.var, studyplot=NULL, oneplot=FALSE){
   W  <- as(studyplot, "owin")
 
   #give the feature dataset the same analytical window of the study region
-  spatstat::Window(feature.ppp) <- W
+  spatstat.geom::Window(feature.ppp) <- W
 
   #tranform the cov.var from a RasterLayer to an object of class im, which is needed by spatstat
-  cov.var.im <- spatstat::as.im(cov.var)
+  cov.var.im <- spatstat.geom::as.im(cov.var)
 
   #fit the Null Model (homegeneous point process)
   PPM0 <- ppm(feature.ppp ~ 1)
@@ -114,7 +114,7 @@ pointsCovarModel <- function(feature, cov.var, studyplot=NULL, oneplot=FALSE){
   kolmsmirn <- cdf.test(feature.ppp, cov.var.im)
 
   #calculate the AUC
-  areaundercurve <- spatstat::auc(feature.ppp, cov.var.im, high=FALSE)
+  areaundercurve <- spatstat.core::auc(feature.ppp, cov.var.im, high=FALSE)
 
   #compare the models via likelihood ratio test
   model.comp <- anova(PPM0, PPM1, test="LRT")
@@ -142,7 +142,7 @@ pointsCovarModel <- function(feature, cov.var, studyplot=NULL, oneplot=FALSE){
 
   #plot the fitted Alternative Model
   #i.e., modelled intensity against the covariate
-  plot(spatstat::effectfun(PPM1, names(PPM1$covariates), se.fit=TRUE),
+  plot(spatstat.core::effectfun(PPM1, names(PPM1$covariates), se.fit=TRUE),
        main="Fitted intensity of the point pattern \nas (loglinear) function of the covariate",
        cex.main=0.8,
        cex.axis=0.7,
@@ -152,7 +152,7 @@ pointsCovarModel <- function(feature, cov.var, studyplot=NULL, oneplot=FALSE){
   plot(kolmsmirn, cex.main=0.8)
 
   #plot the ROC curve
-  plot(spatstat::roc(PPM1),
+  plot(spatstat.core::roc(PPM1),
        main=paste0("ROC curve of the fitted intensity of point patter \nas (loglinear) function of the cavariate \nAUC: ", round(areaundercurve,3)),
        cex.main=0.8)
 

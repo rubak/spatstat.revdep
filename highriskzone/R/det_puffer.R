@@ -34,7 +34,7 @@
 #' @export
 #' @examples
 #' ## change npixel to 1000 to obtain nicer plots
-#' spatstat::spatstat.options(npixel=100)
+#' spatstat.geom::spatstat.options(npixel=100)
 #' data(craterA)
 #' # reduce number of observations for faster computation
 #' thin.craterA <- craterA[1:50]

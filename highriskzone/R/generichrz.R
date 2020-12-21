@@ -70,7 +70,7 @@ summary.highriskzone <- function(object, ...){
 #' @param windowcol the color used to plot the observation window
 #' @param usegpclib logical flag; if \code{TRUE}, the observation window is transformed in a 
 #' polygonal window (object of class "\code{owin}" and of type "\code{polygonal}").
-#' See \code{\link[spatstat]{as.polygonal}}
+#' See \code{\link[spatstat.geom]{as.polygonal}}
 #' @param zonecol the colour used to plot the high-risk zone.
 #' @method plot highriskzone
 #' @export 

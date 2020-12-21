@@ -1,4 +1,4 @@
-import(spatstat)
+import(spatstat.geom,spatstat.core,spatstat.linnet)
 importFrom("RandomFields","RMexp","RMcauchy","RMgencauchy","RMgauss","RMgneiting","RMmatern","RMnugget","RMspheric","RMstable","RMwhittle")
 importFrom("mvtnorm","dmvnorm")
 importFrom("sparr","rimpoly")

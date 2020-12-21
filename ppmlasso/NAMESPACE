@@ -1,4 +1,4 @@
-import(spatstat, methods)
+import(spatstat.geom,spatstat.core,spatstat.linnet,methods)
 export(diagnose, 
 	diagnose.ppmlasso, 
 	env.var, 

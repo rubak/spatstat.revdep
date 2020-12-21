@@ -6,7 +6,7 @@ Author: Carlos A. Silva, Nicholas L. Crookston,
     Andrew T. Hudak, Lee A. Vierling, Carine Klauberg, Adri<c3><a1>n Cardil
 Maintainer: Carlos A. Silva <carlos_engflorestal@outlook.com>
 Depends: R (>= 3.3.2)
-Imports: spatstat,sp,deldir,plyr,raster,geometry,rgl,bitops, methods
+Imports: spatstat.geom, spatstat.core, spatstat.linnet,sp,deldir,plyr,raster,geometry,rgl,bitops, methods
 Description: Set of tools for reading, processing and visualizing small set of
     LiDAR (Light Detection and Ranging) data for forest inventory applications.
 License: GPL (>= 2)

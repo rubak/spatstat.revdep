@@ -40,7 +40,7 @@
 #' \dontrun{
 #' pattern_recon <- reconstruct_pattern_homo(species_a, n_random = 1, max_runs = 1000,
 #' simplify = TRUE, return_input = FALSE)
-#' marks_sub <- spatstat::subset.ppp(species_a, select = dbh)
+#' marks_sub <- spatstat.geom::subset.ppp(species_a, select = dbh)
 #' marks_recon <- reconstruct_pattern_marks(pattern_recon, marks_sub, n_random = 19, max_runs = 1000)
 #' }
 #'
@@ -75,7 +75,7 @@ reconstruct_pattern_marks <- function(pattern,
   }
 
   # check if pattern is marked
-  if (spatstat::is.marked(pattern) || !spatstat::is.marked(marked_pattern)) {
+  if (spatstat.geom::is.marked(pattern) || !spatstat.geom::is.marked(marked_pattern)) {
 
     stop("'pattern' must be unmarked and 'marked_pattern' marked", call. = FALSE)
   }
@@ -111,22 +111,22 @@ reconstruct_pattern_marks <- function(pattern,
 
   # calculate r
   r <- seq(from = 0,
-           to = spatstat::rmax.rule(W = pattern$window,
-                                    lambda = spatstat::intensity.ppp(pattern)),
+           to = spatstat.core::rmax.rule(W = pattern$window,
+                                    lambda = spatstat.geom::intensity.ppp(pattern)),
            length.out = r_length)
 
   # create random pattern
   simulated <- pattern
 
   # assign shuffled marks to pattern
-  spatstat::marks(simulated) <- rcpp_sample(x = marked_pattern$marks, n = marked_pattern$n)
+  spatstat.geom::marks(simulated) <- rcpp_sample(x = marked_pattern$marks, n = marked_pattern$n)
 
   # calculate summary functions
-  kmmr_observed <- spatstat::markcorr(marked_pattern,
+  kmmr_observed <- spatstat.core::markcorr(marked_pattern,
                                       correction = "Ripley",
                                       r = r)
 
-  kmmr_simulated <- spatstat::markcorr(simulated,
+  kmmr_simulated <- spatstat.core::markcorr(simulated,
                                        correction = "Ripley",
                                        r = r)
 
@@ -187,7 +187,7 @@ reconstruct_pattern_marks <- function(pattern,
       relocated$marks[[rp_b_current]] <- mark_a
 
       # calculate summary functions after relocation
-      kmmr_relocated <- spatstat::markcorr(relocated,
+      kmmr_relocated <- spatstat.core::markcorr(relocated,
                                            correction = "Ripley",
                                            r = r)
 

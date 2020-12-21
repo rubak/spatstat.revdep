@@ -200,7 +200,7 @@ auto.arima.Track(A3)
 ###################################################
 ### code chunk number 19: article.Rnw:537-554
 ###################################################
- # library("spatstat")
+ # library("spatstat.core")
  # d <- density(Beijing,timestamp = "20 mins",bw.ppl)
  # par(mfrow=c(1,2),mar=rep(1,4))
  # plot(d,main="",ribwid=0.04,ribsep=0.02,cex.axis=1.7)

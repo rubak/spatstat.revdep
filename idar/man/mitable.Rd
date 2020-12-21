@@ -12,8 +12,8 @@
   }
 
 \arguments{
-  \item{ppp1}{"Focal" point pattern (an \code{\link[spatstat]{ppp}} object of \pkg{spatstat}) or a \link[base]{data.frame} with columns named "x" and "y"}
-  \item{ppp2}{"Target" multivariate point pattern (an \code{\link[spatstat]{ppp}} object of \pkg{spatstat}) or a \link[base]{data.frame} with columns named "x", "y", and "marks". The column "marks" wears the (species) name of each point}
+  \item{ppp1}{"Focal" point pattern (an \code{\link[spatstat.geom]{ppp}} object of \pkg{spatstat}) or a \link[base]{data.frame} with columns named "x" and "y"}
+  \item{ppp2}{"Target" multivariate point pattern (an \code{\link[spatstat.geom]{ppp}} object of \pkg{spatstat}) or a \link[base]{data.frame} with columns named "x", "y", and "marks". The column "marks" wears the (species) name of each point}
    \item{r}{Vector with the sequence of radii (\emph{r>0}) that define different neiborhood sizes.}
 }
 
@@ -26,7 +26,7 @@ Given both a "focal" and a "target" point patterns, \code{mitable} visits each p
   A list, with length = \emph{length(r)}. Within each element of the list, a matrix with dimensions \emph{np} X \emph{nsp}, where \emph{np} is the number of points of the focal point pattern and \emph{nsp} is the number of unique species (i.e., unique marks) in the target point pattern. Cell values in the matrix represent number of neighbours of the \emph{j} species for individual \emph{i} at the considered neibourhood size.
 }
 \seealso{
-  \code{\link[spatstat]{marktable}} for a similar function.
+  \code{\link[spatstat.core]{marktable}} for a similar function.
 }
 
 \author{ Marcelino de la Cruz \email{marcelino.delacruz@urjc.es}}

@@ -28,7 +28,7 @@ unobserved events}
 \value{
 The simulated point pattern (an object of class "ppp").
        Additionally, some intermediate results of the simulation are returned as 
-       attributes of this point pattern: see \code{\link[spatstat]{rNeymanScott}}.
+       attributes of this point pattern: see \code{\link[spatstat.core]{rNeymanScott}}.
 }
 \description{
 Simulation of the Neyman-Scott process. Only applicable if the intensity was estimated

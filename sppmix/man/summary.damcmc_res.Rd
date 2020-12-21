@@ -36,7 +36,7 @@ For examples see
 # generate data
 truemix<- rnormmix(m = 3, sig0 = .1, df = 5, xlim= c(0, 5), ylim = c(0, 5))
 summary(truemix)
-intsurf=to_int_surf(truemix, lambda = 100, win =spatstat::owin( c(0, 5),c(0, 5)))
+intsurf=to_int_surf(truemix, lambda = 100, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 pp1 = rsppmix(intsurf = intsurf)# draw points
 #Run DAMCMC and get posterior realizations
 postfit=est_mix_damcmc(pp1,m=3)
@@ -49,7 +49,7 @@ summary(postfit)}
 \code{\link{to_int_surf}},
 \code{\link{rsppmix}},
 \code{\link{est_mix_damcmc}},
-\code{\link[spatstat]{owin}}
+\code{\link[spatstat.geom]{owin}}
 }
 \author{
 Jiaxun Chen, Sakis Micheas, Yuchen Wang

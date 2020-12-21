@@ -18,15 +18,15 @@ ipc.estK(mippp, lambda = NULL, correction = "iso", r = NULL, sigma2 = NULL,
 
 
 \arguments{
-  \item{mippp}{ Point pattern to which the  (I)PCP will be fitted. A point pattern with the \code{\link[spatstat]{ppp}} format of \code{spatstat}. }
-  \item{lambda}{ Optional. Values of the estimated intensity function as a pixel image (object of class "\code{\link[spatstat]{im}}" of spatstat) giving the intensity values at all locations of \code{mippp}. }
+  \item{mippp}{ Point pattern to which the  (I)PCP will be fitted. A point pattern with the \code{\link[spatstat.geom]{ppp}} format of \code{spatstat}. }
+  \item{lambda}{ Optional. Values of the estimated intensity function as a pixel image (object of class "\code{\link[spatstat.geom]{im}}" of spatstat) giving the intensity values at all locations of \code{mippp}. }
   \item{correction}{ A character item selecting any of the options "border", "bord.modif", "isotropic", "Ripley" or
  "translate". It specifies the edge correction(s) to be applied in the computation of the \eqn{K(r)} function.  }
   \item{r}{  Numeric vector. The values of the argument \eqn{r} at which the \eqn{K(r)} functions  should be evaluated.  }
   \item{sigma2}{ Optional. Starting value for the parameter \eqn{sigma2} of the Poisson Cluster process. }
   \item{rho}{ Optional. Starting value for the parameter \eqn{rho} of the Poisson Cluster process. }
-  \item{q}{ \eqn{q} exponent of the contrast criterion (see \code{\link[spatstat]{mincontrast}}). }
-  \item{p}{ \eqn{p} exponent of the contrast criterion (see \code{\link[spatstat]{mincontrast}}).  }
+  \item{q}{ \eqn{q} exponent of the contrast criterion (see \code{\link[spatstat.core]{mincontrast}}). }
+  \item{p}{ \eqn{p} exponent of the contrast criterion (see \code{\link[spatstat.core]{mincontrast}}).  }
   \item{x}{ An object of class 'ecespa.minconfit', resulting of  applying \code{ipc.estK} to fit a Poisson Cluster Process. }
   \item{type}{ Type of function to be ploted. If type="L", function \eqn{L(r)} [= \eqn{sqrt(K(r)/pi)-r}] is ploted. Otherwise, function \eqn{K(r)} is ploted. }
   \item{add}{ Logical. Should the curves be added to another plot? }
@@ -41,7 +41,7 @@ ipc.estK(mippp, lambda = NULL, correction = "iso", r = NULL, sigma2 = NULL,
 \details{
  The algorithm fits the (inhomogeneous) Poisson cluster point process (PCP) to a point pattern, by finding the parameters of the (inhomogeneous) Poisson cluster model
 which give the closest match between the theoretical K function of the Poisson cluster process and the observed
-K function. For a concise explanation of the PCP see \code{\link{pc.estK}}. For a more detailed explanation of the Method of Minimum Contrast, see \code{\link[spatstat]{mincontrast}}
+K function. For a concise explanation of the PCP see \code{\link{pc.estK}}. For a more detailed explanation of the Method of Minimum Contrast, see \code{\link[spatstat.core]{mincontrast}}
  in \pkg{spatstat} or Diggle (2003: 86). 
  
  The inhomogeneous PCP can be thought of as a thinned process of an homogeneous PCP, where the spatially varying thinning probability
@@ -79,8 +79,8 @@ Waagepetersen, R. P. 2007. An estimating function approach to inference for inho
  }
 \author{ Marcelino de la Cruz Rot , inspired by some code of  Philip M. Dixon }
 
-\seealso{some functions in \pkg{spatstat}: \code{\link[spatstat]{mincontrast}} for a more general implementation of the method of mimimum contrast;
-\code{\link[spatstat]{matclust.estK}} and \code{\link[spatstat]{lgcp.estK}} fit other appropriate processes for clustered patterns.}
+\seealso{some functions in \pkg{spatstat}: \code{\link[spatstat.core]{mincontrast}} for a more general implementation of the method of mimimum contrast;
+\code{\link[spatstat.core]{matclust.estK}} and \code{\link[spatstat.core]{lgcp.estK}} fit other appropriate processes for clustered patterns.}
 
 \examples{
 

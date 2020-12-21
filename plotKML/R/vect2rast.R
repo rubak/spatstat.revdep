@@ -19,9 +19,9 @@ vect2rast.SpatialPoints <- function(obj, fname = names(obj)[1], cell.size, bbox,
     warning("Automated derivation of suitable cell size can be time consuming and can lead to artifacts.", immediate. = TRUE)
     }
     
-      if(requireNamespace("spatstat", quietly = TRUE)){
+      if(requireNamespace("spatstat.core", quietly = TRUE)){
         x <- as(obj, "ppp")
-        nd <- spatstat::nndist(x$x, x$y)
+        nd <- spatstat.geom::nndist(x$x, x$y)
         ndb <- boxplot(nd, plot=FALSE)
         cell.size <- signif(ndb$stats[3]/2, 2)
         if(cell.size==0){ stop("Estimated cell size is 0, consider removing duplicate points") }
@@ -106,9 +106,9 @@ vect2rast.SpatialLines <- function(obj, fname = names(obj)[1], cell.size, bbox, 
     warning("Automated derivation of suitable cell size can be time consuming and can lead to artifacts.", immediate. = TRUE)
     }
     
-      if(requireNamespace("spatstat", quietly = TRUE)){
+      if(requireNamespace("spatstat.core", quietly = TRUE)){
         x <- as(as(obj, "SpatialLines"), "psp")
-        nd <- spatstat::nndist.psp(x)  # this can be time consuming!
+        nd <- spatstat.geom::nndist.psp(x)  # this can be time consuming!
         ndb <- boxplot(nd, plot=FALSE)
         cell.size <- signif(ndb$stats[3]/2, 2)
         if(cell.size==0){ stop("Estimated cell size is 0, consider removing duplicate points") }
@@ -193,7 +193,7 @@ vect2rast.SpatialPolygons <- function(obj, fname = names(obj)[1], cell.size, bbo
     warning("Automated derivation of suitable cell size can be time consuming and can lead to artifacts.", immediate. = TRUE)
     }
     
-      if(requireNamespace("spatstat", quietly = TRUE)){
+      if(requireNamespace("spatstat.core", quietly = TRUE)){
         x <- sapply(obj@polygons, slot, "area")
         cell.size <- signif(sqrt(median(x))/2, 2)
         if(cell.size==0){ stop("Estimated cell size is 0, consider removing duplicate points") }

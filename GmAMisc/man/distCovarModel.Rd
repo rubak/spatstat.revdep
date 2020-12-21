@@ -109,7 +109,7 @@ results <- distCovarModel(locations, springs)
 }
 \seealso{
 \code{\link{distRandSign}} , \code{\link{Aindex}} , \code{\link{pointsCovarModel}} ,
- \code{\link[spatstat]{auc}} , \code{\link[spatstat]{cdf.test}} ,
- \code{\link[spatstat]{effectfun}} , \code{\link[spatstat]{ppm}} , \code{\link[spatstat]{roc}}
+ \code{\link[spatstat.core]{auc}} , \code{\link[spatstat.core]{cdf.test}} ,
+ \code{\link[spatstat.core]{effectfun}} , \code{\link[spatstat.core]{ppm}} , \code{\link[spatstat.core]{roc}}
 }
 \keyword{distCovarModel}

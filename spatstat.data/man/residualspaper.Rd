@@ -60,7 +60,7 @@
 \dontrun{
   data(residualspaper)
   
-  if(require(spatstat)) {
+  if(require(spatstat.core)) {
 
   X <- residualspaper$Fig4a
   summary(X)

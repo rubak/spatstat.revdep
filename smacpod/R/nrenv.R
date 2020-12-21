@@ -17,7 +17,7 @@
 # "lower" finds where the observed ratio exceeds the 1 -
 # level quantile.
 #
-# The \code{z} argument of the \code{\link[spatstat]{im}}
+# The \code{z} argument of the \code{\link[spatstat.geom]{im}}
 # returns has a -1 for locations where the observed log
 # ratio of spatial densities is below the non-rejection
 # envelope, a 0 for locations within the non-rejection envelope,
@@ -31,7 +31,7 @@
 # @param alternative Default is "two.sided".  Can also be
 #   "greater" or "lower".
 #
-# @return Returns a \code{link[spatstat]{im}} object
+# @return Returns a \code{link[spatstat.geom]{im}} object
 #   representing a two-dimensional pixel image.
 # @author Joshua French
 # @references Waller, L.A. and Gotway, C.A. (2005).  Applied
@@ -53,5 +53,5 @@ nrenv = function(object, level = 0.90, alternative = "two.sided") {
   above = (object$simr[,,1] > tol[2,,]) + 0
   below = -1*(object$simr[,,1] < tol[1,,])
   both = above + below
-  return(spatstat::im(mat = both, xcol = object$xcol, yrow = object$yrow))
+  return(spatstat.geom::im(mat = both, xcol = object$xcol, yrow = object$yrow))
 }

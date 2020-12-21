@@ -7,10 +7,10 @@
 Count_pts(pp, win)
 }
 \arguments{
-\item{pp}{Object of class \code{sppmix} or \code{\link[spatstat]{ppp}}.}
+\item{pp}{Object of class \code{sppmix} or \code{\link[spatstat.geom]{ppp}}.}
 
 \item{win}{The window of observation as an
-object of class \code{\link[spatstat]{owin}}, defining the window of observation.}
+object of class \code{\link[spatstat.geom]{owin}}, defining the window of observation.}
 }
 \value{
 An integer representing the number of points from \code{pp} within the window \code{win}.
@@ -29,20 +29,20 @@ For examples see
 truemix_surf=rmixsurf(m = 3,lambda=100, xlim=c(-5,5),ylim=c(-5,5))
 genPP=rsppmix(truemix_surf)
 plotmix_2d(truemix_surf,genPP)
-Count_pts(genPP,spatstat::square(1))
-Count_pts(genPP,spatstat::square(2))
-Count_pts(genPP,spatstat::square(3))
-Count_pts(genPP,spatstat::square(4))
-Count_pts(genPP,spatstat::square(5))
-Count_pts(genPP,spatstat::owin(c(-5,5),c(-5,5)))}
+Count_pts(genPP,spatstat.geom::square(1))
+Count_pts(genPP,spatstat.geom::square(2))
+Count_pts(genPP,spatstat.geom::square(3))
+Count_pts(genPP,spatstat.geom::square(4))
+Count_pts(genPP,spatstat.geom::square(5))
+Count_pts(genPP,spatstat.geom::owin(c(-5,5),c(-5,5)))}
 
 }
 \seealso{
 \code{\link{rsppmix}},
 \code{\link{rmixsurf}},
 \code{\link{plotmix_2d}},
-\code{\link[spatstat]{square}},
-\code{\link[spatstat]{owin}}
+\code{\link[spatstat.geom]{square}},
+\code{\link[spatstat.geom]{owin}}
 }
 \author{
 Sakis Micheas

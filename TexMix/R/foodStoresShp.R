@@ -15,7 +15,7 @@
 #'                    stores)}
 #' }
 #' @examples
-#' library(spatstat)
+#' library(spatstat.core)
 #' library(rgdal)
 #' library(sp)
 #' proj4string(bndShp)                                     # Current system

@@ -60,12 +60,12 @@ sample_quadrats <- function(comm, n_quadrats = 20, quadrat_area = 0.01,
 
             if (avoid_overlap == TRUE){
 
-               if (requireNamespace("spatstat", quietly = TRUE)){
+               if (requireNamespace("spatstat.core", quietly = TRUE)){
 
                   # Hard core process:
                   hc_mod <- list(cif = "hardcore", par = list(beta = n_quadrats, hc = min_dist),
-                                 w = spatstat::owin(c(0, 1 - quadrat_size), c(0, 1 - quadrat_size)))
-                  hc_points <- spatstat::rmh(model = hc_mod, start=list(n.start = n_quadrats),
+                                 w = spatstat.geom::owin(c(0, 1 - quadrat_size), c(0, 1 - quadrat_size)))
+                  hc_points <- spatstat.core::rmh(model = hc_mod, start=list(n.start = n_quadrats),
                                              control=list(p = 1, nrep = 1e6),
                                              saveinfo = F, verbose = F)
                   xpos <- hc_points$x

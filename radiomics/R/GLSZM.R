@@ -48,7 +48,7 @@ setMethod("initialize",
             grey_lvls <- unique(c(data))
             grey_lvls <- grey_lvls[!is.na(grey_lvls)]
             #convert to data for use with spatstats functions
-            data <- spatstat::as.im(data)
+            data <- spatstat.geom::as.im(data)
             
             #Initialize dataframe to hold count data
             count_data <- data.frame()
@@ -56,8 +56,8 @@ setMethod("initialize",
             
             for(i in grey_lvls){
               # Threshold the data
-              imBinary <- spatstat::levelset(data, i, compare="==")
-              connections <- spatstat::connected(imBinary)
+              imBinary <- spatstat.geom::levelset(data, i, compare="==")
+              connections <- spatstat.geom::connected(imBinary)
               
               # Extract counts of each uniqe value 
               counts <- table(table(as.matrix(connections)))

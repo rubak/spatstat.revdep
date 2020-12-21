@@ -284,7 +284,7 @@ simEpidataCS(endemic, epidemic, siaf, tiaf, qmatrix, rmarks,
   the \CRANpkg{rmapshaper} package.
   Alternative tools are provided by the packages \CRANpkg{maptools}
   (\code{\link[maptools]{thinnedSpatialPoly}}) and \CRANpkg{spatstat}
-  (\code{\link[spatstat]{simplify.owin}}).
+  (\code{\link[spatstat.geom]{simplify.owin}}).
 }
 
 \references{

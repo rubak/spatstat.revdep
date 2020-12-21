@@ -35,7 +35,7 @@ logrr.test = function(x) {
   stats = numeric(dim3)
   for (i in 1:dim3) {
    x$v = x$simr[,,i]^2
-   stats[i] = spatstat::integral.im(x)
+   stats[i] = spatstat.geom::integral.im(x)
   }
   islogrr = stats[1]
   p = mean(stats >= islogrr)

@@ -10,8 +10,8 @@
 #' #est_intensity_np}
 #'
 #' @param pattern A two-dimesional spatial point pattern in
-#' the form of a \code{\link[spatstat]{ppp}} object.
-#' @param win Object of class \code{\link[spatstat]{owin}}.
+#' the form of a \code{\link[spatstat.geom]{ppp}} object.
+#' @param win Object of class \code{\link[spatstat.geom]{owin}}.
 #' @param h Kernel bandwidth. \code{h} should be a positive number.
 #' @param L Length of the side of the square grid.
 #' @param kernel Kernel used to estimate the intensity surface.  Currently, only
@@ -21,7 +21,7 @@
 #' @param truncate Logical flag indicating whether or not to use
 #' points only within the window. The default is TRUE.
 #'
-#' @return An object of class \code{\link[spatstat]{im}}.
+#' @return An object of class \code{\link[spatstat.geom]{im}}.
 #' @seealso \code{\link{rnormmix}},
 #' \code{\link{to_int_surf}},
 #' \code{\link{rsppmix}},
@@ -30,15 +30,15 @@
 #' @examples
 #' \donttest{
 #' mix1 <- rnormmix(5, sig0 = .01, df = 5, xlim=c(0, 5),ylim=c(0, 5))
-#' intsurf1=to_int_surf(mix1,lambda = 40, win =spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf1=to_int_surf(mix1,lambda = 40, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' plot(intsurf1)
 #' pp1 <- rsppmix(intsurf1)
 #' # estimate and plot the estimated intensity surface
-#' surfNP1 <- est_intensity_np(pp1, win=spatstat::owin( c(0, 5),c(0, 5)), h=0.05,
+#' surfNP1 <- est_intensity_np(pp1, win=spatstat.geom::owin( c(0, 5),c(0, 5)), h=0.05,
 #'  L=100,truncate = FALSE)
 #' plotmix_3d(surfNP1,title1="Non parametric estimator of the intensity surface")
 #' #truncate components to have all their mass in the window
-#' surfNP2 <- est_intensity_np(pp1, win=spatstat::owin( c(0, 5),c(0, 5)), h=0.5, L=100)
+#' surfNP2 <- est_intensity_np(pp1, win=spatstat.geom::owin( c(0, 5),c(0, 5)), h=0.5, L=100)
 #' plotmix_3d(surfNP2,title1="(Truncated) Non parametric estimator of the intensity surface")}
 #'
 #' @export
@@ -46,7 +46,7 @@ est_intensity_np <- function(pattern, win, h, L=10, kernel=c("Epanechnikov"),
                              edgecorrect=TRUE, truncate=TRUE){
   kernel <- match.arg(kernel)
   if (truncate==TRUE) {
-    pattern <- pattern[spatstat::inside.owin(pattern$x,pattern$y,win)]
+    pattern <- pattern[spatstat.geom::inside.owin(pattern$x,pattern$y,win)]
   }
   x <- seq(win$xrange[1],win$xrange[2],length.out = L)
   y <- seq(win$yrange[1],win$yrange[2],length.out = L)
@@ -83,6 +83,6 @@ est_intensity_np <- function(pattern, win, h, L=10, kernel=c("Epanechnikov"),
       intensity <- aggregate(val, list(index[, 2]), sum) / h^2
     }
   }
-  return(spatstat::im(matrix(intensity[,2],lenx,leny,byrow=T),x,y))
+  return(spatstat.geom::im(matrix(intensity[,2],lenx,leny,byrow=T),x,y))
 }
 

@@ -21,7 +21,7 @@
 
 weightsplot <- function(weights, nei, nx, ny, coord, thresh=0.1, ...) { 
   
-  require(spatstat)
+  require(spatstat.core)
   require(Matrix)
 
   if(is.matrix(weights)!=TRUE)

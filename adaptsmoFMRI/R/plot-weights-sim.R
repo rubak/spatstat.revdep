@@ -20,7 +20,7 @@
 
 sim.weightsplot <- function(weights, nei, nx, ny, thresh=0.05, ...) { 
 
-  require(spatstat)
+  require(spatstat.core)
 
   #if(class(model)!="adpatsmoFMRI")
   #  stop("Inserted model needs to be of class spatsmoFMRI.")

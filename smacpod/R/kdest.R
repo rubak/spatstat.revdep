@@ -5,14 +5,14 @@
 #' envelopes can also be produced.
 #' 
 #' This function relies internally on the 
-#' \code{\link[spatstat]{Kest}} and 
-#' \code{\link[spatstat]{eval.fv}} functions from the 
+#' \code{\link[spatstat.core]{Kest}} and 
+#' \code{\link[spatstat.core]{eval.fv}} functions from the 
 #' \code{spatstat} package.  The arguments are essentially
-#' the same as the \code{\link[spatstat]{Kest}} function, 
+#' the same as the \code{\link[spatstat.core]{Kest}} function, 
 #' and the user is referred there for more details about
 #' the various arguments.
 #' 
-#' @param x A \code{\link[spatstat]{ppp}} object 
+#' @param x A \code{\link[spatstat.geom]{ppp}} object 
 #'   package with marks for the case and control groups.
 #' @param case The position of the name of the "case" group 
 #'   in \code{levels(x$marks)}.  The default is 2. 
@@ -27,15 +27,15 @@
 #'   Ignored if \code{nsim} is 0.
 #' @param domain Optional. Calculations will be restricted
 #'   to this subset of the window. See Details of
-#'   \code{\link[spatstat]{Kest}}.
+#'   \code{\link[spatstat.core]{Kest}}.
 #' @inheritParams spatstat::Kest
 #'   
 #' @return Returns a \code{kdenv} object.  See documentation
 #'   for \code{spatstat::Kest}.
 #' @author Joshua French
 #' @export
-#' @seealso \code{\link[spatstat]{Kest}},
-#'   \code{\link[spatstat]{eval.fv}}
+#' @seealso \code{\link[spatstat.core]{Kest}},
+#'   \code{\link[spatstat.core]{eval.fv}}
 #' @references Waller, L.A. and Gotway, C.A. (2005). 
 #'   Applied Spatial Statistics for Public Health Data. 
 #'   Hoboken, NJ: Wiley.
@@ -72,9 +72,9 @@ kdest = function(x, case = 2, nsim = 0, level = 0.95, r = NULL,
     out = list(out = out)
   } else {
     #min/max envelope
-    out = spatstat::envelope(x, kd, case = case, nsim = nsim, 
+    out = spatstat.core::envelope(x, kd, case = case, nsim = nsim, 
                              savefuns = TRUE, 
-                             simulate = expression(spatstat::rlabel(x, permute = TRUE)), 
+                             simulate = expression(spatstat.core::rlabel(x, permute = TRUE)), 
                              r = r, rmax = rmax, 
                              breaks = breaks, 
                              correction = correction, 

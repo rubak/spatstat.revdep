@@ -79,9 +79,9 @@ if(is.null(new_pred)){
   }else{
     temp <- sp::bbox(rbind(new_pred,object$nodes))
     bound_vect <- c(temp[1,1],temp[1,2],temp[2,1],temp[2,2])
-    X <- spatstat::as.ppp(new_pred,W = bound_vect)
-    Y <- spatstat::as.ppp(object$nodes,W=bound_vect)
-    closest <- spatstat::nncross(X,Y)$which
+    X <- spatstat.geom::as.ppp(new_pred,W = bound_vect)
+    Y <- spatstat.geom::as.ppp(object$nodes,W=bound_vect)
+    closest <- spatstat.geom::nncross(X,Y)$which
     Pk[Pk==0] <- 1
     Zk[Pk==0] <- mean(Zk)*length(Zk)
     out <- (Zk/Pk)[closest]

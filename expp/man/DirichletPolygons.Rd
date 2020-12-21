@@ -23,9 +23,9 @@ DirichletPolygons(x, boundary, ...)
 \item{x}{A \code{\link{SpatialPointsBreeding}} object.}
 
 \item{boundary}{A \code{\link[sp]{SpatialPolygons}} or a vector of integers containing the id-s located at the boundary. 
-When missing boundary is inferred using \code{\link[spatstat]{ripras}} in \code{spatstat} .}
+When missing boundary is inferred using \code{\link[spatstat.geom]{ripras}} in \code{spatstat} .}
 
-\item{\dots}{passed to \code{\link[spatstat]{ripras}}}
+\item{\dots}{passed to \code{\link[spatstat.geom]{ripras}}}
 
 \item{width}{argument passed to \code{\link[rgeos]{gBuffer}}. It defines the distance between boundary boxes and the boundary polygon; 
 it is set by default to half of the average distance between boundary boxes.}

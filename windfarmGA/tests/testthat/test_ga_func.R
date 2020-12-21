@@ -1,6 +1,6 @@
 context("GA Functions")
 library(sp)
-library(spatstat)
+library(spatstat.core)
 # library(maptools)
 
 ## Function to suppress print/cat outputs

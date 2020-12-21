@@ -9,7 +9,7 @@
 }
 \arguments{
 \item{x}{A point pattern of class \code{\link{sppmix}} or
-\code{\link[spatstat]{ppp}}.}
+\code{\link[spatstat.geom]{ppp}}.}
 
 \item{mus}{An optional list of the theoretical means of the mixture components.}
 
@@ -37,7 +37,7 @@ are m, n and L. To add a different title than the default, use \code{add_title} 
 \description{
 Plot a spatial point pattern generated from a Poisson with
 mixture intensity surface. Alternatively, the function can
-plot a spatstat \code{\link[spatstat]{ppp}} object.
+plot a spatstat \code{\link[spatstat.geom]{ppp}} object.
 
 For examples see
 
@@ -47,7 +47,7 @@ For examples see
 \examples{
 \donttest{
 mix1 <- rnormmix(5, sig0 = .01, df = 5, xlim=c(0, 5), ylim=c(0, 5))
-intsurf1=to_int_surf(mix1, lambda = 40, win =spatstat::owin( c(0, 5),c(0, 5)))
+intsurf1=to_int_surf(mix1, lambda = 40, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 pp1 <- rsppmix(intsurf1)
 plot(pp1)
 plot(pp1, mus=intsurf1$mus)
@@ -76,7 +76,7 @@ plot(newMPP$genMPP, showmarks=TRUE)}
 \seealso{
 \code{\link{normmix}},
 \code{\link{to_int_surf}},
-\code{\link[spatstat]{owin}},
+\code{\link[spatstat.geom]{owin}},
 \code{\link{rsppmix}},
 \code{\link{est_mix_damcmc}},
 \code{\link{GetMAPLabels}},

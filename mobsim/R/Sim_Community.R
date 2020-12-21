@@ -595,7 +595,7 @@ sim_poisson_community <- function(s_pool,
 #'
 #' @author Felix May
 #'
-#' @seealso \code{\link[spatstat]{rThomas}}
+#' @seealso \code{\link[spatstat.core]{rThomas}}
 #'
 #' @examples
 #'
@@ -809,7 +809,7 @@ sim_thomas_community <- function(s_pool, n_sim,
 #                                  ymax=1,
 #                                  points.cluster=NULL)
 # {
-#    require(spatstat)
+#    require(spatstat.core)
 #
 #    max_dim <- ifelse(xmax>=ymax,xmax,ymax)
 #

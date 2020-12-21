@@ -10,7 +10,7 @@
 #' @param eps_image - If set to \code{TRUE}, an .eps image is generated. By default it is set to \code{FALSE}
 #' @examples 
 #' library(DRHotNet)
-#' library(spatstat)
+#' library(spatstat.core)
 #' library(spdep)
 #' library(raster)
 #' library(maptools)

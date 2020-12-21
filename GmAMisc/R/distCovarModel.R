@@ -100,8 +100,8 @@
 #' results <- distCovarModel(locations, springs)
 #'
 #' @seealso \code{\link{distRandSign}} , \code{\link{Aindex}} , \code{\link{pointsCovarModel}} ,
-#'  \code{\link[spatstat]{auc}} , \code{\link[spatstat]{cdf.test}} ,
-#'  \code{\link[spatstat]{effectfun}} , \code{\link[spatstat]{ppm}} , \code{\link[spatstat]{roc}}
+#'  \code{\link[spatstat.core]{auc}} , \code{\link[spatstat.core]{cdf.test}} ,
+#'  \code{\link[spatstat.core]{effectfun}} , \code{\link[spatstat.core]{ppm}} , \code{\link[spatstat.core]{roc}}
 #'
 distCovarModel <- function(feature, cov.var, studyplot=NULL, buffer=0, Foxall=FALSE, oneplot=FALSE){
   options(scipen=999)
@@ -128,7 +128,7 @@ distCovarModel <- function(feature, cov.var, studyplot=NULL, buffer=0, Foxall=FA
   feature.ppp <- unmark(as.ppp(feature))
 
   #give the feature dataset the same analytical window of the study region
-  spatstat::Window(feature.ppp) <- W
+  spatstat.geom::Window(feature.ppp) <- W
 
   #tranform the cov.var dataset to a ppp class or to a psp class (both needed by spatstat)
   #according to whether the cov.var is a SpatialPointsDataframe (or SpatialPoints) class, or a SpatialLinesDataFrame
@@ -153,7 +153,7 @@ distCovarModel <- function(feature, cov.var, studyplot=NULL, buffer=0, Foxall=FA
   Jfunction <- Jfox(feature.ppp, cov.var.ppp)
 
   #calculate the AUC
-  areaundercurve <- spatstat::auc(feature.ppp, distance.fun, high=FALSE)
+  areaundercurve <- spatstat.core::auc(feature.ppp, distance.fun, high=FALSE)
 
   #compare the models via likelihood ratio test
   model.comp <- anova(PPM0, PPM1, test="LRT")
@@ -195,7 +195,7 @@ distCovarModel <- function(feature, cov.var, studyplot=NULL, buffer=0, Foxall=FA
   }
 
   #plot the ROC curve
-  graphics::plot(spatstat::roc(PPM1),
+  graphics::plot(spatstat.core::roc(PPM1),
        main=paste0("ROC curve of the fitted intensity of point patter \nas (loglinear) function of the 'distance' cavariate \nAUC: ", round(areaundercurve,3)),
        cex.main=0.8)
 

@@ -23,7 +23,7 @@ of the mixture intensity to have all their mass
 within the given x-y limits.}
 }
 \value{
-An object of class \code{\link[spatstat]{im}}. This is a pixel image
+An object of class \code{\link[spatstat.geom]{im}}. This is a pixel image
  on a grid with values corresponding to the density (or intensity surface) at that location.
 }
 \description{
@@ -53,7 +53,7 @@ plot_density(as.data.frame(normdens),TRUE)+ ggplot2::ggtitle(
 plotmix_3d(normdens)
 #Now build an intensity surface based on the normal mixture
 intsurf=to_int_surf(truemix,lambda = 100, win =
- spatstat::owin( c(0, 5),c(0, 5)))
+ spatstat.geom::owin( c(0, 5),c(0, 5)))
 intsurfdens=dnormmix(intsurf,xlim= c(0, 5), ylim = c(0, 5))
 plot_density(as.data.frame(intsurfdens))+ ggplot2::ggtitle(
  "2d mixture intensity plot\\nWindow=[0,5]x[0,5]")

@@ -23,7 +23,7 @@
 #' @param nxprob Probability of having unobserved events.
 #'                Default value is 0.1.
 #' @param intens (optional) estimated intensity of the observed process (object of class "im",
-#'                see \code{\link[spatstat]{density.ppp}}). If not given,
+#'                see \code{\link[spatstat.core]{density.ppp}}). If not given,
 #'                it will be estimated.
 #' @param covmatrix  (optional) Covariance matrix of the kernel of a normal distribution, only meaningful
 #'                    if no intensity is given. If not given, it will be estimated.
@@ -201,7 +201,7 @@ bootcor <- function(ppdata, cutoff, numit = 1000, tol=0.02,
 #' @param nxprob Probability of having unobserved events.
 #'                Default value is 0.1.
 #' @param intens (optional) estimated intensity of the observed process (object of class "im",
-#'                see \code{\link[spatstat]{density.ppp}}). If not given,
+#'                see \code{\link[spatstat.core]{density.ppp}}). If not given,
 #'                it will be estimated.
 #' @param covmatrix  (optional) Covariance matrix of the kernel of a normal distribution, only meaningful
 #'                    if no intensity is given. If not given, it will be estimated.

@@ -14,7 +14,7 @@ polyCub.iso(polyregion, f, intrfr, ..., center, control = list(),
 \arguments{
 \item{polyregion}{a polygonal domain.
 The following classes are supported:
-\code{"\link[spatstat]{owin}"} from package \pkg{spatstat},
+\code{"\link[spatstat.geom]{owin}"} from package \pkg{spatstat},
 \code{"\link[rgeos:gpc.poly-class]{gpc.poly}"} from \pkg{rgeos} (or
 \pkg{gpclib}), as well as
 \code{"\linkS4class{SpatialPolygons}"}, \code{"\linkS4class{Polygons}"},
@@ -109,7 +109,7 @@ stopifnot(all.equal(intISOana, intISOnum, check.attributes = FALSE))
 intrfr.const <- function (R) R^2/2
 (area.ISO <- polyCub.iso(letterR, intrfr = intrfr.const, center = c(0,0)))
 
-if (require("spatstat")) { # check against area.owin()
+if (require("spatstat.core")) { # check against area.owin()
     stopifnot(all.equal(area.owin(owin(poly = letterR)),
                         area.ISO, check.attributes = FALSE))
 }

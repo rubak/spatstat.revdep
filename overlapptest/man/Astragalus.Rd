@@ -13,7 +13,7 @@ data("Astragalus")
 data("Sesleria")
 }
 \format{
-  Each object is a multiple-polygon window with the format \code{\link[spatstat]{owin}} of \pkg{spatstat}. 
+  Each object is a multiple-polygon window with the format \code{\link[spatstat.geom]{owin}} of \pkg{spatstat}. 
 }
 \examples{
 data(Astragalus)

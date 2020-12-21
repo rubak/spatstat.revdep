@@ -4,7 +4,7 @@
 \alias{plot_lattice}
 \title{Plot lattice data.}
 \usage{
-plot_lattice(data, win = spatstat::owin(xrange = c(1, ncol(data)), yrange =
+plot_lattice(data, win = spatstat.geom::owin(xrange = c(1, ncol(data)), yrange =
   c(1, nrow(data))), gray.ext = c(1, 0), main = "", ribbon = TRUE)
 }
 \arguments{

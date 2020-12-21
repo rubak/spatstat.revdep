@@ -1,4 +1,4 @@
-suppressPackageStartupMessages(library(spatstat))
+suppressPackageStartupMessages(library(spatstat.core))
 suppressPackageStartupMessages(library(sf))
 
 data(chicago)

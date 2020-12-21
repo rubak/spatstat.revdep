@@ -1,5 +1,5 @@
 library(lgcp)
-library(spatstat)
+library(spatstat.core)
 library(sp)
 
 polylist <- list()

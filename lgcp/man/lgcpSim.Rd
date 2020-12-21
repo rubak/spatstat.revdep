@@ -82,7 +82,7 @@ whilst the fixed temporal component,
 for \eqn{t}{t} in a small interval of time, \eqn{\delta t}{\delta t}, over which the rate of the process over \eqn{W}{W} can be considered constant.
 }
 \examples{
-\dontrun{library(spatstat); library(spatstat.utils); xyt <- lgcpSim()}
+\dontrun{library(spatstat.core); library(spatstat.utils); xyt <- lgcpSim()}
 }
 \references{
 \enumerate{

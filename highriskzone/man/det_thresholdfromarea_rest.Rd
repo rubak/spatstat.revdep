@@ -9,7 +9,7 @@ det_thresholdfromarea_rest(intens, areahrz, win, nxprob = 0.1, hole = hole,
   integratehole = TRUE)
 }
 \arguments{
-\item{intens}{estimated intensity of the observed process (object of class "im", see \code{\link[spatstat]{density.ppp}})}
+\item{intens}{estimated intensity of the observed process (object of class "im", see \code{\link[spatstat.core]{density.ppp}})}
 
 \item{areahrz}{area of the high-risk zone}
 

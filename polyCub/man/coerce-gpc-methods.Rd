@@ -17,7 +17,7 @@ as.owin.gpc.poly(W, ...)
 \item{object}{an object of class \code{"gpc.poly"} or \code{"owin"},
 respectively.}
 
-\item{...}{further arguments passed to \code{\link[spatstat]{owin}}.}
+\item{...}{further arguments passed to \code{\link[spatstat.geom]{owin}}.}
 
 \item{W}{an object of class \code{"gpc.poly"}.}
 }
@@ -29,7 +29,7 @@ respectively. If neither package \pkg{rgeos} nor \pkg{gpclib} are available,
 }
 \description{
 Package \pkg{polyCub} implements converters between the classes
-\code{"\link[spatstat:owin.object]{owin}"} of package \pkg{spatstat} and
+\code{"\link[spatstat.geom:owin.object]{owin}"} of package \pkg{spatstat} and
 \code{"\link[rgeos:gpc.poly-class]{gpc.poly}"} of package \pkg{rgeos}
 (originally from \pkg{gpclib}).
 Support for the \code{"gpc.poly"} class was dropped from
@@ -43,7 +43,7 @@ i.e. clockwise for normal boundaries and anticlockwise for holes, where,
 however, the first vertex is \emph{not} repeated!
 }
 \examples{
-if (gpclibPermit() && require("spatstat")) {
+if (gpclibPermit() && require("spatstat.core")) {
     ## use example polygons from
     example(plotpolyf, ask = FALSE)
 

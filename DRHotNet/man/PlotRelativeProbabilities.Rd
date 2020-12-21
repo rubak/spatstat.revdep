@@ -21,7 +21,7 @@ This function plots the relative probability of occurrence of a type of event al
 }
 \examples{
 library(DRHotNet)
-library(spatstat)
+library(spatstat.core)
 library(spdep)
 library(maptools)
 \donttest{

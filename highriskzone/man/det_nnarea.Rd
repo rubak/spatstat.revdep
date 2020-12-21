@@ -9,7 +9,7 @@ det_nnarea(cutoffval, distancemap, win)
 \arguments{
 \item{cutoffval}{distance used as radius of the discs}
 
-\item{distancemap}{distance map (object of class "im", see \code{\link[spatstat]{distmap}}): 
+\item{distancemap}{distance map (object of class "im", see \code{\link[spatstat.geom]{distmap}}): 
 distance of every location in the observation window to the nearest event}
 
 \item{win}{observation window of class owin}
@@ -21,5 +21,5 @@ A numerical value giving the area of the window.
 Used in function det_radius.
 }
 \seealso{
-\code{\link[spatstat]{eval.im}}, \code{\link[spatstat]{owin}}, \code{\link[spatstat]{area.owin}}
+\code{\link[spatstat.geom]{eval.im}}, \code{\link[spatstat.geom]{owin}}, \code{\link[spatstat.geom]{area.owin}}
 }

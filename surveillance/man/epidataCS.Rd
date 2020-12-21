@@ -270,7 +270,7 @@ getSourceDists(object, dimension = c("space", "time"))
   \code{n} events.
 
   For the \code{"epidataCS"} class, the method of the generic function
-  \code{\link[spatstat]{marks}} defined by the \pkg{spatstat} package
+  \code{\link[spatstat.geom]{marks}} defined by the \pkg{spatstat} package
   returns a \code{data.frame} of the event marks (actually also
   including time and location of the events), disregarding endemic
   covariates and the auxiliary columns from the \code{events} component
@@ -296,7 +296,7 @@ getSourceDists(object, dimension = c("space", "time"))
   the \CRANpkg{rmapshaper} package.
   Alternative tools are provided by the packages \CRANpkg{maptools}
   (\code{\link[maptools]{thinnedSpatialPoly}}) and \CRANpkg{spatstat}
-  (\code{\link[spatstat]{simplify.owin}}).
+  (\code{\link[spatstat.geom]{simplify.owin}}).
 }
 
 \references{

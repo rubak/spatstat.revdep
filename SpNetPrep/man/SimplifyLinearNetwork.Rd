@@ -23,7 +23,7 @@ This algorithm attempts to automatically reduce a linear network's complexity wi
 }
 \examples{
 library(SpNetPrep)
-library(spatstat)
+library(spatstat.core)
 library(sp)
 library(raster)
 library(maptools)

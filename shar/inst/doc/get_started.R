@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 ## ----load_libraries_hidden, eval = TRUE, echo = FALSE, message = FALSE, results = "hide"----
 library(dplyr)
 library(shar)
-library(spatstat)
+library(spatstat.core)
 library(raster)
 
 ## ----classify_habitats---------------------------------------------------

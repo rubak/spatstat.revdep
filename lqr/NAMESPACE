@@ -1,5 +1,4 @@
 export(cens.lqr,Log.lqr,Log.best.lqr,lqr,best.lqr,dtrunc,dSKD,ptrunc,pSKD,qtrunc,qSKD,rtrunc,rSKD,extrunc,vartrunc,Egig)
-importFrom(spatstat,ewcdf)
 importFrom(numDeriv,grad)
 importFrom(graphics, abline, axis, lines, par, plot,
              points, polygon, title, hist, plot.new)
@@ -9,3 +8,4 @@ importFrom(stats, dbeta, dnorm, optim, optimize, pgamma,
              smooth.spline, residuals, integrate, uniroot,median)
 importFrom(MomTrunc,pmvnormt,onlymeanTMD,meanvarTMD)
 importFrom(quantreg,rq)
+importFrom(spatstat.geom, ewcdf)

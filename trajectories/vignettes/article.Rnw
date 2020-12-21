@@ -535,7 +535,7 @@ We next turn to calculate the average estimated intensity of the taxi data using
 %\begin{figure}[!h]
 %\begin{center}
 <<>>=
- # library("spatstat")
+ # library("spatstat.core")
  # d <- density(Beijing,timestamp = "20 mins",bw.ppl)
  # par(mfrow=c(1,2),mar=rep(1,4))
  # plot(d,main="",ribwid=0.04,ribsep=0.02,cex.axis=1.7)

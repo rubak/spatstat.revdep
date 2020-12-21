@@ -82,7 +82,7 @@ average from the BDMCMC fit is the best solution.
 \donttest{
 # create the true mixture intensity surface
 truesurf <- normmix(ps=c(.2, .6,.2), mus=list(c(0.3, 0.3), c(0.7, 0.7), c(0.5, 0.5)),
- sigmas = list(.01*diag(2), .01*diag(2), .01*diag(2)), lambda=100, win=spatstat::square(1))
+ sigmas = list(.01*diag(2), .01*diag(2), .01*diag(2)), lambda=100, win=spatstat.geom::square(1))
 plot(truesurf)
 # generate the point pattern, truncate=TRUE by default
 pp <- rsppmix(truesurf,truncate=FALSE)
@@ -110,7 +110,7 @@ Jasra, A., Holmes, C.C. and Stephens, D. A. (2005). Markov Chain Monte Carlo Met
 }
 \seealso{
 \code{\link{normmix}},
-\code{\link[spatstat]{square}},
+\code{\link[spatstat.geom]{square}},
 \code{\link{est_mix_damcmc}},
 \code{\link{est_mix_bdmcmc}},
 \code{\link{GetBMA}},

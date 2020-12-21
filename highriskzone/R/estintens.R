@@ -1,7 +1,7 @@
 #' Estimates the intensity of the point pattern.
 #'
 #' Estimates the intensity of the point pattern by a kernel method
-#' (See \code{\link[spatstat]{density.ppp}}).
+#' (See \code{\link[spatstat.core]{density.ppp}}).
 #' @param ppdata  data of class ppp
 #' @param covmatrix (Optional) Covariance matrix of the kernel of a normal distribution
 #' @param weights (Optional) vector of weights attached to each observation
@@ -9,13 +9,13 @@
 #' @importFrom ks Hscv
 #' @export
 #' @return A list of
-#'    \item{ intensest }{ Estimated intensity (object of class "im", see \code{\link[spatstat]{density.ppp}}). }
+#'    \item{ intensest }{ Estimated intensity (object of class "im", see \code{\link[spatstat.core]{density.ppp}}). }
 #'    \item{ covmatrix }{ Covariance matrix. If \code{covmatrix = NULL}, the matrix is estimated by \code{\link[ks]{Hscv}}. }
-#' @seealso \code{\link[spatstat]{density.ppp}}, \code{\link[ks]{Hscv}}, \code{\link[spatstat]{eval.im}}
+#' @seealso \code{\link[spatstat.core]{density.ppp}}, \code{\link[ks]{Hscv}}, \code{\link[spatstat.geom]{eval.im}}
 #' @examples
 #' data(craterA)
 #' #change npixel = 50 to 1000 to get a nicer picture
-#' spatstat::spatstat.options(npixel=50)
+#' spatstat.geom::spatstat.options(npixel=50)
 #' # use only ten observations for fast computation
 #' thin.craterA <- craterA[1:10]
 #' int <- est_intens(thin.craterA)

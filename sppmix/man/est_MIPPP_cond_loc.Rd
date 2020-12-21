@@ -139,7 +139,7 @@ y <- runif(100)
 #mark distribution is discrete uniform
 m <- sample(1:2, 100, replace=TRUE)
 m <- factor(m, levels=1:2)
-pp <- spatstat::ppp(x, y, c(0,1), c(0,1), marks=m)
+pp <- spatstat.geom::ppp(x, y, c(0,1), c(0,1), marks=m)
 # estimate the probability fields for each mark; since we have a discrete
 # uniform for the mark distribution we should see probabilities about .5
 # for both marks, as well as, the gamma credible sets should include 0,

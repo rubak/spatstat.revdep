@@ -9,7 +9,7 @@ Authors@R: c(
 		email = "mxrodriguez@bcamath.org", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-1329-9238")),
 	person(given = "Vanda", family = "Inacio de Carvalho", email = "Vanda.Inacio@ed.ac.uk", role = c("aut"), comment = c(ORCID = "0000-0001-8084-1616")))
 Imports: stats, grDevices, graphics, splines, np, Matrix, Hmisc, MASS,
-        moments, nor1mix, spatstat
+        moments, nor1mix, spatstat.geom, spatstat.core, spatstat.linnet
 Description: Estimates the covariate-adjusted Receiver Operating Characteristic (AROC) curve and pooled (unadjusted) ROC curve by different methods. Inacio de Carvalho, V., and Rodriguez-Alvarez, M. X. (2018) <arXiv:1806.00473>.
 License: GPL
 NeedsCompilation: no

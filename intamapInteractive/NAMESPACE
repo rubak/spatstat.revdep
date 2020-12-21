@@ -1,4 +1,3 @@
-importFrom("spatstat", nndist, nndist.default)
 import(spcosa)
 import(gstat)
 import(automap)
@@ -34,3 +33,5 @@ export(
 )
 
 S3method(preProcess, removeBias)
+importFrom(spatstat.geom,  nndist)
+importFrom(spatstat.geom,  nndist.default)

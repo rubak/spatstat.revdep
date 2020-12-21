@@ -41,7 +41,7 @@
 #' \donttest{
 #' # generate data
 #' mix1 <- normmix(ps=c(.4, .2,.4), mus=list(c(0.3, 0.3), c(.5,.5),c(0.7, 0.7)),
-#'  sigmas = list(.02*diag(2),.05*diag(2), .02*diag(2)),lambda = 100, win = spatstat::square(1))
+#'  sigmas = list(.02*diag(2),.05*diag(2), .02*diag(2)),lambda = 100, win = spatstat.geom::square(1))
 #' #plot the true mixture
 #' plot(mix1,main = "True Poisson intensity surface (mixture of normal components)")
 #' pp1 <- rsppmix(mix1)
@@ -79,7 +79,7 @@ FixLS_da<- function(fit, burnin = floor(fit$L / 10),
     burnin = floor(fit$L/10)
   }
   fit <- drop_realization(fit, burnin)
-  win <- spatstat::domain(fit$data)
+  win <- spatstat.geom::domain(fit$data)
   if(class(fit)=="bdmcmc_res")
   {
     tab=GetBDTable(fit,F)
@@ -217,7 +217,7 @@ FixLS_da<- function(fit, burnin = floor(fit$L / 10),
 #' # generate data
 #' mix1 = normmix(ps=c(.4, .2,.4), mus=list(c(0.3, 0.3), c(.5,.5),c(0.7, 0.7)),
 #'  sigmas = list(.02*diag(2),.05*diag(2), .02*diag(2)),lambda = 100,
-#'  win = spatstat::square(1))
+#'  win = spatstat.geom::square(1))
 #' plot(mix1,main="True Poisson intensity surface (mixture of normal components)")
 #' pp1 = rsppmix(mix1)
 #' # Run Data augmentation MCMC and get posterior realizations

@@ -55,14 +55,14 @@ plot(truemix,xlim= c(-1, 2), ylim = c(-1, 2),contour = TRUE)+add_title(
  "Contour plot of the true mixture of normals density")
 #build a mixture intensity surface for the Poisson point process
 trueintsurf=to_int_surf(truemix, lambda = 100, win=
- spatstat::owin( c(-1, 2),c(-1, 2)))
+ spatstat.geom::owin( c(-1, 2),c(-1, 2)))
 plot(trueintsurf)#plot the surface, it is lambda*normmix}
 
 }
 \seealso{
 \code{\link{normmix}},
 \code{\link{to_int_surf}},
-\code{\link[spatstat]{owin}},
+\code{\link[spatstat.geom]{owin}},
 \code{\link{rsppmix}}
 }
 \author{

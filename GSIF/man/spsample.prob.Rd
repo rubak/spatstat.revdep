@@ -34,7 +34,7 @@ This function can be time consuming for large grids.
 \examples{
 library(plotKML)
 library(maxlike)
-library(spatstat)
+library(spatstat.core)
 library(maptools)
 
 data(eberg)

@@ -24,7 +24,7 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Imports: adegenet, ggplot2, stringr, igraph, knitr, rmarkdown, stats,
-        spatstat, Matrix, vegan, utils, methods, pegas, MASS, tidyr,
+        spatstat.geom, spatstat.core, spatstat.linnet, Matrix, vegan, utils, methods, pegas, MASS, tidyr,
         sp, sf, diveRsity, rappdirs, gdistance, raster, foreign,
         ecodist, Rdpack
 RdMacros: Rdpack

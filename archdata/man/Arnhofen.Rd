@@ -36,7 +36,7 @@ Baddeley, A., E. Rubak and R. Turner. 2016. \emph{Spatial Point Patterns: Method
 library(archdata)
 data(Arnhofen)
 # package spatstat is described and illustrated in Baddeley et al. (2016)
-library(spatstat)
+library(spatstat.core)
 ap <- Arnhofen	      # to shorten the following code
 
 # generate observation window object; note the polygonal outline.

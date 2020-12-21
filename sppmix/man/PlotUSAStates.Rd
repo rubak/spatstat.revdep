@@ -23,7 +23,7 @@ show only the continental USA states.}
 
 \item{showcentroids}{Logical requesting to
 show centroids for each state or county. These centroids are returned in
-a \code{\link[spatstat]{ppp}} object. The centroid is chosen
+a \code{\link[spatstat.geom]{ppp}} object. The centroid is chosen
 so that it is always within the state or county boundaries.}
 
 \item{typecentroid}{If \code{showcentroids=TRUE}
@@ -77,14 +77,14 @@ A mark is an integer pointing to an element from the vector
 \code{levels} for \code{discretelevels=TRUE},
 otherwise a real number.}
 
-\item{pp}{Optionally, a point pattern as an object of type \code{\link[spatstat]{ppp}}
+\item{pp}{Optionally, a point pattern as an object of type \code{\link[spatstat.geom]{ppp}}
 to be displayed over the created plot. The window of this point pattern will be used as
 the window of observation (overrides the window in the
 \code{surf} parameter).}
 
 \item{surf}{Optionally, an intensity surface
 as an object of type \code{intensity_surface}
-or an image object of class \code{\link[spatstat]{im}}
+or an image object of class \code{\link[spatstat.geom]{im}}
 to be plotted first and then the map will be
 displayed over this field. Supplying this
 parameter sets the flag \code{plotlevels=FALSE}

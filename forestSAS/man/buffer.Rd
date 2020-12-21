@@ -43,7 +43,7 @@ old-growthoak forest in the Qinling Mountains, China. Scandinavian Journal of Fo
 Zongzheng Chai, chaizz@126.com
 }
 \examples{
-library(spatstat)
+library(spatstat.core)
 ####Based on the simulated data####
 # Creating a simulated point pattern
 x <- runif(20)

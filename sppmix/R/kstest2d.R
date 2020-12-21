@@ -9,7 +9,7 @@
 #' \url{http://faculty.missouri.edu/~micheasa/sppmix/sppmix_all_examples.html
 #' #kstest2d}
 #'
-#' @param x1,x2 Objects of class \code{\link[spatstat]{ppp}}.
+#' @param x1,x2 Objects of class \code{\link[spatstat.geom]{ppp}}.
 #' @param showinfo Logical variable. Requests to display the test conclusion based on the value of the p-value. Default is TRUE.
 #' @return A list with class "htest" containing the following components:
 #' \item{statistic}{Value of the KS statistic}
@@ -21,14 +21,14 @@
 #'
 #' Adapted from Matlab code by Dylan Muir.
 #' @author Jiaxun Chen, Sakis Micheas
-#' @seealso \code{\link{rnormmix}},\code{\link{to_int_surf}},\code{\link[spatstat]{owin}}
+#' @seealso \code{\link{rnormmix}},\code{\link{to_int_surf}},\code{\link[spatstat.geom]{owin}}
 #' @examples
 #' \donttest{
 #' # generate two point patterns
 #' mix1 <- rnormmix(3, sig0 = .01, df = 5, xlim=c(0, 5), ylim=c(0, 5))
-#' intsurf1=to_int_surf(mix1,lambda = 40, win =spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf1=to_int_surf(mix1,lambda = 40, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' mix2 <- rnormmix(8, sig0 = .01, df = 10, xlim=c(0, 5),ylim=c(0, 5))
-#' intsurf2=to_int_surf(mix2,lambda = 50, win =spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf2=to_int_surf(mix2,lambda = 50, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' #generate patterns from the two different models
 #' pp1 <- rsppmix(intsurf1)
 #' pp2 <- rsppmix(intsurf2)
@@ -48,7 +48,7 @@ kstest2d <- function(x1, x2,showinfo=TRUE) {
     return(count)
   }
 
-  if((!spatstat::is.ppp(x1)) | (!spatstat::is.ppp(x2))){
+  if((!spatstat.geom::is.ppp(x1)) | (!spatstat.geom::is.ppp(x2))){
     stop("Point pattern must be of class ppp.")
   }
   n1 <- length(x1$x)
@@ -109,7 +109,7 @@ kstest2d <- function(x1, x2,showinfo=TRUE) {
 #' \url{http://faculty.missouri.edu/~micheasa/sppmix/sppmix_all_examples.html
 #' #kstest2dsurf}
 #'
-#' @param pp Object of class \code{\link[spatstat]{ppp}}.
+#' @param pp Object of class \code{\link[spatstat.geom]{ppp}}.
 #' @param intsurf Object of class \code{intensity_surface}.
 #' @param truncate Requests to truncate the generated point patterns
 #' to be within the window of the intensity object intsurf. Default is FALSE.
@@ -147,7 +147,7 @@ kstest2d <- function(x1, x2,showinfo=TRUE) {
 kstest2dsurf <- function(pp, intsurf,truncate = FALSE,iters=500)
 {
 
-  if((!spatstat::is.ppp(pp)) || (!is.intensity_surface(intsurf)))
+  if((!spatstat.geom::is.ppp(pp)) || (!is.intensity_surface(intsurf)))
   {
     stop("Bad point pattern object or intensity surface object.")
   }

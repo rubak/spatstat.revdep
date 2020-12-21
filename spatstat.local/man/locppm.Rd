@@ -16,14 +16,14 @@ locppm(\dots, sigma = NULL, f = 1/4,
 }
 \arguments{
   \item{\dots}{
-    Arguments passed to \code{\link[spatstat]{ppm}}
+    Arguments passed to \code{\link[spatstat.core]{ppm}}
     to fit the homogeneous model.
   }
   \item{sigma}{
     Standard deviation of Gaussian kernel for local likelihood.
   }
   \item{f}{
-    Argument passed to \code{\link[spatstat]{bw.frac}} to
+    Argument passed to \code{\link[spatstat.core]{bw.frac}} to
     compute a value for \code{sigma} if it is missing or \code{NULL}.
   }
   \item{vcalc}{
@@ -60,10 +60,10 @@ locppm(\dots, sigma = NULL, f = 1/4,
   respectively.
 
   This command should be used in the same way as
-  \code{\link[spatstat]{ppm}}. 
+  \code{\link[spatstat.core]{ppm}}. 
   The point pattern data and the specification of the model
   are given in the leading arguments \code{\dots} which are passed
-  directly to \code{\link[spatstat]{ppm}}.
+  directly to \code{\link[spatstat.core]{ppm}}.
 
   In all cases, the local estimates of the coefficients are
   computed. However, because the variance calculations are

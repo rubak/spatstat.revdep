@@ -7,7 +7,7 @@
 det_alpha(intens, threshold, nxprob = 0.1)
 }
 \arguments{
-\item{intens}{estimated intensity of the observed process (object of class "im", see \code{\link[spatstat]{density.ppp}})}
+\item{intens}{estimated intensity of the observed process (object of class "im", see \code{\link[spatstat.core]{density.ppp}})}
 
 \item{threshold}{threshold c: The high-risk zone is the field in which the estimated intensity 
 exceeds this value.}

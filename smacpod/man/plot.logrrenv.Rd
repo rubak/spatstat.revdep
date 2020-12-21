@@ -11,11 +11,11 @@ function.}
 \item{x}{An object of class \code{logrrenv}.}
 
 \item{...}{Additional graphical parameters passed to the 
-\code{\link[spatstat]{image.im}} function.  See
+\code{\link[spatstat.geom]{image.im}} function.  See
 Details.}
 
 \item{conlist}{Additional argument passed to the 
-\code{\link[spatstat]{contour.im}} function.}
+\code{\link[spatstat.geom]{contour.im}} function.}
 
 \item{main}{A main title for the plot.  Default is blank.}
 }
@@ -28,7 +28,7 @@ An important aspect of this plot is the
   color argument (\code{col}) used for displaying
   the regions outside the non-rejection envelopes.  If NULL
   (the implicit default), then the default color palette
-  used by \code{\link[spatstat]{image.im}} will be used. 
+  used by \code{\link[spatstat.geom]{image.im}} will be used. 
   Simpler schemes, e.g., c("blue", "white", "orange") can
   suffice. See the examples.
 }
@@ -42,6 +42,6 @@ plot(logrrsim, col = c("blue", "white", "orange"), ribbon = FALSE, box = FALSE)
 plot(logrrsim, col = topo.colors(12))
 }
 \seealso{
-\code{\link[spatstat]{plot.im}},
-  \code{\link[spatstat]{contour.im}}
+\code{\link[spatstat.geom]{plot.im}},
+  \code{\link[spatstat.geom]{contour.im}}
 }

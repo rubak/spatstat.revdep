@@ -28,5 +28,5 @@ the intensity matrix, the threshold c and a hole. Used in function
 det_thresholdfromarea_hole.
 }
 \seealso{
-\code{\link[spatstat]{owin}}, \code{\link[spatstat]{area.owin}}
+\code{\link[spatstat.geom]{owin}}, \code{\link[spatstat.geom]{area.owin}}
 }

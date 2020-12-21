@@ -69,11 +69,11 @@
 
   The functions documented here provided methods for this class,
   for the generic functions
-  \code{\link[spatstat]{as.interact}},
-  \code{\link[spatstat]{as.ppm}},
+  \code{\link[spatstat.core]{as.interact}},
+  \code{\link[spatstat.core]{as.ppm}},
   \code{\link[stats]{coef}},
   \code{\link[stats]{confint}},
-  \code{\link[spatstat]{is.poisson}}
+  \code{\link[spatstat.core]{is.poisson}}
   and
   \code{\link{print}}.
 

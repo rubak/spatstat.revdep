@@ -38,7 +38,7 @@ Sebastian Meyer
 }
 
 \seealso{
-\code{\link[spatstat]{runifdisc}} in package \pkg{spatstat}, which is
+\code{\link[spatstat.core]{runifdisc}} in package \pkg{spatstat}, which is
 slightly more flexible and integrated within the \code{"ppp"} class.
 }
 

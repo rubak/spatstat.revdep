@@ -16,7 +16,7 @@ bw.locppm(...,
 }
 \arguments{
   \item{\dots}{
-    Arguments passed to \code{\link[spatstat]{ppm}} to fit the homogeneous
+    Arguments passed to \code{\link[spatstat.core]{ppm}} to fit the homogeneous
     version of the model.
   }
   \item{method}{

@@ -14,7 +14,7 @@ lgcpmix <- function(lambda,covmodel="exp",covpars=NULL){
   if(!is.list(covpars)) stop("'covpars' must be a named list; members matching the required contents for 'covmodel'")
   if(is.null(covpars$var)) covpars$var <- 1
 
-  modgen <- spatstat::getRandomFieldsModelGen(covmodel)
+  modgen <- spatstat.core::getRandomFieldsModelGen(covmodel)
   rfmodel <- do.call(modgen,covpars) + RandomFields::RMtrend(mean=-covpars$var/2)
   if(!inherits(rfmodel,"RMmodel")) stop("Problem generating RandomFields covariance model object",call.=FALSE)
 

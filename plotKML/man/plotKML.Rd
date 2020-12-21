@@ -508,7 +508,7 @@ sel = bigfoot$Lon > bbox[1,1] & bigfoot$Lon < bbox[1,2] &
 bigfoot <- bigfoot[sel,]
 coordinates(bigfoot) <- ~Lon+Lat
 proj4string(bigfoot) <- CRS("+proj=longlat +datum=WGS84")
-library(spatstat)
+library(spatstat.core)
 bigfoot.aea <- as.ppp(spTransform(bigfoot, CRS(aea.prj)))
 ## Load the covariates:
 sel.grids <- c("globedem","nlights03","sdroads","gcarb","twi","globcov")

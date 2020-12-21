@@ -9,7 +9,7 @@ Description: The genetic algorithm is designed to optimize wind farms of any sha
 Depends: R (>= 3.5.0)
 Imports: rgdal, Rcpp, raster, sf, sp, rworldmap, gstat, ggplot2,
         RColorBrewer, calibrate, grDevices, graphics, leaflet,
-        magrittr, foreach, parallel, doParallel, methods, spatstat,
+        magrittr, foreach, parallel, doParallel, methods, spatstat.geom, spatstat.core, spatstat.linnet,
         stats, utils
 LinkingTo: Rcpp
 LazyData: TRUE

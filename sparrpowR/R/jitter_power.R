@@ -95,28 +95,28 @@ jitter_power <- function(obs_data,
   rcluster_control <- function(n, l, win, s, types = "control", ...) {
     if (samp_control == "uniform") {
       repeat {  
-        x <- spatstat::runifpoint(n = n, win = win, ...)
+        x <- spatstat.core::runifpoint(n = n, win = win, ...)
         if (x$n == n) break
       }
     }
     
     if (samp_control == "CSR") {
-      x <- spatstat::rpoispp(lambda = l, win = win, ...)
+      x <- spatstat.core::rpoispp(lambda = l, win = win, ...)
     }
     
     if (samp_control == "MVN") {
       x1 <- obs_data$x + rnorm(length(obs_data$x), 0, s) 
       y1 <- obs_data$y + rnorm(length(obs_data$y), 0, s) 
-      x <- spatstat::ppp(x1, y1, window = win)
+      x <- spatstat.geom::ppp(x1, y1, window = win)
     }
     
-    spatstat::marks(x) <- types
+    spatstat.geom::marks(x) <- types
     return(x)
   }
   
   # extract case locations
   cas <- split(obs_data)[[1]]
-  spatstat::marks(cas) <- "case"
+  spatstat.geom::marks(cas) <- "case"
   
   # progress bar
   if (verbose == TRUE & parallel == FALSE){
@@ -160,8 +160,8 @@ jitter_power <- function(obs_data,
                             ...)
     
     # Combine random clusters of cases and controls into one marked ppp
-    z <- spatstat::superimpose(con, cas)
-    spatstat::marks(z) <- as.factor(spatstat::marks(z))
+    z <- spatstat.geom::superimpose(con, cas)
+    spatstat.geom::marks(z) <- as.factor(spatstat.geom::marks(z))
     
     # Calculate observed kernel density ratio
     obs_lrr <- sparr::risk(z, tolerate = TRUE, verbose = FALSE, ...)

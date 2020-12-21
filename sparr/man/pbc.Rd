@@ -5,7 +5,7 @@
 \alias{pbc}
 \title{Primary biliary cirrhosis data}
 \format{\code{pbc} is a dichotomously marked
-\code{\link[spatstat]{ppp.object}}, with locations expressed in UK Ordnance
+\code{\link[spatstat.geom]{ppp.object}}, with locations expressed in UK Ordnance
 Survey Coordinates (km).}
 \source{
 Prince et al. (2001), The geographical distribution of primary

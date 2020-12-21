@@ -41,7 +41,7 @@ None
 Zongzheng Chai, chaizz@126.com
 }
 \examples{
-library(spatstat)
+library(spatstat.core)
 data(finpines)
 finpinesdata<-as.data.frame(finpines)
 ####Dividing the stories

@@ -18,7 +18,7 @@
 \code{\link[smacpod]{kdest}}.}
 
 \item{...}{Additional graphical parameters passed to the
-\code{\link[spatstat]{plot.fv}} function, which is used
+\code{\link[spatstat.core]{plot.fv}} function, which is used
 internally for plotting.}
 
 \item{shadecol1}{Shade color for max/min envelopes.
@@ -53,5 +53,5 @@ plot(kd1)
 plot(kd1, legend = TRUE)
 }
 \seealso{
-\code{\link[spatstat]{plot.fv}}
+\code{\link[spatstat.core]{plot.fv}}
 }

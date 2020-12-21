@@ -10,7 +10,7 @@ Description: Implements classes and methods for modeling spatial point patterns 
 Depends: R (>= 3.2.1), stats, graphics, grDevices, utils
 License: GPL (>= 2)
 LazyData: true
-Imports: Rcpp, spatstat, rgl, fields, mvtnorm, ggplot2 (>= 2.1.0)
+Imports: Rcpp, spatstat.geom, spatstat.core, spatstat.linnet
 LinkingTo: Rcpp, RcppArmadillo, mvtnorm
 URL: http://faculty.missouri.edu/~micheasa/sppmix/index.html
 RoxygenNote: 6.0.1

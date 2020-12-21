@@ -42,8 +42,8 @@ as.SpatialPointsDataFrame.ppp = function(from) {
 setAs("ppp", "SpatialPointsDataFrame", as.SpatialPointsDataFrame.ppp)
 
 as.SpatialGridDataFrame.ppp = function(from) {
-	# require(spatstat)
-    #if (!requireNamespace("spatstat", quietly = TRUE))
+	# require(spatstat.core)
+    #if (!requireNamespace("spatstat.core", quietly = TRUE))
 	#	stop("package spatstat required for .SP2owin")
 	w = from$window
 	if (w$type != "mask")
@@ -60,7 +60,7 @@ as.SpatialGridDataFrame.ppp = function(from) {
 setAs("ppp", "SpatialGridDataFrame", as.SpatialGridDataFrame.ppp)
 
 as.SpatialGridDataFrame.im = function(from) {
-    # require(spatstat)
+    # require(spatstat.core)
     offset = c(from$xrange[1] + 0.5 * from$xstep, from$yrange[1] + 
         0.5 * from$ystep)
     cellsize = c(diff(from$xrange)/from$dim[2], diff(from$yrange)/from$dim[1])
@@ -73,17 +73,17 @@ as.SpatialGridDataFrame.im = function(from) {
 setAs("im", "SpatialGridDataFrame", as.SpatialGridDataFrame.im)
 
 as.im.SpatialGridDataFrame = function(from) {
-    #require(spatstat)
-    if (!requireNamespace("spatstat", quietly = TRUE))
+    #require(spatstat.core)
+    if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.im.SpatialGridDataFrame")
     xi <- as.image.SpatialGridDataFrame(from)
-    spatstat::im(t(xi$z), xcol=xi$x, yrow=xi$y)
+    spatstat.geom::im(t(xi$z), xcol=xi$x, yrow=xi$y)
 }
 setAs("SpatialGridDataFrame", "im", as.im.SpatialGridDataFrame)
 
 #as.im.RasterLayer <- function(from) 
 #{
-#    if (!requireNamespace("spatstat", quietly = TRUE))
+#    if (!requireNamespace("spatstat.core", quietly = TRUE))
 #		stop("package spatstat required for coercion")
 #    if (!requireNamespace("raster", quietly = TRUE))
 #		stop("package raster required for coercion")
@@ -96,7 +96,7 @@ setAs("SpatialGridDataFrame", "im", as.im.SpatialGridDataFrame)
 #    dm <- dim(from)[2:1]
 #    xx <- unname(orig[1] + cumsum(c(0, rep(rs[1], dm[1]-1))))
 #    yy <- unname(orig[2] + cumsum(c(0, rep(rs[2], dm[2]-1))))
-#    im <- spatstat::im(matrix(raster::values(from), ncol=dm[1], nrow=dm[2],
+#    im <- spatstat.geom::im(matrix(raster::values(from), ncol=dm[1], nrow=dm[2],
 #        byrow=TRUE)[dm[2]:1,], xcol=xx, yrow=yy)
 #    im
 #}
@@ -105,7 +105,7 @@ setAs("SpatialGridDataFrame", "im", as.im.SpatialGridDataFrame)
 
 as.im.RasterLayer <- function(from, factor.col.name = NULL) 
 {
-  if (!requireNamespace("spatstat", quietly = TRUE))
+  if (!requireNamespace("spatstat.core", quietly = TRUE))
     stop("package spatstat required for coercion")
   if (!requireNamespace("raster", quietly = TRUE))
     stop("package raster required for coercion")
@@ -136,13 +136,13 @@ as.im.RasterLayer <- function(from, factor.col.name = NULL)
   ## Assign dimensions to `val` as a matrix in raster layout:
   dim(val) <- dm
   ## Transform to spatstat format
-  val <- spatstat::transmat(val, from = list(x="-i", y="j"), to = "spatstat")
-  im <- spatstat::im(val, xcol=xx, yrow=yy)
+  val <- spatstat.geom::transmat(val, from = list(x="-i", y="j"), to = "spatstat")
+  im <- spatstat.geom::im(val, xcol=xx, yrow=yy)
   return(im)
 }
 
 
-#if (requireNamespace("spatstat", quietly = TRUE) && requireNamespace("raster", quietly = TRUE)) {
+#if (requireNamespace("spatstat.core", quietly = TRUE) && requireNamespace("raster", quietly = TRUE)) {
 #  setAs("RasterLayer", "im", as.im.RasterLayer)
 #}
 

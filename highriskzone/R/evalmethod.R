@@ -21,7 +21,7 @@
 #'        Here, an inhomogeneous Poisson process is simulated and then that data is thinned.
 #'        }
 #' \item{ Simulation of a Neyman-Scott process }{
-#'        Here a Neyman-Scott process is simulated (see \code{\link{sim_nsppp}}, \code{\link[spatstat]{rNeymanScott}})
+#'        Here a Neyman-Scott process is simulated (see \code{\link{sim_nsppp}}, \code{\link[spatstat.core]{rNeymanScott}})
 #'        and this data is then also thinned.
 #'        }
 #' }
@@ -72,7 +72,7 @@
 #'    \item{ arearegion }{ area of the high-risk zone }
 #'    \item{ numberobs }{ number of observations in the observed point pattern \ifelse{latex}{\eqn{\tilde Y}}{Y'} }
 #'    
-#' @seealso \code{\link{det_hrz}}, \code{\link[spatstat]{rNeymanScott}}, \code{\link{thin}}, \code{\link{sim_nsppp}}, \code{\link{sim_intens}}
+#' @seealso \code{\link{det_hrz}}, \code{\link[spatstat.core]{rNeymanScott}}, \code{\link{thin}}, \code{\link{sim_nsppp}}, \code{\link{sim_intens}}
 #' @examples
 #' \dontrun{    
 #'  data(craterB)

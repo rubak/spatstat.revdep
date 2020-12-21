@@ -12,7 +12,7 @@ plot_avgsurf(fit, win = fit$data$window, LL = 100,
 \item{fit}{An object the contains all posterior realizations, e.g., the return
 value from \code{\link{est_mix_damcmc}} or \code{\link{est_mix_bdmcmc}}.}
 
-\item{win}{An object of class \code{\link[spatstat]{owin}}.}
+\item{win}{An object of class \code{\link[spatstat.geom]{owin}}.}
 
 \item{LL}{Length of the side of the square grid.
 The density or intensity is calculated on an L * L grid.
@@ -25,10 +25,10 @@ but the better the approximation.}
 
 \item{grayscale}{Logical flag to request a gray scale plot.}
 
-\item{showplot}{Logical flag to request that the plot will be shown. Set to FALSE if you want to return the \code{\link[spatstat]{im.object}}, but do not want to produce the 3d plot.}
+\item{showplot}{Logical flag to request that the plot will be shown. Set to FALSE if you want to return the \code{\link[spatstat.geom]{im.object}}, but do not want to produce the 3d plot.}
 }
 \value{
-An image as an object of class \code{\link[spatstat]{im.object}}.
+An image as an object of class \code{\link[spatstat.geom]{im.object}}.
 }
 \description{
 This function calculates the intensity surface
@@ -47,7 +47,7 @@ For examples see
 \examples{
 \donttest{
 truemix <- rnormmix(m = 5, sig0 = .1, df = 5, xlim= c(-1, 1), ylim =c(0, 3))
-trueintsurf=to_int_surf(truemix, lambda = 200, win =spatstat::owin( c(-1, 1),c(0, 3)))
+trueintsurf=to_int_surf(truemix, lambda = 200, win =spatstat.geom::owin( c(-1, 1),c(0, 3)))
 plot(trueintsurf, main = "True Poisson intensity surface (mixture of normal components)")
 pp1 <- rsppmix(trueintsurf)
 # Run Data augmentation MCMC and get posterior realizations

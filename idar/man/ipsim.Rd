@@ -18,7 +18,7 @@
 }
 
 \arguments{
-   \item{pp}{A multitype (a.k.a. multivariate) marked point pattern. An object with the \link[spatstat]{ppp} format of \pkg{spatstat}}
+   \item{pp}{A multitype (a.k.a. multivariate) marked point pattern. An object with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}}
    \item{mimark}{Character. Name of the focal species in the multitype \code{pp}.}
    \item{namesmark}{Character. If the marks in \code{pp} are within a \code{data.frame}, the name of the column with the species names}
    \item{sigma}{Sigma for the Gaussian kernel to estimate the intensity of the point pattern to simulate}
@@ -33,9 +33,9 @@
 \details{
 This functions produce simulated point patterns appropriate to to compute envelopes of IDAR(r) functions. The usual tests of IDAR(r) functions require that the multivariate (i.e. multispecies) pattern remains fixed, except for the focal species, that is simulated acording to, e.g., an (inhomogeneous) Poisson process.
 
- \code{ipsim} returns the multivariate \code{pp} pattern with all species in the same locations except the "focal" one (i.e., the one indicated by the argument \code{mimark}) that is simulated using \link[spatstat]{rpoispp}. If  an intensity surface (argument \code{lambda}) is provided, the focal species will be simulated from this surface. If no \code{lambda} is provided but the argument \code{sigma} is >0, an intensity surface will be estimated with a Gaussian kernel with the sigma provided (using \link[spatstat]{density.ppp}) and the simulation will be made form this surface. If no lambda is provided and \code{sigma}=0, a homogeneos Poisson process will be simulated.
+ \code{ipsim} returns the multivariate \code{pp} pattern with all species in the same locations except the "focal" one (i.e., the one indicated by the argument \code{mimark}) that is simulated using \link[spatstat.core]{rpoispp}. If  an intensity surface (argument \code{lambda}) is provided, the focal species will be simulated from this surface. If no \code{lambda} is provided but the argument \code{sigma} is >0, an intensity surface will be estimated with a Gaussian kernel with the sigma provided (using \link[spatstat.core]{density.ppp}) and the simulation will be made form this surface. If no lambda is provided and \code{sigma}=0, a homogeneos Poisson process will be simulated.
 
- \code{simulador2} generates a list (length = \emph{nsim}) of marked (with mark = \emph{mimark}) univariate point patterns from an intensity surface using \link[spatstat]{rpoispp}.
+ \code{simulador2} generates a list (length = \emph{nsim}) of marked (with mark = \emph{mimark}) univariate point patterns from an intensity surface using \link[spatstat.core]{rpoispp}.
 
  \code{ipsimlist} uses the results of \code{simulador2} and the multivariate \code{pp} pattern to generate a list of multivariate point patterns with all species in the same locations except the "focal" one (i.e., the one indicated by the argument \code{mimark}) that has the locations simulated with \code{simulador2}.
  
@@ -45,7 +45,7 @@ This functions produce simulated point patterns appropriate to to compute envelo
 
 
 \value{
-  \code{ipsim} produces a multivariate point pattern (with the \link[spatstat]{ppp} format of \pkg{spatstat}); \code{ipsimlist}  and \code{multifocalsimulator} produce a list of multivariate point patterns; \code{simulador2} produces a list of univariate marked patterns.
+  \code{ipsim} produces a multivariate point pattern (with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}); \code{ipsimlist}  and \code{multifocalsimulator} produce a list of multivariate point patterns; \code{simulador2} produces a list of univariate marked patterns.
 }
 
 \author{ Marcelino de la Cruz \email{marcelino.delacruz@urjc.es}}

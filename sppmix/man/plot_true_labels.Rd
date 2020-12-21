@@ -27,7 +27,7 @@ For examples see
 \examples{
 \donttest{
 truemix <- rnormmix(m = 5, sig0 = .1, df = 5, xlim= c(-3, 3), ylim = c(-3, 3))
-intsurf=to_int_surf(truemix, lambda = 100, win =spatstat::owin( c(-3, 3),c(-3, 3)))
+intsurf=to_int_surf(truemix, lambda = 100, win =spatstat.geom::owin( c(-3, 3),c(-3, 3)))
 pp1 <- rsppmix(intsurf,FALSE)
 plot_true_labels(pp1)}
 
@@ -35,7 +35,7 @@ plot_true_labels(pp1)}
 \seealso{
 \code{\link{rnormmix}},
 \code{\link{to_int_surf}},
-\code{\link[spatstat]{owin}},
+\code{\link[spatstat.geom]{owin}},
 \code{\link{rsppmix}}
 }
 \author{

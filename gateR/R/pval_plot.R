@@ -27,7 +27,7 @@ pval_plot <- function(input,
     stop("The 'input' argument must be an object of class 'im'")
   }
 
-  out <- raster::raster(spatstat::as.im(input))  # create raster
+  out <- raster::raster(spatstat.geom::as.im(input))  # create raster
   out <- raster::cut(out,
                      breaks = c(-Inf, alpha / 2, 1 - alpha / 2, Inf),
                      right = FALSE)

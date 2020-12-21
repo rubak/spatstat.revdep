@@ -37,9 +37,9 @@ intensity surface of the ground process.}
 \item{discrete_mark}{Logical flag indicating whether the mark is discrete or not.
 Default is TRUE. For continuous marks set this to FALSE.}
 
-\item{win}{Object of type \code{\link[spatstat]{owin}} defining the window of observation.}
+\item{win}{Object of type \code{\link[spatstat.geom]{owin}} defining the window of observation.}
 
-\item{bigwin}{Object of type \code{\link[spatstat]{owin}}. If supplied, this will be the
+\item{bigwin}{Object of type \code{\link[spatstat.geom]{owin}}. If supplied, this will be the
 window of observation, even if the pattern is generated over \code{win}. Useful if we
 do not truncate (\code{truncate=FALSE}) and we want better presentation of the generated MIPPP.}
 
@@ -53,8 +53,8 @@ Marked IPPP intensity surface and generated point pattern for each mark.}
 \value{
 A list containing the following components:
 \item{groundsurfs}{A list of \code{intensity_surface} objects containing the surfaces of the ground processes (one for each discrete mark value).}
-\item{groundPPs}{A list of \code{\link[spatstat]{ppp}} objects containing the locations of the ground processes (one for each discrete mark value).}
-\item{genMPP}{The generated point pattern as an object of class \code{\link[spatstat]{ppp}} and \code{sppmix}. The member \code{$marks} contains the marks at each of the generated locations.}
+\item{groundPPs}{A list of \code{\link[spatstat.geom]{ppp}} objects containing the locations of the ground processes (one for each discrete mark value).}
+\item{genMPP}{The generated point pattern as an object of class \code{\link[spatstat.geom]{ppp}} and \code{sppmix}. The member \code{$marks} contains the marks at each of the generated locations.}
 \item{mark_distr_choice}{The choice of mark distribution. Same as the supplied parameter.}
 \item{params}{The default or supplied parameter \code{params}.}
 }
@@ -103,7 +103,7 @@ Marked IPPP models via conditioning arguments.
 \donttest{
 # Create a marked point pattern; use randomization and 2 discrete uniform
 # marks (default values)
-newMPP=rMIPPP_cond_mark(bigwin = spatstat::owin(c(-10,10),c(-10,10)))
+newMPP=rMIPPP_cond_mark(bigwin = spatstat.geom::owin(c(-10,10),c(-10,10)))
 newMPP$params
 plot(newMPP$genMPP, showmarks=TRUE)+add_title("Marked Poisson point pattern",
  n=newMPP$genMPP$n, nmarks=2)

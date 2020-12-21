@@ -2,9 +2,9 @@
 #' 
 #' @description Creates a \code{rawDist} data object from arbitary coordinates ready for \link[=plot.rawDist]{plotting} or \link[=spot.dist]{sample spot alignment}.  
 #' 
-#' @param spots A list of \code{\link[spatstat]{ppp}} objects or a single \code{ppp} object defining the sample spot sequences. If \code{\link[spatstat]{marks}} are not specified, sequencial names will be used.
-#' @param gbs \code{\link[spatstat]{psp}} object defining the growth lines. If \code{\link[spatstat]{marks}} are not specified, sequencial names will be used.
-#' @param main \code{\link[spatstat]{psp}} object defining the measurement axis. If \code{\link[spatstat]{marks}} are not specified, sequencial 'main' will assigned as the marks. Only on `main` axis is allowed per `rawDist` object.
+#' @param spots A list of \code{\link[spatstat.geom]{ppp}} objects or a single \code{ppp} object defining the sample spot sequences. If \code{\link[spatstat.geom]{marks}} are not specified, sequencial names will be used.
+#' @param gbs \code{\link[spatstat.geom]{psp}} object defining the growth lines. If \code{\link[spatstat.geom]{marks}} are not specified, sequencial names will be used.
+#' @param main \code{\link[spatstat.geom]{psp}} object defining the measurement axis. If \code{\link[spatstat.geom]{marks}} are not specified, sequencial 'main' will assigned as the marks. Only on `main` axis is allowed per `rawDist` object.
 #' @param spot.seq.names optional. A character vector of equal length to number of sample \code{spots} sequences defining the name for each sequence. If left empty sequencial names will be generated.
 #' @param sample.name optional. A character vector (\code{length == 1}) defining the name of the sample.
 #' @param scaling.factor optional. A numeric value defining the scale of photograph in pixels / \code{unit}. Defaults to 1.

@@ -15,7 +15,7 @@ bw.loccit(..., use.fft=TRUE,
 }
 \arguments{
   \item{\dots}{
-    Arguments passed to \code{\link[spatstat]{kppm}} to fit the homogeneous
+    Arguments passed to \code{\link[spatstat.core]{kppm}} to fit the homogeneous
     version of the model.
   }
   \item{use.fft}{

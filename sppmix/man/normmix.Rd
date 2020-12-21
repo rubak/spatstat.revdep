@@ -32,7 +32,7 @@ window. If set along with the \code{win} parameter,
 the returned object will be an intensity surface.}
 
 \item{win}{Optional parameter for the window of
-observation, an object of type \code{\link[spatstat]{owin}}.
+observation, an object of type \code{\link[spatstat.geom]{owin}}.
 Must be set together with \code{lambda} in
 order to create an intensity surface.}
 
@@ -57,7 +57,7 @@ An object of class "normmix" containing the following components:
  \item{lambda}{Returned only if lambda is provided when calling
  \code{normmix}.}
  \item{window}{Returned only \code{win} is provided when calling
- \code{normmix}. This is an object of class \code{\link[spatstat]{owin}}.}
+ \code{normmix}. This is an object of class \code{\link[spatstat.geom]{owin}}.}
  \item{estimated}{Whether the normal mixture is estimated.}
 }
 \description{
@@ -84,7 +84,7 @@ mix1 <- normmix(ps = c(.3, .7), mus = list(c(0.2, 0.2), c(.8, .8)),
 mix1
 summary(mix1)
 intsurf1 <- normmix(ps = c(.3, .7), mus = list(c(0.2, 0.2), c(.8, .8)),
- sigmas = list(.01*diag(2), .01*diag(2)), lambda = 100, win = spatstat::square(1))
+ sigmas = list(.01*diag(2), .01*diag(2)), lambda = 100, win = spatstat.geom::square(1))
 intsurf1
 summary(intsurf1)}
 

@@ -52,7 +52,7 @@ This function basically extends the \code{\link{rasterize}} function available i
 data(eberg)
 library(sp)
 library(maptools)
-library(spatstat)
+library(spatstat.core)
 coordinates(eberg) <- ~X+Y
 data(eberg_zones)
 # point map:

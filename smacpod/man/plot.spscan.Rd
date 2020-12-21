@@ -10,7 +10,7 @@
 \item{x}{An object of class \code{spscan}.}
 
 \item{...}{Additional graphical parameters passed to the
-\code{\link[spatstat]{plot.ppp}} function.}
+\code{\link[spatstat.geom]{plot.ppp}} function.}
 
 \item{nv}{The number of verticies to draw the cluster 
 circles. Default is 100.}
@@ -43,5 +43,5 @@ out = spscan.test(grave, case = 2, alpha = 0.1)
 plot(out, chars = c(1, 20), main = "most likely cluster")
 }
 \seealso{
-\code{\link[spatstat]{plot.ppp}}, \code{\link[plotrix]{draw.circle}}
+\code{\link[spatstat.geom]{plot.ppp}}, \code{\link[plotrix]{draw.circle}}
 }

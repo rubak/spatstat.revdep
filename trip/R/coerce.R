@@ -69,7 +69,7 @@ setAs("trip", "ltraj", function(from) {
 #' @export as.ppp
 #' @importFrom maptools as.ppp.SpatialPointsDataFrame
 #' @param X \code{trip} object.
-#' @param fatal Logical value, see Details of \code{\link[spatstat]{as.ppp}}
+#' @param fatal Logical value, see Details of \code{\link[spatstat.geom]{as.ppp}}
 #' @return ppp object
 #' @rdname as.Other
 #' @method as.ppp trip
@@ -92,8 +92,8 @@ setAs("trip", "ppp", function(from) as.ppp.trip(from))
 #' @importFrom spatstat as.psp owin psp superimpose
 #' @export as.psp
 #' @param x \code{trip} object
-#' @param from see \code{\link[spatstat]{as.psp}} for that method.
-#' @param to See \code{\link[spatstat]{as.psp}}.
+#' @param from see \code{\link[spatstat.geom]{as.psp}} for that method.
+#' @param to See \code{\link[spatstat.geom]{as.psp}}.
 #' @return psp object
 #' @rdname as.Other
 #' @method as.psp trip

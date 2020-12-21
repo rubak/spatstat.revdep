@@ -92,7 +92,7 @@ Integer. Rank of the envelope value amongst the nsim simulated values. A rank of
 \details{
 select.model.gof is a wrap to fit and select different point processes using standard tools in \pkg{spatstat} and in \pkg{ecespa}. The basic framework consists in choosing among the provided \emph{sigma} values the bandwith which produces the best fitting of an inhomogeneous Poisson and the one which produces the best fitting of an inhomogeneous Poisson cluster process. The goodness of fit (GoF) of these models are  compared to the GoF a homogeneous Poisson process and tho the GoF of a homogeneous Poisson cluster process, and the model with the best fit is returned as the final result. To avoid optimization problems (i.e., obtaining non-realistic parameters for the Poisson cluster models), arguments \emph{lower} and \emph{upper} alllow restricting the range of values that these parameters can attain. If these ranges are not set  by the user, \emph{select.model.gof} will select by default the most extreme and sensible values (e.g., from just one cluster to as many clusters as points in the pattern). As the experience shows that different optimization algorithms provide different results, the basic framework is repeated using both the "L-BFGS-B" and the "Nelder-Mead" algorithms of \link[stats]{optim}. In adition to the initial parameters provided with the argument \emph{parscale}, an aditional otimization using as \emph{parscale} the maximum and minimum values of the \emph{lower} and \emph{upper} parameters range is also tried with the "L-BFGS-B" algorithm.
 
-The goodness of fit is based on the K function (estimated by \link[spatstat]{Kest} or \link[spatstat]{Kinhom}) and is  evaluated following the approach of  Loosmore and Ford (2006) implemented in \link{LF.gof}. This implies computing the sum of squared differences between the observed K function and  the mean of the K functions of \emph{nsim} simulations from the fitted models (the \emph{u} statistic), which means lots of computations and makes the process time comsuming.
+The goodness of fit is based on the K function (estimated by \link[spatstat.core]{Kest} or \link[spatstat.core]{Kinhom}) and is  evaluated following the approach of  Loosmore and Ford (2006) implemented in \link{LF.gof}. This implies computing the sum of squared differences between the observed K function and  the mean of the K functions of \emph{nsim} simulations from the fitted models (the \emph{u} statistic), which means lots of computations and makes the process time comsuming.
 
 Whereas the  model selection approach based on AIC implemented in \link{select.model2} is more appropriated for inference purposes, the approach followed by \emph{select.model.gof} in general is able to select models whose simulations resemble more closely the original pattern.
 }
@@ -104,18 +104,18 @@ select.model.gof returns an object of class "\emph{selectedmodgof}",i.e., a list
    \item{best.model }{ The best of the fitted models. }
    \item{models }{vector with the names of the fitted models.}
    \item{gof }{A list the results of the \link[ecespa]{LF.gof} test applied to the selected model, i.e., the   \emph{u} value and the associated \emph{p}-value of the GoF test.}
-   \item{envelopes }{An \link[spatstat]{envelope} object with envelopes computed form the best model. }
+   \item{envelopes }{An \link[spatstat.core]{envelope} object with envelopes computed form the best model. }
   \item{pp }{ The analyzed point pattern, with the ppp format of spatstat.}
   \item{best.sigma}{The value of the selected bandwith.}
 
-\emph{envelope.selectedmod} returns a an object of class "fv", see \link[spatstat]{fv.object}, which can be printed and plotted directly. Essentially a data frame containing columns 
+\emph{envelope.selectedmod} returns a an object of class "fv", see \link[spatstat.geom]{fv.object}, which can be printed and plotted directly. Essentially a data frame containing columns 
   \item{r}{the vector of values of the argument r at which the summary function fun has been estimated.}
   \item{obs}{values of the summary function for the data point pattern.}
   \item{lo}{lower envelope of simulations.}
   \item{hi}{upper envelope of simulations.}
   \item{mmean}{estimated theoretical value of the summary function, computed by averaging simulated values.}
  
- \emph{simulate.selectedmod} returns a list of \emph{nsim} point patterns (with the \link[spatstat]{ppp} format of spatstat, simulated according to the best fitted model.
+ \emph{simulate.selectedmod} returns a list of \emph{nsim} point patterns (with the \link[spatstat.geom]{ppp} format of spatstat, simulated according to the best fitted model.
  
   
 }

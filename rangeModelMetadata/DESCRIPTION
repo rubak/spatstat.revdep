@@ -23,7 +23,7 @@ Depends:
 Suggests: BIEN, biomod2, dismo, ecospat, ENMeval, googlesheets, knitr,
         rmarkdown
 Imports: dplyr, jsonlite, MASS, raster, rgbif, rgdal, rgeos, shiny, sp,
-        spatstat, spocc, spThin, utils
+        spatstat.geom, spatstat.core, spatstat.linnet, spocc, spThin, utils
 VignetteBuilder: knitr
 NeedsCompilation: no
 Packaged: 2020-03-13 13:42:09 UTC; ctg

@@ -17,7 +17,7 @@ The number of points to be generated.
 The probability density of the points, an object of class \code{\link{stim}} or \code{\link[sparr:spattemp.density]{stden}}.
 }
   \item{W}{
-The polygonal \code{\link[spatstat]{owin}} defining the spatial window on which the density is defined. If \code{NULL}, this will be set to the \code{\link[spatstat]{as.polygonal}} version of the pixel images stored in \code{f}. See `Details'.
+The polygonal \code{\link[spatstat.geom]{owin}} defining the spatial window on which the density is defined. If \code{NULL}, this will be set to the \code{\link[spatstat.geom]{as.polygonal}} version of the pixel images stored in \code{f}. See `Details'.
 }
   \item{correction}{
 An adjustment to the number of points generated at the initial pass of the internal loop in an effort to minimise the total number of passes required to reach \code{n} points.
@@ -29,10 +29,10 @@ The maximum number of passes allowed before the function exits. If this is reach
 \details{
 This function randomly generates a spatiotemporal point pattern of exactly \code{n} points based on the density function \code{f}. At any given pass, \code{n} * \code{correction} points are generated and rejection sampling is used to accept some of the points; this is repeated until the required number of points is found.
 
-The argument \code{W} is optional, but is useful when the user wants the spatial window of the resulting point pattern to be a corresponding irregular polygon, as opposed to being based on the boundary of a binary image mask (which, when the pixel \code{\link[spatstat]{im}}ages in \code{f} are converted to a polygon directly, gives jagged edges based on the union of the pixels).
+The argument \code{W} is optional, but is useful when the user wants the spatial window of the resulting point pattern to be a corresponding irregular polygon, as opposed to being based on the boundary of a binary image mask (which, when the pixel \code{\link[spatstat.geom]{im}}ages in \code{f} are converted to a polygon directly, gives jagged edges based on the union of the pixels).
 }
 \value{
-An object of class \code{\link[spatstat]{ppp}} containing the \code{n} generated points. The \code{\link[spatstat]{marks}} of the object contain the correspondingly generated observation times.
+An object of class \code{\link[spatstat.geom]{ppp}} containing the \code{n} generated points. The \code{\link[spatstat.geom]{marks}} of the object contain the correspondingly generated observation times.
 }
 \author{
 A.K. Redmond and T.M. Davies

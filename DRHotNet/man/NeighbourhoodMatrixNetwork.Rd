@@ -17,7 +17,7 @@ Given a linear network structure, this function creates the neighbourhood matrix
 }
 \examples{
 library(DRHotNet)
-library(spatstat)
+library(spatstat.core)
 library(spdep)
 library(raster)
 library(maptools)

@@ -9072,7 +9072,7 @@ text
 a6 1
 #  $Revision: 1.41 $ $Date: 2012/12/10 08:54:20 $
 a8 2
-#require(spatstat)
+#require(spatstat.core)
 
 a723 34
 gridproxy <- function(P, ..., dimyx=NULL, eps=NULL, xy=NULL) {
@@ -9290,7 +9290,7 @@ a6 1
 #  $Revision: 1.39 $ $Date: 2012/12/08 02:59:53 $
 d9 1
 a9 1
-require(spatstat)
+require(spatstat.core)
 @
 
 

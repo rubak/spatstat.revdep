@@ -9,7 +9,7 @@ plot2dPP(pp, mus, add2plot = FALSE, title1 = "Spatial point pattern",
 }
 \arguments{
 \item{pp}{A point pattern of class sppmix or
-\code{\link[spatstat]{ppp}}.}
+\code{\link[spatstat.geom]{ppp}}.}
 
 \item{mus}{An optional list of the theoretical means of the mixture components.}
 
@@ -30,7 +30,7 @@ For examples see
 \examples{
 \donttest{
 mix1 <- rnormmix(5, sig0 = .01, df = 5, xlim=c(0, 5), ylim=c(0, 5))
-intsurf1=to_int_surf(mix1, lambda = 40, win =spatstat::owin( c(0, 5),c(0, 5)))
+intsurf1=to_int_surf(mix1, lambda = 40, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 pp1 <- rsppmix(intsurf1)
 plot2dPP(pp1)
 plot2dPP(pp1, mus = intsurf1$mus)}
@@ -39,7 +39,7 @@ plot2dPP(pp1, mus = intsurf1$mus)}
 \seealso{
 \code{\link{normmix}},
 \code{\link{to_int_surf}},
-\code{\link[spatstat]{owin}},
+\code{\link[spatstat.geom]{owin}},
 \code{\link{rsppmix}}
 }
 \author{

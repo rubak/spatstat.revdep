@@ -1,6 +1,6 @@
 library(testthat)
 library(tree)
-library(spatstat)
+library(spatstat.core)
 context("tree_info")
 
 # Prepare steps:

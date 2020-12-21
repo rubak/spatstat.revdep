@@ -23,10 +23,10 @@ test.intersection.p(ventana1, ventana2, nsim, prop = 1, win = NULL,
 }
 \arguments{
   \item{ventana1}{
-A multiple-polygon window with the format \code{\link[spatstat]{owin}} of \pkg{spatstat}. The "accessory" species in the case of \code{test.intersection}.
+A multiple-polygon window with the format \code{\link[spatstat.geom]{owin}} of \pkg{spatstat}. The "accessory" species in the case of \code{test.intersection}.
 }
   \item{ventana2}{
-A multiple-polygon window with the format \code{\link[spatstat]{owin}} of \pkg{spatstat}. The species whose polygons will be rotated (i.e., the "focal" species) in the case of \code{test.intersection}.
+A multiple-polygon window with the format \code{\link[spatstat.geom]{owin}} of \pkg{spatstat}. The species whose polygons will be rotated (i.e., the "focal" species) in the case of \code{test.intersection}.
 }
   \item{nsim}{
 Number of simulations for the Monte Carlo test.
@@ -35,7 +35,7 @@ Number of simulations for the Monte Carlo test.
 Proportion of the diameter of each polygon which will be employed to select potential close neighbours. See details.
 }
   \item{win}{
-Observation window, employed to control for edge effects. An objetct with the format \code{\link[spatstat]{owin}} of \pkg{spatstat}. If not provided, it will be estimated by the \emph{x} and \emph{y} ranges from \code{ventana}.
+Observation window, employed to control for edge effects. An objetct with the format \code{\link[spatstat.geom]{owin}} of \pkg{spatstat}. If not provided, it will be estimated by the \emph{x} and \emph{y} ranges from \code{ventana}.
 }
   \item{centroides1}{
 Matrix or \code{data.frame} with the coordinates of the centroids of the polygons of \code{ventana1}.

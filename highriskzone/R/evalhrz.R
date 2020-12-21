@@ -3,7 +3,7 @@
 #' Evaluation of the high-risk zone, which is only possible with simulated or thinned data or if the locations
 #' of the unobserved events have been revealed..
 #'
-#' @param hrz  High-risk zone of class owin based on a binary mask (see \code{\link[spatstat]{area.owin}})
+#' @param hrz  High-risk zone of class owin based on a binary mask (see \code{\link[spatstat.geom]{area.owin}})
 #' @param unobspp  Unobserved spatial point process 
 #' @param obspp  Observed spatial point process
 #' @importFrom methods is
@@ -16,7 +16,7 @@
 #'    \item{ numberobs }{ number of events in the observed point pattern }
 #'    \item{ out }{ subset of the unobserved events, which are outside the high-risk zone }
 #'    \item{ insd }{ subset of the unobserved events, which are inside the high-risk zone }
-#' @seealso \code{\link[spatstat]{inside.owin}}, \code{\link[spatstat]{area.owin}} 
+#' @seealso \code{\link[spatstat.geom]{inside.owin}}, \code{\link[spatstat.geom]{area.owin}} 
 #' @examples
 #'  data(craterB)
 #'  # thin data

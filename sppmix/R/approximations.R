@@ -68,7 +68,7 @@ approx_normmix <- function(mix, xlim = c(0, 1), ylim = c(0, 1)) {
 #' of the mixture intensity to have all their mass
 #' within the given x-y limits.
 #'
-#' @return An object of class \code{\link[spatstat]{im}}. This is a pixel image
+#' @return An object of class \code{\link[spatstat.geom]{im}}. This is a pixel image
 #'  on a grid with values corresponding to the density (or intensity surface) at that location.
 #'
 #' @seealso \code{\link{normmix}},
@@ -92,7 +92,7 @@ approx_normmix <- function(mix, xlim = c(0, 1), ylim = c(0, 1)) {
 #' plotmix_3d(normdens)
 #' #Now build an intensity surface based on the normal mixture
 #' intsurf=to_int_surf(truemix,lambda = 100, win =
-#'  spatstat::owin( c(0, 5),c(0, 5)))
+#'  spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' intsurfdens=dnormmix(intsurf,xlim= c(0, 5), ylim = c(0, 5))
 #' plot_density(as.data.frame(intsurfdens))+ ggplot2::ggtitle(
 #'  "2d mixture intensity plot\nWindow=[0,5]x[0,5]")
@@ -129,9 +129,9 @@ dnormmix <- function(mix, xlim = c(0, 1), ylim = c(0, 1), L = 128,
       est[j,i]=densNormMixatx_sppmix(c(x[i],y[j]),mixlist,approx)
 
   if (is.intensity_surface(mix)) {
-    spatstat::im(est * mix$lambda, x, y)
+    spatstat.geom::im(est * mix$lambda, x, y)
   } else {
-    spatstat::im(est, x, y)
+    spatstat.geom::im(est, x, y)
   }
 }
 
@@ -150,7 +150,7 @@ dnormmix <- function(mix, xlim = c(0, 1), ylim = c(0, 1), L = 128,
 #'
 #' @param fit Object of class \code{bdmcmc_res}.
 #' @inheritParams plot.bdmcmc_res
-#' @return An image as an object of class \code{\link[spatstat]{im.object}}.
+#' @return An image as an object of class \code{\link[spatstat.geom]{im.object}}.
 #' @author Sakis Micheas
 #' @seealso \code{\link{est_mix_bdmcmc}},
 #' \code{\link{plotmix_3d}},
@@ -195,6 +195,6 @@ GetBMA<- function(fit, win = fit$data$window,
   gridvals=GetGrid_sppmix(LL,xlims,ylims);
   xcoord=as.vector(gridvals[[1]]);
   ycoord=as.vector(gridvals[[2]]);
-  dens_image=spatstat::as.im(list(x=xcoord,y=ycoord,z=zcoord))
+  dens_image=spatstat.geom::as.im(list(x=xcoord,y=ycoord,z=zcoord))
   return(dens_image)
 }

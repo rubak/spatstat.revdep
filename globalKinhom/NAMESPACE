@@ -1,5 +1,5 @@
 useDynLib(globalKinhom)
-import(spatstat)
+import(spatstat.geom,spatstat.core,spatstat.linnet)
 
 importFrom(stats, approx, density, pnorm, runif, sd, var, rnorm)
 importFrom(utils, head, tail)

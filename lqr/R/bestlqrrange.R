@@ -112,7 +112,7 @@ best.lqr.range <- function(y, x, p.min = 0.10, p.max = 0.9, by = 0.1, criterion 
 #library(graphics)
 #library(stats) 
 #library(ghyp)
-#library(spatstat)
+#library(spatstat.core)
 #source("/home/lbenitesanchez/Dropbox/LQR package/Package codes/lqr/R/EM2.R")
 #source("/home/lbenitesanchez/Dropbox/LQR package/Package codes/lqr/R/FUNCTION.R")
 #source("/home/lbenitesanchez/Dropbox/LQR package/Package codes/lqr/R/auxiliar.R")

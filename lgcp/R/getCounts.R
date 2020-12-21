@@ -11,7 +11,7 @@
 ##' @return The number of observations in each grid cell returned on a grid suitable for use in the extended FFT space.
 ##' @seealso \link{lgcpPredict}
 ##' @examples
-##' require(spatstat)
+##' require(spatstat.core)
 ##' xyt <- stppp(ppp(runif(100),runif(100)),t=1:100,tlim=c(1,100))
 ##' cts <- getCounts(xyt,M=64,N=64,ext=2) # gives an output grid of size 128 by 128
 ##' ctssub <- cts[1:64,1:64] # returns the cell counts in the observation

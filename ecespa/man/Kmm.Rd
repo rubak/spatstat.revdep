@@ -19,7 +19,7 @@ Kmm(mippp, r = 1:10, nsim=NULL)
 
 }
 \arguments{
-   \item{mippp}{ A marked point pattern. An object with the \code{\link[spatstat]{ppp}} format of \pkg{spatstat}. }
+   \item{mippp}{ A marked point pattern. An object with the \code{\link[spatstat.geom]{ppp}} format of \pkg{spatstat}. }
    \item{r}{ Sequence of distances at which \code{Kmm} is estimated. }
    \item{nsim}{ Number of simulated point patterns to be generated when computing the envelopes.}
   
@@ -84,7 +84,7 @@ Penttinen, A. 2006. Statistics for Marked Point Patterns. In \emph{The Yearbook 
 \note{This implementation estimates \eqn{Kmm(r)} without any correction of border effects, so it must be used with caution. However, as \eqn{K(r)} is 
 also estimed without correction it migth compensate the border effects on the normalized \eqn{Kmm}-function.
 }
-\seealso{\code{\link[spatstat]{markcorr}} }
+\seealso{\code{\link[spatstat.core]{markcorr}} }
 \examples{
 
   ## Figure 3.10 of De la Cruz (2008):

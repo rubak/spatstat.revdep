@@ -9,7 +9,7 @@ Description: Includes algorithms to assess alpha and beta
     performing a number of analyses based on species identities/abundances, phylogenetic/functional trees, convex-hulls or kernel density n-dimensional hypervolumes
     depicting species relationships.
 Depends: R (>= 3.0.0)
-Imports: geometry, graphics, hypervolume, nls2, raster, spatstat,
+Imports: geometry, graphics, hypervolume, nls2, raster, spatstat.geom, spatstat.core, spatstat.linnet,
         stats, utils, vegan
 Encoding: UTF-8
 License: GPL-3

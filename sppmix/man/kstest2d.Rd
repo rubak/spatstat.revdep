@@ -7,7 +7,7 @@
 kstest2d(x1, x2, showinfo = TRUE)
 }
 \arguments{
-\item{x1, x2}{Objects of class \code{\link[spatstat]{ppp}}.}
+\item{x1, x2}{Objects of class \code{\link[spatstat.geom]{ppp}}.}
 
 \item{showinfo}{Logical variable. Requests to display the test conclusion based on the value of the p-value. Default is TRUE.}
 }
@@ -30,9 +30,9 @@ For examples see
 \donttest{
 # generate two point patterns
 mix1 <- rnormmix(3, sig0 = .01, df = 5, xlim=c(0, 5), ylim=c(0, 5))
-intsurf1=to_int_surf(mix1,lambda = 40, win =spatstat::owin( c(0, 5),c(0, 5)))
+intsurf1=to_int_surf(mix1,lambda = 40, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 mix2 <- rnormmix(8, sig0 = .01, df = 10, xlim=c(0, 5),ylim=c(0, 5))
-intsurf2=to_int_surf(mix2,lambda = 50, win =spatstat::owin( c(0, 5),c(0, 5)))
+intsurf2=to_int_surf(mix2,lambda = 50, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #generate patterns from the two different models
 pp1 <- rsppmix(intsurf1)
 pp2 <- rsppmix(intsurf2)
@@ -50,7 +50,7 @@ astronomy. Monthly Notices Royal Astronomy Society, 202, 615-627.
 Adapted from Matlab code by Dylan Muir.
 }
 \seealso{
-\code{\link{rnormmix}},\code{\link{to_int_surf}},\code{\link[spatstat]{owin}}
+\code{\link{rnormmix}},\code{\link{to_int_surf}},\code{\link[spatstat.geom]{owin}}
 }
 \author{
 Jiaxun Chen, Sakis Micheas

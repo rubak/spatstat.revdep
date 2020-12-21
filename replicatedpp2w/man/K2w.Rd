@@ -18,7 +18,7 @@ K2w(pplist = NULL, dataKijk = NULL, nijk = NULL, r, r0 = NULL, rmax = NULL,
 }
 \arguments{
   \item{pplist}{
-A list of point patterns with the \link[spatstat]{ppp} format of \pkg{spatstat}. This argument os alternative to \code{dataKijk}.
+A list of point patterns with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}. This argument os alternative to \code{dataKijk}.
 }
   \item{dataKijk}{
 A \code{data.frame} with the K-functions (in columns) of each of the replicated point patterns. This argument os alternative to \code{pplist}.
@@ -51,7 +51,7 @@ Number of resamples to estimate the sampling distribution of the BTSS statistic.
 Any selection of the options "border", "bord.modif", "isotropic", "Ripley", "translate", "translation", "none" or "best". It specifies the edge correction to be applied if K functions should be computed.
 }
   \item{\dots}{
-Additional arguments for \link[spatstat]{Kest} function of \pkg{spatstat} (only applies if K functions should be computed) or additional graphical arguments for the \link{matplot} function.
+Additional arguments for \link[spatstat.core]{Kest} function of \pkg{spatstat} (only applies if K functions should be computed) or additional graphical arguments for the \link{matplot} function.
 }
 \item{x}{
 an object of class \code{k2w}.

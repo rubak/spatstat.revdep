@@ -9,7 +9,7 @@
 #' @return Returns a simplification of the linear network passed as an input (linnet class)
 #' @examples 
 #' library(SpNetPrep)
-#' library(spatstat)
+#' library(spatstat.core)
 #' library(sp)
 #' library(raster)
 #' library(maptools)

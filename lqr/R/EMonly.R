@@ -307,7 +307,7 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
     d2s=sort(d2s)
 
     #COMPUTE QUANTILES
-    #require(spatstat)
+    #require(spatstat.core)
     a1<-ewcdf(gendistSLK(n=50000,dist = "slash",nu=nu))    #empricial *weighted* cdf and quantile function
     xq2 <- quantile(a1,ppoints(n))     #calls quantile.ecdf()
 
@@ -349,7 +349,7 @@ EM <- function(y,x,p=0.5,dist = "normal",nu="",gama="",precision = 0.000001,enve
     d2s=sort(d2s)
 
     #COMPUTE QUANTILES
-    #require(spatstat)
+    #require(spatstat.core)
     sec = seq(from = 0,to = 6,length.out = 100000)
     dd = densdist(di = sec,dens = densNC,nu=nu,gama=gama)
     a1<-ewcdf(x = sec,weights = dd/sum(dd))

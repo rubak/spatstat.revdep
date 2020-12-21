@@ -25,7 +25,7 @@ This function plots a set of differential risk hotspots located along a linear n
 }
 \examples{
 library(DRHotNet)
-library(spatstat)
+library(spatstat.core)
 library(spdep)
 library(raster)
 library(maptools)

@@ -12,7 +12,7 @@
 #' character strings giving the singular and plural forms, respectively.
 #' @export  
 #' @return An object of class "ppp" describing a point pattern in the two-dimensional plane.
-#' @seealso \code{\link[spatstat]{ppp}}, \code{\link[spatstat]{bounding.box.xy}}, \code{\link[spatstat]{owin}}
+#' @seealso \code{\link[spatstat.geom]{ppp}}, \code{\link[spatstat.geom]{bounding.box.xy}}, \code{\link[spatstat.geom]{owin}}
 #' @examples 
 #' data(craterA)
 #' windowA <- data.frame(x = craterA$window$bdry[[1]]$x, y = craterA$window$bdry[[1]]$y)
@@ -39,7 +39,7 @@ read_pppdata <- function(xppp, yppp, xwin=NULL, ywin=NULL, unitname=NULL) {
     w <- bounding.box.xy(xppp, yppp)
     w$xrange <- w$xrange + c(-1,1)*0.1*(w$xrange[2] - w$xrange[1])
     w$yrange <- w$yrange + c(-1,1)*0.1*(w$yrange[2] - w$yrange[1])
-    unitname <- spatstat::as.unitname(unitname)
+    unitname <- spatstat.geom::as.unitname(unitname)
     w$units <- unitname
   } else{
     win <- bounding.box.xy(xwin, ywin)

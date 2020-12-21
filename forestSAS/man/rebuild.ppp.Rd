@@ -40,7 +40,7 @@ Zongzheng Chai, chaizz@126.com
 R function ppp in the package "spatstat"
 }
 \examples{
-library(spatstat)
+library(spatstat.core)
 ####Based on the simulated data####
 # Creating a simulated point pattern
 x <- runif(20)

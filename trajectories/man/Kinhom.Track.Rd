@@ -35,9 +35,9 @@ Mohammad Mehdi Moradi <moradi@uji.es>
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\link{rTrack}, \link{as.Track.ppp}, \link[spatstat]{Kinhom}}
+\link{rTrack}, \link{as.Track.ppp}, \link[spatstat.core]{Kinhom}}
 \examples{
-library(spatstat)
+library(spatstat.core)
 X <- list()
 for(i in 1:100){
   m <- matrix(c(0,10,0,10),nrow=2,byrow = TRUE)

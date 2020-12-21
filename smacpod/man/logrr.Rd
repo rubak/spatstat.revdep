@@ -60,8 +60,8 @@ based on the pointwise non-rejection envelopes.  Default is
 (logrr < 0) and \code{"greater"} (logrr > 0) are also valid.}
 
 \item{...}{
-    Additional arguments passed to \code{\link[spatstat]{pixellate.ppp}}
-    and \code{\link[spatstat]{as.mask}} to determine
+    Additional arguments passed to \code{\link[spatstat.geom]{pixellate.ppp}}
+    and \code{\link[spatstat.geom]{as.mask}} to determine
     the pixel resolution, or passed to \code{sigma} if it is a function.
   }
 
@@ -204,7 +204,7 @@ Waller, L.A. and Gotway, C.A. (2005). Applied
 }
 \author{
 Joshua French (and a small chunk by the authors 
-  of the \code{\link[spatstat]{density.ppp}}) function 
+  of the \code{\link[spatstat.core]{density.ppp}}) function 
   for consistency with the default behavior of that 
   function)
 }

@@ -27,11 +27,11 @@ have.}
 
 \item{distancemap}{(optional) distance map: distance of every pixel to the nearest observation 
 of the point pattern; only needed for \code{type="dist"}. If not given, 
-it will be computed by \code{\link[spatstat]{distmap}}.}
+it will be computed by \code{\link[spatstat.geom]{distmap}}.}
 
 \item{intens}{(optional) estimated intensity of the observed process (object of class "im"), 
 only needed for type="intens". If not given,
-it will be estimated using \code{\link[spatstat]{density.ppp}}.}
+it will be estimated using \code{\link[spatstat.core]{density.ppp}}.}
 
 \item{nxprob}{Probability of having unobserved events.
 Default value is 0.1.}

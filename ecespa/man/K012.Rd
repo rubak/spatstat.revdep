@@ -13,7 +13,7 @@ K012(X, fijo, i, j, nsim = 99, nrank = 1, r = NULL,
 	 correction = "isotropic")
 }
 \arguments{
-  \item{X}{ Multitype marked point pattern. An object with the \code{\link[spatstat]{ppp}} format of \pkg{spatstat}.   }
+  \item{X}{ Multitype marked point pattern. An object with the \code{\link[spatstat.geom]{ppp}} format of \pkg{spatstat}.   }
   \item{fijo}{ Number or character string identifying the mark value of the  "fixed" pattern in X }
   \item{i}{ Number or character string identifying the mark value of the  I pattern in X }
   \item{j}{ Number or character string identifying the mark value of the  J pattern in X }
@@ -47,7 +47,7 @@ one can not apply the usual technique of toroidal shifting one pattern over the 
 
  \item{ }{}
 
- \item{ }{Each of the above elements is a \code{\link[spatstat]{fv.object}}, essentially a \code{data.frame} with the following items:
+ \item{ }{Each of the above elements is a \code{\link[spatstat.geom]{fv.object}}, essentially a \code{data.frame} with the following items:
 }
 \item{r }{the values of the argument r at which the functions kave been estimated}
 \item{hi }{upper envelope of simulations}

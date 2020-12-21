@@ -20,7 +20,7 @@
 #' window. If set along with the \code{win} parameter,
 #' the returned object will be an intensity surface.
 #' @param win Optional parameter for the window of
-#' observation, an object of type \code{\link[spatstat]{owin}}.
+#' observation, an object of type \code{\link[spatstat.geom]{owin}}.
 #' Must be set together with \code{lambda} in
 #' order to create an intensity surface.
 #' @param estimated Logical variable to indicate
@@ -37,7 +37,7 @@
 #'  \item{lambda}{Returned only if lambda is provided when calling
 #'  \code{normmix}.}
 #'  \item{window}{Returned only \code{win} is provided when calling
-#'  \code{normmix}. This is an object of class \code{\link[spatstat]{owin}}.}
+#'  \code{normmix}. This is an object of class \code{\link[spatstat.geom]{owin}}.}
 #'  \item{estimated}{Whether the normal mixture is estimated.}
 #'
 #' @seealso \code{\link{rnormmix}} for
@@ -50,7 +50,7 @@
 #' mix1
 #' summary(mix1)
 #' intsurf1 <- normmix(ps = c(.3, .7), mus = list(c(0.2, 0.2), c(.8, .8)),
-#'  sigmas = list(.01*diag(2), .01*diag(2)), lambda = 100, win = spatstat::square(1))
+#'  sigmas = list(.01*diag(2), .01*diag(2)), lambda = 100, win = spatstat.geom::square(1))
 #' intsurf1
 #' summary(intsurf1)}
 #'
@@ -66,7 +66,7 @@ normmix <- function(ps, mus, sigmas, lambda = NULL, win = NULL,
     stop("Number of components mismatch.")
   }
 
-  if (!is.null(lambda) & spatstat::is.owin(win)) {
+  if (!is.null(lambda) & spatstat.geom::is.owin(win)) {
     # generating intensity surface
     if (lambda <= 0) stop("Intensity must be greater than 0.")
     RVAL <- list(m = length(ps), ps = ps, mus = mus, sigmas = sigmas,
@@ -318,7 +318,7 @@ rmixsurf <- function(m,lambda, sig0, df, rand_m = FALSE,
   mix <- rnormmix(m, sig0, df,rand_m,xlim,ylim,dvec,mu0,Sigma0)
 
   intsurf <- normmix(mix$ps, mix$mus, mix$sigmas,
-                     lambda,spatstat::owin(xlim,ylim),FALSE)
+                     lambda,spatstat.geom::owin(xlim,ylim),FALSE)
 
   return(intsurf)
 }
@@ -347,28 +347,28 @@ rmixsurf <- function(m,lambda, sig0, df, rand_m = FALSE,
 #'
 #' @param mix Object of class \code{normmix} or \code{intensity_surface}.
 #' @param lambda Optional parameter treated as the average number of points over the window.
-#' @param win Optional parameter of class \code{\link[spatstat]{owin}}, defining the window of observation.
+#' @param win Optional parameter of class \code{\link[spatstat.geom]{owin}}, defining the window of observation.
 #' @param return_normmix Logical variable requesting to return a normal mixture (discard \code{lambda}
 #' and \code{win}).
 #' @seealso \code{\link{normmix}},
 #' \code{\link{rnormmix}},
-#' \code{\link[spatstat]{square}}
+#' \code{\link[spatstat.geom]{square}}
 #' @return Object of class \code{intensity_surface}.
 #' @author Yuchen Wang
 #' @examples
 #' \donttest{
 #' truemix <- normmix(ps=c(.4, .2,.4), mus=list(c(0.3, 0.3), c(.5,.5),c(0.7, 0.7)),
 #'  sigmas = list(.02*diag(2), .05*diag(2),.01*diag(2)))
-#' intsurf=to_int_surf(truemix, lambda = 100, win = spatstat::square(1))
+#' intsurf=to_int_surf(truemix, lambda = 100, win = spatstat.geom::square(1))
 #' #plot the true mixture
 #' plot(intsurf,main = "True Poisson intensity surface (mixture of normal components)")
 #' # using the demo_mix normmix object
 #' summary(demo_mix)
-#' demo_surf1=to_int_surf(demo_mix, lambda = 100, win = spatstat::square(1))
+#' demo_surf1=to_int_surf(demo_mix, lambda = 100, win = spatstat.geom::square(1))
 #' plot(demo_surf1)
 #' # using an intensity_surface object
 #' summary(demo_intsurf)
-#' demo_surf2=to_int_surf(demo_intsurf, win = spatstat::square(2))
+#' demo_surf2=to_int_surf(demo_intsurf, win = spatstat.geom::square(2))
 #' summary(demo_surf2)
 #' plot(demo_surf2)
 #' demo_surf3=to_int_surf(demo_intsurf, lambda = 50)
@@ -386,7 +386,7 @@ to_int_surf <- function(mix, lambda = NULL, win = NULL,
       intsurf$lambda <- lambda
     }
     if (!missing(win)) {
-      stopifnot(spatstat::is.owin(win))
+      stopifnot(spatstat.geom::is.owin(win))
       intsurf$window <- win
     }
 
@@ -427,7 +427,7 @@ to_int_surf <- function(mix, lambda = NULL, win = NULL,
 #' #CompareSurfs}
 #'
 #' @param surf1,surf2 Either IPPP intensity surfaces (objects of type \code{intensity_surface})
-#' or images (objects of type \code{\link[spatstat]{im}}) that represent intensity surfaces.
+#' or images (objects of type \code{\link[spatstat.geom]{im}}) that represent intensity surfaces.
 #' @param LL Length of the side of the square grid.
 #' The intensities are calculated on an L * L grid.
 #' The larger this value is, the slower the calculation,
@@ -446,10 +446,10 @@ to_int_surf <- function(mix, lambda = NULL, win = NULL,
 #' and compare the two surfaces in there.
 #' @return Returns a list containing all distances
 #' computed and the window of comparison, an object
-#' of class \code{\link[spatstat]{owin}}.
+#' of class \code{\link[spatstat.geom]{owin}}.
 #' @author Sakis Micheas
 #' @seealso \code{\link{rmixsurf}},
-#' \code{\link[spatstat]{owin}},
+#' \code{\link[spatstat.geom]{owin}},
 #' \code{\link{rsppmix}},
 #' \code{\link{est_mix_bdmcmc}},
 #' \code{\link{drop_realization}},
@@ -503,9 +503,9 @@ CompareSurfs<-function(surf1,surf2,LL = 100,
     stop("Pass two intensity surfaces or images.")
   }
   if(!(is.intensity_surface(surf1)|
-       spatstat::is.im(surf1))&
+       spatstat.geom::is.im(surf1))&
      !(is.intensity_surface(surf2)|
-       spatstat::is.im(surf2)))
+       spatstat.geom::is.im(surf2)))
   {
     stop("Pass intensity_surfaces or image objects.")
   }
@@ -528,12 +528,12 @@ CompareSurfs<-function(surf1,surf2,LL = 100,
     maxy=max(c(surf2$window$yrange[2],maxy))
   }
   #if an image is passed get the larger dimension
-  if(spatstat::is.im(surf1) &
-     spatstat::is.im(surf2))
+  if(spatstat.geom::is.im(surf1) &
+     spatstat.geom::is.im(surf2))
     if(surf1$dim[1]!=surf2$dim[1] |
        surf1$dim[2]!=surf2$dim[2] )
       stop("Dimension mismatch in the two images.")
-  if(!spatstat::is.im(surf1))
+  if(!spatstat.geom::is.im(surf1))
     dens1=dnormmix(surf1,xlim= xlim,
         ylim =ylim,L=LL, truncate=truncate)
   else
@@ -544,7 +544,7 @@ CompareSurfs<-function(surf1,surf2,LL = 100,
     maxy=max(c(surf1$yrange[2],maxy))
     dens1=surf1
   }
-  if(!spatstat::is.im(surf2))
+  if(!spatstat.geom::is.im(surf2))
     dens2=dnormmix(surf2,xlim= xlim,
                  ylim =ylim,L=LL, truncate=truncate)
   else
@@ -583,7 +583,7 @@ CompareSurfs<-function(surf1,surf2,LL = 100,
       alldist[5],"\n")
   cat("Window used: [",xlim[1],",",xlim[2],
       "]x[",ylim[1],",",ylim[2],"]")
-  return(list(dists=alldist,win=spatstat::owin(xlim,ylim)))
+  return(list(dists=alldist,win=spatstat.geom::owin(xlim,ylim)))
 }
 
 #' Counts points in a window
@@ -597,14 +597,14 @@ CompareSurfs<-function(surf1,surf2,LL = 100,
 #' \url{http://faculty.missouri.edu/~micheasa/sppmix/sppmix_all_examples.html
 #' #Count_pts}
 #'
-#' @param pp Object of class \code{sppmix} or \code{\link[spatstat]{ppp}}.
+#' @param pp Object of class \code{sppmix} or \code{\link[spatstat.geom]{ppp}}.
 #' @param win The window of observation as an
-#' object of class \code{\link[spatstat]{owin}}, defining the window of observation.
+#' object of class \code{\link[spatstat.geom]{owin}}, defining the window of observation.
 #' @seealso \code{\link{rsppmix}},
 #' \code{\link{rmixsurf}},
 #' \code{\link{plotmix_2d}},
-#' \code{\link[spatstat]{square}},
-#' \code{\link[spatstat]{owin}}
+#' \code{\link[spatstat.geom]{square}},
+#' \code{\link[spatstat.geom]{owin}}
 #' @return An integer representing the number of points from \code{pp} within the window \code{win}.
 #' @author Sakis Micheas
 #' @examples
@@ -612,12 +612,12 @@ CompareSurfs<-function(surf1,surf2,LL = 100,
 #' truemix_surf=rmixsurf(m = 3,lambda=100, xlim=c(-5,5),ylim=c(-5,5))
 #' genPP=rsppmix(truemix_surf)
 #' plotmix_2d(truemix_surf,genPP)
-#' Count_pts(genPP,spatstat::square(1))
-#' Count_pts(genPP,spatstat::square(2))
-#' Count_pts(genPP,spatstat::square(3))
-#' Count_pts(genPP,spatstat::square(4))
-#' Count_pts(genPP,spatstat::square(5))
-#' Count_pts(genPP,spatstat::owin(c(-5,5),c(-5,5)))}
+#' Count_pts(genPP,spatstat.geom::square(1))
+#' Count_pts(genPP,spatstat.geom::square(2))
+#' Count_pts(genPP,spatstat.geom::square(3))
+#' Count_pts(genPP,spatstat.geom::square(4))
+#' Count_pts(genPP,spatstat.geom::square(5))
+#' Count_pts(genPP,spatstat.geom::owin(c(-5,5),c(-5,5)))}
 #'
 #' @export
 Count_pts <- function(pp,win)
@@ -648,7 +648,7 @@ Count_pts <- function(pp,win)
 #'  sigmas = list(.01*diag(2), .01*diag(2)))
 #' demo_intsurf <- normmix(ps = c(.3, .7), mus = list(c(0.2, 0.2),
 #'  c(.8, .8)),sigmas = list(.01*diag(2), .01*diag(2)), lambda = 100,
-#'  win = spatstat::square(1))
+#'  win = spatstat.geom::square(1))
 #' demo_genPPP<-rsppmix(demo_truesurf3, truncate=FALSE)}
 #'
 "demo_mix"

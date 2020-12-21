@@ -11,7 +11,7 @@ rrmix(g, rhotspots, rsds, rweights, rbase = 1, log = TRUE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{g}{
-  A pixel \code{\link[spatstat]{im}age} representing the control density; this will be internally rescaled to integrate to 1 if it does not already do so.
+  A pixel \code{\link[spatstat.geom]{im}age} representing the control density; this will be internally rescaled to integrate to 1 if it does not already do so.
   }
   \item{rhotspots}{
   A \eqn{2 \times N} matrix giving the centers of the \eqn{N} peaks and troughs in the relative risk density.
@@ -23,7 +23,7 @@ rrmix(g, rhotspots, rsds, rweights, rbase = 1, log = TRUE)
   A vector of length \eqn{N} giving relative weightings for each peak (positive weights) or trough (negative).
   }
 %    \item{window}{
-%  An object of class \code{\link[spatstat]{owin}} giving the observational window on which the surfaces are defined. If \code{NULL} (default), the polygonal version of \code{Window(g)} is used.
+%  An object of class \code{\link[spatstat.geom]{owin}} giving the observational window on which the surfaces are defined. If \code{NULL} (default), the polygonal version of \code{Window(g)} is used.
 %  }
   \item{rbase}{
   The base level of the relative risk surface (default is 1). The peaks and troughs will be added or subtracted from this base level prior to normalisation.
@@ -52,7 +52,7 @@ This is automatically performed inside the function. The case density that gives
 }
 
 \value{
-An object of class \code{rrim}. This is a \code{\link[spatstat]{solist}} of three pixel \code{\link[spatstat]{im}}ages: \code{f} as the case density, \code{g} the control density (a copy of the argument of the same name, integrating to 1), and \code{r} as the (log) relative risk surface.
+An object of class \code{rrim}. This is a \code{\link[spatstat.geom]{solist}} of three pixel \code{\link[spatstat.geom]{im}}ages: \code{f} as the case density, \code{g} the control density (a copy of the argument of the same name, integrating to 1), and \code{r} as the (log) relative risk surface.
 }
 
 \references{

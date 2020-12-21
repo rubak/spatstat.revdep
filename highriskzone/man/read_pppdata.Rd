@@ -37,5 +37,5 @@ crater <- read_pppdata(xppp = patternA$x, yppp = patternA$y,
 crater
 }
 \seealso{
-\code{\link[spatstat]{ppp}}, \code{\link[spatstat]{bounding.box.xy}}, \code{\link[spatstat]{owin}}
+\code{\link[spatstat.geom]{ppp}}, \code{\link[spatstat.geom]{bounding.box.xy}}, \code{\link[spatstat.geom]{owin}}
 }

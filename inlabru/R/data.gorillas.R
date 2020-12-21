@@ -79,7 +79,7 @@ NULL
 import.gorillas = function() {
   
   # Explicitly load spatstat
-  # library(spatstat)
+  # library(spatstat.core)
   
   # Load Gorilla data from spatstat
   gorillas = NULL

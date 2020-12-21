@@ -11,7 +11,7 @@ Maintainer: Tomislav Hengl <tom.hengl@opengeohub.org>
 Depends: R (>= 2.15.0)
 Imports: methods, sp (>= 1.0-8), RSAGA, dismo, rgdal, raster, aqp,
         plotKML, gstat, stats, plyr, grDevices, graphics, scales
-Suggests: rjson, RCurl, soiltexture, spatstat, stringr, XML, boot,
+Suggests: rjson, RCurl, soiltexture, spatstat.geom, spatstat.core, spatstat.linnet, spatstat, stringr, XML, boot,
         splines, mda, psych, nortest, rpart, quantregForest,
         randomForest, nlme, reshape, fossil, AICcmodavg, maptools,
         nnet, SDMTools, spacetime, gdalUtils, tools, maxlike, Hmisc,

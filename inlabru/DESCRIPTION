@@ -25,7 +25,7 @@ Description: Facilitates spatial modeling using integrated nested Laplace approx
 License: GPL (>= 2)
 Imports: rgdal, rgeos, utils, Matrix
 Suggests: testthat, ggmap, rgl, sphereplot, raster, dplyr, maptools,
-        mgcv, shiny, spatstat, spatstat.data, RColorBrewer, graphics,
+        mgcv, shiny, spatstat.geom, spatstat.core, spatstat.linnet, spatstat.data, RColorBrewer, graphics,
         INLA, knitr, rmarkdown
 Depends: R (>= 3.3), sp, stats, methods, ggplot2,
 Additional_repositories: https://inla.r-inla-download.org/R/testing

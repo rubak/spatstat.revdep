@@ -12,14 +12,14 @@ rotawin(ventana)
 
 \arguments{
   \item{ventana}{
-A multiple-polygon window with the format \code{\link[spatstat]{owin}} of \pkg{spatstat}.
+A multiple-polygon window with the format \code{\link[spatstat.geom]{owin}} of \pkg{spatstat}.
 }
 }
 \details{
-\code{rotawin} applies an independent random rotation to each of the polygons in a multiple-polygon \code{\link[spatstat]{owin}} object.
+\code{rotawin} applies an independent random rotation to each of the polygons in a multiple-polygon \code{\link[spatstat.geom]{owin}} object.
 }
 \value{
-\code{rotawin} returns the original \code{\link[spatstat]{owin}} object with the individual polygons randomly rotated.
+\code{rotawin} returns the original \code{\link[spatstat.geom]{owin}} object with the individual polygons randomly rotated.
 }
 \author{
 Marcelino de la Cruz Rot

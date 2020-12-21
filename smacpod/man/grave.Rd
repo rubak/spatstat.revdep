@@ -24,7 +24,7 @@ This data set contains 143 observations of
   "unaffected" by a tooth deformity.
 }
 \seealso{
-\code{\link[spatstat]{ppp}}
+\code{\link[spatstat.geom]{ppp}}
 }
 \author{
 Joshua French

@@ -1,6 +1,6 @@
 #' Ripley's K-function
 #' 
-#' See \code{\link[spatstat]{Kest}} for more rigorous implementation in 2D.
+#' See \code{\link[spatstat.core]{Kest}} for more rigorous implementation in 2D.
 #'
 #' @param x Point pattern
 #' @param r Vector of distances to estimate the function

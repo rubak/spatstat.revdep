@@ -31,7 +31,7 @@ Occurrence probabilities for geographical space are derived using kernel density
 \donttest{
 library(plotKML)
 library(maxlike)
-library(spatstat)
+library(spatstat.core)
 library(maptools)
 
 data(eberg)

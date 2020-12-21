@@ -161,7 +161,7 @@ gating <- function(dat,
     # Create custom window with a convex hull
     chul <- grDevices::chull(df[ , 4:5])
     chul_coords <- df[ , 4:5][c(chul, chul[1]), ]
-    win_gate <- spatstat::owin(poly = list(x = rev(chul_coords[ , 1]),
+    win_gate <- spatstat.geom::owin(poly = list(x = rev(chul_coords[ , 1]),
                                                 y = rev(chul_coords[ , 2])))
 
     # Estimate significant relative risk areas

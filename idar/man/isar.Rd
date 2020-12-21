@@ -28,12 +28,12 @@
 }
 
 \arguments{
-  \item{mippp}{A multitype (a.k.a. multivariate) marked point pattern. An object with the \link[spatstat]{ppp} format of \pkg{spatstat}.}
-  \item{mippp.sp}{Univariate point pattern of the focal species. An object with the \link[spatstat]{ppp} format of \pkg{spatstat}.}
+  \item{mippp}{A multitype (a.k.a. multivariate) marked point pattern. An object with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}.}
+  \item{mippp.sp}{Univariate point pattern of the focal species. An object with the \link[spatstat.geom]{ppp} format of \pkg{spatstat}.}
   \item{mimark}{Character. Name of the focal species in the multitype \code{mippp}.}
   \item{namesmark}{Character. If the marks in \code{mippp} are within a \code{data.frame}, the name of the column with the species names}
   \item{buffer}{One of "adapt", i.e., compute an adaptive buffer, or a number indicating de width of a fixed buffer area around the plot border}
-  \item{bfw}{An \link[spatstat]{owin} object indicating the limits of the buffer area.}
+  \item{bfw}{An \link[spatstat.geom]{owin} object indicating the limits of the buffer area.}
   \item{r}{Vector of distances to compute IDAR(r) functions}
   \item{tree}{A phylogenetic tree in \code{phylo} format (\pkg{ape}) or a phylogenetic covariance matrix}
   \item{traits}{A \link[base]{data.frame} of traits, or a distance matrix among species (in \code{\link[stats]{dist}} or \code{\link[base]{matrix}} format) computed on a data.frame of traits.}
@@ -57,14 +57,14 @@ Although recent litterature (e.g., Wiegand and Moloney 2014) suggest that buffer
 
 
 \value{
-  An object of class "\code{fv}", see  \link[spatstat]{fv.object}, which can be plotted directly using  \link[spatstat]{plot.fv}. 
+  An object of class "\code{fv}", see  \link[spatstat.geom]{fv.object}, which can be plotted directly using  \link[spatstat.core]{plot.fv}. 
 
 Essentially a data frame containing a column named \emph{r} with the vector of values of the argument r at which the IDAR(r) function has been estimated and  aonther column, named \emph{"isar", "ipsvar", "ipsrar", "ipsear", "ipscar"} or \emph{"ifdar"}, according to the selected idar argment. This column contains an estimate of the selected IDAR(R) function.
 
 }
 
 \section{Simulation envelopes}{
-To compute simulation envelopes for the IDAR(r) functions,  use \code{\link[spatstat]{envelope}}. See the examples in this help page and in \code{\link{ipsim}} to know how to compute simulation envelopes from appropriate null models.
+To compute simulation envelopes for the IDAR(r) functions,  use \code{\link[spatstat.core]{envelope}}. See the examples in this help page and in \code{\link{ipsim}} to know how to compute simulation envelopes from appropriate null models.
 
 To compute envelopes for "crossed" IDAR(r) functions or to accelerate the computation of "single" IDAR(r) functions, use \code{\link{envelope4idar}}.
 }

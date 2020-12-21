@@ -82,5 +82,6 @@ importFrom( "grid", "gpar", "grid.rect", "grid.text", "pushViewport", "seekViewp
 importFrom( "flip", "make.permSpace" )
 importFrom( "gtools", "combinations" )
 importFrom( "deldir", "deldir", "tile.list" )
-importFrom( "spatstat", "ppp", "delaunay" )
 importFrom( "stats", "optimize" )
+importFrom(spatstat.geom,  "ppp")
+importFrom(spatstat.geom,  "delaunay" )

@@ -10,7 +10,7 @@ GetBMA(fit, win = fit$data$window, burnin = fit$L/10, LL = 100,
 \arguments{
 \item{fit}{Object of class \code{bdmcmc_res}.}
 
-\item{win}{An object of class \code{\link[spatstat]{owin}}.}
+\item{win}{An object of class \code{\link[spatstat.geom]{owin}}.}
 
 \item{burnin}{Number of initial realizations to discard. By default, it is 1/10 of the total number of iterations.}
 
@@ -22,7 +22,7 @@ but the better the approximation as well as the smoother the resulting plots.}
 \item{zlims}{The limits of the z axis. Defaults to [0,max(z)].}
 }
 \value{
-An image as an object of class \code{\link[spatstat]{im.object}}.
+An image as an object of class \code{\link[spatstat.geom]{im.object}}.
 }
 \description{
 This function uses the posterior realizations

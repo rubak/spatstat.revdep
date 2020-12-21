@@ -20,7 +20,7 @@
 \usage{data(hyytiala)}
 \examples{
 data(hyytiala)
-  if(require(spatstat)) {
+  if(require(spatstat.core)) {
 plot(hyytiala, cols=2:5)
   }
 }

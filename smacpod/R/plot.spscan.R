@@ -9,7 +9,7 @@
 #' 
 #' @param x An object of class \code{spscan}.
 #' @param ... Additional graphical parameters passed to the
-#'   \code{\link[spatstat]{plot.ppp}} function.
+#'   \code{\link[spatstat.geom]{plot.ppp}} function.
 #' @param nv The number of verticies to draw the cluster 
 #' circles. Default is 100.
 #' @param border The border color of the circle.  Default is
@@ -22,7 +22,7 @@
 #'   indicating \code{lwd = 2} for the most likely cluster and 
 #'   \code{lwd = 1} for the rest.
 #' @method plot spscan
-#' @seealso \code{\link[spatstat]{plot.ppp}}, \code{\link[plotrix]{draw.circle}}
+#' @seealso \code{\link[spatstat.geom]{plot.ppp}}, \code{\link[plotrix]{draw.circle}}
 #' @export
 #' @examples
 #' data(grave)
@@ -33,7 +33,7 @@ plot.spscan = function(x, ..., nv = 100, border = NULL,
   if (class(x) != "spscan") {
     stop("x should be a spscan object from spscan.test function")
   }
-  spatstat::plot.ppp(x$ppp, ...)
+  spatstat.geom::plot.ppp(x$ppp, ...)
   
   # number of centroids
   nc = length(x$clusters)

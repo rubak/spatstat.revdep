@@ -37,7 +37,7 @@ Knet(X, r = NULL, freq, ..., verbose=FALSE)
   network. 
   The algorithm used in this computation is discussed in Rakshit et al (2019).
 
-  The \pkg{spatstat} function \code{\link[spatstat]{linearK}}
+  The \pkg{spatstat} function \code{\link[spatstat.linnet]{linearK}}
   is usable (and slightly faster) for the same purpose
   for small datasets, but requires substantial amounts of memory.
   For larger datasets, the function  \code{\link{Knet}} is much more efficient.

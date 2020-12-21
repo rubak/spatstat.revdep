@@ -14,14 +14,14 @@ locmincon(\dots, sigma = NULL, f = 1/4, verbose = TRUE,
 }
 \arguments{
   \item{\dots}{
-    Arguments passed to \code{\link[spatstat]{kppm}}
+    Arguments passed to \code{\link[spatstat.core]{kppm}}
     to determine the template homogeneous model.
   }
   \item{sigma}{
     Standard deviation of Gaussian kernel for local likelihood.
   }
   \item{f}{
-    Argument passed to \code{\link[spatstat]{bw.frac}} to
+    Argument passed to \code{\link[spatstat.core]{bw.frac}} to
     compute a value for \code{sigma} if it is missing or \code{NULL}.
   }
   \item{verbose}{
@@ -29,10 +29,10 @@ locmincon(\dots, sigma = NULL, f = 1/4, verbose = TRUE,
   }
   \item{localstatargs}{
     Optional. List of arguments to be passed to the local statistic
-    \code{\link[spatstat]{localK}},
-    \code{\link[spatstat]{localKinhom}},
-    \code{\link[spatstat]{localpcf}} or 
-    \code{\link[spatstat]{localpcfinhom}}.
+    \code{\link[spatstat.core]{localK}},
+    \code{\link[spatstat.core]{localKinhom}},
+    \code{\link[spatstat.core]{localpcf}} or 
+    \code{\link[spatstat.core]{localpcfinhom}}.
   }
   \item{LocalStats}{
     Optional.
@@ -44,36 +44,36 @@ locmincon(\dots, sigma = NULL, f = 1/4, verbose = TRUE,
 }
 \details{
   The template or homogeneous model is first fitted by
-  \code{\link[spatstat]{kppm}}. 
+  \code{\link[spatstat.core]{kppm}}. 
   The statistic used to fit the template model is determined
-  (as explained in the help for \code{\link[spatstat]{kppm}})
+  (as explained in the help for \code{\link[spatstat.core]{kppm}})
   by the arguments \code{statistic} and \code{trend}.
 
   The \emph{local} version of this statistic is then computed.
   If \code{statistic="K"} and \code{trend=~1}
   for example, the template model is fitted
-  using the \eqn{K} function \code{\link[spatstat]{Kest}},
+  using the \eqn{K} function \code{\link[spatstat.core]{Kest}},
   and the local version is the local \eqn{K} function
-  \code{\link[spatstat]{localK}}. The possibilities are:
+  \code{\link[spatstat.core]{localK}}. The possibilities are:
 
   \tabular{llll}{
     \code{statistic} \tab stationary? \tab
     \emph{template} \tab \emph{local} \cr
     \code{"K"} \tab yes
-    \tab \code{\link[spatstat]{Kest}}
-    \tab \code{\link[spatstat]{localK}}
+    \tab \code{\link[spatstat.core]{Kest}}
+    \tab \code{\link[spatstat.core]{localK}}
     \cr
     \code{"K"} \tab no
-    \tab \code{\link[spatstat]{Kinhom}}
-    \tab \code{\link[spatstat]{localKinhom}}
+    \tab \code{\link[spatstat.core]{Kinhom}}
+    \tab \code{\link[spatstat.core]{localKinhom}}
     \cr
     \code{"pcf"} \tab yes
-    \tab \code{\link[spatstat]{pcf}}
-    \tab \code{\link[spatstat]{localpcf}}
+    \tab \code{\link[spatstat.core]{pcf}}
+    \tab \code{\link[spatstat.core]{localpcf}}
     \cr
     \code{"pcf"} \tab no
-    \tab \code{\link[spatstat]{pcfinhom}}
-    \tab \code{\link[spatstat]{localpcfinhom}}
+    \tab \code{\link[spatstat.core]{pcfinhom}}
+    \tab \code{\link[spatstat.core]{localpcfinhom}}
   }
 
   These local functions, one for each data point, are then spatially

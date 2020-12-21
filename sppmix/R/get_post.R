@@ -196,7 +196,7 @@ GetMAPEst <- function(fit,
   pp=fit_burnined$data
   if(truncate)
   {
-    pp=spatstat::ppp(pp$x,pp$y,window=pp$window)
+    pp=spatstat.geom::ppp(pp$x,pp$y,window=pp$window)
   }
   n <- pp$n
   pattern <- cbind(pp$x,pp$y)
@@ -276,7 +276,7 @@ GetMAPEst <- function(fit,
 #' # create the true mixture intensity surface
 #' truesurf =normmix(ps=c(.2, .6,.2), mus=list(c(0.3, 0.3), c(0.7, 0.7),
 #'  c(0.5, 0.5)),sigmas=list(.01*diag(2), .01*diag(2), .01*diag(2)),
-#'  lambda=100,win=spatstat::square(1))
+#'  lambda=100,win=spatstat.geom::square(1))
 #' plot(truesurf)
 #' # generate the point pattern, truncate=TRUE by default
 #' genPP=rsppmix(truesurf,truncate=FALSE)

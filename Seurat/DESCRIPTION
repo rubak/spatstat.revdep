@@ -24,7 +24,7 @@ Imports: cluster, cowplot, fitdistrplus, future, future.apply, ggplot2
         lmtest, MASS, Matrix (>= 1.2-14), matrixStats, miniUI,
         patchwork, pbapply, plotly (>= 4.9.0), png, RANN, RColorBrewer,
         Rcpp, RcppAnnoy, reticulate, rlang, ROCR, rsvd, Rtsne, scales,
-        scattermore (>= 0.7), sctransform (>= 0.3.1), shiny, spatstat,
+        scattermore (>= 0.7), sctransform (>= 0.3.1), shiny, spatstat.geom, spatstat.core, spatstat.linnet,
         stats, tibble, tools, utils, uwot (>= 0.1.9)
 LinkingTo: Rcpp (>= 0.11.0), RcppEigen, RcppProgress
 License: GPL-3 | file LICENSE

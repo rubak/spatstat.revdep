@@ -13,7 +13,7 @@
 #' @param x An object of class \code{kdenv} produced by
 #'   \code{\link[smacpod]{kdest}}.
 #' @param ... Additional graphical parameters passed to the
-#'   \code{\link[spatstat]{plot.fv}} function, which is used
+#'   \code{\link[spatstat.core]{plot.fv}} function, which is used
 #'   internally for plotting.
 #' @param shadecol1 Shade color for max/min envelopes.
 #'   Default is a dark grey.
@@ -25,7 +25,7 @@
 #'   See Details for an explanation of the components of the
 #'   plot.
 #' @method plot kdenv
-#' @seealso \code{\link[spatstat]{plot.fv}}
+#' @seealso \code{\link[spatstat.core]{plot.fv}}
 #' @export
 #' @examples
 #' data(grave)
@@ -35,10 +35,10 @@
 plot.kdenv = function(x, ..., shadecol1 = "gray56", shadecol2 = "lightgrey", main = "", legend = FALSE) {
   if (!is.element("kdenv", class(x))) stop("x should be an object from kdest function")
   # if there were no simulations
-  if (length(x) == 1) spatstat::plot.fv(x[[1]], main = main, legend = legend, ...)
+  if (length(x) == 1) spatstat.core::plot.fv(x[[1]], main = main, legend = legend, ...)
   if (length(x) > 1) {
     # create main plot
-    spatstat::plot.fv(x[[1]], main = main, legend = legend, shadecol = shadecol1, ...)
+    spatstat.core::plot.fv(x[[1]], main = main, legend = legend, shadecol = shadecol1, ...)
     # shade confidence bands
     # do some additional prep in case xlim is specified, otherwise
     # the polygon will go beyond the desired boundary
@@ -50,6 +50,6 @@ plot.kdenv = function(x, ..., shadecol1 = "gray56", shadecol2 = "lightgrey", mai
     graphics::polygon(c(x$r[pin], rev(x$r[pin])), c(x$qhi[pin], rev(x$qlo[pin])), 
                       col = shadecol2, border = NA)
     # redraw parts of plot covered by confidence bands
-    spatstat::plot.fv(x[[1]], main = "", legend = FALSE, shadecol = NA, add = TRUE, ...)
+    spatstat.core::plot.fv(x[[1]], main = "", legend = FALSE, shadecol = NA, add = TRUE, ...)
   }
 }

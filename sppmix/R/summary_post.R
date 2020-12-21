@@ -24,13 +24,13 @@
 #' \code{\link{to_int_surf}},
 #' \code{\link{rsppmix}},
 #' \code{\link{est_mix_damcmc}},
-#' \code{\link[spatstat]{owin}}
+#' \code{\link[spatstat.geom]{owin}}
 #' @examples
 #' \donttest{
 #' # generate data
 #' truemix<- rnormmix(m = 3, sig0 = .1, df = 5, xlim= c(0, 5), ylim = c(0, 5))
 #' summary(truemix)
-#' intsurf=to_int_surf(truemix, lambda = 100, win =spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf=to_int_surf(truemix, lambda = 100, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' pp1 = rsppmix(intsurf = intsurf)# draw points
 #' #Run DAMCMC and get posterior realizations
 #' postfit=est_mix_damcmc(pp1,m=3)
@@ -141,7 +141,7 @@ summary.damcmc_res <- function(object, burnin = object$L / 10, alpha=0.05,dgt = 
 #' # generate data
 #' truemix<- rnormmix(m = 3, sig0 = .1, df = 5, xlim= c(0, 5), ylim = c(0, 5))
 #' summary(truemix)
-#' intsurf=to_int_surf(truemix, lambda = 100, win =spatstat::owin( c(0, 5),c(0, 5)))
+#' intsurf=to_int_surf(truemix, lambda = 100, win =spatstat.geom::owin( c(0, 5),c(0, 5)))
 #' pp1 <- rsppmix(intsurf = intsurf)# draw points
 #' #Run BDMCMC and get posterior realizations
 #' postfit=est_mix_bdmcmc(pp1,m=5)
@@ -155,7 +155,7 @@ summary.damcmc_res <- function(object, burnin = object$L / 10, alpha=0.05,dgt = 
 #' \code{\link{to_int_surf}},
 #' \code{\link{rsppmix}},
 #' \code{\link{est_mix_bdmcmc}},
-#' \code{\link[spatstat]{owin}}
+#' \code{\link[spatstat.geom]{owin}}
 #'
 #' @export
 #' @method summary bdmcmc_res

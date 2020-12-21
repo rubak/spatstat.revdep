@@ -101,7 +101,7 @@
 #' \code{\link[Rcpp]{Rcpp}}, \code{\link[RcppArmadillo]{RcppArmadillo}}, \code{\link[fields]{fields}},
 #' and \code{mvtnorm}.
 #'
-#' In particular, we utilize the \code{\link[spatstat]{ppp}} and \code{\link[spatstat]{owin}} classes
+#' In particular, we utilize the \code{\link[spatstat.geom]{ppp}} and \code{\link[spatstat.geom]{owin}} classes
 #' from the \code{\link[spatstat]{spatstat}} package in order to
 #' describe a point pattern.
 #'

@@ -1,8 +1,8 @@
 .SP2owin <- function(SP) {
-    # require(spatstat)
+    # require(spatstat.core)
     if (!is.na(sp::is.projected(SP)) && !sp::is.projected(SP))
       stop("Only projected coordinates may be converted to spatstat class objects")
-    if (!requireNamespace("spatstat", quietly = TRUE))
+    if (!requireNamespace("spatstat.core", quietly = TRUE))
 	stop("package spatstat required for .SP2owin")
     pls <- slot(SP, "polygons")
     nParts <- sapply(pls, function(x) length(slot(x, "Polygons")))
@@ -14,7 +14,7 @@
 	rD <- pl[[1]]@ringDir
 	if (rD == 1) crds <- crds[nrow(crds):1,]
 	crds <- crds[-nrow(crds),]
-	res <- spatstat::owin(poly=list(x=crds[,1], y=crds[,2]))
+	res <- spatstat.geom::owin(poly=list(x=crds[,1], y=crds[,2]))
     } else if (nOwin > 1) {
         opls <- vector(mode="list", length=nOwin)
         io <- 1
@@ -36,11 +36,11 @@
             }
         }
 #	if (exists(".spatstat_check") && !.spatstat_check) 
-        if (!spatstat::spatstat.options("checkpolygons")) 
-        	res <- spatstat::owin(bbox(SP)[1,], bbox(SP)[2,], poly = opls,
+        if (!spatstat.geom::spatstat.options("checkpolygons")) 
+        	res <- spatstat.geom::owin(bbox(SP)[1,], bbox(SP)[2,], poly = opls,
 			check=FALSE)
 # 070718 added check avoidance
-	else res <- spatstat::owin(poly=opls)
+	else res <- spatstat.geom::owin(poly=opls)
     } else stop("no valid polygons")
     res
 }

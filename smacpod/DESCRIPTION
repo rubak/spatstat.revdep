@@ -8,7 +8,7 @@ Description: Statistical methods for analyzing case-control point data.  Methods
 License: GPL (>= 2)
 LazyLoad: yes
 Depends: R (>= 3.1.1)
-Imports: spatstat, plotrix, abind, pbapply, sp
+Imports: spatstat.geom, spatstat.core, spatstat.linnet, plotrix, abind, pbapply, sp
 Suggests: testthat
 RoxygenNote: 7.1.0
 Encoding: UTF-8

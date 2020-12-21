@@ -183,7 +183,7 @@ ggplot(data = ncsids.df) +
   coord_map()
 
 ## ----message = FALSE----------------------------------------------------------
-library(spatstat)
+library(spatstat.core)
 
 data(epi.incin); dat.df <- epi.incin
 dat.df$status <- factor(dat.df$status, levels = c(0,1), labels = c("Neg", "Pos"))

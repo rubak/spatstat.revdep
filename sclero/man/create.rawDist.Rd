@@ -8,11 +8,11 @@ create.rawDist(spots, gbs, main, spot.seq.names = NULL, sample.name = NULL,
   scaling.factor = 1, unit = NULL)
 }
 \arguments{
-\item{spots}{A list of \code{\link[spatstat]{ppp}} objects or a single \code{ppp} object defining the sample spot sequences. If \code{\link[spatstat]{marks}} are not specified, sequencial names will be used.}
+\item{spots}{A list of \code{\link[spatstat.geom]{ppp}} objects or a single \code{ppp} object defining the sample spot sequences. If \code{\link[spatstat.geom]{marks}} are not specified, sequencial names will be used.}
 
-\item{gbs}{\code{\link[spatstat]{psp}} object defining the growth lines. If \code{\link[spatstat]{marks}} are not specified, sequencial names will be used.}
+\item{gbs}{\code{\link[spatstat.geom]{psp}} object defining the growth lines. If \code{\link[spatstat.geom]{marks}} are not specified, sequencial names will be used.}
 
-\item{main}{\code{\link[spatstat]{psp}} object defining the measurement axis. If \code{\link[spatstat]{marks}} are not specified, sequencial 'main' will assigned as the marks. Only on `main` axis is allowed per `rawDist` object.}
+\item{main}{\code{\link[spatstat.geom]{psp}} object defining the measurement axis. If \code{\link[spatstat.geom]{marks}} are not specified, sequencial 'main' will assigned as the marks. Only on `main` axis is allowed per `rawDist` object.}
 
 \item{spot.seq.names}{optional. A character vector of equal length to number of sample \code{spots} sequences defining the name for each sequence. If left empty sequencial names will be generated.}
 

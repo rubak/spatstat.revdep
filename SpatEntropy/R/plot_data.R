@@ -35,14 +35,14 @@
 #'
 #' @export
 
-plot_lattice=function(data, win=spatstat::owin(xrange=c(1, ncol(data)),
+plot_lattice=function(data, win=spatstat.geom::owin(xrange=c(1, ncol(data)),
                                                yrange=c(1, nrow(data))),
                       gray.ext=c(1,0), main="", ribbon=TRUE){
   color=grDevices::gray(seq(gray.ext[1],gray.ext[2],
                             length.out=length(unique(c(data)))))
   data2=data
   for(i in 1:nrow(data)) data2[i,]=data[nrow(data)-(i-1),]
-  spatstat::plot.im(spatstat::as.im(data2, W=win), col=color, ribbon=ribbon, main=main)
+  spatstat.geom::plot.im(spatstat.geom::as.im(data2, W=win), col=color, ribbon=ribbon, main=main)
 }
 ###########################################
 

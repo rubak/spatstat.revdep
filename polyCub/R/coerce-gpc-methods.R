@@ -12,7 +12,7 @@
 ##' Conversion between polygonal \code{"owin"} and \code{"gpc.poly"}
 ##'
 ##' Package \pkg{polyCub} implements converters between the classes
-##' \code{"\link[spatstat:owin.object]{owin}"} of package \pkg{spatstat} and
+##' \code{"\link[spatstat.geom:owin.object]{owin}"} of package \pkg{spatstat} and
 ##' \code{"\link[rgeos:gpc.poly-class]{gpc.poly}"} of package \pkg{rgeos}
 ##' (originally from \pkg{gpclib}).
 ##' Support for the \code{"gpc.poly"} class was dropped from
@@ -39,7 +39,7 @@
 ##' @import methods
 ##' @export
 ##' @examples
-##' if (gpclibPermit() && require("spatstat")) {
+##' if (gpclibPermit() && require("spatstat.core")) {
 ##'     ## use example polygons from
 ##'     example(plotpolyf, ask = FALSE)
 ##'
@@ -53,10 +53,10 @@
 ##' }
 owin2gpc <- function (object)
 {
-    object <- spatstat::as.polygonal(object)
+    object <- spatstat.geom::as.polygonal(object)
 
     ## determine hole flags of the individual polygons
-    hole <- spatstat::summary.owin(object)$areas < 0
+    hole <- spatstat.geom::summary.owin(object)$areas < 0
 
     ## reverse vertices and set hole flags
     pts <- mapply(
@@ -77,15 +77,15 @@ owin2gpc <- function (object)
 }
 
 ##' @inheritParams owin2gpc
-##' @param ... further arguments passed to \code{\link[spatstat]{owin}}.
+##' @param ... further arguments passed to \code{\link[spatstat.geom]{owin}}.
 ##' @rdname coerce-gpc-methods
 ##' @export
 gpc2owin <- function (object, ...)
 {
     ## first convert to an "owin" without checking areas etc.
     ## to determine the hole status according to vertex order (area)
-    res <- spatstat::owin(poly = object@pts, check = FALSE)
-    holes_owin <- spatstat::summary.owin(res)$areas < 0
+    res <- spatstat.geom::owin(poly = object@pts, check = FALSE)
+    holes_owin <- spatstat.geom::summary.owin(res)$areas < 0
     ## or directly lapply spatstat.utils::is.hole.xypolygon
 
     ## now fix the vertex order
@@ -101,7 +101,7 @@ gpc2owin <- function (object, ...)
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
 
     ## now really convert to owin with appropriate vertex order
-    spatstat::owin(poly = bdry, ...)
+    spatstat.geom::owin(poly = bdry, ...)
 }
 
 ##' @inheritParams gpc2owin

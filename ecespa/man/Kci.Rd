@@ -24,14 +24,14 @@ Ki(mod1, correction="trans", nsim=99, ngrid=200, nrep=1e+05, r=NULL,
 }
 
 \arguments{
-  \item{mod1}{ Fitted model. An object of class \code{\link[spatstat]{ppm}} or  \code{\link{ecespa.minconfit}}. }
-  \item{mod2}{ Fitted model. An object of class \code{\link[spatstat]{ppm}} or  \code{\link{ecespa.minconfit}}. }
+  \item{mod1}{ Fitted model. An object of class \code{\link[spatstat.core]{ppm}} or  \code{\link{ecespa.minconfit}}. }
+  \item{mod2}{ Fitted model. An object of class \code{\link[spatstat.core]{ppm}} or  \code{\link{ecespa.minconfit}}. }
   \item{correction}{ A character item selecting any of the options "border", "bord.modif",  or "translate". It specifies 
   the edge correction to be applied when computing K-functions. }
   \item{nsim}{ Number of simulated point patterns to be generated when computing the envelopes. }
-  \item{ngrid}{ Dimensions (ngrid by ngrid) of a rectangular grid of locations where \code{\link[spatstat]{predict.ppm}} 
+  \item{ngrid}{ Dimensions (ngrid by ngrid) of a rectangular grid of locations where \code{\link[spatstat.core]{predict.ppm}} 
   would evaluate the spatial trend of the fitted models. }
-  \item{nrep}{ Total number of steps (proposals) of Metropolis-Hastings algorithm that should be run by \code{\link[spatstat]{rmh}}
+  \item{nrep}{ Total number of steps (proposals) of Metropolis-Hastings algorithm that should be run by \code{\link[spatstat.core]{rmh}}
   to simulate models of class \code{ppm}.}
   \item{r}{ Numeric vector. The values of the argument \eqn{r} at which the \eqn{K(r)} functions  should be evaluated. }
   \item{simu}{ A character item indicating if both models will be simulated for the computation of the envelopes (\code{simu = "both"}) or 
@@ -56,15 +56,15 @@ Ki(mod1, correction="trans", nsim=99, ngrid=200, nrep=1e+05, r=NULL,
 }
 \details{
   These functions are designed to automate the testing of 'univariate' and(/or) 'bivariate' point pattern hypotheses (based on K-functions) against non-Poisson (in-)homogeneous
-  models. These non-Poisson (in-)homogeneous models should have been fitted with pseudolikelihood tools (\code{spatstat} \code{\link[spatstat]{ppm}} function)
+  models. These non-Poisson (in-)homogeneous models should have been fitted with pseudolikelihood tools (\code{spatstat} \code{\link[spatstat.core]{ppm}} function)
 or  with minimum contrast methods (\code{\link{ecespa.minconfit}}).
 
-Function \code{Ki} is designed to test 'univariate' hypotheses. It will compute the (in-)homogeneous K-function (using \code{spatstat} \code{\link[spatstat]{Kinhom}} function) 
-of the point pattern to which  the \code{\link[spatstat]{ppm}} or  \code{\link{ecespa.minconfit}} model has beeen fitted and will compute 'envelopes' simulating from the fitted model. 
+Function \code{Ki} is designed to test 'univariate' hypotheses. It will compute the (in-)homogeneous K-function (using \code{spatstat} \code{\link[spatstat.core]{Kinhom}} function) 
+of the point pattern to which  the \code{\link[spatstat.core]{ppm}} or  \code{\link{ecespa.minconfit}} model has beeen fitted and will compute 'envelopes' simulating from the fitted model. 
 The computed envelopes can be considered as a pointwise test of the point pattern been a realisation of the fitted model.
 
 Function \code{Kci} is designed to test 'bivariate' hypotheses. It will compute the  (in-)homogeneous cross K-function 
-(using \code{spatstat} \code{\link[spatstat]{Kcross.inhom}} function)  and will compute envelopes simulating from the fitted models.
+(using \code{spatstat} \code{\link[spatstat.core]{Kcross.inhom}} function)  and will compute envelopes simulating from the fitted models.
 As, when dealing with inhomogeneos patterns \eqn{K12} != \eqn{K21}, \code{Kci} will compute both functions. If \code{simu = "both"} (default option),
 \code{Kci} will simulate from \code{mod2} to test K12 and from \code{mod1} to test K21. If \code{simu != "both"}, only \code{mod2} will be simulated. This option 
 may be useful when only K12 is of interest. Function \code{Kci} will also compute univariate (in-) homogeneous K-functions and envelopes for each individual point pattern.
@@ -114,7 +114,7 @@ They are related to some simulated points being rejected as lying outside the sp
 }
 
 \note{ Even when one of the two point patterns is assumed to be homogeneous Poisson (and, apparently  not worth of fitting any model), an homogeneous
-Poisson model can be easily fitted and passed to \code{Kci} with \code{\link[spatstat]{ppm}}. See the examples.
+Poisson model can be easily fitted and passed to \code{Kci} with \code{\link[spatstat.core]{ppm}}. See the examples.
 }
 
 \examples{

@@ -23,7 +23,7 @@ high-risk zones not covering all events. Default value is 0.02.}
 Default value is 0.1.}
 
 \item{intens}{(optional) estimated intensity of the observed process (object of class "im",
-see \code{\link[spatstat]{density.ppp}}). If not given,
+see \code{\link[spatstat.core]{density.ppp}}). If not given,
 it will be estimated.}
 
 \item{covmatrix}{(optional) Covariance matrix of the kernel of a normal distribution, only meaningful

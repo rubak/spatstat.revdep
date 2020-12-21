@@ -60,7 +60,7 @@ as.SpatialLines.psp(from)
 \author{Edzer Pebesma \email{edzer.pebesma@uni-muenster.de}, Roger Bivand}
 \examples{
 run <- FALSE
-if (require(spatstat, quietly=TRUE)) run <- TRUE
+if (require(spatstat.core, quietly=TRUE)) run <- TRUE
 if (run) {
 data(meuse.riv)
 mr <- Line(meuse.riv)

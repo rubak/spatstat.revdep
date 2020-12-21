@@ -21,7 +21,7 @@ data(star)
 data(toywin)
 }
 \format{
-Each of these is a single closed polygon of class \code{\link[spatstat]{owin}}.
+Each of these is a single closed polygon of class \code{\link[spatstat.geom]{owin}}.
 \itemize{
 \item{\code{bx} is a box on [-5,5]^2.}
 \item{\code{heart} is a heart, professing love for all things \code{\link[spatstat:spatstat-package]{spatstat}}.}

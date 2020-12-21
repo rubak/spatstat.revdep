@@ -8,13 +8,13 @@ plot_density(density_df, contour = FALSE, grayscale = FALSE, pp = NULL,
   surf = NULL, ppsize = 1, main = "2d surface (density or intensity)")
 }
 \arguments{
-\item{density_df}{A data frame. Typically density_df=as.data.frame(imdens), where imdens an \code{\link[spatstat]{im}} object.}
+\item{density_df}{A data frame. Typically density_df=as.data.frame(imdens), where imdens an \code{\link[spatstat.geom]{im}} object.}
 
 \item{contour}{Logical flag requesting the countour plot only.}
 
 \item{grayscale}{Plot in gray scale. Default is FALSE (use colors).}
 
-\item{pp}{Optional point pattern to display (a \code{\link[spatstat]{ppp}} or \code{sppmix} object).}
+\item{pp}{Optional point pattern to display (a \code{\link[spatstat.geom]{ppp}} or \code{sppmix} object).}
 
 \item{surf}{Optional \code{intensity_surface} object containing means to be displayed in the plot.}
 

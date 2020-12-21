@@ -62,7 +62,7 @@ A spatial point pattern is assumed to have been observed within a specific
 }
 \note{
 There are printing, summary and plotting methods for \code{"spp"} objects.\cr
-Function \code{ppp2spp} converts an \code{\link[spatstat]{ppp.object}} from package \code{spatstat} into an \code{"spp"} object.
+Function \code{ppp2spp} converts an \code{\link[spatstat.geom]{ppp.object}} from package \code{spatstat} into an \code{"spp"} object.
 }
 \seealso{
   \code{\link{plot.spp}},

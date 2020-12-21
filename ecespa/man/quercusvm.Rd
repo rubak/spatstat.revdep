@@ -16,7 +16,7 @@
     \item{y}{Cartesian y-coordinate of tree. }
     \item{marks}{factor with two levels indicating the status of each tree (1 = "alive", 0 = "dead").}
   }
- See \code{\link[spatstat]{ppp}}  for details of the format of a ppp object. 
+ See \code{\link[spatstat.geom]{ppp}}  for details of the format of a ppp object. 
 }
 
 \references{

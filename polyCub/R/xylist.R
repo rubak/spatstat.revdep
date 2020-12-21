@@ -20,7 +20,7 @@
 ##' The generic function \code{xylist} can deal with the
 ##' following polygon classes:
 ##' \itemize{
-##' \item{\code{"\link[spatstat:owin.object]{owin}"} from package \pkg{spatstat}}
+##' \item{\code{"\link[spatstat.geom:owin.object]{owin}"} from package \pkg{spatstat}}
 ##' \item{\code{"\link[rgeos:gpc.poly-class]{gpc.poly}"} from package
 ##' \pkg{rgeos} (or \pkg{gpclib})}
 ##' \item{\code{"\linkS4class{Polygons}"} from package \pkg{sp}
@@ -66,7 +66,7 @@ xylist <- function (object, ...) UseMethod("xylist")
 ##' @export
 xylist.owin <- function (object, ...)
 {
-    spatstat::as.polygonal(object)$bdry
+    spatstat.geom::as.polygonal(object)$bdry
 }
 
 ##' @rdname xylist
