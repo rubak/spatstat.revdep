@@ -1,0 +1,87 @@
+
+	CHANGES IN spatsurv VERSION 0.9-1
+	
+	
+SIGNIFICANT USER-VISIBLE CHANGES
+   
+    o There is now a facility for modelling the frailties on a grid, this allows for the analysis of large quantities of spatially referenced survival data. Please note that this functionality is still in the testing phase in this version of the package.
+
+BUG FIXES   	
+
+    o There was an error in the acceptance probability in the function simsurv, this has now been corrected.
+    
+    	
+    	
+    	
+    	CHANGES IN spatsurv VERSION 0.9-2
+    	
+SIGNIFICANT USER-VISIBLE CHANGES
+   
+    o There is now a facility for user-defined covariance functions, for example ExponentialCovFct(), and with more than 2 parameters for example, SpikedExponentialCovFct().
+
+BUG FIXES   	
+
+    o There was an error in the proposal kernel and acceptance ratio in the function survspat. This has been fixed.
+    
+
+
+    	CHANGES IN spatsurv VERSION 0.9-4
+    	
+BUG FIXES   	
+
+    o There was an error in the transformation from gamma to Y in the non-gridded likelihood functions. This has been fixed.
+    
+    
+
+    	CHANGES IN spatsurv VERSION 0.9-5
+    	
+SIGNIFICANT USER-VISIBLE CHANGES
+   
+    o Coding of additional survival models has been made easier. The ability to cope with left and interval censored data has been partly coded. 
+    
+
+    
+    	CHANGES IN spatsurv VERSION 0.9-6
+    	
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Parametrisation of some of the weibull model has changed from (shape, scale) to (alpha, lambda) with hazard lambda x alpha x t^(alpha-1) 
+    
+    o Additional baseline hazard models added: Gompertz (gompertzHaz), Gompertz-Makeham (makehamHaz), 'powers of t' (tpowHaz)
+    
+    o Mechanism for specifying model has now been changed and improved
+    
+    o Extensible user-defied baseline hazard functions
+    
+    o package vignette now available by typing 'spatsurvVignette()'
+    
+BUG FIXES  
+
+    o Various minor bugs have been fixed
+
+
+        CHANGES IN spatsurv VERSION 0.9-7
+
+BUG FIXES  
+
+    o Fixed bug in naming beta paramters caused by factor variables.
+
+        CHANGES IN spatsurv VERSION 0.9-8
+
+SIGNIFICANT USER-VISIBLE CHANGES  
+
+    o Added capability to use basis splines to model the baseline hazard
+    o Non-spatial modelling function, survspatNS, now included too.
+
+        CHANGES IN spatsurv VERSION 0.9-8
+
+BUG FIXES  
+
+    o Fixed bug in posteriorcov when using RandomFields covariance functions
+
+        CHANGES IN spatsurv VERSION 0.9-10
+
+SIGNIFICANT USER-VISIBLE CHANGES  
+
+    o Profiled code to get substantial speedup for gridded, polygonal and SPDE methods
+    o spplot1 function now has leaflet capability and also can produce static maps with an OpenStreetMap background via the function getBackground.

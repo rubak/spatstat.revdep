@@ -1,0 +1,10 @@
+useDynLib(globalKinhom)
+import(spatstat)
+
+importFrom(stats, approx, density, pnorm, runif, sd, var, rnorm)
+importFrom(utils, head, tail)
+importFrom(grDevices, xy.coords)
+
+export(pcfglobal, pcfcross.global, Kglobal, Kcross.global)
+export(expectedPairs, expectedCrossPairs, expectedPairs_iso, expectedCrossPairs_iso)
+export(expectedPairs_kernloo, expectedPairs_iso_kernloo)

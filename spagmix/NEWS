@@ -1,0 +1,44 @@
+        CHANGES IN spagmix VERSION 0.3-2
+
+OVERVIEW
+
+    o Fixed offset scaling issue in 'lgcpmix'
+
+
+
+        CHANGES IN spagmix VERSION 0.3-1
+
+OVERVIEW
+
+    o Removed 'MCMCpack' import designation; required functionality now in-built
+    o Internal functions added
+    o R version requirement bumped up to 3.5.0
+
+
+
+        CHANGES IN spagmix VERSION 0.3-0
+
+OVERVIEW
+
+    o New functionality for generating realisations of inhomogeneous spatial log-Gaussian Cox process intensities
+
+
+NEW FUNCTIONS
+
+    o lgcpmix
+    Inhomogeneous log-Gaussian Cox process intensity generator (spatial only)
+    o rpoispoly
+    Generate a random realisation of a Poisson point process to fall inside a polygonal window given a spatial intensity pixel image
+
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o spagmix now imports the RandomFields package
+
+
+
+        CHANGES IN spagmix VERSION 0.2-0
+
+OVERVIEW
+
+    o Initial release

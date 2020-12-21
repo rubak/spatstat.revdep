@@ -1,0 +1,14 @@
+## compiled code
+useDynLib(dixon, .registration = TRUE)
+
+# Export regular functions
+export("dixon")
+
+importFrom("stats", "pchisq", "pnorm")
+
+# Import all packages listed as Imports or Depends
+# ToDo: "importFrom" only required functions 
+import(
+  splancs,
+  spatstat
+)

@@ -1,0 +1,5 @@
+# 2.0 Correct bug in logrr.  Correct documentation.  Update
+      package to use pbapply for progress bar, when 
+      possible.
+# 2.1 Print function for kdenv. Better output from *.test functions. 
+      Updated documentation.

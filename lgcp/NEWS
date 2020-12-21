@@ -1,0 +1,45 @@
+
+	CHANGES IN lgcp VERSION 1.2
+
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Note there is no lgcp version 1.1, although there is a version 1.01, which is apparently the same thing.
+
+    o The function fftinterpolate.fromXYZ, now uses functions from the raster package to perform interpolation.
+
+    o Cell inculsion is now by default via grid cells touching the observation window, rather than via centroids.
+
+BUG FIXES
+
+    o Since cell inclusion is now via cells touching the observation window, this should fix the issue of points being `lost due to discretisation', as noted in the package vignette. Users of previous versions of the package should note that the old functionality can be regained by setting "inclusion='centroid'" in the call to lgcpPredict for instance.
+
+    o There was a bug in the method raster.lgcpgrid, this has now been fixed.
+
+OTHER CHANGES
+
+    o interpolation of a spatialAtRisk object onto the computational grid is now via functions from the raster package.
+
+
+
+	CHANGES IN lgcp VERSION 1.3-2
+
+BUG FIXES
+
+    o There was a bug in lgcpPredictSpatioTemporalPlusPars if addTemporalCovariates had been used to bolt on temporal-only variables, the columns of the matrix Z needed to be re-ordered to match the order of variables in the overall (spatiotemporal) model formula object. A warning is issued if this happens.
+
+
+
+    CHANGES IN lgcp VERSION 1.3-5
+
+OTHER CHANGES
+
+    o Added the dependency on rpanel version >= 1.1-3. This fixes the bug with visual parameter estimation caused by changes in the rpanel package.
+
+
+
+    CHANGES IN lgcp VERSION 1.3-15
+
+BUG FIXES
+
+    o Fixed minimum contrast estimation bug caused by updated spatstat functions

@@ -1,0 +1,106 @@
+"epi.insthaz" <- function(survfit.obj, conf.level = 0.95){
+
+   N <- 1 - ((1 - conf.level) / 2)
+   z <- qnorm(N, mean = 0, sd = 1)
+   
+   if(length(survfit.obj$strata) == 0)
+   {
+     dat.df <- data.frame(time = survfit.obj$time, time0 = c(0, survfit.obj$time[-length(survfit.obj$time)]))
+
+     # https://www.real-statistics.com/survival-analysis/kaplan-meier-procedure/confidence-interval-for-the-survival-function/
+     # Kaplan-Meier survival and confidence intervals:
+     dat.df$sest <- survfit.obj$surv
+     dat.df$sse  <- survfit.obj$std.err
+     dat.df$supp <- dat.df$sest^exp(z / log(dat.df$sest) * dat.df$sse / dat.df$sest)
+     dat.df$slow <- dat.df$sest^exp(-z / log(dat.df$sest) * dat.df$sse / dat.df$sest)   
+       
+     # Instantaneous hazard and confidence intervals:
+     dat.df$int <- dat.df$time - dat.df$time0
+     dat.df$a <- survfit.obj$n.event
+     dat.df$n <- survfit.obj$n.risk
+     dat.df$p <- dat.df$a / dat.df$n
+     dat.df$a. <- dat.df$n / (dat.df$n + z^2)
+     dat.df$b. <- dat.df$a / dat.df$n
+     dat.df$c. <- z^2 / (2 * dat.df$n)
+     dat.df$d. <- (dat.df$a * (dat.df$n - dat.df$a)) / dat.df$n^3
+     dat.df$e. <- z^2 / (4 * dat.df$n^2)
+     
+     dat.df$hest <- dat.df$p / dat.df$int     
+     dat.df$hlow <- (dat.df$a. * (dat.df$b. + dat.df$c. - (z * sqrt(dat.df$d. + dat.df$e.)))) / dat.df$int
+     dat.df$hupp <- (dat.df$a. * (dat.df$b. + dat.df$c. + (z * sqrt(dat.df$d. + dat.df$e.)))) / dat.df$int
+     
+     dat.df$hest[is.infinite(dat.df$hest)] <- 0 
+     dat.df$hlow[is.infinite(dat.df$hlow)] <- 0
+     dat.df$hupp[is.infinite(dat.df$hupp)] <- 0
+     
+     rval <- data.frame(time = dat.df$time, 
+        sest = dat.df$sest, slow = dat.df$slow, supp = dat.df$supp,
+        hest = dat.df$hest, hlow = dat.df$hlow, hupp = dat.df$hupp)
+   }
+   
+   else
+     if(length(survfit.obj$strata) > 0)
+     {
+       # Strata names:  
+       strata <- names(survfit.obj$strata)
+       strata <- sub(pattern = ".*=", replacement = "", strata)
+       strata <- rep(strata, times = survfit.obj$strata)   
+       
+       ustrata <- unique(strata)
+       dat.df <- data.frame(strata, time = survfit.obj$time)
+       time0 <- c()
+       
+       for(i in 1:length(ustrata)){
+         
+         id <- dat.df$strata == ustrata[i]   
+         tdat.df <- dat.df[id,]
+         
+         if(nrow(tdat.df) == 1)
+         {
+           ttime0 <- 0
+         }
+         
+         else
+           if(nrow(tdat.df) > 1)
+           {
+             ttime0 <- c(0, tdat.df$time[-length(tdat.df$time)])
+           }   
+         time0 <- c(time0, ttime0)
+       }
+       
+       dat.df$time0 <- time0
+       dat.df <- dat.df[,c(1,3,2)]
+       dat.df$int <- (dat.df$time - dat.df$time0)
+
+       # Kaplan-Meier survival and confidence intervals:
+       dat.df$sest <- survfit.obj$surv
+       dat.df$sse  <- survfit.obj$std.err
+       dat.df$supp <- dat.df$sest^exp(z / log(dat.df$sest) * dat.df$sse / dat.df$sest)
+       dat.df$slow <- dat.df$sest^exp(-z / log(dat.df$sest) * dat.df$sse / dat.df$sest)   
+       
+       # Instantaneous hazard and confidence intervals:
+       dat.df$a <- survfit.obj$n.event
+       dat.df$n <- survfit.obj$n.risk
+       dat.df$p <- dat.df$a / dat.df$n
+       
+       dat.df$a. <- dat.df$n / (dat.df$n + z^2)
+       dat.df$b. <- dat.df$a / dat.df$n
+       dat.df$c. <- z^2 / (2 * dat.df$n)
+       dat.df$d. <- (dat.df$a * (dat.df$n - dat.df$a)) / dat.df$n^3
+       dat.df$e. <- z^2 / (4 * dat.df$n^2)
+       
+       dat.df$hest <- dat.df$p / dat.df$int     
+       dat.df$hlow <- (dat.df$a. * (dat.df$b. + dat.df$c. - (z * sqrt(dat.df$d. + dat.df$e.)))) / dat.df$int
+       dat.df$hupp <- (dat.df$a. * (dat.df$b. + dat.df$c. + (z * sqrt(dat.df$d. + dat.df$e.)))) / dat.df$int
+       
+       dat.df$hest[is.infinite(dat.df$hest)] <- 0 
+       dat.df$hlow[is.infinite(dat.df$hlow)] <- 0
+       dat.df$hupp[is.infinite(dat.df$hupp)] <- 0
+       
+       rval <- data.frame(strata = dat.df$strata, time = dat.df$time, 
+          sest = dat.df$sest, slow = dat.df$slow, supp = dat.df$supp,
+          hest = dat.df$hest, hlow = dat.df$hlow, hupp = dat.df$hupp)
+     }    
+       
+   return(rval)
+}

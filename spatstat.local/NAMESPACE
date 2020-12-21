@@ -1,0 +1,36 @@
+import(spatstat,spatstat.utils,tensor,stats,graphics)
+
+# Export all names unless they start with a dot
+exportPattern("^[^.]")
+# Note that package.skeleton gave
+# exportPattern("^[[:alpha:]]+")
+# which excluded [.ssf
+
+# Methods 
+S3method("Smooth", "locmincon")
+S3method("Smooth", "locppm")
+S3method("as.interact", "locppm")
+S3method("as.ppm", "locppm")
+S3method("as.ppp", "locmincon")
+S3method("coef", "locppm")
+S3method("confint", "locppm")
+S3method("contour", "locppm")
+S3method("fitted", "loccit")
+S3method("fitted", "locppm")
+S3method("is.poisson", "locppm")
+S3method("plot", "loccit")
+S3method("plot", "locmincon")
+S3method("plot", "locppm")
+S3method("predict", "loccit")
+S3method("predict", "locppm")
+S3method("print", "homtestmap")
+S3method("print", "loccit")
+S3method("print", "locmincon")
+S3method("print", "locppm")
+S3method("print", "locppmOptions")
+S3method("psib", "loccit")
+S3method("psib", "locmincon")
+S3method("update", "homtestmap")
+S3method("with", "loccit")
+S3method("with", "locmincon")
+

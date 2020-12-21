@@ -1,0 +1,16 @@
+7d10fc759bad3a8cb809db0232992025 *DESCRIPTION
+a4785488ba625d7fe08ed6cac75dd00d *NAMESPACE
+f02ccd8801a7131c6a0a58c1eaf07e75 *R/RCS/iplot.R,v
+5438e5151c2727401ce572942fc568ee *R/RCS/iplotlayered.R,v
+a01eaba0fe6833c1e5d0917468f9f93d *R/RCS/iplotlinnet.R,v
+b4d525794889935825abeeaa317083d9 *R/RCS/istat.R,v
+13773a4effd1a1ed39bbbfc7abea865a *R/iplot.R
+28bccd6494c34069954b597c8a34cf06 *R/iplotlayered.R
+bf6b5ac3ce13941ab59b9230e1214e88 *R/iplotlinnet.R
+116aaea4a29123e75bd8124f026589d8 *R/istat.R
+ac9a8dbbb8d3e4f4680328751c1edb8d *man/iplot.Rd
+d4eedc08555617b5d843c24be7e446aa *man/istat.Rd
+f94a76d6a8ef44d9f435717ea98adc33 *man/macros/defns.Rd
+d24ac78ef2f4c2c40951d637398997cd *man/spatstat.gui-internal.Rd
+2f4fec2817b4aedf3c68f222fb7cc86d *man/spatstat.gui-package.Rd
+f5f2e3a597750c1089cfec0b479ac12d *tests/undoc.R

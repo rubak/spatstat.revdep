@@ -1,0 +1,14 @@
+Changes to version 1.2
+     * Addition of Arnhofen and OxfordPots data sets for a total of 27 and corrections of minor typographic errors.
+
+Changes to version 1.1
+     * Addition of Michelsberg data from Georg Roth for a total of 25 and minor corrections to Fibulae, 
+         TRBPPottery, and Handaxes
+
+Changes to version 1.0
+     * Addition of 13 data sets for a total of 24: Bornholm, EIAGraves, EngrBone, ESASites, EWBurials,
+         Fibulae, Handaxes, MaskSite, Mesolithic, RBGlass1, RBGlass2, RBPottery, TRBPottery
+
+Initial version 0.1
+     * 11 Archaeological sets: Acheulean, BACups, BarmoseI.grid, BarmoseI.pp, DartPoints, EndScrapers, Nelson
+         Olorgesaillie.maj, Olorgesaillie.sub, PitHouses, Snodgrass

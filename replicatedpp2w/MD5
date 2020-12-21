@@ -1,0 +1,9 @@
+af52a85849215ef159cb5665cf6e7ff4 *DESCRIPTION
+0892b5eb776b6e3d39ee20c0dc6850f7 *NAMESPACE
+3f1cee61c00b0de4e4e059126908fbad *R/K2w.R
+85ed5e32e16be3fcdcaa17f81f3aebd0 *R/plot.k2w.R
+61f97e182b77c134e1d44a647450ed9f *R/print.k2w.R
+0aa7c1569215a563d991da588de3a93b *data/croton.rda
+2fccf58add4731ff7e72e8209a426d17 *inst/CITATION
+bfabc6ece522709a11d177c62422aaf1 *man/K2w.Rd
+017d139200864bfbedd4c0b4570dea75 *man/croton.Rd

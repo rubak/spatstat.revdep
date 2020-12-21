@@ -1,0 +1,33 @@
+2015-12-28 10:00  parago
+
+	* src/t2sqlite: new function
+	* src/t2gis: new function
+	* src/valjson: new function
+	* src/t2summary: new function
+
+2016-01-12 16:00  parago
+
+	* src/t2sqlite: message with output folder
+	* src/t2gis: message with output folder
+	* src/tweet2r: message where JSON files are stored
+
+2016-01-12 19:00  parago
+
+	* src/t2gis: bug error
+
+2016-06-13 19:00  parago
+        
+	* src/t2STIDF: new function
+	* src/tglm: new function
+	* src/tspan: new function
+	* src/theatmap: new function
+	* src/t2SpatialPointDataFrame: new function
+	* src/t2DataFrame: new function
+	* src/t2subset: new function
+
+2018-07-10 15:00 jeroen
+
+  *R/t2DataFrame: added some arguments
+  *R/t2qgis: added some arguments
+  *R/t2sqlite: added some arguments
+  *R/valjson: added some arguments

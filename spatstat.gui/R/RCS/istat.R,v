@@ -1,0 +1,860 @@
+head	1.25;
+access;
+symbols;
+locks
+	adrian:1.25; strict;
+comment	@# @;
+
+
+1.25
+date	2020.03.13.02.17.07;	author adrian;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2020.03.13.02.07.16;	author adrian;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2015.10.21.09.06.57;	author adrian;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2015.05.07.01.56.31;	author adrian;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2015.04.15.11.05.09;	author adrian;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2015.04.15.08.08.00;	author adrian;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2015.02.24.01.41.47;	author adrian;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2014.10.24.00.22.30;	author adrian;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2014.08.27.09.48.23;	author adrian;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2014.07.22.05.36.15;	author adrian;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2013.04.25.06.37.43;	author adrian;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2009.08.22.00.53.51;	author adrian;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2009.07.01.00.49.07;	author adrian;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2009.06.30.22.16.13;	author adrian;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2009.06.30.22.08.19;	author adrian;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2009.06.30.21.51.23;	author adrian;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2009.06.30.04.28.00;	author adrian;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2009.06.27.20.03.45;	author adrian;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2009.06.24.23.20.29;	author adrian;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2009.06.24.23.15.15;	author adrian;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2009.06.24.19.48.42;	author adrian;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2009.06.24.07.42.11;	author adrian;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2009.06.24.07.39.56;	author adrian;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2009.06.22.02.45.21;	author adrian;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2009.06.22.02.34.13;	author adrian;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.25
+log
+@Summary: included try()
+@
+text
+@#
+# interactive analysis of point patterns
+#
+#   $Revision: 1.24 $   $Date: 2020/03/13 02:07:16 $
+#
+#
+
+istat <- function(x, xname) {
+  if(missing(xname))
+    xname <- short.deparse(substitute(x))
+  verifyclass(x, "ppp")
+  kraever("rpanel")
+  # generate simulations of CSR for use in envelopes
+  simx <- envelope(x, fun=NULL, nsim=39, verbose=FALSE,
+                   internal=list(csr=TRUE, eject="patterns"))
+  # initial value of smoothing parameter
+  sigma0 <- with(x$window, min(diff(xrange),diff(yrange)))/8
+  # create panel
+  p <- rpanel::rp.control(title=paste("istat(", xname, ")", sep=""),
+                          panelname="istat",
+                          size=c(600,400),
+                          x=x,           # point pattern
+                          xname=xname,   # name of point pattern
+                          simx=simx,   # simulated realisations of CSR
+                          stat="data",
+                          envel="none",
+                          sigma=sigma0)
+# Split panel into two halves  
+# Left half of panel: display
+# Right half of panel: controls
+  rpanel::rp.grid(p, "gdisplay",
+                  pos=list(row=0,column=0), width=400, height=400)
+  rpanel::rp.grid(p, "gcontrols",
+                  pos=list(row=0,column=1), width=200, height=400)
+
+#----- Display side ------------
+
+  # This line is to placate the package checker
+  mytkr2 <- NULL
+  
+  rpanel::rp.tkrplot(p, mytkr2, do.istat,
+                     pos=list(row=0,column=0,grid="gdisplay"))
+
+  redraw <- function(panel) {
+    rpanel::rp.tkrreplot(panel, mytkr2)
+    panel
+  }
+  
+#----- Control side ------------
+  nextrow <- 0
+  pozzie <- function(n=nextrow,s='w')
+    list(row=n,column=0,grid="gcontrols",sticky=s)
+  
+# choice of summary statistic
+  ftable <- c(data="data",
+              density="kernel smoothed",
+              Kest="K-function",
+              Lest="L-function",
+              pcf="pair correlation",
+              Kinhom="inhomogeneous K",
+              Linhom="inhomogeneous L",
+              Fest="empty space function F",
+              Gest="nearest neighbour function G",
+              Jest="J-function")
+  fvals <- names(ftable)
+  flabs <- as.character(ftable)
+  stat <- NULL
+  rpanel::rp.radiogroup(p, stat, vals=fvals, labels=flabs,
+                        title="statistic", action=redraw,
+                        pos=pozzie(0))
+  nextrow <- 1
+# envelopes?
+  envel <- NULL
+  evals <- c("none", "pointwise", "simultaneous")
+  elabs <- c("No simulation envelopes",
+             "Pointwise envelopes under CSR",
+             "Simultaneous envelopes under CSR")
+  rpanel::rp.radiogroup(p, envel, vals=evals, labels=elabs,
+                        title="Simulation envelopes", action=redraw,
+                        pos=pozzie(nextrow))
+  nextrow <- nextrow + 1
+# smoothing parameters
+  sigma <- NULL
+  rect <- as.rectangle(x$window)
+  winwid  <- min(abs(diff(rect$xrange)), abs(diff(rect$yrange)))
+  rpanel::rp.slider(p, sigma, winwid/80, winwid/2, action=redraw, 
+                    title="sigma",
+                    initval=winwid/8, showvalue=TRUE, pos=pozzie(nextrow, ''))
+  nextrow <- nextrow + 1
+  pcfbw <- pcfbwinit <- 0.15/sqrt(5 * x$n/area(x$window))
+  rpanel::rp.slider(p, pcfbw, pcfbwinit/10, 4 * pcfbwinit, action=redraw, 
+                    title="bw", initval=pcfbwinit,
+                    showvalue=TRUE, pos=pozzie(nextrow, ''))
+  nextrow <- nextrow + 1
+# button to print a summary at console
+  rpanel::rp.button(p, title="Print summary information",
+                    action=function(panel) { print(summary(panel$x)); panel},
+                    pos=pozzie(nextrow))
+  nextrow <- nextrow + 1
+# quit button 
+  rpanel::rp.button(p, title="Quit", quitbutton=TRUE,
+                    action= function(panel) { panel }, pos=pozzie(nextrow))
+
+  invisible(NULL)
+}
+
+# function that updates the plot when the control panel is operated
+
+do.istat <- function(panel) { 
+  x     <- panel$x
+  xname <- panel$xname
+  envel <- panel$envel
+  stat  <- panel$stat
+  sigma <- panel$sigma
+  simx  <- panel$simx
+  if(stat=="data") {
+    plot(x, main=xname)
+    return(panel)
+  }
+  out <- 
+    switch(envel,
+           none=switch(stat,
+             density=density(x, sigma=sigma),
+             Kest=Kest(x),
+             Lest=Lest(x), 
+             pcf=pcf(x, bw=panel$pcfbw),
+             Kinhom=Kinhom(x, sigma=sigma),
+             Linhom=Linhom(x, sigma=sigma),
+             Fest=Fest(x),
+             Gest=Gest(x),
+             Jest=Jest(x)),
+           pointwise=switch(stat,
+             density=density(x, sigma=sigma),
+             Kest=envelope(x, Kest, nsim=39, simulate=simx),
+             Lest=envelope(x, Lest, nsim=39, simulate=simx),
+             pcf=envelope(x, pcf, bw=panel$pcfbw, nsim=39, simulate=simx),
+             Kinhom=envelope(x, Kinhom, nsim=39, sigma=sigma, simulate=simx),
+             Linhom=envelope(x, Linhom, nsim=39, sigma=sigma, simulate=simx),
+             Fest=envelope(x, Fest, nsim=39, simulate=simx),
+             Gest=envelope(x, Gest, nsim=39, simulate=simx),
+             Jest=envelope(x, Jest, nsim=39, simulate=simx)),
+           simultaneous=switch(stat,
+             density=density(x, sigma=sigma),
+             Kest=envelope(x, Kest, nsim=19, global=TRUE, simulate=simx),
+             Lest=envelope(x, Lest, nsim=19, global=TRUE, simulate=simx),
+             pcf=envelope(x, pcf, bw=panel$pcfbw, nsim=19, global=TRUE, simulate=simx),
+             Kinhom=envelope(x, Kinhom, nsim=19, sigma=sigma, global=TRUE, simulate=simx),
+             Linhom=envelope(x, Linhom, nsim=19, sigma=sigma, global=TRUE, simulate=simx),
+             Fest=envelope(x, Fest, nsim=19, global=TRUE, simulate=simx),
+             Gest=envelope(x, Gest, nsim=19, global=TRUE, simulate=simx),
+             Jest=envelope(x, Jest, nsim=19, global=TRUE, simulate=simx))
+           )
+  ## determine main title
+  auxargs <- switch(stat,
+                    density = "sigma",
+                    pcf     = "bw",
+                    Kinhom  = "sigma",
+                    Linhom  = "sigma",
+                    NULL)
+  gstring <- paste(c(xname, auxargs), collapse=", ")
+  main <- paste0(stat, paren(gstring))
+  ## plot it
+  try(plot(out, main=main))
+  if(stat == "density")
+    points(x)
+  return(panel)
+}
+
+@
+
+
+1.24
+log
+@Summary: tweak
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.23 $   $Date: 2015/10/21 09:06:57 $
+d154 8
+a161 9
+  moreargs <- switch(stat,
+                     density = "sigma",
+                     pcf     = "bw",
+                     Kinhom  = "sigma",
+                     Linhom  = "sigma",
+                     NULL)
+  arglist <- c(xname, moreargs)
+  argstring <- paste(arglist, collapse=", ")
+  main <- paste0(stat, paren(argstring))
+d163 1
+a163 5
+  if(is.fv(out)) {
+    plot(out, main=main, mathfont="plain")
+  } else {
+    plot(out, main=main)
+  }
+@
+
+
+1.23
+log
+@Major edit replacing dynamic function definitions with static definitions
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.22 $   $Date: 2015/05/07 01:56:31 $
+d153 18
+a170 10
+  # plot it
+  if(stat %in% c("density", "Kinhom", "Linhom")) {
+    plot(out, main=paste(stat, "(", xname, ", sigma)", sep=""))
+    if(stat == "density")
+      points(x)
+  } else if(stat == "pcf")
+    plot(out, main=paste("pcf(", xname, ", bw)", sep=""))
+  else 
+    plot(out, main=paste(stat, "(", xname, ")", sep=""))
+
+@
+
+
+1.22
+log
+@fixed bug in loading rpanel
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.21 $   $Date: 2015/04/15 11:05:09 $
+d12 1
+a12 1
+  summon.rpanel()
+@
+
+
+1.21
+log
+@reinstated 'require(rpanel)'
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.20 $   $Date: 2015/04/15 08:08:00 $
+d12 1
+a12 1
+  require(rpanel)
+@
+
+
+1.20
+log
+@another try
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.19 $   $Date: 2015/02/24 01:41:47 $
+d12 1
+a18 2
+  requireNamespace("rpanel")
+  requireNamespace("tkrplot")
+@
+
+
+1.19
+log
+@avoid 'require'
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.18 $   $Date: 2014/10/24 00:22:30 $
+d13 1
+a13 1
+  simx <- envelope(x, fun=NULL, nsim=39,
+d18 5
+a22 2
+  requireNamespace(rpanel)
+  p <- rpanel::rp.control(paste("istat(", xname, ")", sep=""),
+d28 1
+a28 2
+                          sigma=sigma0,
+                          size=c(600, 400))
+@
+
+
+1.18
+log
+@safety
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.17 $   $Date: 2014/08/27 09:48:23 $
+d18 1
+a18 1
+  require(rpanel)
+@
+
+
+1.17
+log
+@prefixed calls by rpanel::
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.16 $   $Date: 2014/07/22 05:36:15 $
+d89 1
+a89 1
+  pcfbw <- pcfbwinit <- 0.15/sqrt(5 * x$n/area.owin(x$window))
+@
+
+
+1.16
+log
+@bug fix in interface to rpanel
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.15 $   $Date: 2013/04/25 06:37:43 $
+d19 8
+a26 8
+  p <- rp.control(paste("istat(", xname, ")", sep=""),
+                  x=x,           # point pattern
+                  xname=xname,   # name of point pattern
+                  simx=simx,   # simulated realisations of CSR
+                  stat="data",
+                  envel="none",
+                  sigma=sigma0,
+                  size=c(600, 400))
+d30 4
+a33 2
+  rp.grid(p, "gdisplay", pos=list(row=0,column=0))
+  rp.grid(p, "gcontrols", pos=list(row=0,column=1))
+d40 2
+a41 1
+  rp.tkrplot(p, mytkr2, do.istat, pos=list(row=0,column=0,grid="gdisplay"))
+d44 1
+a44 1
+    rp.tkrreplot(panel, mytkr2)
+d67 3
+a69 3
+  rp.radiogroup(p, stat, vals=fvals, labels=flabs,
+   			  title="statistic", action=redraw,
+                pos=pozzie(0))
+d77 3
+a79 3
+  rp.radiogroup(p, envel, vals=evals, labels=elabs,
+                title="Simulation envelopes", action=redraw,
+                pos=pozzie(nextrow))
+d85 3
+a87 3
+  rp.slider(p, sigma, winwid/80, winwid/2, action=redraw, 
+            title="sigma",
+            initval=winwid/8, showvalue=TRUE, pos=pozzie(nextrow, ''))
+d90 3
+a92 3
+  rp.slider(p, pcfbw, pcfbwinit/10, 4 * pcfbwinit, action=redraw, 
+            title="bw", initval=pcfbwinit,
+            showvalue=TRUE, pos=pozzie(nextrow, ''))
+d95 3
+a97 3
+  rp.button(p, title="Print summary information",
+            action=function(panel) { print(summary(panel$x)); panel},
+            pos=pozzie(nextrow))
+d100 2
+a101 2
+  rp.button(p, title="Quit", quitbutton=TRUE,
+            action= function(panel) { panel }, pos=pozzie(nextrow))
+@
+
+
+1.15
+log
+@Replaced rep() by rep.int()
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.14 $   $Date: 2009/08/22 00:53:51 $
+d64 1
+a64 1
+  rp.radiogroup(p, stat, values=fvals, labels=flabs,
+d74 1
+a74 1
+  rp.radiogroup(p, envel, values=evals, labels=elabs,
+@
+
+
+1.14
+log
+@adjusted to new internal messaging in 'envelope'
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.13 $   $Date: 2009/07/01 00:49:07 $
+d10 1
+a10 1
+    xname <- deparse(substitute(x))
+@
+
+
+1.13
+log
+@tweaked
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.12 $   $Date: 2009/06/30 22:16:13 $
+d14 1
+a14 1
+                   internal=list(csr=TRUE, patterns=TRUE))
+@
+
+
+1.12
+log
+@prettified
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.11 $   $Date: 2009/06/30 22:08:19 $
+d12 6
+a18 1
+  winwid <- with(x$window, min(diff(xrange),diff(yrange)))
+d22 1
+a22 1
+                  simx=list(),   # simulated realisations of CSR
+d25 1
+a25 1
+                  sigma=winwid/8,
+d41 1
+a41 1
+    rp.tkrreplot(p, mytkr2)
+a115 5
+  if(envel %in% c("pointwise", "simultaneous") && length(simx) == 0) {
+    # generate simulations of CSR for use in envelopes
+    panel$simx <- simx <- envelope(x, fun=NULL, nsim=39,
+                                   internal=list(csr=TRUE, patterns=TRUE))
+  }
+d140 8
+a147 8
+             Kest=envelope(x, Kest, nsim=39, global=TRUE, simulate=simx),
+             Lest=envelope(x, Lest, nsim=39, global=TRUE, simulate=simx),
+             pcf=envelope(x, pcf, bw=panel$pcfbw, nsim=39, global=TRUE, simulate=simx),
+             Kinhom=envelope(x, Kinhom, nsim=39, sigma=sigma, global=TRUE, simulate=simx),
+             Linhom=envelope(x, Linhom, nsim=39, sigma=sigma, global=TRUE, simulate=simx),
+             Fest=envelope(x, Fest, nsim=39, global=TRUE, simulate=simx),
+             Gest=envelope(x, Gest, nsim=39, global=TRUE, simulate=simx),
+             Jest=envelope(x, Jest, nsim=39, global=TRUE, simulate=simx))
+@
+
+
+1.11
+log
+@tweak to placate the package checker
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.10 $   $Date: 2009/06/30 21:51:23 $
+d47 1
+a47 1
+              density="kernel smoothed (sigma)",
+d50 3
+a52 3
+              pcf="pair correlation function (bw)",
+              Kinhom="inhomogeneous K-function",
+              Linhom="inhomogeneous L-function",
+d149 10
+a158 3
+  plot(out, main=paste(stat, "(", xname, ")", sep=""))
+  if(stat=="density")
+    points(x)
+@
+
+
+1.10
+log
+@now uses tkrplot
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.9 $   $Date: 2009/06/30 04:28:00 $
+d29 4
+@
+
+
+1.9
+log
+@tweaked
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.8 $   $Date: 2009/06/27 20:03:45 $
+a8 1
+  verifyclass(x, "ppp")
+d11 1
+d13 1
+a13 4
+  # initialise display
+  plot(x, main=xname)
+  # 
+  d <- dev.cur()
+a16 1
+                  d=d,           # display device
+d18 3
+d22 19
+d43 1
+a43 1
+              density="intensity",
+d46 1
+a46 1
+              pcf="pair correlation function",
+d56 3
+a58 1
+   			  title="statistic", action=do.istat)
+d66 3
+a68 1
+                title="Simulation envelopes", action=do.istat)
+d72 5
+a76 3
+  wid  <- min(abs(diff(rect$xrange)), abs(diff(rect$yrange)))
+  rp.slider(p, sigma, wid/80, wid/2, action=do.istat, 
+            title="smoothing bandwidth for intensity (etc)", initval=wid/8, showvalue=TRUE)
+d78 4
+a81 3
+  rp.slider(p, pcfbw, pcfbwinit/100, 5 * pcfbwinit, action=do.istat, 
+            title="smoothing bandwith for pcf", initval=pcfbwinit,
+            showvalue=TRUE)
+d84 3
+a86 1
+            action=function(panel) { print(summary(panel$x)); panel} )
+d89 3
+a91 1
+            action= function(panel) { dev.off(panel$d) ; panel })
+a96 2
+  dold <- dev.cur()
+  dev.set(panel$d)
+a104 1
+    dev.set(dold)
+a147 1
+  dev.set(dold)
+@
+
+
+1.8
+log
+@new argument xname
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.7 $   $Date: 2009/06/24 23:20:29 $
+d50 3
+a52 3
+  wid  <- max(abs(diff(rect$xrange)), abs(diff(rect$yrange)))
+  rp.slider(p, sigma, wid/80, wid/6.1, action=do.istat, 
+            title="smoothing bandwidth for intensity (etc)", initval=wid/12, showvalue=TRUE)
+@
+
+
+1.7
+log
+@minor
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.6 $   $Date: 2009/06/24 23:15:15 $
+d8 1
+a8 1
+istat <- function(x) {
+d10 2
+a11 1
+  xname <- deparse(substitute(x))
+@
+
+
+1.6
+log
+@minor
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.5 $   $Date: 2009/06/24 19:48:42 $
+d51 1
+a51 1
+            title="intensity bandwidth", initval=wid/12, showvalue=TRUE)
+d54 1
+a54 1
+            title="pair correlation bandwidth", initval=pcfbwinit,
+@
+
+
+1.5
+log
+@tweaked and speeded up.
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.4 $   $Date: 2009/06/24 07:42:11 $
+d48 4
+a51 3
+  dia <- diameter(x$window)
+  rp.slider(p, sigma, dia/100, dia/3, action=do.istat, 
+            title="intensity bandwidth", initval=dia/8, showvalue=TRUE)
+@
+
+
+1.4
+log
+@added Linhom option
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.3 $   $Date: 2009/06/24 07:39:56 $
+d17 5
+a21 1
+                  x=x, xname=xname, d=d, size=c(600, 400))
+d73 1
+d79 5
+d98 8
+a105 8
+             Kest=envelope(x, Kest, nsim=39),
+             Lest=envelope(x, Lest, nsim=39),
+             pcf=envelope(x, pcf, bw=panel$pcfbw, nsim=39),
+             Kinhom=envelope(x, Kinhom, nsim=39, sigma=sigma),
+             Linhom=envelope(x, Linhom, nsim=39, sigma=sigma),
+             Fest=envelope(x, Fest, nsim=39),
+             Gest=envelope(x, Gest, nsim=39),
+             Jest=envelope(x, Jest, nsim=39)),
+d108 8
+a115 8
+             Kest=envelope(x, Kest, nsim=39, global=TRUE),
+             Lest=envelope(x, Lest, nsim=39, global=TRUE),
+             pcf=envelope(x, pcf, bw=panel$pcfbw, nsim=39, global=TRUE),
+             Kinhom=envelope(x, Kinhom, nsim=39, sigma=sigma, global=TRUE),
+             Linhom=envelope(x, Linhom, nsim=39, sigma=sigma, global=TRUE),
+             Fest=envelope(x, Fest, nsim=39, global=TRUE),
+             Gest=envelope(x, Gest, nsim=39, global=TRUE),
+             Jest=envelope(x, Jest, nsim=39, global=TRUE))
+@
+
+
+1.3
+log
+@minor
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.2 $   $Date: 2009/06/22 02:45:21 $
+d25 1
+d82 1
+d92 1
+d102 1
+@
+
+
+1.2
+log
+@added Kinhom
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.1 $   $Date: 2009/06/22 02:34:13 $
+d13 1
+a13 3
+  y <- density(x)
+  out <- plot(y, main=paste("density(", xname, ")", sep=""))
+  points(x)
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d4 1
+a4 1
+#   $Revision: 1.4 $   $Date: 2009/01/01 00:24:33 $
+d21 2
+a22 1
+  ftable <- c(density="intensity",
+d26 1
+d69 6
+d78 1
+a78 1
+             density=density(x, sigma=panel$sigma),
+d82 1
+d87 1
+a87 1
+             density=density(x, sigma=panel$sigma),
+d91 1
+d96 1
+a96 1
+             density=density(x, sigma=panel$sigma),
+d100 1
+d109 1
+a109 1
+  panel
+@

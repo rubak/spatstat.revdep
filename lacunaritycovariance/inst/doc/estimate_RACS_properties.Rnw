@@ -1,0 +1,130 @@
+%\VignetteIndexEntry{Estimating RACS Summary Functions from Data Saved in Remote Sensing Formats}
+
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{float}
+
+\newcommand{\code}[1]{{\tt #1}}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\title{Estimating RACS Properties from a Binary Map}
+\author{Kassel Hingee}
+
+\maketitle
+
+This document is a short demonstration of estimating various properties of a stationary RACS from an observation that is a binary map.
+See (Hingee, 2019; Hingee et al., 2019) for more rigorous discussion of the properties and estimators.
+
+\tableofcontents
+
+\section{Preparing the Binary Map}
+We will need an image in \code{spatstat}'s \code{im} format with values of 1, 0 and NA representing foreground, background and outside the observation window respectively.
+For this vignette we will use a small image already prepared.
+We reduced the resolution for greater speed in building this vignette.
+You can see how we prepared the image from remotely sensed data in the demo:\\
+ \verb!import_remote_sense_data!.\\
+This demo can be run by typing the following in \code{R}:\\ \verb!demo("import_remote_sense_data", package = "lacunaritycovariance")!.
+
+\begin{figure}[H]
+\centering
+<<loadbinarymap, fig = TRUE>>=
+library(lacunaritycovariance)
+load(system.file("extdata/egbinarymap.RData",
+     package="lacunaritycovariance"))
+# the following converts egbinarymap to logically-valued pixels
+egbinarymap <- as.im(egbinarymap, eps = egbinarymap$xstep*8)
+egbinarymap <- eval.im(egbinarymap > 0.5)
+plot(egbinarymap,
+     col = c("grey", "black"),
+     main = "The Binary Map")
+@
+\caption{The binary map used in this example. Black (TRUE) is tree canopy, grey (FALSE) is not tree canopy and white (NA) is outside the observation window.}
+\label{binarymap:fig}
+\end{figure}
+
+This binary map is a small subset of a tree canopy map with a spatial resolution of 20cm derived from aerial stereophotography following the methods described by Caccetta et al.~(2015).
+
+\begin{itemize}
+  \item Spatial resolution was 0.2m. The resolution has been reduced to 1.6m in this vignette.
+  \item Year of capture was 2009.
+  \item Location was a sparsely forested region just north of Perth, Western Australia.
+  \item The map is approximately 300m x 300m in extent.
+  \item Data format: ERMapper raster (.ers).
+\end{itemize}
+
+\section{Estimate Properties of Stationary RACS}
+The package \code{lacunaritycovariance} has functions for estimating coverage probability, covariance and gliding box lacunarity (GBL).
+GBL is one of the most popular lacunarity indices, and theory and estimation of GBL was described by Hingee et al. (2019).
+ Covariance estimators were primarily developed by Picka (2000). Hingee (2019) summarises some of Picka's work.
+ Coverage probability is a popular RACS property that is also known as the coverage fraction. 
+It is an important first-order property of a stationary RACS.
+ 
+ Below we estimate the coverage probability, covariance and gliding box lacunarity of a RACS from the binary map in Figure \ref{binarymap:fig}.
+
+\
+
+The coverage probability is estimated by the proportion of the observation window covered by the foreground.
+<<coverageprobability>>=
+phat <- coverageprob(egbinarymap)
+phat
+@
+
+Covariance estimates using the balanced estimator inspired by Picka's additively modified estimator of centred covariance (Picka, 2000) are shown below.
+This estimator typically has smaller variance than the traditional (plug-in moment) estimator and is consistent with covariance estimates made from the complement of the binary map. 
+
+\begin{figure}[H]
+\centering
+<<estimatecovariance, fig = TRUE, include = TRUE, width = 5>>=
+cvchat <- racscovariance(egbinarymap, estimators = "pickaH",
+                         drop = TRUE)
+plot(cvchat, main = "Estimated RACS Covariance", axes = TRUE)
+@
+\caption{Estimated Covariance}
+\end{figure}
+
+The additively modified estimate of pair-correlation (Picka, 2000) is shown below.
+It was obtained from the earlier estimate of covariance, but can also be obtained directly using the function \code{paircorr}.
+The rotational mean of the pair correlation estimate is an estimate of isotropic pair correlation and can be obtained using the function \code{rotmean} in \code{spatstat}: \code{rotmean(pclnest, padzero = FALSE, result = "fv")}.
+
+\begin{figure}[H]
+\centering
+<<paircorr, fig = TRUE, width = 5>>=
+pclnest <- eval.im(cvchat /  (phat^2))
+plot(pclnest, main = "Pair Correlation Estimate")
+@
+\caption{Estimated Pair Correlation.}
+\end{figure}
+
+The function \code{gbl} can give estimates of GBL using the empirical gliding-box method or our new covariance-based estimators (Figure \ref{gblest:fig}).
+\begin{figure}[H]
+\centering
+<<gblestimation, fig = TRUE>>=
+gblest <- gbl(xi = egbinarymap, seq(1, 200/4, by = 1), 
+	      estimators = c("GBLcc.pickaH", "GBLemp"))
+plot(gblest[[1]], main = "GBL Estimate")
+@
+\caption{GBL Estimates.}
+\label{gblest:fig}
+\end{figure}
+
+
+\section{References}
+Caccetta, P., Collings, S., Devereux, A., Hingee, K., McFarlane, D., Traylen, A., Wu, X., Zhou, Z. (2015) \emph{Monitoring land surface and cover in urban and peri-urban environments using digital aerial photography.} International Journal of Digital Earth, 1-19.
+
+\
+
+\noindent
+Hingee, K.L. (2019) \emph{Spatial Statistics of Random Closed Sets for Earth Observations}. PhD: Perth, Western Australia: University of Western Australia. Submitted.
+
+\
+
+\noindent
+Hingee K, Baddeley A, Caccetta P, Nair G (2019). Computation of lacunarity from covariance of spatial binary maps. \emph{Journal of Agricultural, Biological and Environmental Statistics}, 24, 264-288. DOI: 10.1007/s13253-019-00351-9.
+
+\
+
+\noindent
+Picka, J.D. (2000) Variance reducing modifications for estimators of standardized moments of random sets. \emph{Advances in Applied Probability}, 32, 682-700.
+
+\end{document}

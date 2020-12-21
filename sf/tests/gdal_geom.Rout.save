@@ -1,0 +1,338 @@
+
+R version 4.0.0 (2020-04-24) -- "Arbor Day"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> suppressPackageStartupMessages(library(sf))
+> 
+> nc = st_read(system.file("shape/nc.shp", package="sf"), "nc", crs = 4267,
++ 	agr = c(AREA = "aggregate", PERIMETER = "aggregate", CNTY_ = "identity",
++ 		CNTY_ID = "identity", NAME = "identity", FIPS = "identity", FIPSNO = "identity",
++ 		CRESS_ID = "identity", BIR74 = "aggregate", SID74 = "aggregate", NWBIR74 = "aggregate",
++ 		BIR79 = "aggregate", SID79 = "aggregate", NWBIR79  = "aggregate"), quiet = TRUE)
+> 
+> st_is_valid(nc)
+  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [31] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [46] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [61] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [76] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [91] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+> 
+> st_is_simple(nc)
+  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [31] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [46] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [61] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [76] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [91] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+> 
+> nc_tr = st_transform(nc, 3857)
+> 
+> x = st_buffer(nc_tr, 1000)
+> 
+> x = st_boundary(nc)
+> 
+> x = st_convex_hull(nc)
+> 
+> x = st_simplify(nc_tr, dTolerance = 1e4)
+> 
+> x = st_simplify(nc_tr, preserveTopology = TRUE)
+> 
+> if (sf:::CPL_geos_version() >= "3.4.0")
++ 	x = st_triangulate(nc_tr)
+> 
+> mls = st_multilinestring(list(matrix(c(0,0,0,1,1,1,0,0),,2,byrow=TRUE)))
+> x = st_polygonize(mls)
+> 
+> x = st_segmentize(nc_tr, 5e4)
+> 
+> try(x <- st_segmentize(nc_tr, -0.1))
+Error in CPL_gdal_segmentize(x, dfMaxLength) : 
+  argument dfMaxLength should be positive
+
+> 
+> x = st_centroid(nc_tr)
+Warning message:
+In st_centroid.sf(nc_tr) :
+  st_centroid assumes attributes are constant over geometries of x
+> x = st_point_on_surface(nc_tr)
+Warning message:
+In st_point_on_surface.sf(nc_tr) :
+  st_point_on_surface assumes attributes are constant over geometries of x
+> 
+> a = nc[1:5,]
+> b = nc[4:10,]
+> 
+> x <- st_intersection(a[1,] ,b)
+although coordinates are longitude/latitude, st_intersection assumes that they are planar
+Warning message:
+attribute variables are assumed to be spatially constant throughout all geometries 
+> 
+> u = st_union(b) 
+> 
+> x <- st_intersection(st_geometry(a), st_geometry(u))
+although coordinates are longitude/latitude, st_intersection assumes that they are planar
+> 
+> x = st_union(a[1,], b)
+although coordinates are longitude/latitude, st_union assumes that they are planar
+Warning message:
+attribute variables are assumed to be spatially constant throughout all geometries 
+> 
+> x = st_union(a, st_union(b))
+although coordinates are longitude/latitude, st_union assumes that they are planar
+Warning message:
+attribute variables are assumed to be spatially constant throughout all geometries 
+> 
+> x = st_difference(a[1,], b)
+although coordinates are longitude/latitude, st_difference assumes that they are planar
+Warning message:
+attribute variables are assumed to be spatially constant throughout all geometries 
+> 
+> x = st_difference(a, st_union(b))
+although coordinates are longitude/latitude, st_difference assumes that they are planar
+Warning message:
+attribute variables are assumed to be spatially constant throughout all geometries 
+> 
+> x = st_sym_difference(a[1,], b)
+although coordinates are longitude/latitude, st_sym_difference assumes that they are planar
+Warning message:
+attribute variables are assumed to be spatially constant throughout all geometries 
+> 
+> x = st_sym_difference(a, st_union(b))
+although coordinates are longitude/latitude, st_sym_difference assumes that they are planar
+Warning message:
+attribute variables are assumed to be spatially constant throughout all geometries 
+> 
+> x = st_drivers()
+> #cat(paste("GDAL has", nrow(x), "drivers\n"))
+> 
+> # GEOS ops:
+> 
+> st_relate(a, b)
+although coordinates are longitude/latitude, st_relate assumes that they are planar
+     [,1]        [,2]        [,3]        [,4]        [,5]        [,6]       
+[1,] "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212"
+[2,] "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212"
+[3,] "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212" "FF2FF1212"
+[4,] "2FFF1FFF2" "FF2FF1212" "FF2FF1212" "FF2F11212" "FF2FF1212" "FF2FF1212"
+[5,] "FF2FF1212" "2FFF1FFF2" "FF2F11212" "FF2FF1212" "FF2FF1212" "FF2F11212"
+     [,7]       
+[1,] "FF2FF1212"
+[2,] "FF2FF1212"
+[3,] "FF2F11212"
+[4,] "FF2FF1212"
+[5,] "FF2FF1212"
+> 
+> st_disjoint(a, b)
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+Sparse geometry binary predicate list of length 5, where the predicate was `disjoint'
+ 1: 1, 2, 3, 4, 5, 6, 7
+ 2: 1, 2, 3, 4, 5, 6, 7
+ 3: 1, 2, 3, 4, 5, 6
+ 4: 2, 3, 5, 6, 7
+ 5: 1, 4, 5, 7
+> 
+> st_touches(a, b)
+although coordinates are longitude/latitude, st_touches assumes that they are planar
+Sparse geometry binary predicate list of length 5, where the predicate was `touches'
+ 1: (empty)
+ 2: (empty)
+ 3: 7
+ 4: 4
+ 5: 3, 6
+> 
+> st_crosses(a, b)
+although coordinates are longitude/latitude, st_crosses assumes that they are planar
+Sparse geometry binary predicate list of length 5, where the predicate was `crosses'
+ 1: (empty)
+ 2: (empty)
+ 3: (empty)
+ 4: (empty)
+ 5: (empty)
+> 
+> st_within(a, b)
+although coordinates are longitude/latitude, st_within assumes that they are planar
+Sparse geometry binary predicate list of length 5, where the predicate was `within'
+ 1: (empty)
+ 2: (empty)
+ 3: (empty)
+ 4: 1
+ 5: 2
+> 
+> st_contains(a, b)
+although coordinates are longitude/latitude, st_contains assumes that they are planar
+Sparse geometry binary predicate list of length 5, where the predicate was `contains'
+ 1: (empty)
+ 2: (empty)
+ 3: (empty)
+ 4: 1
+ 5: 2
+> 
+> st_overlaps(a, b)
+although coordinates are longitude/latitude, st_overlaps assumes that they are planar
+Sparse geometry binary predicate list of length 5, where the predicate was `overlaps'
+ 1: (empty)
+ 2: (empty)
+ 3: (empty)
+ 4: (empty)
+ 5: (empty)
+> 
+> st_equals(a, b)
+Sparse geometry binary predicate list of length 5, where the predicate was `equals'
+ 1: (empty)
+ 2: (empty)
+ 3: (empty)
+ 4: 1
+ 5: 2
+> 
+> st_covers(a, b)
+although coordinates are longitude/latitude, st_covers assumes that they are planar
+Sparse geometry binary predicate list of length 5, where the predicate was `covers'
+ 1: (empty)
+ 2: (empty)
+ 3: (empty)
+ 4: 1
+ 5: 2
+> 
+> st_covered_by(a, b)
+although coordinates are longitude/latitude, st_covered_by assumes that they are planar
+Sparse geometry binary predicate list of length 5, where the predicate was `covered_by'
+ 1: (empty)
+ 2: (empty)
+ 3: (empty)
+ 4: 1
+ 5: 2
+> 
+> st_equals_exact(a, b, 0.01)
+Sparse geometry binary predicate list of length 5, where the predicate was `equals_exact'
+ 1: (empty)
+ 2: (empty)
+ 3: (empty)
+ 4: 1
+ 5: 2
+> 
+> # st_is_within_distance(a, b, 2)
+> 
+> st_geometry_type(st_sfc(st_point(1:2), st_linestring(matrix(1:4,2,2))))
+[1] POINT      LINESTRING
+18 Levels: GEOMETRY POINT LINESTRING POLYGON MULTIPOINT ... TRIANGLE
+> 
+> st_geometry_type(st_sfc(st_point(1:2), st_linestring(matrix(1:4,2,2))), by_geometry = FALSE)
+[1] GEOMETRY
+18 Levels: GEOMETRY POINT LINESTRING POLYGON MULTIPOINT ... TRIANGLE
+> 
+> st_zm(list(st_point(1:3), st_linestring(matrix(1:6,2,3))))
+[[1]]
+POINT (1 2)
+
+[[2]]
+LINESTRING (1 3, 2 4)
+
+> 
+> st_zm(list(st_point(1:2), st_linestring(matrix(1:6,3,2))), add = TRUE, "Z")
+[[1]]
+POINT (1 2)
+
+[[2]]
+LINESTRING (1 4, 2 5, 3 6)
+
+> 
+> st_transform(st_sfc(st_point(c(0,0)), crs=4326), st_crs("+proj=geocent"))[[1]]
+POINT Z (6378137 0 0)
+> 
+> cbind(st_area(nc_tr[1:5,]), a$AREA)
+           [,1]  [,2]
+[1,] 1760244967 0.114
+[2,]  946435667 0.061
+[3,] 2202248253 0.143
+[4,] 1074351919 0.070
+[5,] 2352539533 0.153
+> 
+> st_area(st_polygon(list(rbind(c(0,0), c(1,0), c(1,1), c(0,1), c(0,0)))))
+[1] 1
+> 
+> st_length(st_linestring(rbind(c(0,0),c(0,1))))
+[1] 1
+> 
+> st_length(st_multilinestring(list(rbind(c(0,0),c(0,1)))))
+[1] 1
+> 
+> try(st_length(st_polygon(list(rbind(c(0,0), c(1,0), c(1,1), c(0,1), c(0,0))))))
+[1] 0
+> 
+> st_area(st_multilinestring(list(rbind(c(0,0),c(0,1)))))
+[1] 0
+> 
+> # adds the (0.5 0.5) node:
+> st_union(st_multilinestring(list(rbind(c(0,0),c(1,1)), rbind(c(0,1), c(1,0)))))
+MULTILINESTRING ((0 0, 1 1), (0 1, 1 0))
+> 
+> p1 = st_point(c(7,52))
+> p2 = st_point(c(-30,20))
+> sfc = st_sfc(p1, p2)
+> try(st_buffer(sfc, units::set_units(1000, km))) # error: no crs
+Error in st_buffer.sfc(sfc, units::set_units(1000, km)) : 
+  x does not have a crs set: can't convert units
+> sfc = st_sfc(p1, p2, crs = 4326)
+> try(st_buffer(sfc, units::set_units(1000, km))) # error: wrong units
+Error : cannot convert km into °
+In addition: Warning message:
+In st_buffer.sfc(sfc, units::set_units(1000, km)) :
+  st_buffer does not correctly buffer longitude/latitude data
+> if (version$os == "linux-gnu") { # FIXME: why does this break on windows - degree symbol?
++   x = st_buffer(sfc, units::set_units(0.1, rad))      # OK: will convert to arc_degrees
++ }
+Warning message:
+In st_buffer.sfc(sfc, units::set_units(0.1, rad)) :
+  st_buffer does not correctly buffer longitude/latitude data
+> x = st_transform(sfc, 3857)
+> x = st_buffer(x, units::set_units(1000, km)) # success
+> 
+> cr = st_as_sfc("CIRCULARSTRING(0 0,1 0,1 1)")
+> cr1 = st_sf(a = 1, geometry = cr)
+> plot(cr)
+> st_as_grob(cr[[1]])
+lines[GRID.lines.1] 
+> 
+> x = st_as_sfc("MULTISURFACE(CURVEPOLYGON(COMPOUNDCURVE(LINESTRING(-159.399779123 22.226016471, -159.399699153 22.226276431, -159.398736217 22.226118372, -159.398260872 22.226095318, -159.398140792 22.2260564590001, -159.398163058 22.2257268010001, -159.397882642 22.225394244, -159.397397157 22.225057335, -159.397318825 22.2251780230001, -159.396993115 22.225177984, -159.396748242 22.2248808800001, -159.396901679 22.224770398, -159.396876329 22.224673093, -159.399167008 22.224731392, -159.399502204 22.225551382), CIRCULARSTRING(-159.399502204 22.225551382, -159.399622762077 22.2257930044972, -159.399779123 22.226016471))))")
+> mp <- x[[1]] %>% st_cast("MULTIPOLYGON")
+> 
+> x = st_as_sfc("COMPOUNDCURVE(CIRCULARSTRING(0 0, 1 1, 1 0),(1 0, 0 1))")
+> ls <- x[[1]] %>% st_cast()
+> class(ls)
+[1] "XY"         "LINESTRING" "sfg"       
+> 
+> is.na(st_bbox(ls))
+[1] FALSE
+> 
+> mp = st_combine(st_buffer(st_sfc(lapply(1:3, function(x) st_point(c(x,x)))), 0.2 * 1:3))
+> plot(st_centroid(mp), add = TRUE, col = 'red') # centroid of combined geometry
+> plot(st_centroid(mp, of_largest_polygon = TRUE), add = TRUE, col = 'blue', pch = 3) # center of largest sub-polygon
+> 
+> x = st_sfc(st_polygon(list(rbind(c(0,0),c(0.5,0),c(0.5,0.5),c(0.5,0),c(1,0),c(1,1),c(0,1),c(0,0)))))
+> suppressWarnings(st_is_valid(x))
+[1] FALSE
+> y = st_make_valid(x)
+> y = st_make_valid(x[[1]])
+> y = st_make_valid(st_sf(a = 1, geom = x))
+> st_is_valid(y)
+[1] TRUE
+> 
+> proc.time()
+   user  system elapsed 
+  1.160   0.072   1.229 

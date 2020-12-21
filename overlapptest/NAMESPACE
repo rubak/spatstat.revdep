@@ -1,0 +1,10 @@
+# Export regular functions
+export("centroidiam", "check.ventana", "pval", "rotawin", "test.auto.intersection", "test.intersection",
+"test.auto.intersection.p", "test.intersection.p")
+
+# imports
+import(spatstat)
+importFrom("stats", "dist", "median", "runif")
+importFrom("parallel", "makeCluster", "clusterExport", "parSapplyLB", "stopCluster")
+# ToDo: "importFrom" only required functions 
+

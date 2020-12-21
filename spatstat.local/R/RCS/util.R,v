@@ -1,0 +1,522 @@
+head	1.17;
+access;
+symbols;
+locks
+	adrian:1.17; strict;
+comment	@# @;
+
+
+1.17
+date	2017.02.04.05.59.09;	author adrian;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2016.09.10.05.00.26;	author adrian;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2016.09.10.04.46.45;	author adrian;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2013.11.01.11.29.04;	author adrian;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2013.11.01.10.34.08;	author adrian;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2013.09.25.02.55.39;	author adrian;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2013.09.05.06.06.44;	author adrian;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2013.09.05.06.02.50;	author adrian;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2013.09.05.04.00.51;	author adrian;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2013.07.23.01.43.13;	author adrian;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2013.07.05.10.27.22;	author adrian;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2013.07.05.09.36.35;	author adrian;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2013.07.03.02.11.06;	author adrian;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2013.07.03.00.34.07;	author adrian;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2013.07.01.09.13.33;	author adrian;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2013.04.12.08.33.35;	author adrian;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2012.12.12.01.49.14;	author adrian;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.17
+log
+@added complete copy of 'splat' to avoid warnings from package checker
+@
+text
+@#
+# util.R
+#
+#  $Revision: 1.16 $ $Date: 2016/09/10 05:00:26 $
+#
+
+# temporary copy of spatstat:::splat (unexported)
+
+splat <- function(..., indent=0) {
+  st <- pasteN(...) # removes NULL arguments without making a space
+  ## split at newline characters, if present
+  ss <- unlist(strsplit(st, "\n"))
+  ## 
+  if(is.numeric(indent)) {
+    nindent <- indent
+    indent <- paste(rep(" ", nindent), collapse="")
+  } else if(is.character(indent)) {
+    nindent <- nchar(indent)
+  } else stop("indent should be character or numeric")
+  w <- getOption('width')
+  if(nindent >= w) {
+    warning("indentation is more than the permissible text width: ignored")
+    nindent <- 0
+  }
+  ##
+  if(nindent == 0) {
+    for(ssi in ss) 
+      cat(unlist(strsplit(ssi, " ")), fill=TRUE)
+  } else {
+    wfill <- w - nindent
+    for(ssi in ss) {
+      vi <- choptextline(ssi, w=w, indent=indent)
+      for(vij in vi) {
+        cat(indent)
+        cat(vij, fill=wfill)
+      }
+    }
+  }
+  return(invisible(NULL))
+}
+
+gridproxy <- function(P, ..., dimyx=NULL, eps=NULL, xy=NULL, weights=NULL) {
+  stopifnot(is.ppp(P))
+  W <- as.owin(P)
+  if(is.null(dimyx) && is.null(eps) && is.null(xy))
+    dimyx <- 10
+  M <- as.mask(W, dimyx=dimyx, eps=eps, xy=xy) 
+  xy <- raster.xy(M, drop=TRUE)
+  G <- as.ppp(xy, W=W)
+  id <- nncross(G,P, what="which")
+  if(!is.null(weights)) {
+    # aggregate weights of P onto G
+    check.nvector(weights, npoints(P))
+    revid <- nncross(P, G, what="which")
+    frevid <- factor(revid, levels=seq_len(npoints(G)))
+    attr(id, "inverse") <- revid 
+    attr(id, "weights") <- tapplysum(weights, list(frevid))
+  }
+  return(id)
+}
+
+FirstExtantEntry <- function(xlist, tags, whinge="No match") {
+  y <- xlist[tags]
+  y <- y[!unlist(lapply(y, is.null))]
+  if(length(y) == 0)
+    stop(whinge)
+  return(names(y)[1])
+}
+  
+sample.imagelist <- function(X, V) {
+  Xvals <- lapply(X, safelookup, x=V)
+  Xmat <- as.matrix(as.data.frame(Xvals))
+  # ensure the entry names are not mangled by as.data.frame
+  colnames(Xmat) <- names(X)
+  return(Xmat)
+}
+
+
+
+applymaps <- local({
+  
+  applymaps <- function(maplist, x) {
+    if(is.null(maplist)) return(x)
+    if(is.language(maplist)) maplist <- list(maplist) else 
+    stopifnot(is.list(maplist) && all(unlist(lapply(maplist, is.language))))
+    if(is.data.frame(x)) {
+      x <- as.data.frame(x)
+      xenv <- list2env(as.list(x))
+      y <- lapply(maplist, eval, envir=xenv)
+      y <- as.data.frame(y)
+    } else if(is.matrix(x)) {
+      x <- as.data.frame(x)
+      xenv <- list2env(as.list(x))
+      y <- lapply(maplist, eval, envir=xenv)
+      y <- as.matrix(as.data.frame(y))
+    } else if(is.numeric(x)) {
+      xenv <- list2env(as.list(x))
+      y <- lapply(maplist, eval, envir=xenv)
+      y <- unlist(y)
+    } else if(is.list(x) && all(unlist(lapply(x, is.im))))  {
+      xenv <- list2env(x)
+      y <- lapply(maplist, evalim, xenv=xenv)
+    } else if(inherits(x, "ssf")) {
+      y <- ssf(unmark(x), applymaps(maplist, marks(x)))
+    }
+    return(y)
+  }
+
+  evalim <- function(f, xenv) eval(substitute(eval.im(ex, envir=en),
+                                              list(ex=f, en=xenv)))
+
+  applymaps
+})
+@
+
+
+1.16
+log
+@gridproxy now aggregates weights, if given
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.15 $ $Date: 2016/09/10 04:46:45 $
+d6 35
+@
+
+
+1.15
+log
+@gridproxy also computes inverse map
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.14 $ $Date: 2013/11/01 11:29:04 $
+d7 1
+a7 1
+gridproxy <- function(P, ..., dimyx=NULL, eps=NULL, xy=NULL) {
+d16 8
+a23 1
+  attr(id, "inverse") <- nncross(P, G, what="which")
+@
+
+
+1.14
+log
+@applymaps handles ssf objects
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.13 $ $Date: 2013/11/01 10:34:08 $
+d16 1
+d29 1
+a29 1
+  Xvals <- lapply(X, function(z, V) safelookup(Z=z, X=V), V=V)
+d62 1
+a62 1
+      y <- ssf(as.ppp(x), applymaps(maplist, as.matrix(x)))
+@
+
+
+1.13
+log
+@applymaps now works for data frames
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.12 $ $Date: 2013/09/25 02:55:39 $
+d60 2
+@
+
+
+1.12
+log
+@moved %orifnull% to spatstat
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.11 $ $Date: 2013/09/05 06:06:44 $
+d28 1
+a28 1
+  Xvals <- lapply(X, "[", i=V, drop=FALSE)
+d40 1
+d43 6
+a48 1
+    if(is.matrix(x)) {
+@
+
+
+1.11
+log
+@ANOTHER bug fix
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.10 $ $Date: 2013/09/05 06:02:50 $
+a34 5
+"%orifnull%" <- function(a, b) {
+  if(!is.null(a)) return(a)
+  # b is evaluated only now
+  return(b)
+}
+@
+
+
+1.10
+log
+@bug fix
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.9 $ $Date: 2013/09/05 04:00:51 $
+d50 1
+a50 1
+      y <- lapply(maplist, eval, xenv=xenv)
+@
+
+
+1.9
+log
+@added 'applymaps'
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.8 $ $Date: 2013/07/23 01:43:13 $
+d45 1
+@
+
+
+1.8
+log
+@bug fix in sample.imagelist
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.7 $ $Date: 2013/07/05 10:27:22 $
+d30 2
+d40 27
+@
+
+
+1.7
+log
+@accelerated inversion
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.6 $ $Date: 2013/07/05 09:36:35 $
+a26 53
+# square root of pos def matrix
+sqrtmat <- function(M) {
+  s <- svd(M)
+  d <- s$d
+  n <- length(d)
+  dsd <- diag(sqrt(d), n, n)
+  Y <- s$u %*% dsd %*% t(s$v)
+  return(Y)
+}
+# inverse square root of pos def matrix
+invsqrtmat <- function(M) {
+  s <- svd(M)
+  d <- s$d
+  n <- length(d)
+  isd <- diag(1/sqrt(d), n, n)
+  Y <- s$u %*% isd %*% t(s$v)
+  return(Y)
+}
+
+invert.flat.matrices <- local({
+  # X is a matrix whose rows can be interpreted as square matrices.
+  # Invert them.
+  invert.flat.matrices <- function(X, p) {
+    stopifnot(is.matrix(X))
+    if(p == 1)
+      return(1/X)
+    if(p == 2) {
+      # inverse of each 2 * 2 matrix,
+      # performed in parallel
+      aa <- X[,1]
+      bb <- X[,3]
+      cc <- X[,2]
+      dd <- X[,4]
+      dets <- aa * dd - bb * cc
+      invdet <- ifelse(dets == 0, NA, 1/dets)
+      Z <- invdet * unname(cbind(dd, -cc, -bb, aa))
+      return(Z)
+    }
+    # use general algorithm
+    Y <- apply(X, 1, invert.slice, p=p)
+    Z <- if(p == 1) matrix(Y, ncol=1) else t(Y)
+    return(Z)
+  }
+  invert.slice <- function(x, p) {
+    mat <- matrix(x, p, p)
+    y <- try(solve(mat), silent=TRUE)
+    if(!inherits(y, "try-error")) return(y)
+    return(matrix(NA, p, p))
+  }
+  invert.flat.matrices
+})
+
+  
+d28 1
+a28 1
+  Xvals <- lapply(X, "[", i=V)
+@
+
+
+1.6
+log
+@invert.flat.matrices
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.5 $ $Date: 2013/07/03 02:11:06 $
+d51 13
+a63 4
+    p2 <- ncol(X)
+    if(missing(p)) {
+      p <- as.integer(round(sqrt(p2)))
+      if(p^2 != p2) stop("X doesn't look like a stack of matrices")
+d65 1
+d72 1
+a72 1
+    y <- try(solve(x), silent=TRUE)
+@
+
+
+1.5
+log
+@sample.imagelist
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.4 $ $Date: 2013/07/03 00:34:07 $
+d45 24
+d75 6
+a80 2
+    
+    
+@
+
+
+1.4
+log
+@matrix functions sqrtmat etc
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.3 $ $Date: 2013/07/01 09:13:33 $
+d46 5
+@
+
+
+1.3
+log
+@added FirstExtantEntry
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.2 $ $Date: 2013/04/12 08:33:35 $
+d27 18
+@
+
+
+1.2
+log
+@moved timed objects to spatstat
+@
+text
+@d4 1
+a4 1
+#  $Revision: 1.1 $ $Date: 2012/12/12 01:49:14 $
+d19 8
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d4 1
+a4 1
+#  $Revision$ $Date$
+a16 19
+}
+
+timed <- function(object, ..., starttime=NULL, timetaken=NULL) {
+  if(is.null(starttime) && is.null(timetaken)) {
+    warning("No time information provided!")
+  } else {
+    if(is.null(timetaken))
+      timetaken <- proc.time() - starttime
+    class(object) <- c("timed", class(object))
+    attr(object, "timetaken") <- timetaken
+  }
+  return(object)
+}
+
+print.timed <- function(x, ...) {
+  if(is.numeric(x)) print(as.numeric(x), ...) else NextMethod("print")
+  cat("Time taken:\n")
+  print(attr(x, "timetaken"))
+  return(invisible(NULL))
+@

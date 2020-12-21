@@ -1,0 +1,8 @@
+Poisson1_1D: E_nc1 countdata1 lambda1_1D pts1
+Poisson2_1D: E_nc2 countdata2 cov2_1D lambda2_1D pts2
+Poisson3_1D: E_nc3a E_nc3b countdata3a countdata3b lambda3_1D pts3
+gorillas
+mexdolphin
+mrsea
+seals
+toygroups

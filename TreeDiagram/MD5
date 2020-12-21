@@ -1,0 +1,10 @@
+dd357005296e6a9d7e107c30ab1c44c9 *DESCRIPTION
+4ce809ec6dea1d3b8a0c1fba58a7d996 *LICENCE
+8206b7e9159b8ad32d96013b493bae31 *NAMESPACE
+d9b5e65307c7f60199ea95948a7530ee *R/treeDiagram.R
+110a0738e673415f83794e2911b17134 *man/treeDiagram.Rd
+22cd272152e184489079a782d5975f76 *tests/testthat.R
+f2928274d194c21e9276429e92a7ca82 *tests/testthat/ex.tre
+118b8df92f276725766872818869a66f *tests/testthat/test_get_nodes_list.R
+7736ac36621d506e93fec83059f8354f *tests/testthat/test_newickToTree.R
+e06e917dc50787c2fa62a31302f115c5 *tests/testthat/test_tree_info.R

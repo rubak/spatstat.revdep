@@ -1,0 +1,14 @@
+%\VignettePackage{lgcp}
+%\VignetteKeyword{Langevin algorithm}
+%\VignetteKeyword{log-Gaussian Cox Process}
+%\VignetteKeyword{MCMC}
+%\VignetteKeyword{spatiotemporal prediction}
+%\VignetteIndexEntry{lgcp}
+\documentclass{article}
+\usepackage{url}
+\begin{document}
+
+Please run \verb=lgcpvignette()= to view the vignette for lgcp. See also \url{http://www.lancaster.ac.uk/staff/taylorb1/preprints/lgcp2.pdf} for details on fully Bayesian parameter estimation for spatial, spatiotemporal, aggregated and multivariate log-Gaussian Cox processes.
+
+\end{document}
+

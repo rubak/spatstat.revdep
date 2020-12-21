@@ -1,0 +1,740 @@
+head	1.14;
+access;
+symbols;
+locks
+	adrian:1.14; strict;
+comment	@# @;
+
+
+1.14
+date	2016.10.02.02.06.32;	author adrian;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2016.10.01.06.12.55;	author adrian;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2016.09.10.04.54.27;	author adrian;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2016.09.10.04.26.41;	author adrian;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2013.09.25.06.16.40;	author adrian;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2013.09.02.08.32.39;	author adrian;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2013.08.31.03.41.59;	author adrian;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2013.07.19.05.51.15;	author adrian;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2013.07.16.06.58.04;	author adrian;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2013.07.07.09.10.24;	author adrian;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2013.07.07.07.58.23;	author adrian;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2013.07.07.06.12.05;	author adrian;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2013.07.07.04.00.23;	author adrian;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2013.07.07.03.09.28;	author adrian;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.14
+log
+@more functions
+@
+text
+@#
+# flatmat.R
+#
+# Code for performing linear algebra operations "in parallel"
+# on each of a list of matrices/vectors, e.g.
+#     answer[[i]] <- A[[i]] %*% B[[i]]
+# where dim(A[[i]]) is the same for all i,
+# and dim(B[[i]]) is the same for all i. 
+#
+# Instead of storing the arguments as lists of matrices,
+# we flatten each matrix A[[i]] into a vector,
+# and store them as the rows of a single gigantic matrix,
+# which can then be processed in parallel.
+# 
+# In the spatstat package, for example,
+# this code is used for handling 'vector-valued'
+# and 'matrix-valued' spatial covariates.
+#
+#  $Revision: 1.13 $  $Date: 2016/10/01 06:12:55 $
+#
+
+check.flat.matrix <- function(A, dimA) {
+  # 'A' represents a list of matrices of dimension 'dimA'
+  Aname <- short.deparse(substitute(A))
+  dimAname <- short.deparse(substitute(dimA))
+  if(!is.matrix(A))
+    stop(paste(Aname, "should be a matrix"))
+  if(!is.vector(dimA) || length(dimA) != 2)
+    stop(paste(dimAname, "should be a vector of length 2"))
+  if(ncol(A) != prod(dimA))
+    stop(paste("Incorrect dimensions supplied for", Aname))
+  return(invisible(NULL))
+}
+
+as.flat.matrix <- function(X, ncopies) {
+  stopifnot(is.matrix(X))
+  Y <- matrix(as.vector(X), ncol=prod(dim(X)), nrow=ncopies, byrow=TRUE)
+  dn <- as.list(dimnames(X))
+  if(is.null(dn[[1]])) dn[[1]] <- 1:nrow(X)
+  if(is.null(dn[[2]])) dn[[2]] <- 1:ncol(X)
+  colnames(Y) <- outer(dn[[1]], dn[[2]], paste, sep=".")
+  return(Y)
+}
+
+# general operation on one matrix
+
+handle.flat.matrix <- local({
+
+  handle.flat.matrix <- function(A, dimA, matrixop, ...) {
+    ## apply some matrix operation to a stack of flat matrices
+    y <- apply(A, 1, handleone, 
+               nr=dimA[1], nc=dimA[2], matrixop=matrixop, ...)
+    y <- if(is.matrix(y)) t(y) else matrix(y, ncol=1)
+    return(y)
+  }
+
+  handleone <- function(z, nr, nc, matrixop, ...) {
+    x <- matrix(z, nr, nc)
+    y <- matrixop(x, ...)
+    return(y)
+  }
+
+  handle.flat.matrix
+})
+  
+eigenvalues.flat.matrix <- local({
+
+  eigenvalues.flat.matrix <- function(X, p) {
+    check.flat.matrix(X, c(p,p))
+    handle.flat.matrix(X, c(p,p), eigenvals)
+  }
+
+  eigenvals <- function(M) {
+    eigen(M, symmetric=TRUE, only.values=TRUE)$values
+  }
+
+  eigenvalues.flat.matrix
+})
+
+invert.flat.matrix <- function(X, p, special=TRUE) {
+  # X is a matrix whose rows can be interpreted as p * p matrices.
+  # Invert them.
+  check.flat.matrix(X, c(p, p))
+  if(special && p == 1) {
+    # scalar
+    Y <- 1/X
+  } else if(special && p == 2) {
+    # 2 * 2 matrix, by hand
+    aa <- X[,1]
+    bb <- X[,3]
+    cc <- X[,2]
+    dd <- X[,4]
+    dets <- aa * dd - bb * cc
+    invdet <- ifelse(dets == 0, NA, 1/dets)
+    Y <- invdet * cbind(dd, -cc, -bb, aa)
+  } else {
+    # use general algorithm
+    Y <- apply(X, 1, invert.slice, p=p)
+    Y <- if(p != 1) t(Y) else matrix(Y, ncol=1)
+  }
+  colnames(Y) <- colnames(X)
+  return(Y)
+}
+
+trace.flat.matrix <- function(X, p) {
+  # X is a matrix whose rows can be interpreted as p * p matrices.
+  # Extract the traces of the matrices.
+  check.flat.matrix(X, c(p,p))
+  ind <- diag(matrix(1:(p^2), p, p))
+  Y <- if(p == 1) as.vector(X) else rowSums(X[,ind])
+  return(Y)
+}
+
+transpose.flat.matrix <- function(X, dimX) {
+  check.flat.matrix(X, dimX)
+  indices <- matrix(1:prod(dimX), dimX[1], dimX[2])
+  indices <- as.vector(t(indices))
+  X[, indices, drop=FALSE]
+}
+
+average.flat.matrix <- function(X, dimX, weights=NULL) {
+
+  if(is.null(weights)) {
+    Xbar <- colMeans(X, na.rm=TRUE)
+  } else {
+    check.nvector(weights, nrow(X), things="matrices", oneok=TRUE)
+    if(length(weights) == 1) weights <- rep(weights, nrow(X))
+    Xbar <- apply(X, 2, weighted.mean, w=weights, na.rm=TRUE)
+  }
+  Xbar <- matrix(Xbar, dimX[1], dimX[2])
+  return(Xbar)
+}
+
+# functions named '*.slice' act on an individual row.
+# They unpack the matrix, and perform the desired operation.
+
+invert.slice <- function(x, p) {
+  mat <- matrix(x, p, p)
+  y <- try(solve(mat), silent=TRUE)
+  if(!inherits(y, "try-error")) return(y)
+  return(matrix(NA, p, p))
+}
+
+# compute outer(A[[i]], A[[i]])
+outersquare.flat.vector <- function(A) {
+  nc <- ncol(A)
+  if(nc == 1) return(A^2)
+  if(nc == 2) {
+    A1A1 <- A[,1]^2
+    A1A2 <- A[,1] * A[,2]
+    A2A2 <- A[,2]^2
+    return(cbind(A1A1, A1A2, A1A2, A2A2))
+  }
+  ans <- apply(A, 1, function(z) { outer(z, z, "*") })
+  return(t(ans))
+}
+
+# ................... two matrices ..........................
+
+check2.flat.matrices <- function(A, B, dimA, dimB) {
+  # 'A', 'B' represent lists of matrices of dimension 'dimA', 'dimB' resp
+  check.flat.matrix(A, dimA)
+  check.flat.matrix(B, dimB)
+  # check that A and B are lists of the same length
+  stopifnot(nrow(A) == nrow(B))
+  return(invisible(NULL))
+}
+
+handle2.flat.matrices <- function(A, B, dimA, dimB, operation) {
+  # apply some operation to a pair of compatible stacks of matrices
+  lA <- ncol(A)
+  lB <- ncol(B)
+  z <- apply(cbind(A,B),
+             1,
+             operation,
+             dimA = dimA, dimB=dimB,
+             indA = 1:lA, indB = lA + (1:lB))
+  z <- if(is.vector(z)) matrix(z, ncol=1) else t(z)
+  return(z)
+}
+
+multiply2.flat.matrices <- function(A, B, dimA, dimB) {
+  # multiply two stacks of matrices
+  check2.flat.matrices(A, B, dimA, dimB)
+  z <- if(prod(dimA) == 1 && prod(dimB) == 1) {
+    # scalars
+    A * B
+  } else if(dimA[1] == 1 && dimB[2] == 1) {
+    # row vector * column vector = scalar
+    matrix(rowSums(A * B), ncol=1)
+  } else {
+    handle2.flat.matrices(A, B, dimA, dimB, multiply2.slice)
+  }
+  return(z)
+}
+
+multiply2.slice <- function(x, dimA, dimB, indA, indB) {
+  A <- matrix(x[indA], dimA[1], dimA[2])
+  B <- matrix(x[indB], dimB[1], dimB[2])
+  A %*% B
+}
+
+solve2.flat.matrices <- function(A, B, dimA, dimB) {
+  # solve(A,b) = A^{-1} b
+  check2.flat.matrices(A, B, dimA, dimB)
+  if(dimA[1] != dimA[2])
+    stop("The dimensions of A should be square")
+  if(dimA[2] != dimB[1])
+    stop("Incompatible matrix dimensions for solve(A,B)")
+  z <- if(prod(dimA) == 1) {
+    # A is a scalar
+    B/A
+  } else {
+    handle2.flat.matrices(A, B, dimA, dimB, solve2.slice)
+  }
+  return(z)
+}
+
+solve2.slice <- function(x, dimA, dimB, indA, indB) {
+  A <- matrix(x[indA], dimA[1], dimA[2])
+  B <- matrix(x[indB], dimB[1], dimB[2])
+  y <- try(solve(A, B), silent=TRUE)
+  if(!inherits(y, "try-error")) return(y)
+  return(matrix(NA, dimB[1], dimB[2]))
+}
+
+outer2.flat.vectors <- function(A, B) {
+  # compute outer(A[[i]], B[[i]])
+  stopifnot(identical(dim(A), dim(B)))
+  nc <- ncol(A)
+  if(nc == 1) return(A * B)
+  AB <- apply(cbind(A,B), 1,
+               function(z, nc) { outer(z[1:nc], z[nc + (1:nc)]) },
+               nc=nc)
+  return(t(AB))
+}
+
+quadform2.flat.matrices <- function(A, B, dimA, dimB, Bsymmetric=FALSE) {
+  # compute the quadratic form B[[i]] %*% A[[i]] %*% t(B[[i]])
+  check2.flat.matrices(A, B, dimA, dimB)
+  z <- if(prod(dimA) == 1 && prod(dimB) == 1) {
+    # scalars
+    A * B^2
+  } else if(Bsymmetric) {
+    handle2.flat.matrices(A, B, dimA, dimB, quadform2symm.slice)
+  } else {
+    handle2.flat.matrices(A, B, dimA, dimB, quadform2.slice)
+  }
+  return(z)
+}
+
+quadform2.slice <- function(x, dimA, dimB, indA, indB) {
+  A <- matrix(x[indA], dimA[1], dimA[2])
+  B <- matrix(x[indB], dimB[1], dimB[2])
+  return(B %*% A %*% t(B))
+}
+  
+quadform2symm.slice <- function(x, dimA, dimB, indA, indB) {
+  A <- matrix(x[indA], dimA[1], dimA[2])
+  B <- matrix(x[indB], dimB[1], dimB[2])
+  return(B %*% A %*% B)
+}
+  
+# ................... three matrices ..........................
+
+check3.flat.matrices <- function(X, Y, Z, dimX, dimY, dimZ) {
+  check.flat.matrix(X, dimX)
+  check.flat.matrix(Y, dimY)
+  check.flat.matrix(Z, dimZ)
+  stopifnot(nrow(X) == nrow(Y))
+  stopifnot(nrow(X) == nrow(Z))
+  return(invisible(NULL))
+}
+
+handle3.flat.matrices <- function(X, Y, Z, dimX, dimY, dimZ, operation) {
+  lX <- ncol(X)
+  lY <- ncol(Y)
+  lZ <- ncol(Z)
+  ans <- apply(cbind(X,Y,Z),
+               1,
+               operation,
+               dimX = dimX, dimY=dimY, dimZ=dimZ,
+               indX = 1:lX, indY = lX + (1:lY), indZ=lX + lY + (1:lZ))
+  ans <- if(is.vector(ans)) matrix(ans, ncol=1) else t(ans)
+  return(ans)
+}
+
+bilinear3.slice <- function(x, dimX, dimY, dimZ, indX, indY, indZ) {
+  X <- matrix(x[indX], dimX[1], dimX[2])
+  Y <- matrix(x[indY], dimY[1], dimY[2])
+  Z <- matrix(x[indZ], dimZ[1], dimZ[2])
+  return(X %*% Y %*% t(Z))
+}
+
+bilinear3.flat.matrices <- function(X, Y, Z, dimX, dimY, dimZ) {
+  # compute the quadratic form X[[i]] %*% Y[[i]] %*% t(Z[[i]])
+  check3.flat.matrices(X, Y, Z, dimX, dimY, dimZ)
+  z <- if(prod(dimX) == 1 && prod(dimY) == 1 && prod(dimZ) == 1) {
+    # scalars
+    X * Y * Z
+  } else {
+    handle3.flat.matrices(X, Y, Z, dimX, dimY, dimZ, bilinear3.slice)
+  }
+  return(z)
+}
+
+multiply3.slice <- function(x, dimX, dimY, dimZ, indX, indY, indZ) {
+  X <- matrix(x[indX], dimX[1], dimX[2])
+  Y <- matrix(x[indY], dimY[1], dimY[2])
+  Z <- matrix(x[indZ], dimZ[1], dimZ[2])
+  return(X %*% Y %*% Z)
+}
+
+multiply3.flat.matrices <- function(X, Y, Z, dimX, dimY, dimZ) {
+  # compute X[[i]] %*% Y[[i]] %*% Z[[i]]
+  check3.flat.matrices(X, Y, Z, dimX, dimY, dimZ)
+  z <- if(prod(dimX) == 1 && prod(dimY) == 1 && prod(dimZ) == 1) {
+    # scalars
+    X * Y * Z
+  } else {
+    handle3.flat.matrices(X, Y, Z, dimX, dimY, dimZ, multiply3.slice)
+  }
+  return(z)
+}
+@
+
+
+1.13
+log
+@new function for multiplying 3 matrices without transpose
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.12 $  $Date: 2016/09/10 04:54:27 $
+d34 11
+a44 1
+           
+d46 33
+a78 12
+handle.flat.matrix <- function(A, dimA, matrixop) {
+  # apply some matrix operation to a stack of flat matrices
+  y <- apply(A, 1,
+             function(z, nr, nc, matrixop) {
+               x <- matrix(z, nr, nc)
+               y <- matrixop(x)
+               return(y)
+             },
+             nr=dimA[1], nc=dimA[2], matrixop=matrixop)
+  y <- if(is.matrix(y)) t(y) else matrix(y, ncol=1)
+  return(y)
+}
+d114 7
+d122 1
+a122 1
+  check.flat.matrix(X, dimX)
+a142 1
+
+@
+
+
+1.12
+log
+@tweaked
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.11 $  $Date: 2016/09/10 04:26:41 $
+d257 1
+a257 1
+  
+d266 19
+@
+
+
+1.11
+log
+@added (weighted) average
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.10 $  $Date: 2013/09/25 06:16:40 $
+d86 1
+a86 1
+    Xbar <- colMeans(X)
+d90 1
+a90 1
+    Xbar <- colSums(X * weights)/sum(weights)
+@
+
+
+1.10
+log
+@added more algebra
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.9 $  $Date: 2013/09/02 08:32:39 $
+d74 22
+d106 1
+d120 1
+a120 1
+  
+d251 5
+a255 5
+bilinear3.slice <- function(x, dimA, dimB, dimC, indA, indB, indC) {
+  A <- matrix(x[indA], dimA[1], dimA[2])
+  B <- matrix(x[indB], dimB[1], dimB[2])
+  C <- matrix(x[indC], dimC[1], dimC[2])
+  return(B %*% A %*% t(C))
+d258 4
+a261 4
+bilinear3.flat.matrices <- function(A, B, C, dimA, dimB, dimC) {
+  # compute the quadratic form A[[i]] %*% B[[i]] %*% t(C[[i]])
+  check3.flat.matrices(A, B, C, dimA, dimB, dimC)
+  z <- if(prod(dimA) == 1 && prod(dimB) == 1 && prod(dimC) == 1) {
+d263 1
+a263 1
+    A * B * C
+d265 1
+a265 1
+    handle3.flat.matrices(A, B, C, dimA, dimB, dimC, bilinear3.slice)
+@
+
+
+1.9
+log
+@buglet fix
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.8 $  $Date: 2013/08/31 03:41:59 $
+d228 18
+@
+
+
+1.8
+log
+@bug fix
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.7 $  $Date: 2013/07/19 05:51:15 $
+d68 1
+a68 1
+    if(p != 1) t(Y) else matrix(Y, ncol=1)
+@
+
+
+1.7
+log
+@added outer2.flat.vectors
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.6 $  $Date: 2013/07/16 06:58:04 $
+d84 14
+d172 4
+a175 4
+  z <- apply(cbind(A,B), 1,
+             function(z, nc) { outer(z[1:nc], z[nc + (1:nc)]) },
+             nc=nc)
+  return(t(z))
+@
+
+
+1.6
+log
+@buglet fix
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.5 $  $Date: 2013/07/07 09:10:24 $
+d151 11
+@
+
+
+1.5
+log
+@minor
+@
+text
+@d19 1
+a19 1
+#  $Revision: 1.4 $  $Date: 2013/07/07 07:58:23 $
+d35 12
+a46 16
+check2.flat.matrices <- function(A, B, dimA, dimB) {
+  # 'A', 'B' represent lists of matrices of dimension 'dimA', 'dimB' resp
+  check.flat.matrix(A, dimA)
+  check.flat.matrix(B, dimB)
+  # check that A and B are lists of the same length
+  stopifnot(nrow(A) == nrow(B))
+  return(invisible(NULL))
+}
+
+check3.flat.matrices <- function(X, Y, Z, dimX, dimY, dimZ) {
+  check.flat.matrix(X, dimX)
+  check.flat.matrix(Y, dimY)
+  check.flat.matrix(Z, dimZ)
+  stopifnot(nrow(X) == nrow(Y))
+  stopifnot(nrow(X) == nrow(Z))
+  return(invisible(NULL))
+d49 1
+a49 1
+invert.flat.matrices <- function(X, p, special=TRUE) {
+d84 11
+d179 11
+@
+
+
+1.4
+log
+@buglet fix
+@
+text
+@d4 5
+a8 3
+# code for handling 'vector-valued' and 'matrix-valued' spatial covariates,
+# represented as matrices, whose rows correspond to the spatial locations
+# and whose columns are the coordinates of a vector or matrix.
+d10 10
+a19 1
+#  $Revision: 1.3 $  $Date: 2013/07/07 06:12:05 $
+d23 1
+d36 1
+d39 1
+d54 1
+a54 1
+  # X is a matrix whose rows can be interpreted as square matrices.
+d78 3
+d89 1
+d96 1
+a96 1
+             colA = 1:lA, colB = lA + (1:lB))
+d102 1
+d116 3
+a118 3
+multiply2.slice <- function(x, dimA, dimB, colA, colB) {
+  A <- matrix(x[colA], dimA[1], dimA[2])
+  B <- matrix(x[colB], dimB[1], dimB[2])
+d138 3
+a140 3
+solve2.slice <- function(x, dimA, dimB, colA, colB) {
+  A <- matrix(x[colA], dimA[1], dimA[2])
+  B <- matrix(x[colB], dimB[1], dimB[2])
+d147 1
+d160 3
+a162 3
+quadform2.slice <- function(x, dimA, dimB, colA, colB) {
+  A <- matrix(x[colA], dimA[1], dimA[2])
+  B <- matrix(x[colB], dimB[1], dimB[2])
+d166 3
+a168 3
+quadform2symm.slice <- function(x, dimA, dimB, colA, colB) {
+  A <- matrix(x[colA], dimA[1], dimA[2])
+  B <- matrix(x[colB], dimB[1], dimB[2])
+d180 1
+a180 1
+               colX = 1:lX, colY = lX + (1:lY), colZ=lX + lY + (1:lZ))
+@
+
+
+1.3
+log
+@bug hunting
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.2 $  $Date: 2013/07/07 04:00:23 $
+d39 1
+a39 1
+invert.flat.matrices <- function(X, p) {
+d43 5
+a47 5
+  if(p == 1)
+    return(1/X)
+  if(p == 2) {
+    # inverse of each 2 * 2 matrix,
+    # performed in parallel
+d54 5
+a58 2
+    Z <- invdet * unname(cbind(dd, -cc, -bb, aa))
+    return(Z)
+d60 2
+a61 4
+  # use general algorithm
+  Y <- apply(X, 1, invert.slice, p=p)
+  Z <- if(p == 1) matrix(Y, ncol=1) else t(Y)
+  return(Z)
+d155 1
+a155 1
+  lZ <- ncol(X)
+@
+
+
+1.2
+log
+@minor
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.1 $  $Date: 2013/07/07 03:09:28 $
+d88 2
+a89 2
+    # row vector * column vector
+    rowSums(A * B)
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 1
+a8 1
+#  $Revision$  $Date$
+d23 1
+a23 1
+check2.flat.matrices <- function(A, dimA, B, dimB) {
+d30 9
+d70 1
+a70 1
+handle2.flat.matrices <- function(A, dimA, B, dimB, operation) {
+d82 2
+a83 2
+multiply2.flat.matrices <- function(A, dimA, B, dimB) {
+  check2.flat.matrices(A, dimA, B, dimB)
+d91 1
+a91 1
+    handle2.flat.matrices(A, dimA, B, dimB, multiply2.slice)
+d102 1
+a102 1
+solve2.flat.matrices <- function(A, dimA, B, dimB) {
+d104 1
+a104 1
+  check2.flat.matrices(A, dimA, B, dimB)
+d113 1
+a113 1
+    handle2.flat.matrices(A, dimA, B, dimB, solve2.slice)
+d124 38
+@

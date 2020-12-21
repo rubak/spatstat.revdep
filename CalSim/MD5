@@ -1,0 +1,15 @@
+1089ff99b8050baf6400e3fd09d32ee0 *DESCRIPTION
+e6db82616a946102f7856993471e0029 *NAMESPACE
+c8ca69e0e3cc9cca802766204330e565 *NEWS.md
+59a05521ba09bd6c80f82c5bab6b804c *R/calibration_simplex.R
+326d98fc29c89c499889eb8bcce0720e *R/calibration_simplex.default.R
+c77ba02811b2622ef6301775e6d226de *R/data.R
+aa4e7b4d26e3f20c80cef323e4ed6fa1 *R/error.calibration_simplex.R
+bf3eb99e0aeb57421f6ca98bc7f2edda *R/make_forecasts.calibration_simplex.R
+426f819845f94c14c0a9a4430c893bab *R/plot.calibration_simplex.R
+d28eab40a3834a6d89b895a5dbe1030b *R/rel_freq.calibration_simplex.R
+a329489293db1d6a9a5b362d509ed809 *README.md
+b043a322491efcc94d2eed15e2774152 *data/ternary_forecast_example.RData
+3230e13eb6aadc836c51cb2876c7e652 *man/calibration_simplex.Rd
+6fb33ece80b00820abb82db4cf1fb617 *man/plot.calibration_simplex.Rd
+20f7f12a34193768458d8808e2a640c9 *man/ternary_forecast_example.Rd

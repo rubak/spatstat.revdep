@@ -1,0 +1,288 @@
+
+R version 4.0.0 (2020-04-24) -- "Arbor Day"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> suppressPackageStartupMessages(library(sf))
+> 
+> # create empty geometries:
+> st_point(rep(NA_real_,2))
+POINT EMPTY
+> st_point(rep(NA_real_,3), dim = "XYZ")
+POINT Z EMPTY
+> st_point(rep(NA_real_,3), dim = "XYM")
+POINT M EMPTY
+> st_point(rep(NA_real_,4), dim = "XYZM")
+POINT ZM EMPTY
+> 
+> st_multipoint()
+MULTIPOINT EMPTY
+> st_multipoint(matrix(numeric(0), 0, 3), dim = "XYZ")
+MULTIPOINT Z EMPTY
+> st_multipoint(matrix(numeric(0), 0, 3), dim = "XYM")
+MULTIPOINT M EMPTY
+> st_multipoint(matrix(numeric(0), 0, 4), dim = "XYZM")
+MULTIPOINT ZM EMPTY
+> 
+> st_linestring(matrix(numeric(0), 0, 2), "XY")
+LINESTRING EMPTY
+> st_linestring(matrix(numeric(0), 0, 3), "XYZ")
+LINESTRING Z EMPTY
+> st_linestring(matrix(numeric(0), 0, 3), "XYM")
+LINESTRING M EMPTY
+> st_linestring(matrix(numeric(0), 0, 4), "XYZM")
+LINESTRING ZM EMPTY
+> 
+> st_multilinestring(list(), "XY")
+MULTILINESTRING EMPTY
+> st_multilinestring(list(), "XYZ")
+MULTILINESTRING Z EMPTY
+> st_multilinestring(list(), "XYM")
+MULTILINESTRING M EMPTY
+> st_multilinestring(list(), "XYZM")
+MULTILINESTRING ZM EMPTY
+> 
+> st_polygon(list(), "XY")
+POLYGON EMPTY
+> st_polygon(list(), "XYZ")
+POLYGON Z EMPTY
+> st_polygon(list(), "XYM")
+POLYGON M EMPTY
+> st_polygon(list(), "XYZM")
+POLYGON ZM EMPTY
+> 
+> st_multipolygon(list(), "XY")
+MULTIPOLYGON EMPTY
+> st_multipolygon(list(), "XYZ")
+MULTIPOLYGON Z EMPTY
+> st_multipolygon(list(), "XYM")
+MULTIPOLYGON M EMPTY
+> st_multipolygon(list(), "XYZM")
+MULTIPOLYGON ZM EMPTY
+> 
+> st_geometrycollection()
+GEOMETRYCOLLECTION EMPTY
+> st_geometrycollection(dim = "XYZ")
+GEOMETRYCOLLECTION Z EMPTY
+> st_geometrycollection(dim = "XYM")
+GEOMETRYCOLLECTION M EMPTY
+> st_geometrycollection(dim = "XYZM")
+GEOMETRYCOLLECTION ZM EMPTY
+> 
+> st_point(rep(NA_real_,2))
+POINT EMPTY
+> st_multipoint()
+MULTIPOINT EMPTY
+> st_linestring(matrix(numeric(0), 0, 2))
+LINESTRING EMPTY
+> st_multilinestring(list(), "XY")
+MULTILINESTRING EMPTY
+> st_polygon(list(), "XY")
+POLYGON EMPTY
+> st_multipolygon(list(), "XY")
+MULTIPOLYGON EMPTY
+> st_geometrycollection(, "XY")
+GEOMETRYCOLLECTION EMPTY
+> 
+> (e1 = st_sfc(
++ st_point(rep(NA_real_,2)),
++ st_multipoint(),
++ st_linestring(matrix(numeric(0), 0, 2)),
++ st_multilinestring(list(), "XY"),
++ st_polygon(list(), "XY"),
++ st_multipolygon(list(), "XY"),
++ st_geometrycollection(, "XY")))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XY
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+CRS:            NA
+First 5 geometries:
+POINT EMPTY
+MULTIPOINT EMPTY
+LINESTRING EMPTY
+MULTILINESTRING EMPTY
+POLYGON EMPTY
+> 
+> (e2 = st_sfc(st_point(rep(NA_real_,3), "XYZ"),
++ st_multipoint(matrix(numeric(0),0,3), dim = "XYZ"),
++ st_linestring(matrix(numeric(0), 0, 3)),
++ st_multilinestring(list(), "XYZ"),
++ st_polygon(list(), "XYZ"),
++ st_multipolygon(list(), "XYZ"),
++ st_geometrycollection(dim = "XYZ")))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XYZ
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+z_range:        zmin: NA zmax: NA
+CRS:            NA
+First 5 geometries:
+POINT Z EMPTY
+MULTIPOINT Z EMPTY
+LINESTRING Z EMPTY
+MULTILINESTRING Z EMPTY
+POLYGON Z EMPTY
+> 
+> (e3 = st_sfc(st_point(rep(NA_real_,3), "XYM"),
++ st_multipoint(matrix(numeric(0),0,3), dim = "XYM"),
++ st_linestring(matrix(numeric(0), 0, 3), "XYM"),
++ st_multilinestring(list(), "XYM"),
++ st_polygon(list(), "XYM"),
++ st_multipolygon(list(), "XYM"),
++ st_geometrycollection(dim = "XYM")))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XYM
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+m_range:        mmin: NA mmax: NA
+CRS:            NA
+First 5 geometries:
+POINT M EMPTY
+MULTIPOINT M EMPTY
+LINESTRING M EMPTY
+MULTILINESTRING M EMPTY
+POLYGON M EMPTY
+> 
+> (e4 = st_sfc(st_point(rep(NA_real_,4)),
++ st_multipoint(matrix(numeric(0),0,4), dim = "XYZM"),
++ st_linestring(matrix(numeric(0), 0, 4)),
++ st_multilinestring(list(), "XYZM"),
++ st_polygon(list(), "XYZM"),
++ st_multipolygon(list(), "XYZM"),
++ st_geometrycollection(dim = "XYZM")))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XYZM
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+z_range:        zmin: NA zmax: NA
+m_range:        mmin: NA mmax: NA
+CRS:            NA
+First 5 geometries:
+POINT ZM EMPTY
+MULTIPOINT ZM EMPTY
+LINESTRING ZM EMPTY
+MULTILINESTRING ZM EMPTY
+POLYGON ZM EMPTY
+> 
+> st_as_sfc(st_as_binary(e1, pureR = TRUE))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XY
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+CRS:            NA
+First 5 geometries:
+POINT EMPTY
+MULTIPOINT EMPTY
+LINESTRING EMPTY
+MULTILINESTRING EMPTY
+POLYGON EMPTY
+> st_as_sfc(st_as_binary(e1, pureR = FALSE))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XY
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+CRS:            NA
+First 5 geometries:
+POINT EMPTY
+MULTIPOINT EMPTY
+LINESTRING EMPTY
+MULTILINESTRING EMPTY
+POLYGON EMPTY
+> st_as_sfc(st_as_binary(e2, pureR = FALSE))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XYZ
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+z_range:        zmin: NA zmax: NA
+CRS:            NA
+First 5 geometries:
+POINT Z EMPTY
+MULTIPOINT Z EMPTY
+LINESTRING Z EMPTY
+MULTILINESTRING Z EMPTY
+POLYGON Z EMPTY
+> st_as_sfc(st_as_binary(e3, pureR = FALSE))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XYM
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+m_range:        mmin: NA mmax: NA
+CRS:            NA
+First 5 geometries:
+POINT M EMPTY
+MULTIPOINT M EMPTY
+LINESTRING M EMPTY
+MULTILINESTRING M EMPTY
+POLYGON M EMPTY
+> st_as_sfc(st_as_binary(e4, pureR = FALSE))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XYZM
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+z_range:        zmin: NA zmax: NA
+m_range:        mmin: NA mmax: NA
+CRS:            NA
+First 5 geometries:
+POINT ZM EMPTY
+MULTIPOINT ZM EMPTY
+LINESTRING ZM EMPTY
+MULTILINESTRING ZM EMPTY
+POLYGON ZM EMPTY
+> st_as_sfc(st_as_binary(e1, pureR = FALSE))
+Geometry set for 7 features  (with 7 geometries empty)
+geometry type:  GEOMETRY
+dimension:      XY
+bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
+CRS:            NA
+First 5 geometries:
+POINT EMPTY
+MULTIPOINT EMPTY
+LINESTRING EMPTY
+MULTILINESTRING EMPTY
+POLYGON EMPTY
+> 
+> # sfc_GEOMETRY:
+> x = st_sfc(st_point(0:1), st_linestring(matrix(1:4,2,2)))
+> st_intersects(x, x, sparse = FALSE)
+      [,1]  [,2]
+[1,]  TRUE FALSE
+[2,] FALSE  TRUE
+> 
+> # two empty geoms:
+> x = st_sfc(st_multipoint(), st_linestring())
+> st_intersects(x, x, sparse = FALSE)
+      [,1]  [,2]
+[1,] FALSE FALSE
+[2,] FALSE FALSE
+> 
+> # write & read:
+> x = st_sf(a = 2:1, geom = structure(st_sfc(st_linestring(), st_linestring(matrix(1:4,2)))))
+> write_sf(x, "empty.gpkg")
+> y = st_read("empty.gpkg", quiet = TRUE)
+> all.equal(x, y)
+[1] TRUE
+> 
+> # https://github.com/edzer/sfr/issues/398 :
+> pt = st_sfc(st_point(c(0,92)), crs = 4267)
+> robin_crs <- "+proj=robin +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+> # india_crs <- "+init=epsg:24383"  # India-centered Lambert conformal conic projection
+> india_crs <- "+proj=lcc +lat_1=12 +lat_0=12 +lon_0=80 +k_0=0.99878641 +x_0=2743195.5 +y_0=914398.5 +a=6377299.151 +b=6356098.145120132 +towgs84=295,736,257,0,0,0,0 +units=m +no_defs"
+> st_transform(st_transform(pt, robin_crs), india_crs)[[1]]
+POINT EMPTY
+> 
+> proc.time()
+   user  system elapsed 
+  0.775   0.064   0.837 

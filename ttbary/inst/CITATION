@@ -1,0 +1,15 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(bibtype = "Manual",
+         textVersion = paste("Raoul Müller and Dominic Schuhmacher (2019).", 
+                             "ttbary: Barycenter Methods for Spatial Point Patterns. ",
+                             "R package version ", meta$Version, ". https://cran.r-project.org/package=ttbary", sep=""),
+         header = "To cite the transport package in publications use:",
+         title = "{ttbary}: Barycenter Methods for Spatial Point Patterns",
+         author = c(person("Raoul", "Müller", role = "aut"), person("Dominic", "Schuhmacher", email = "dominic.schuhmacher@mathematik.uni-goettingen.de", role = c("aut","cre"))),
+         year         = year,
+         note         = note,
+         url          = "https://cran.r-project.org/package=transport"
+)
+

@@ -1,0 +1,13 @@
+---
+title: "Tutorials for the `sppmix` package"
+author: "by Sakis Micheas"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorials for the `sppmix` package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}  
+---
+
+Since the html files for the tutorials (vignettes) were too large to be included with the distributed package on CRAN, we
+have placed them here: [Package Tutorials](http://faculty.missouri.edu/~micheasa/sppmix/sppmix_tutorial_links.html). See also the [sppmix Package Website](http://faculty.missouri.edu/~micheasa/sppmix).

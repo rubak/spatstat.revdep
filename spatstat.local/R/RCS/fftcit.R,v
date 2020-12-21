@@ -1,0 +1,1948 @@
+head	2.15;
+access;
+symbols;
+locks
+	adrian:2.15; strict;
+comment	@# @;
+
+
+2.15
+date	2013.10.31.07.33.38;	author adrian;	state Exp;
+branches;
+next	2.14;
+
+2.14
+date	2013.10.04.06.01.26;	author adrian;	state Exp;
+branches;
+next	2.13;
+
+2.13
+date	2013.10.03.10.30.22;	author adrian;	state Exp;
+branches;
+next	2.12;
+
+2.12
+date	2013.10.03.06.25.00;	author adrian;	state Exp;
+branches;
+next	2.11;
+
+2.11
+date	2013.10.02.09.18.19;	author adrian;	state Exp;
+branches;
+next	2.10;
+
+2.10
+date	2013.10.02.08.24.59;	author adrian;	state Exp;
+branches;
+next	2.9;
+
+2.9
+date	2013.10.02.07.16.35;	author adrian;	state Exp;
+branches;
+next	2.8;
+
+2.8
+date	2013.10.02.03.50.30;	author adrian;	state Exp;
+branches;
+next	2.7;
+
+2.7
+date	2013.10.01.06.15.39;	author adrian;	state Exp;
+branches;
+next	2.6;
+
+2.6
+date	2013.10.01.02.14.40;	author adrian;	state Exp;
+branches;
+next	2.5;
+
+2.5
+date	2013.09.30.11.15.14;	author adrian;	state Exp;
+branches;
+next	2.4;
+
+2.4
+date	2013.09.30.09.50.01;	author adrian;	state Exp;
+branches;
+next	2.3;
+
+2.3
+date	2013.09.30.09.23.45;	author adrian;	state Exp;
+branches;
+next	2.2;
+
+2.2
+date	2013.09.30.04.43.38;	author adrian;	state Exp;
+branches;
+next	2.1;
+
+2.1
+date	2013.09.30.03.41.49;	author adrian;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2013.09.05.04.01.02;	author adrian;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2013.09.05.02.44.32;	author adrian;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2013.09.04.11.23.20;	author adrian;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2013.09.02.00.32.27;	author adrian;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2013.08.31.09.13.12;	author adrian;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2013.08.31.07.20.56;	author adrian;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2013.08.31.03.51.08;	author adrian;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+2.15
+log
+@modified calculation of Palm likelihood.
+@
+text
+@#
+# fftcit.R
+#
+# Calculations for loccit that are possible using Fast Fourier Transform
+#
+# $Revision: 2.14 $ $Date: 2013/10/04 06:01:26 $
+
+loccitFFT <- local({
+  
+  # Dependence between calculations
+  #  ("Score", "Hessian" etc represent blocks of code in the main function)
+  .Score     <- "Score"
+  .Hessian   <- "Hessian"
+  .HessMat   <- c(.Hessian, "HessMat")
+  .ScoreMat  <- c(.Score, "ScoreMat")
+  .InvHess   <- c(.HessMat, "InvHess")
+  .Param     <- c(union(.HessMat, .ScoreMat), "Param")
+  .Delta     <- c(.Param, "Delta")
+  .Lambda    <- c(.Param, "Lambda") 
+  .Tgrad     <- c(union(.InvHess, .Param), "Tgrad")
+  .PalmLik   <- c(union(.Score, .Lambda), "PalmLik")
+  .Influence  <- c(.PalmLik, "Influence")
+
+  # Table mapping user options to calculations required
+  Dependence.Table <-
+    list(param     = .Param,
+         score     = .Score,
+         grad      = .Hessian,
+         invgrad   = .InvHess,
+         delta     = .Delta,
+         lambda    = .Lambda,
+         tgrad     = .Tgrad,
+         influence  = .Influence,
+         plik      = .PalmLik)
+
+  opties <- names(Dependence.Table)
+
+  # corresponding output names
+  
+  FullNames <- 
+    c("parameters",
+      "score",
+      "gradient",
+      "invgradient",
+      "delta",
+      "intensity",
+      "tgradient",
+      "influence",
+      "logplik")
+  
+  sumby <- function(X, Y) {
+    v <- by(data=X, INDICES=Y, FUN=colSums)
+    if(any(probs <- unlist(lapply(v, is.null)))) {
+      zeroes <- rep(0, ncol(X))
+      for(i in which(probs)) v[[i]] <- zeroes
+    }
+    a <- simplify2array(v)
+    b <- if(length(dim(a)) > 1) t(a) else matrix(a, ncol=1)
+    b
+  }
+
+  # 2D gaussian kernel as a function of interpoint distance
+  gauss <- function(d, sigma=1) { exp(-d^2/(2 * sigma^2))/(2 * pi * sigma^2)}
+
+  # convert array to flat matrix
+  flatten <- function(x) { matrix(as.vector(x), nrow=dim(x)[1])} 
+
+  # weed out values arising from divide-by-zero
+  clampfinite <- function(x, hi=.Machine$double.xmax, lo=-hi) {
+    x[is.nan(x)] <- 0
+    x[x == Inf] <- hi
+    x[x == -Inf] <- lo
+    x
+  }
+  
+  loccitFFT <- function(fit0, sigma, rmax, ...,
+                        base.trendcoef=NULL,
+                        base.cluspar=NULL,
+                        base.lambda=fitted(fit0, new.coef=base.trendcoef),
+                        base.lambdaim=NULL,
+                        clusters=NULL,
+                        hompoisfit=as.ppm(fit0), 
+                        what = "param",
+                        do.trend = TRUE,
+                        do.clusters = is.kppm(fit0),
+                        calcopt = list(), 
+                        verbose=TRUE) {
+    starttime <- proc.time()
+
+    stopifnot(is.kppm(fit0) || is.ppm(fit0) || inherits(fit0, "locppm"))
+    
+    # what to calculate
+    hit <- pmatch(what, opties)
+    if(any(bad <- is.na(hit)))
+      warning(paste("Unrecognised option: what=", commasep(sQuote(what[bad]))))
+    what <- opties[hit[!bad]]
+    needed <- unique(unlist(Dependence.Table[what]))
+
+    # options for calculations
+    calcopt.default <- list(use.D2 = FALSE,
+                            fishscore = FALSE,
+                            refit.for.palmlik = FALSE,
+                            refit.for.influence = FALSE,
+                            dropidpairs=FALSE)
+    if(any(unknown <- !(names(calcopt) %in% names(calcopt.default))))
+      stop(paste("Unrecognised",
+                 ngettext(sum(unknown), "option", "options"),
+                 commasep(sQuote(names(calcopt)[unknown]))))
+    calcopt <- resolve.defaults(calcopt, calcopt.default)
+    use.D2              <- calcopt$use.D2
+    fishscore           <- calcopt$fishscore
+    refit.for.palmlik   <- calcopt$refit.for.palmlik
+    refit.for.influence <- calcopt$refit.for.influence
+    dropidpairs         <- calcopt$dropidpairs
+
+    # extract information about Poisson trend model
+    stopifnot(is.ppm(hompoisfit))
+    # Fitted trend parameters
+    homtrendcoef <- coef(hompoisfit)
+    ntrend <- length(homtrendcoef)
+    # basic data
+    Q <- quad.ppm(hompoisfit)
+    P <- union.quad(Q)
+    nP <- npoints(P)
+    isdata <- is.data(Q)
+    wQ <- w.quad(Q)
+    X <- Q$data
+    nX <- npoints(X)
+    if(do.trend) {
+      mom <- model.matrix(hompoisfit)
+      momX <- mom[isdata, , drop=FALSE]
+    }
+
+    # make a template mask for images
+    W <- as.mask(as.owin(P), ...)
+    Wmat <- as.matrix(W)
+    npixels <- length(Wmat)
+
+    # .................. baseline trend ....................
+    # validate base.trendcoef
+    if(is.null(base.trendcoef)) {
+      # default: homogeneous coefficients
+      base.trendcoef <- homtrendcoef
+      base.lambda <- fitted(fit0)
+    } else {
+      # validate dimensions 
+      if(is.matrix(base.trendcoef)) {
+        check.nmatrix(base.trendcoef, ntrend, things="trend parameters",
+                      squarematrix=FALSE, matchto="ncol", naok=TRUE)
+        check.nmatrix(base.trendcoef, nP, things="quadrature points",
+                      squarematrix=FALSE, naok=TRUE)
+        base.lambda <- locppmPredict(hompoisfit, base.trendcoef)
+      } else {
+        check.nvector(base.trendcoef, ntrend,
+                      things="trend parameters", naok=TRUE)
+        base.lambda <- fitted(fit0, new.coef=base.trendcoef)
+      }
+    }
+    # coerce to matrix
+    if(!is.matrix(base.trendcoef))
+      base.trendcoef <- matrix(base.trendcoef,
+                               nP, length(base.trendcoef),
+                               dimnames=list(NULL, names(base.trendcoef)),
+                               byrow=TRUE)
+
+    # Baseline intensity at data points
+    base.lambdaX <- base.lambda[isdata]
+    
+    # .................. baseline clusters ....................
+    if(do.clusters) {
+      # extract information about cluster model
+      if(is.null(clusters)) {
+        # default: cluster model is fit0
+        if(!is.kppm(fit0)) 
+          stop("If fit0 is not a kppm object, clusters must be specified")
+        clusters <- fit0$clusters 
+      }
+      info <- spatstatClusterModelInfo(clusters)
+      extra <- extraClusterModelInfo(clusters)
+      paco      <- extra$pcf  # parallelised version of pair correlation
+      # conversion to/from canonical parameters (may be NULL)
+      par2theta <- extra$par2theta
+      theta2par <- extra$theta2par
+      # derivatives (parallelised)
+      Dlogpcf  <- extra$DlogpcfDtheta
+      if(is.null(Dlogpcf))
+        stop(paste("Derivatives not available for", sQuote(clusters)))
+      if(use.D2) {
+        D2logpcf <- extra$D2logpcfDtheta
+        if(is.null(D2logpcf))
+          stop(paste("Second derivatives not available for", sQuote(clusters)))
+      }
+
+      # extract cluster parameters of baseline model
+      if(is.null(base.cluspar)) {
+        # default: baseline is fit0
+        if(!is.kppm(fit0)) 
+          stop("If fit0 is not a kppm object, base.cluspar must be specified")
+        base.cluspar <- fit0$par
+      } else {
+        # validate 'base.cluspar'
+        if(is.matrix(base.cluspar)) 
+          check.nmatrix(base.cluspar, nP, things="quadrature points",
+                        squarematrix=FALSE, naok=TRUE)
+      }
+      # coerce to matrix
+      if(!is.matrix(base.cluspar)) 
+        base.cluspar <- matrix(base.cluspar,
+                               nrow=nP, ncol=length(base.cluspar),
+                               dimnames=list(NULL, names(base.cluspar)),
+                               byrow=TRUE)
+      ncluspar <- ncol(base.cluspar) 
+      # Transform to canonical parameters
+      base.cluscoef <- applymaps(par2theta, base.cluspar)
+    }
+    
+    # all canonical parameters
+    base.theta <- cbind(if(do.trend) base.trendcoef else NULL,
+                        if(do.clusters) base.cluscoef else NULL)
+    p <- ncol(base.theta)
+    vec.names <- colnames(base.theta)
+    mat.names <- as.vector(outer(vec.names, vec.names, paste, sep="."))
+
+    # close pairs of data points
+    clX <- closepairs(X, rmax)
+    I <- clX$i
+    J <- clX$j
+    dIJ <- clX$d
+    nIJ <- length(I)
+    facI <- factor(I, levels=1:nX)
+    facJ <- factor(J, levels=1:nX)
+
+    # close pairs of (data, quadrature) points
+    clXP <- crosspairs(X, P, rmax)
+    IX <- clXP$i
+    JP <- clXP$j
+    dXIPJ <- clXP$d
+    if(dropidpairs) {
+      # exclude identical pairs - assume I and J are comparable
+      ne <- (IX != JP)
+      IX <- IX[ne]
+      JP <- JP[ne]
+      dXIPJ <- dXIPJ[ne]
+    }
+    #
+    nXIPJ <- length(IX)
+    lamPJ <- base.lambda[JP]
+    wPJ <- wQ[JP]
+    facIX <- factor(IX, levels=1:nX)
+    facJP <- factor(JP, levels=1:nP)
+    
+    if("Score" %in% needed) {
+      # 'data' contribution to the score from X[J]
+      momXJ <- if(do.trend) momX[J, , drop=FALSE] else NULL
+      if(do.clusters) {
+        base.cluscoefJ <- base.cluscoef[J, , drop=FALSE]
+        zetaIJ <- Dlogpcf(base.cluscoefJ, dIJ)
+      } else zetaIJ <- NULL
+      zetaIJ <- cbind(momXJ, zetaIJ)     # = zeta_P(X[J] | X[I])
+      score.data <- sumby(zetaIJ, facJ)  # = \sum_i zeta_P(X[j] | X[i])
+      # 'background' contribution to the score from P[JP]
+      momPJ    <- if(do.trend) mom[JP, , drop=FALSE] else NULL
+      if(do.clusters) {
+        base.cluscoefPJ <- base.cluscoef[JP, , drop=FALSE]
+        zetaXIPJ <- Dlogpcf(base.cluscoefPJ, dXIPJ)
+      } else zetaXIPJ <- NULL
+      zetaXIPJ <- cbind(momPJ, zetaXIPJ)
+      if(do.clusters) {
+        base.clusparPJ <- base.cluspar[JP, , drop=FALSE]
+        palmXIPJ <- lamPJ * paco(base.clusparPJ, dXIPJ)
+      } else palmXIPJ <- lamPJ
+      score.back.XIPJ <- zetaXIPJ * palmXIPJ * wPJ
+      score.back <- sumby(score.back.XIPJ, facJP)
+      # put together
+      scoreP <- -score.back
+      scoreP[isdata, ] <- scoreP[isdata, ] + score.data
+      colnames(scoreP) <- vec.names
+      # apply kernel
+      U <- density(P, weights=scoreP, sigma=sigma, edge=FALSE, w=W)
+    } else U <- NULL
+
+    if("ScoreMat" %in% needed) {
+      Umat <- imagelist2matrix(U)
+    } else Umat <- NULL
+    
+    if("Hessian" %in% needed) {
+      if(!fishscore) {
+        # calculate the Hessian
+        if(use.D2 && do.clusters) {
+          # 'data' contribution to the Hessian (as flat matrix)
+          # involves cluster parameters only.
+          kappaIJ <- flatten(D2logpcf(base.cluscoefJ, dIJ))
+          # flatten array
+          kappaIJ <- matrix(as.vector(kappaIJ), nrow=nIJ)
+          # sum over i
+          kappa.data <- sumby(kappaIJ, facJ)
+          if(do.trend) {
+            # indices of the submatrix of the Hessian
+            # related to the cluster parameters
+            m <- matrix(, p, p)
+            clusind <- which(as.vector(row(m) > ntrend & col(m) > ntrend))
+            hess.data <- matrix(0, nX, p^2)
+            hess.data[, clusind] <- kappa.data
+          } else hess.data <- kappa.data
+        } else hess.data <- 0
+        # 'background' contribution to the Hessian
+        outerzetaXIPJ <- outersquare.flat.vector(zetaXIPJ)
+        if(use.D2 && do.clusters) {
+          kapXIPJ <- flatten(D2logpcf(base.cluscoefPJ, dXIPJ))
+          kapXIPJ <- matrix(as.vector(kapXIPJ), nrow=nXIPJ)
+          if(do.trend) {
+            kappaXIPJ <- matrix(0, nXIPJ, p^2)
+            kappaXIPJ[, clusind] <- kapXIPJ
+          } else kappaXIPJ <- kapXIPJ
+        } else kappaXIPJ <- 0
+        hess.back <- sumby((kappaXIPJ + outerzetaXIPJ) * palmXIPJ * wPJ,
+                             facJP)
+        # put together
+        hessP <- hess.back
+        hessP[isdata,] <- hessP[isdata, ] - hess.data
+        colnames(hessP) <- mat.names
+        # apply kernel
+        H <- density(P, weights=hessP, sigma=sigma, edge=FALSE, w=W)
+      } else {
+        # Analogue of Fisher scoring - take E of Hessian
+        #
+        # close pairs of (quadrature, quadrature) points
+        clP <- closepairs(P, rmax)
+        IPP <- clP$i
+        JPP <- clP$j
+        dPIPJ <- clP$d
+        nPIPJ <- length(IPP)
+        lamPPI <- base.lambda[IPP]
+        lamPPJ <- base.lambda[JPP]
+        wPPJ <- wQ[JPP]
+        facIPP <- factor(IPP, levels=1:npoints(P))
+        facJPP <- factor(JPP, levels=1:npoints(P))
+        # 
+        momPPJ   <- if(do.trend) mom[JPP, , drop=FALSE] else NULL
+        if(do.clusters) {
+          base.cluscoefPPJ <- base.cluscoef[JPP, , drop=FALSE]
+          zetaPIPJ <- Dlogpcf(base.cluscoefPPJ, dPIPJ)
+        } else zetaPIPJ <- NULL
+        zetaPIPJ <- cbind(momPPJ, zetaPIPJ)
+        outerzetaPIPJ <- outersquare.flat.vector(zetaPIPJ)
+        # second moment intensity
+        lambda2PIPJ <- base.lambda[IPP] * base.lambda[JPP]
+        if(do.clusters) {
+          base.clusparPPJ <- base.cluspar[JPP, , drop=FALSE]
+          lambda2PIPJ <- lambda2PIPJ * paco(base.clusparPPJ, dPIPJ)
+        }
+        #
+        hessP <- sumby(outerzetaPIPJ * lambda2PIPJ * wQ[IPP],
+                       facJPP)
+        colnames(hessP) <- mat.names
+        # apply kernel
+        H <- density(P, weights=wQ * hessP, sigma=sigma, edge=FALSE, w=W)
+      }
+    } else H <- NULL
+
+    if("HessMat" %in% needed) {
+      # convert to flat matrix
+      Hmat <- imagelist2matrix(H)
+    } else Hmat <- NULL
+    
+    if("InvHess" %in% needed) {
+      # Compute inverse of negative local Hessian as matrix
+      invHmat <- invert.flat.matrix(Hmat, p)
+      # convert back to images
+      invH <- matrix2imagelist(invHmat, W)
+      names(invH) <- mat.names
+    } else invH <- invHmat <- NULL
+    #
+
+    if("Param" %in% needed) {
+      # evaluate Taylor approximation of locally fitted coefficients
+      if(!is.null(invHmat)) {
+        # use inverse Hessian: delta(theta) = invH %*% U
+        Deltamat <- multiply2.flat.matrices(invHmat, Umat, c(p,p), c(p, 1))
+      } else if(!is.null(Hmat)) {
+        # use Hessian: delta(theta) = solve(H, U)
+        Deltamat <- solve2.flat.matrices(Hmat, Umat, c(p, p), c(p, 1))
+      } else stop("Internal error: coefficient calculation needs Hessian")
+      # If inversion is ill-conditioned, set delta(theta) = 0
+      if(any(fail <- !complete.cases(Deltamat)))
+        Deltamat[fail, ] <- 0
+      # Baseline coefficients
+      Theta0 <- nnmark(P %mark% base.theta, w=W)
+      Theta0mat <- imagelist2matrix(Theta0)
+      # update by Taylor expansion/Fisher scoring
+      Thetamat <- clampfinite(Theta0mat + Deltamat)
+      # convert back to images
+      Theta <- matrix2imagelist(Thetamat, W)
+      names(Theta) <- vec.names
+      if(!do.clusters) {
+        Param <- Theta
+      } else {
+        # extract cluster coefficients
+        ClusCoef <- if(!do.trend) Theta else Theta[ntrend + 1:ncluspar]
+        # convert back to original parameters
+        ClusPar <- applymaps(theta2par, ClusCoef)
+        # ensure values are finite
+        ClusPar <- as.listof(lapply(ClusPar,
+                                    function(z) eval.im(clampfinite(z))))
+        # put back
+        Param <- if(!do.trend) ClusPar else append(Theta[1:ntrend], ClusPar)
+      }
+    } else Param <- NULL
+    
+    if("Delta" %in% needed) {
+      Delta <- matrix2imagelist(Deltamat, W)
+      names(Delta) <- vec.names
+    } else Delta <- NULL
+    
+    if("Tgrad" %in% needed)
+      warning("tgradient not yet implemented")
+    Tgrad <- NULL
+
+    if("Lambda" %in% needed) {
+      if(!do.trend)
+        stop("Lambda cannot be computed when do.trend=FALSE")
+      # Change in trend coefficients
+      DeltaPhimat <- Deltamat[, 1:ntrend, drop=FALSE]
+      # Canonical sufficient statistics for trend
+      Mom <- model.images(hompoisfit, W=W)
+      Mommat <- imagelist2matrix(Mom)
+      # Intensity for homogeneous model
+      if(is.null(base.lambdaim)) {
+        base.lambdaim <- if(inherits(fit0, "locppm") || !is.matrix(base.trendcoef)) {
+          predict(fit0, locations=W, new.coef=base.trendcoef)
+        } else {
+          Smooth(ssf(P, locppmPredict(as.ppm(fit0), base.trendcoef)))
+        }
+      } else {
+        stopifnot(is.im(base.lambdaim))
+        stopifnot(compatible(as.im(W), base.lambdaim))
+      }
+      Lam0vec <- as.vector(as.matrix(base.lambdaim))
+      # Intensity of local model
+      lam <- Lam0vec * exp(clampfinite(rowSums(DeltaPhimat * Mommat)))
+      lam <- clampfinite(lam)
+      lam <- matrix(lam, ncol=1)
+      Lambda <- matrix2imagelist(lam, W)
+      names(Lambda) <- "lambda"
+    } else Lambda <- NULL
+
+    if("PalmLik" %in% needed) {
+      # Calculate Palm likelihood
+      if(refit.for.palmlik) {
+        # use updated intensity
+        lamP <- sample.imagelist(Lambda, P)[,1]
+      } else {
+        # use baseline intensity
+        lamP <- base.lambdaim[P]
+      }
+      lamX <- lamP[isdata]
+      # compute pair correlation terms
+      if(do.clusters) {
+        # fitted cluster parameters
+        Psi <- if(do.trend) Param[-(1:ntrend)] else Param
+        # fitted cluster parameters at quadrature points
+        parP <- sample.imagelist(Psi, P)
+        parX <- parP[isdata, , drop=FALSE]
+        # evaluate pair correlation for (x_i, x_j)
+        # using parameters fitted at x_j
+        parXJ <- parX[J, , drop=FALSE]
+        rhoIJ <- paco(parXJ, dIJ)
+        # evaluate pair correlation for (x_i, u)
+        # using parameters fitted at u
+        parXIPJ <- parP[JP, , drop=FALSE]
+        rhoXIPJ <- paco(parXIPJ, dXIPJ)
+      } else rhoIJ <- rhoXIPJ <- 1
+      # 'data' contribution
+      plik.data <- sum(log(lamX)[J]) + sum(log(rhoIJ))
+      # 'background' contribution
+      plik.back <- sum(lamP[JP] * rhoXIPJ * wPJ)
+      # put together
+      LogPalmLik <- clampfinite(plik.data - plik.back)
+    } else LogPalmLik <- NULL
+
+    if("Influence" %in% needed) {
+      # Influence calculation
+      if(!refit.for.influence) {
+        # Use score and Hessian for reference model, from above
+        ZetaIJ <- zetaIJ
+        Score.back.XIPJ <- score.back.XIPJ
+        HP <- sample.imagelist(H, P)
+      } else {
+        # Recompute score and Hessian using fitted parameters
+        if(!(do.clusters && do.trend))
+          stop("Influence calculation requires do.clusters=do.trend=TRUE")
+        # extract fitted parameters at quadrature points
+        fittheta <- sample.imagelist(Theta, P)   # canonical parameters
+        fitparam <- sample.imagelist(Param, P)   # natural parameters
+        fittrendcoef <- fittheta[, 1:ntrend, drop=FALSE]
+        fitcluscoef  <- fittheta[, -(1:ntrend), drop=FALSE]
+        fitcluspar   <- fitparam[, -(1:ntrend), drop=FALSE]
+        # 'data' contribution to the score from X[J]
+        #   using fitted coefficients at X[J]
+        fitcluscoefJ <- fitcluscoef[J, , drop=FALSE]
+        ZetaIJ <- clampfinite(Dlogpcf(fitcluscoefJ, dIJ))
+        ZetaIJ <- cbind(momXJ, ZetaIJ)
+        #
+        # 'background' contribution to the score from P[JP]
+        #
+        fitcluscoefJP <- fitcluscoef[JP, , drop=FALSE]
+        ZetaXIPJ <- clampfinite(Dlogpcf(fitcluscoefJP, dXIPJ))
+        ZetaXIPJ <- cbind(momPJ, ZetaXIPJ)
+        LamPJ <- lamP[JP]
+        fitclusparPJ <- fitcluspar[JP, , drop=FALSE]
+        PalmXIPJ <- LamPJ * paco(fitclusparPJ, dXIPJ)
+        Score.back.XIPJ <- ZetaXIPJ * (PalmXIPJ * wPJ)
+        # Also compute (expected) Hessian at data points using fitted parameters
+        if(!fishscore) {
+          # Hessian
+          if(use.D2) {
+            fitcluscoefJ <- fitcluscoef[J, , drop=FALSE]
+            KappaIJ <- clampfinite(flatten(D2logpcf(fitcluscoefJ, dIJ)))
+            # sum over i
+            Kappa.data <- sumby(KappaIJ, facJ)
+            Hess.data <- matrix(0, nX, p^2)
+            Hess.data[, clusind] <- Kappa.data
+          } else Hess.data <- 0
+          # 'background' contribution to the Hessian
+          OuterzetaXIPJ <- outersquare.flat.vector(ZetaXIPJ)
+          if(use.D2) {
+            fitcluscoefJP <- fitcluscoef[JP, , drop=FALSE]
+            KapXIPJ <- D2logpcf(fitcluscoefJP, dXIPJ)
+            KappaXIPJ <- matrix(0, nXIPJ, p^2)
+            KappaXIPJ[, clusind] <- clampfinite(flatten(KapXIPJ))
+          } else KappaXIPJ <- 0
+          Hess.back <-
+            sumby(clampfinite((KappaXIPJ + OuterzetaXIPJ) * PalmXIPJ * wPJ),
+                  facJP)
+          # put together
+          HessP <- Hess.back
+          HessP[isdata,] <- HessP[isdata, ] - Hess.data
+          colnames(HessP) <- mat.names
+          # apply kernel
+          HP <- density(P, weights=clampfinite(HessP),
+                        at="points", leaveoneout=FALSE,
+                        sigma=sigma, edge=FALSE, w=W)
+          HP <- as.matrix(HP)
+        } else {
+          # Analogue of Fisher scoring - take E of Hessian
+          #
+          fitcluscoefPPJ <- fitcluscoef[JPP, , drop=FALSE]
+          ZetaPIPJ <- clampfinite(Dlogpcf(fitcluscoefPPJ, dPIPJ))
+          ZetaPIPJ <- cbind(momPPJ, ZetaPIPJ)
+          OuterzetaPIPJ <- outersquare.flat.vector(ZetaPIPJ)
+          # second moment intensity
+          fitclusparPPJ <- fitcluspar[JPP, , drop=FALSE]
+          Lambda2PIPJ <- lamP[IPP] * lamP[JPP] * paco(fitclusparPPJ, dPIPJ)
+          #
+          HessP <- sumby(OuterzetaPIPJ * Lambda2PIPJ * wQ[IPP],
+                         facJPP)
+          colnames(hessP) <- mat.names
+          # apply kernel
+          HP <- density(P, weights=wQ * clampfinite(hessP),
+                        at="points", leaveoneout=FALSE, 
+                        sigma=sigma, edge=FALSE, w=W)
+          HP <- as.matrix(HP)
+        }
+      }
+      # Score.data[j] = \sum_i zeta_P(X[j] | X[i])
+      #     Derivative of \alpha(X[j] | X, theta) w.r.t. theta
+      Score.data <- sumby(ZetaIJ, facJ)
+      colnames(Score.data) <- vec.names
+      # delta.score[j] = w(0) score.data[j] 
+      #            + \sum_i w(X[j]-X[i]) zeta_P(X[i] | X[j])
+      #            - \int w(X[j] - u) zeta_P(u | X[j]) lambda_P(u | X[j]) du
+      #      Total effect on score of deleting X[j]
+      #
+      Delta.score <-
+        gauss(0, sigma) * Score.data + 
+          sumby(gauss(dIJ, sigma) * ZetaIJ, facI) -
+            sumby(gauss(dXIPJ, sigma) * Score.back.XIPJ, facIX)
+      colnames(Delta.score) <- vec.names
+      # pack up
+      Influence <- list(score.data=Score.data,
+                        delta.score=Delta.score,
+                        HP=HP)
+    } else Influence <- NULL
+
+    # finally pack up
+    answer <- list(parameters  = Param,
+                   score       = U,
+                   gradient    = H,
+                   invgradient = invH,
+                   delta       = Delta, 
+                   intensity   = Lambda,
+                   tgradient   = Tgrad,
+                   influence   = Influence,
+                   logplik     = LogPalmLik)
+
+    # return only those quantities that were commanded
+    indx <- pmatch(what, opties) # there are no NA's
+    answer <- answer[FullNames[indx]]
+  
+    return(timed(answer, starttime=starttime))
+  }
+
+  loccitFFT
+})
+
+@
+
+
+2.14
+log
+@buglet fixes
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.13 $ $Date: 2013/10/03 10:30:22 $
+d102 1
+d112 1
+d448 8
+a455 2
+      # extract fitted intensity at quadrature points
+      lamP <- sample.imagelist(Lambda, P)[,1]
+@
+
+
+2.13
+log
+@parallelised
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.12 $ $Date: 2013/10/03 06:25:00 $
+d91 1
+a91 1
+
+a131 3
+    # Current fitted intensity at data points
+    base.lambdaX <- base.lambda[isdata]
+    
+d139 5
+a143 1
+    if(!is.null(base.trendcoef)) {
+d150 6
+a155 2
+      } else check.nvector(base.trendcoef, ntrend,
+                           things="trend parameters", naok=TRUE)
+d160 3
+a162 1
+                               nP, length(base.trendcoef), byrow=TRUE)
+d164 3
+d205 1
+a205 1
+      if(!is.matrix(base.cluspar)) {
+d208 1
+d264 1
+a264 1
+      }
+d266 4
+a269 2
+      base.clusparPJ <- base.cluspar[JP, , drop=FALSE]
+      palmXIPJ <- if(do.clusters) lamPJ * paco(base.clusparPJ, dXIPJ) else lamPJ
+d283 1
+a283 1
+
+d385 3
+a387 34
+      # Current coefficients
+      old.homog <- !do.trend ||
+                   (!inherits(fit0, "locppm") && is.null(base.trendcoef))
+      new.homog <- is.vector(base.trendcoef)
+      if(old.homog) {
+        # baseline parameters are homogeneous - replicate them
+        Theta0mat <- matrix(base.theta, nrow=npixels, ncol=p, byrow=TRUE)
+      } else if(new.homog) {
+        # adjusted baseline parameters are homogeneous - replicate them
+        newbase.theta <- c(if(do.trend) base.theta else NULL,
+                         if(do.clusters) base.cluscoef else NULL)
+        Theta0mat <- matrix(newbase.theta, nrow=npixels, ncol=p, byrow=TRUE)
+      } else {
+        # baseline parameters are inhomogeneous; they include trend params
+        if(is.null(base.trendcoef)) {
+          # take the local trend coefficients from 'fit0'
+          theta0 <- coef(fit0, which="local")
+          Theta0 <- nnmark(as.ppp(theta0) %mark% as.matrix(theta0), w=W)
+          Theta0mat <- imagelist2matrix(Theta0)
+        } else {
+          # New trend coefficients provided
+          if(is.matrix(base.trendcoef)) {
+            Theta0 <- nnmark(P %mark% base.trendcoef, w=W)
+            Theta0mat <- imagelist2matrix(Theta0)
+          } else {
+            Theta0mat <- matrix(base.trendcoef, npixels, ntrend, byrow=TRUE)
+          }
+        } 
+        # append the cluster coefficients
+        if(do.clusters) 
+          Theta0mat <- do.call("cbind",
+                            append(list(Theta0mat), as.list(base.cluscoef)))
+      }
+        
+d430 1
+a430 1
+          Smooth(ssf(U, locppmPredict(as.ppm(fit0), base.trendcoef)))
+@
+
+
+2.12
+log
+@more options
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.11 $ $Date: 2013/10/02 09:18:19 $
+d77 5
+a81 3
+                        lambda=fitted(fit0, new.coef=new.trendcoef),
+                        new.trendcoef=NULL,
+                        lambdaim=NULL,
+a90 2
+    if(do.clusters && !is.kppm(fit0))
+      stop("Can't do cluster calculations: fit0 is not a kppm object")
+d103 1
+a103 1
+                            dropidpairs=TRUE)
+d113 1
+d133 1
+a133 1
+    lambdaX <- lambda[isdata]
+d140 6
+a145 5
+    # validate new.trendcoef
+    if(!is.null(new.trendcoef)) {
+      # validate dimensions
+      if(is.matrix(new.trendcoef)) {
+        check.nmatrix(new.trendcoef, ntrend, things="trend parameters",
+d147 1
+a147 1
+        check.nmatrix(new.trendcoef, nP, things="quadrature points",
+d149 1
+a149 1
+      } else check.nvector(new.trendcoef, ntrend,
+d152 6
+a157 2
+    
+    # extract information about cluster model
+d159 7
+a165 2
+      clusters <- fit0$clusters
+
+d169 1
+d172 1
+a172 3
+      if(is.null(par2theta) || is.null(theta2par))
+        stop(paste("Canonical parameters not implemented for",
+                   sQuote(clusters)))
+d181 19
+a199 4
+        
+      # Fitted cluster parameters 
+      hompar <- fit0$par
+      ncluspar <- length(hompar)
+d201 1
+a201 1
+      homcluscoef <- applymaps(par2theta, hompar)
+d205 4
+a208 4
+    homtheta <- c(if(do.trend) homtrendcoef else NULL,
+               if(do.clusters) homcluscoef else NULL)
+    p <- length(homtheta)
+    vec.names <- names(homtheta)
+d234 1
+a234 1
+    lamPJ <- lambda[JP]
+d242 4
+a245 1
+      zetaIJ <- if(do.clusters) Dlogpcf(homcluscoef, dIJ) else NULL
+d250 4
+a253 1
+      zetaXIPJ <- if(do.clusters) Dlogpcf(homcluscoef, dXIPJ) else NULL
+d255 2
+a256 1
+      palmXIPJ <- if(do.clusters) lamPJ * paco(hompar, dXIPJ) else lamPJ
+d277 1
+a277 1
+          kappaIJ <- flatten(D2logpcf(homcluscoef, dIJ))
+d294 1
+a294 1
+          kapXIPJ <- flatten(D2logpcf(homcluscoef, dXIPJ))
+d318 2
+a319 2
+        lamPPI <- lambda[IPP]
+        lamPPJ <- lambda[JPP]
+d325 4
+a328 1
+        zetaPIPJ <- if(do.clusters) Dlogpcf(homcluscoef, dPIPJ) else NULL
+d332 5
+a336 2
+        lambda2PIPJ <- lambda[IPP] * lambda[JPP]
+        if(do.clusters) lambda2PIPJ <- lambda2PIPJ * paco(hompar, dPIPJ)
+d374 2
+a375 2
+                   (!inherits(fit0, "locppm") && is.null(new.trendcoef))
+      new.homog <- is.vector(new.trendcoef)
+d378 1
+a378 1
+        Theta0mat <- matrix(homtheta, nrow=npixels, ncol=p, byrow=TRUE)
+d381 3
+a383 3
+        newhomtheta <- c(if(do.trend) homtheta else NULL,
+                         if(do.clusters) homcluscoef else NULL)
+        Theta0mat <- matrix(newhomtheta, nrow=npixels, ncol=p, byrow=TRUE)
+d386 1
+a386 1
+        if(is.null(new.trendcoef)) {
+d393 2
+a394 2
+          if(is.matrix(new.trendcoef)) {
+            Theta0 <- nnmark(P %mark% new.trendcoef, w=W)
+d397 1
+a397 1
+            Theta0mat <- matrix(new.trendcoef, npixels, ntrend, byrow=TRUE)
+d403 1
+a403 1
+                            append(list(Theta0mat), as.list(homcluscoef)))
+d444 3
+a446 3
+      if(is.null(lambdaim)) {
+        lambdaim <- if(inherits(fit0, "locppm") || !is.matrix(new.trendcoef)) {
+          predict(fit0, locations=W, new.coef=new.trendcoef)
+d448 1
+a448 1
+          Smooth(ssf(U, locppmPredict(as.ppm(fit0), new.trendcoef)))
+d451 2
+a452 2
+        stopifnot(is.im(lambdaim))
+        stopifnot(compatible(as.im(W), lambdaim))
+d454 1
+a454 1
+      Lam0vec <- as.vector(as.matrix(lambdaim))
+@
+
+
+2.11
+log
+@buglets
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.10 $ $Date: 2013/10/02 08:24:59 $
+d100 11
+a110 6
+    calcopt <- resolve.defaults(calcopt,
+                                list(use.D2 = FALSE,
+                                     fishscore = FALSE,
+                                     refit.for.influence = FALSE))
+    use.D2 <- calcopt$use.D2
+    fishscore <- calcopt$fishscore
+d112 1
+a112 1
+    
+d200 8
+d407 5
+a411 1
+        lambdaim <- predict(fit0, locations=W, new.coef=new.trendcoef)
+d418 2
+a419 1
+      lam <- clampfinite(Lam0vec * exp(rowSums(DeltaPhimat * Mommat)))
+a474 4
+        # Score.data[j] = \sum_i zeta_P(X[j] | X[i])
+        #     Derivative of \alpha(X[j] | X, theta) w.r.t. theta
+        Score.data <- sumby(ZetaIJ, facJ)
+        colnames(Score.data) <- vec.names
+a484 10
+        # delta.score[j] = w(0) score.data[j] 
+        #            + \sum_i w(X[j]-X[i]) zeta_P(X[i] | X[j])
+        #            - \int w(X[j] - u) zeta_P(u | X[j]) lambda_P(u | X[j]) du
+        #      Total effect on score of deleting X[j]
+        #
+        Delta.score <-
+          gauss(0, sigma) * Score.data + 
+            sumby(gauss(dIJ, sigma) * ZetaIJ, facI) -
+              sumby(gauss(dXIPJ, sigma) * Score.back.XIPJ, facIX)
+        colnames(Delta.score) <- vec.names
+d515 1
+d534 1
+d537 14
+@
+
+
+2.10
+log
+@fixed Fisher scoring
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.9 $ $Date: 2013/10/02 07:16:35 $
+d452 30
+d483 1
+a483 18
+          # use Hessian
+          # 'data' contribution to the score from X[J]
+          #   using fitted coefficients at X[J]
+          fitcluscoefJ <- fitcluscoef[J, , drop=FALSE]
+          ZetaIJ <- clampfinite(Dlogpcf(fitcluscoefJ, dIJ))
+          ZetaIJ <- cbind(momXJ, ZetaIJ)
+          #
+          # 'background' contribution to the score from P[JP]
+          #
+          fitcluscoefJP <- fitcluscoef[JP, , drop=FALSE]
+          ZetaXIPJ <- clampfinite(Dlogpcf(fitcluscoefJP, dXIPJ))
+          ZetaXIPJ <- cbind(momPJ, ZetaXIPJ)
+          LamPJ <- lamP[JP]
+          fitclusparPJ <- fitcluspar[JP, , drop=FALSE]
+          PalmXIPJ <- LamPJ * paco(fitclusparPJ, dXIPJ)
+          Score.back.XIPJ <- ZetaXIPJ * (PalmXIPJ * wPJ)
+          #
+          # Also compute Hessian at data points using updated parameters
+a530 14
+      # Score.data[j] = \sum_i zeta_P(X[j] | X[i])
+      #     Derivative of \alpha(X[j] | X, theta) w.r.t. theta
+      Score.data <- sumby(ZetaIJ, facJ)
+      colnames(Score.data) <- vec.names
+      # delta.score[j] = w(0) score.data[j] 
+      #            + \sum_i w(X[j]-X[i]) zeta_P(X[i] | X[j])
+      #            - \int w(X[j] - u) zeta_P(u | X[j]) lambda_P(u | X[j]) du
+      #      Total effect on score of deleting X[j]
+      #
+      Delta.score <-
+        gauss(0, sigma) * Score.data + 
+          sumby(gauss(dIJ, sigma) * ZetaIJ, facI) -
+            sumby(gauss(dXIPJ, sigma) * Score.back.XIPJ, facIX)
+      colnames(Delta.score) <- vec.names
+@
+
+
+2.9
+log
+@handling NaN etc
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.8 $ $Date: 2013/10/02 03:50:30 $
+d276 2
+a277 1
+        facIP <- factor(IPP, levels=1:npoints(P))
+d287 2
+a288 2
+        hessP <- sumby(outerzetaPIPJ * lambda2PIPJ * wQ[JPP],
+                       facIP)
+d452 4
+a455 18
+        # 'data' contribution to the score from X[J]
+        #   using fitted coefficients at X[J]
+        fitcluscoefJ <- fitcluscoef[J, , drop=FALSE]
+        ZetaIJ <- clampfinite(Dlogpcf(fitcluscoefJ, dIJ))
+        ZetaIJ <- cbind(momXJ, ZetaIJ)
+        #
+        # 'background' contribution to the score from P[JP]
+        #
+        fitcluscoefJP <- fitcluscoef[JP, , drop=FALSE]
+        ZetaXIPJ <- clampfinite(Dlogpcf(fitcluscoefJP, dXIPJ))
+        ZetaXIPJ <- cbind(momPJ, ZetaXIPJ)
+        LamPJ <- lamP[JP]
+        fitclusparPJ <- fitcluspar[JP, , drop=FALSE]
+        PalmXIPJ <- LamPJ * paco(fitclusparPJ, dXIPJ)
+        Score.back.XIPJ <- ZetaXIPJ * (PalmXIPJ * wPJ)
+        #
+        # Also compute Hessian at data points using updated parameters
+        if(use.D2) {
+d457 5
+a461 9
+          KappaIJ <- clampfinite(flatten(D2logpcf(fitcluscoefJ, dIJ)))
+          # sum over i
+          Kappa.data <- sumby(KappaIJ, facJ)
+          Hess.data <- matrix(0, nX, p^2)
+          Hess.data[, clusind] <- Kappa.data
+        } else Hess.data <- 0
+        # 'background' contribution to the Hessian
+        OuterzetaXIPJ <- outersquare.flat.vector(ZetaXIPJ)
+        if(use.D2) {
+d463 54
+a516 14
+          KapXIPJ <- D2logpcf(fitcluscoefJP, dXIPJ)
+          KappaXIPJ <- matrix(0, nXIPJ, p^2)
+          KappaXIPJ[, clusind] <- clampfinite(flatten(KapXIPJ))
+        } else KappaXIPJ <- 0
+        Hess.back <-
+          sumby(clampfinite((KappaXIPJ + OuterzetaXIPJ) * PalmXIPJ * wPJ),
+                facJP)
+        # put together
+        HessP <- Hess.back
+        HessP[isdata,] <- HessP[isdata, ] - Hess.data
+        colnames(HessP) <- mat.names
+        # apply kernel
+        HP <- density(P, weights=clampfinite(HessP), at="points",
+                      sigma=sigma, edge=FALSE, w=W)
+@
+
+
+2.8
+log
+@adapted to parallelised pair correlation etc
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.7 $ $Date: 2013/10/01 06:15:39 $
+d68 8
+d317 1
+a317 1
+      # If inversion fails, set delta(theta) = 0
+d355 1
+a355 1
+      Thetamat <- Theta0mat + Deltamat
+d362 2
+d365 6
+a370 6
+        if(!do.trend) {
+          Param <- applymaps(theta2par, Theta)
+        } else {
+          Param <- append(Theta[1:ntrend],
+                          applymaps(theta2par, Theta[ntrend + 1:ncluspar]))
+        }
+d373 1
+a373 1
+
+d393 1
+a393 1
+        lambdaim <- nnmark(P %mark% lambda, w=W)
+d400 1
+a400 1
+      lam <- Lam0vec * exp(rowSums(DeltaPhimat * Mommat))
+d431 1
+a431 1
+      LogPalmLik <- plik.data - plik.back
+d454 1
+a454 1
+        ZetaIJ <- Dlogpcf(fitcluscoefJ, dIJ)
+d460 1
+a460 1
+        ZetaXIPJ <- Dlogpcf(fitcluscoefJP, dXIPJ)
+d470 1
+a470 1
+          KappaIJ <- flatten(D2logpcf(fitcluscoefJ, dIJ))
+d480 1
+a480 1
+          KapXIPJ <- flatten(D2logpcf(fitcluscoefJP, dXIPJ))
+d482 1
+a482 1
+          KappaXIPJ[, clusind] <- KapXIPJ
+d484 3
+a486 2
+        Hess.back <- sumby((KappaXIPJ + OuterzetaXIPJ) * PalmXIPJ * wPJ,
+                           facJP)
+d492 1
+a492 1
+        HP <- density(P, weights=HessP, at="points",
+@
+
+
+2.7
+log
+@d'oh
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.6 $ $Date: 2013/10/01 02:14:40 $
+d65 2
+a142 2
+      paco     <- info$pcf
+
+d144 1
+d224 1
+a224 1
+          kappaIJ <- D2logpcf(homcluscoef, dIJ)
+d241 1
+a241 1
+          kapXIPJ <- D2logpcf(homcluscoef, dXIPJ)
+d309 3
+d366 1
+d410 1
+a410 7
+        pacona <- function(z) {
+          par <- z[-1]
+          if(any(is.na(par))) return(NA)
+          d <- z[1]
+          paco(par, d)
+        }
+        rhoIJ <- apply(cbind(dIJ, parXJ), 1, pacona)
+d414 1
+a414 1
+        rhoXIPJ <- apply(cbind(dXIPJ, parXIPJ), 1, pacona)
+d427 1
+d430 1
+d432 1
+a432 1
+        # Recompute score quantities using fitted parameters
+a442 5
+        Dpacona <- function(z) {
+          theta <- z[-1]
+          if(any(is.na(theta))) return(rep(NA, length(theta)))
+          Dlogpcf(theta, z[1])
+        }
+d444 1
+a444 2
+        ZetaIJ <- apply(cbind(dIJ, fitcluscoefJ), 1, Dpacona)
+        ZetaIJ <- if(p == 1) matrix(ZetaIJ, ncol=1) else t(ZetaIJ)
+d450 1
+a450 2
+        ZetaXIPJ <- apply(cbind(dXIPJ, fitcluscoefJP), 1, Dpacona)
+        ZetaXIPJ <- if(p == 1) matrix(ZetaXIPJ, ncol=1) else t(ZetaXIPJ)
+d454 1
+a454 1
+        PalmXIPJ <- LamPJ * apply(cbind(dXIPJ, fitclusparPJ), 1, pacona)
+d456 27
+d498 4
+a501 1
+      Influence <- list(score.data=Score.data, delta.score=Delta.score)
+d503 2
+a504 1
+    
+@
+
+
+2.6
+log
+@at least one bug fixed
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.5 $ $Date: 2013/09/30 11:15:14 $
+d74 1
+a74 2
+                        use.D2 = TRUE, fishscore=FALSE,
+                        refit.for.influence=TRUE,
+d82 1
+d88 9
+d469 1
+a469 1
+      #            + \int w(X[j] - u) zeta_P(u | X[j]) lambda_P(u | X[j]) du
+d472 4
+a475 3
+      Delta.score <- gauss(0, sigma) * Score.data +
+        sumby(gauss(dIJ, sigma) * ZetaIJ, facI) +
+          sumby(gauss(dXIPJ, sigma) * Score.back.XIPJ, facIX)
+@
+
+
+2.5
+log
+@more corrections
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.4 $ $Date: 2013/09/30 09:50:01 $
+d389 1
+a389 1
+        Psi <- if(do.trend) Param else Param[-(1:ntrend)]
+d432 5
+a436 4
+        Dpacona <- function(z, p) {
+          par <- z[-1]
+          if(any(is.na(par))) return(rep(NA, p))
+          Dlogpcf(par, z[1])
+d439 1
+a439 1
+        ZetaIJ <- apply(cbind(dIJ, fitcluscoefJ), 1, Dpacona, p=ncluspar)
+d446 1
+a446 1
+        ZetaXIPJ <- apply(cbind(dXIPJ, fitcluscoefJP), 1, Dpacona, p=ncluspar)
+@
+
+
+2.4
+log
+@debuggering
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.3 $ $Date: 2013/09/30 09:23:45 $
+d17 4
+a20 4
+  .Theta     <- c(union(.HessMat, .ScoreMat), "Theta")
+  .Delta     <- c(.Theta, "Delta")
+  .Lambda    <- c(.Theta, "Lambda") 
+  .Tgrad     <- c(union(.InvHess, .Theta), "Tgrad")
+d26 1
+a26 1
+    list(theta     = .Theta,
+d71 1
+a71 1
+                        what = "theta",
+d75 1
+a75 1
+                        refit.for.influence=FALSE,
+d215 1
+d217 1
+d290 1
+a290 1
+    if("Theta" %in% needed) {
+d338 4
+a341 2
+      # convert back to original parameters
+      if(do.clusters) {
+d343 1
+a343 1
+          Theta <- applymaps(theta2par, Theta)
+d345 1
+a345 1
+          Theta <- append(Theta[1:ntrend],
+d349 1
+a349 1
+    } else Theta <- NULL
+d389 1
+a389 1
+        Psi <- if(do.trend) Theta else Theta[-(1:ntrend)]
+d425 6
+a430 3
+        fittrendcoef <- Thetamat[, 1:ntrend, drop=FALSE]
+        fitcluscoef <- Thetamat[, -(1:ntrend), drop=FALSE]
+        fitpar <- applymaps(theta2par, fitcluscoef)
+d449 2
+a450 2
+        fitparPJ <- fitpar[JP, , drop=FALSE]
+        PalmXIPJ <- LamPJ * apply(cbind(dXIPJ, fitparPJ), 1, pacona)
+d469 1
+a469 1
+    answer <- list(parameters  = Theta,
+@
+
+
+2.3
+log
+@d'oh
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.2 $ $Date: 2013/09/30 04:43:38 $
+d75 1
+d414 31
+a444 11
+      # Recompute score quantities using fitted parameters
+      if(!(do.clusters && do.trend))
+        stop("Influence calculation requires do.clusters=TRUE and do.trend=TRUE")
+      fittrendcoef <- Thetamat[, 1:ntrend, drop=FALSE]
+      fitcluscoef <- Thetamat[, -(1:ntrend), drop=FALSE]
+      fitpar <- applymaps(theta2par, fitcluscoef)
+      # 'data' contribution to the score from X[J]
+      Dpacona <- function(z, p) {
+        par <- z[-1]
+        if(any(is.na(par))) return(rep(NA, p))
+        Dlogpcf(par, z[1])
+a445 4
+      fitcluscoefJ <- fitcluscoef[J, , drop=FALSE]
+      ZetaIJ <- apply(cbind(dIJ, fitcluscoefJ), 1, Dpacona, p=ncluspar)
+      ZetaIJ <- if(p == 1) matrix(ZetaIJ, ncol=1) else t(ZetaIJ)
+      ZetaIJ <- cbind(momXJ, ZetaIJ)
+a449 11
+      #
+      # 'background' contribution to the score from P[JP]
+      #
+      fitcluscoefJP <- fitcluscoef[JP, , drop=FALSE]
+      ZetaXIPJ <- apply(cbind(dXIPJ, fitcluscoefJP), 1, Dpacona, p=ncluspar)
+      ZetaXIPJ <- if(p == 1) matrix(ZetaXIPJ, ncol=1) else t(ZetaXIPJ)
+      ZetaXIPJ <- cbind(momPJ, ZetaXIPJ)
+      LamPJ <- lamP[JP]
+      fitparPJ <- fitpar[JP, , drop=FALSE]
+      PalmXIPJ <- LamPJ * apply(cbind(dXIPJ, fitparPJ), 1, pacona)
+      Score.back.XIPJ <- ZetaXIPJ * (PalmXIPJ * wPJ)
+@
+
+
+2.2
+log
+@bug-hunting
+@
+text
+@d6 1
+a6 1
+# $Revision: 2.1 $ $Date: 2013/09/30 03:41:49 $
+d12 11
+a22 11
+  .Score    <- "Score"
+  .Hessian  <- "Hessian"
+  .HessMat  <- c(.Hessian, "HessMat")
+  .ScoreMat <- c(.Score, "ScoreMat")
+  .InvHess  <- c(.HessMat, "InvHess")
+  .Theta    <- c(union(.HessMat, .ScoreMat), "Theta")
+  .Delta    <- c(.Theta, "Delta")
+  .Lambda   <- c(.Theta, "Lambda") 
+  .Tgrad    <- c(union(.InvHess, .Theta), "Tgrad")
+  .ScoResid <- c(.Score, "ScoreResid")
+  .PalmLik  <- c(union(.Score, .Lambda), "PalmLik")
+d26 9
+a34 9
+    list(theta   = .Theta,
+         score   = .Score,
+         grad    = .Hessian,
+         invgrad = .InvHess,
+         delta   = .Delta,
+         lambda  = .Lambda,
+         tgrad   = .Tgrad,
+         scoresid = .ScoResid,
+         plik    = .PalmLik)
+d48 1
+a48 1
+      "scoresid",
+d62 4
+d168 2
+a169 1
+    facJ <- factor(I, levels=1:nX)
+d179 1
+d186 2
+a187 2
+      zetaIJ <- cbind(momXJ, zetaIJ)
+      score.data <- sumby(zetaIJ, facJ)
+d193 2
+a194 1
+      score.back <- sumby(zetaXIPJ * palmXIPJ * wPJ, facJP)
+a206 4
+    if("ScoreResid" %in% needed) {
+      ScoreResid <- scoreP
+    } else ScoreResid <- NULL
+    
+d379 2
+a380 2
+      lamP <- sample.imagelist(Lambda, P)
+      lamX <- lamP[isdata, , drop=FALSE]
+d400 1
+a400 1
+        parXIPJ <- parX[JP, , drop=FALSE]
+d404 1
+a404 1
+      plik.data <- sum(log(lamX)[J], na.rm=TRUE) + sum(log(rhoIJ), na.rm=TRUE)
+d406 1
+a406 1
+      plik.back <- sum(lamP[JP] * rhoXIPJ * wPJ, na.rm=TRUE)
+d411 45
+d463 1
+a463 1
+                   scoresid    = ScoreResid,
+@
+
+
+2.1
+log
+@Changed the maths for local Palm likelihood.
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.7 $ $Date: 2013/09/05 04:01:02 $
+d388 7
+a394 1
+        rhoIJ <- apply(cbind(dIJ, parXJ), 1, function(z) paco(z[-1], z[1]))
+d398 1
+a398 1
+        rhoXIPJ <- apply(cbind(dXIPJ, parXIPJ), 1, function(z) paco(z[-1], z[1]))
+d401 1
+a401 1
+      plik.data <- sum(log(lamX)[J]) + sum(log(rhoIJ))
+d403 1
+a403 1
+      plik.back <- sum(lamP[JP] * rhoXIPJ * wPJ)
+@
+
+
+1.7
+log
+@moved 'applymaps' to util.R
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.6 $ $Date: 2013/09/05 02:44:32 $
+d91 3
+a93 3
+    UQ <- union.quad(Q)
+    nU <- npoints(UQ)
+    Z <- is.data(Q)
+d99 1
+a99 1
+      momX <- mom[Z, , drop=FALSE]
+d103 1
+a103 1
+    lambdaX <- lambda[Z]
+d106 1
+a106 1
+    W <- as.mask(as.owin(UQ), ...)
+d115 5
+a119 4
+                      squarematrix=FALSE, matchto="ncol")
+        check.nmatrix(new.trendcoef, nU, things="quadrature points",
+                      squarematrix=FALSE)
+      } else check.nvector(new.trendcoef, ntrend, things="trend parameters")
+d136 1
+a136 2
+      D2logpcf <- extra$D2logpcfDtheta
+      if(is.null(Dlogpcf) || is.null(D2logpcf))
+d138 6
+a143 1
+      
+d164 1
+a164 1
+    facI <- factor(I, levels=1:nX)
+d167 8
+a174 8
+    clXU <- crosspairs(X, UQ, rmax)
+    IX <- clXU$i
+    JU <- clXU$j
+    dXIUJ <- clXU$d
+    nXIUJ <- length(IX)
+    lamUJ <- lambda[JU]
+    wUJ <- wQ[JU]
+    facIX <- factor(IX, levels=1:nX)
+d177 1
+a177 1
+      # 'data' contribution to the score
+d181 7
+a187 7
+      score.data <- sumby(zetaIJ, facI)
+      # 'background' contribution to the score
+      momUJ    <- if(do.trend) mom[JU, , drop=FALSE] else NULL
+      zetaXIUJ <- if(do.clusters) Dlogpcf(homcluscoef, dXIUJ) else NULL
+      zetaXIUJ <- cbind(momUJ, zetaXIUJ)
+      palmXIUJ <- if(do.clusters) lamUJ * paco(hompar, dXIUJ) else lamUJ
+      score.back <- sumby(zetaXIUJ * palmXIUJ * wUJ, facIX)
+d189 3
+a191 2
+      scoreX <- score.data - score.back
+      colnames(scoreX) <- vec.names
+d193 1
+a193 1
+      U <- density(X, weights=scoreX, sigma=sigma, edge=FALSE, w=W)
+d201 1
+a201 1
+      ScoreResid <- scoreX
+d212 1
+a212 1
+          kappa.data <- sumby(kappaIJ, facI)
+d223 1
+a223 1
+        outerzetaXIUJ <- outersquare.flat.vector(zetaXIUJ)
+d225 2
+a226 2
+          kapXIUJ <- D2logpcf(homcluscoef, dXIUJ)
+          kapXIUJ <- matrix(as.vector(kapXIUJ), nrow=nXIUJ)
+d228 6
+a233 6
+            kappaXIUJ <- matrix(0, nXIUJ, p^2)
+            kappaXIUJ[, clusind] <- kapXIUJ
+          } else kappaXIUJ <- kapXIUJ
+        } else kappaXIUJ <- 0
+        hess.back <- sumby((kappaXIUJ + outerzetaXIUJ) * palmXIUJ * wUJ,
+                             facIX)
+d235 3
+a237 2
+        hessX <- hess.back  - hess.data
+        colnames(hessX) <- mat.names
+d239 1
+a239 1
+        H <- density(X, weights=hessX, sigma=sigma, edge=FALSE, w=W)
+d244 9
+a252 9
+        clU <- closepairs(UQ, rmax)
+        IUU <- clU$i
+        JUU <- clU$j
+        dUIUJ <- clU$d
+        nUIUJ <- length(IUU)
+        lamUUI <- lambda[IUU]
+        lamUUJ <- lambda[JUU]
+        wUUJ <- wQ[JUU]
+        facIU <- factor(IUU, levels=1:npoints(UQ))
+d254 4
+a257 4
+        momUUJ   <- if(do.trend) mom[JUU, , drop=FALSE] else NULL
+        zetaUIUJ <- if(do.clusters) Dlogpcf(homcluscoef, dUIUJ) else NULL
+        zetaUIUJ <- cbind(momUUJ, zetaUIUJ)
+        outerzetaUIUJ <- outersquare.flat.vector(zetaUIUJ)
+d259 2
+a260 2
+        lambda2UIUJ <- lambda[IUU] * lambda[JUU]
+        if(do.clusters) lambda2UIUJ <- lambda2UIUJ * paco(hompar, dUIUJ)
+d262 3
+a264 3
+        hessU <- sumby(outerzetaUIUJ * lambda2UIUJ * wQ[JUU],
+                       facIU)
+        colnames(hessU) <- mat.names
+d266 1
+a266 1
+        H <- density(UQ, weights=wQ * hessU, sigma=sigma, edge=FALSE, w=W)
+d315 1
+a315 1
+            Theta0 <- nnmark(UQ %mark% new.trendcoef, w=W)
+d361 1
+a361 1
+        lambdaim <- nnmark(UQ %mark% lambda, w=W)
+d376 2
+a377 2
+      lamU <- sample.imagelist(Lambda, UQ)
+      lamX <- lamU[Z, , drop=FALSE]
+d382 3
+a384 2
+        # fitted cluster parameters at data points
+        parX <- sample.imagelist(Psi, X)
+d386 3
+a388 3
+        # using parameters fitted at x_i
+        parXI <- parX[I, , drop=FALSE]
+        rhoIJ <- apply(cbind(dIJ, parXI), 1, function(z) paco(z[-1], z[1]))
+d390 4
+a393 4
+        # using parameters fitted at x_i
+        parXIUJ <- parX[IX, , drop=FALSE]
+        rhoXIUJ <- apply(cbind(dXIUJ, parXIUJ), 1, function(z) paco(z[-1], z[1]))
+      } else rhoIJ <- rhoXIUJ <- 1
+d395 1
+a395 1
+      plik.data <- sum(log(lamX)[I]) + sum(log(rhoIJ))
+d397 1
+a397 1
+      plik.back <- sum(lamU[IX] * rhoXIUJ * wUJ)
+@
+
+
+1.6
+log
+@more work on bw.loccit
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.5 $ $Date: 2013/09/04 11:23:20 $
+a61 21
+  applymaps <- function(maplist, x) {
+    stopifnot(is.list(maplist) && all(unlist(lapply(maplist, is.language))))
+    if(is.matrix(x)) {
+      x <- as.data.frame(x)
+      xenv <- list2env(as.list(x))
+      y <- lapply(maplist, eval, xenv=xenv)
+      y <- as.matrix(as.data.frame(y))
+    } else if(is.numeric(x)) {
+      xenv <- list2env(as.list(x))
+      y <- lapply(maplist, eval, envir=xenv)
+      y <- unlist(y)
+    } else if(is.list(x) && all(unlist(lapply(x, is.im))))  {
+      xenv <- list2env(x)
+      y <- lapply(maplist, evalim, xenv=xenv)
+    }
+    return(y)
+  }
+
+  evalim <- function(f, xenv) eval(substitute(eval.im(ex, envir=en),
+                                              list(ex=f, en=xenv)))
+  
+a412 1
+
+@
+
+
+1.5
+log
+@many modifications. still in progress.
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.4 $ $Date: 2013/09/02 00:32:27 $
+d22 1
+d33 2
+a34 1
+         scoresid = .ScoResid)
+d36 4
+d48 2
+a49 1
+      "scoresid")
+a50 2
+  opties <- names(Dependence.Table)
+
+d99 4
+a102 3
+    what <- match.arg(what, opties, several.ok=TRUE)
+    give <- as.list(!is.na(match(opties, what)))
+    names(give) <- opties
+d217 1
+a217 1
+    }
+d387 28
+a414 1
+    
+d422 2
+a423 1
+                   scoresid    = ScoreResid)
+@
+
+
+1.4
+log
+@added use.D2
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.3 $ $Date: 2013/08/31 09:13:12 $
+a16 1
+  .InvHmat  <- c(.InvHess, "InvHessMat")
+d18 1
+d21 1
+d29 1
+d31 2
+a32 1
+         tgrad   = .Tgrad)
+d39 1
+d41 2
+a42 1
+      "tgradient")
+d46 28
+a73 1
+  arrayby <- function(...) t(simplify2array(by(...)))
+d75 5
+a79 2
+  loccitFFT <- function(homfit, sigma, rmax, ...,
+                        lambda=fitted(homfit, new.coef=new.trendcoef),
+d81 2
+d84 3
+a86 1
+                        use.D2 = TRUE,
+d90 3
+a92 1
+    stopifnot(is.kppm(homfit))
+d98 3
+a100 1
+
+d102 1
+a102 2
+    homtrendcoef <- coef(homfit)
+    use.trendcoef <- if(!is.null(new.trendcoef)) new.trendcoef else homtrendcoef
+d104 1
+a104 13
+    
+    # Fitted cluster parameters 
+    hompar <- homfit$par
+    npar <- length(hompar)
+
+    # all parameters
+    theta <- c(homtrendcoef, hompar)
+    p <- length(theta)
+    vec.names <- names(theta)
+    mat.names <- as.vector(outer(vec.names, vec.names, paste, sep="."))
+    
+    # extract information about Poisson trend model
+    hompoisfit <- as.ppm(homfit)
+d107 1
+d112 6
+a118 2
+    mom <- model.matrix(hompoisfit)
+    momX <- mom[Z, , drop=FALSE]
+d124 11
+d137 23
+a159 6
+    info <- spatstatClusterModelInfo(homfit$clusters)
+    paco     <- info$pcf
+    Dlogpcf  <- info$Dlogpcf
+    D2logpcf <- info$D2logpcf
+    if(is.null(Dlogpcf) || is.null(D2logpcf))
+      stop(paste("Not implemented for", sQuote(homfit$clusters)))
+d161 7
+d188 4
+a191 3
+      momXJ <- momX[J, , drop=FALSE]
+      zetaIJ <- cbind(momXJ, Dlogpcf(hompar, dIJ))
+      score.data <- arrayby(zetaIJ, facI, colSums)
+d193 5
+a197 3
+      momUJ <- mom[JU, , drop=FALSE]
+      zetaXIUJ <- cbind(momUJ, Dlogpcf(hompar, dXIUJ))
+      score.back <- arrayby(zetaXIUJ * lamUJ * wUJ, facIX, colSums)
+d208 4
+d214 62
+a275 28
+      # indices of the submatrix of the Hessian
+      # related to the cluster parameters
+      m <- matrix(, p, p)
+      clusind <- which(as.vector(row(m) > ntrend & col(m) > ntrend))
+      # 'data' contribution to the Hessian (as flat matrix)
+      # involves cluster parameters only.
+      if(use.D2) {
+        kappaIJ <- D2logpcf(hompar, dIJ)
+        kappaIJ <- matrix(as.vector(kappaIJ), nrow=nIJ)
+        kappa.data <- arrayby(kappaIJ, facI, colSums)
+        hess.data <- matrix(0, nX, p^2)
+        hess.data[, clusind] <- kappa.data
+      } else hess.data <- 0
+      # 'background' contribution to the Hessian
+      outerzetaXIUJ <- outersquare.flat.vector(zetaXIUJ)
+      if(use.D2) {
+        kapXIUJ <- D2logpcf(hompar, dXIUJ)
+        kapXIUJ <- matrix(as.vector(kapXIUJ), nrow=nXIUJ)
+        kappaXIUJ <- matrix(0, nXIUJ, p^2)
+        kappaXIUJ[, clusind] <- kapXIUJ
+      } else kappaXIUJ <- 0
+      hess.back <- arrayby((kappaXIUJ + outerzetaXIUJ) * lamUJ * wUJ,
+                           facIX, colSums)
+      # put together
+      hessX <- hess.back  - hess.data
+      colnames(hessX) <- mat.names
+      # apply kernel
+      H <- density(X, weights=hessX, sigma=sigma, edge=FALSE, w=W)
+d289 1
+a289 1
+    } else invH <- NULL
+a290 5
+    
+    if("InvHmat" %in% needed) {
+      # convert to flat matrix
+      invHmat <- imagelist2matrix(invH)
+    } else invHmat <- NULL
+a291 1
+    #
+d296 1
+a296 1
+        delta <- multiply2.flat.matrices(invHmat, Umat, c(p,p), c(p, 1))
+d299 1
+a299 1
+        delta <- solve2.flat.matrices(Hmat, Umat, c(p, p), c(p, 1))
+d301 36
+a336 2
+      Theta0 <- matrix(theta, nrow=npixels, ncol=p, byrow=TRUE)
+      Thetamat <- Theta0 + delta
+d340 9
+d351 4
+d360 4
+a363 4
+      # extract the trend coefficients
+      Phimat <- Thetamat[, 1:ntrend, drop=FALSE]
+      # Trend coefficients of homogeneous model
+      Phi0mat <- matrix(use.trendcoef, npixels, ntrend, byrow=TRUE)
+d368 7
+a374 2
+      Lam0 <- predict(hompoisfit, locations=W, new.coef=new.trendcoef)
+      Lam0vec <- as.vector(as.matrix(Lam0))
+d376 1
+a376 1
+      lam <- Lam0vec * exp(rowSums((Phimat - Phi0mat) * Mommat))
+d386 1
+d388 2
+a389 1
+                   tgradient   = Tgrad)
+@
+
+
+1.3
+log
+@tweaks
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.2 $ $Date: 2013/08/31 07:20:56 $
+d47 1
+d143 7
+a149 5
+      kappaIJ <- D2logpcf(hompar, dIJ)
+      kappaIJ <- matrix(as.vector(kappaIJ), nrow=nIJ)
+      kappa.data <- arrayby(kappaIJ, facI, colSums)
+      hess.data <- matrix(0, nX, p^2)
+      hess.data[, clusind] <- kappa.data
+d152 6
+a157 4
+      kapXIUJ <- D2logpcf(hompar, dXIUJ)
+      kapXIUJ <- matrix(as.vector(kapXIUJ), nrow=nXIUJ)
+      kappaXIUJ <- matrix(0, nXIUJ, p^2)
+      kappaXIUJ[, clusind] <- kapXIUJ
+@
+
+
+1.2
+log
+@bug fixes
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.1 $ $Date: 2013/08/31 03:51:08 $
+d102 1
+d143 1
+a143 1
+      kappaIJ <- matrix(as.vector(kappaIJ), nrow=dim(kappaIJ)[1])
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.35 $ $Date: 2013/07/23 09:17:27 $
+d203 2
+a204 1
+      Phimat <- Thetamat[, 1:ntrend]
+d206 1
+d209 5
+a213 1
+      lam <- lambda * exp(rowSums((Phimat - Phi0mat) * Mommat))
+d227 1
+a227 1
+    indx <- pmatch(what, FullNames) # there are no NA's
+@

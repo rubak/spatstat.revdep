@@ -1,0 +1,253 @@
+v0.0-1 11/22/2011
+visualField is born!!!
+
+Created the folder structure and description as Ken Knoblauch's "psyphy"
+
+Created the skeleton with main functions, data, and documentation
+
+v0.0-2 12/07/2011
+visualField is almost ready to go!!!
+
+Implemented all necessary functions to generate normative values
+
+Implemented functions to obtain total-deviation (TD) and pattern-deviation (PD) values, and their corresponding probability maps (in relation to the normative values used)
+
+Implemented functions to obtain global statistical measures for a visual field
+
+Added a global variable nv (nv.rda) that contains the actual normative values to be used. This is to be set by newly created function setnv(). This is a better way to manage which version of normative values is used by visualFields. The function getnv() gives the actual version used by visualFields
+
+Need to implement vfi
+
+Need to add normative values also for mean deviation, pattern standard deviation, vfi, etc
+
+Exhaustive testing is necessary
+
+No display functions yet, but soon
+
+v0.1-0 12/12/2011
+
+Implemented vfi
+
+Added normative values also for mean deviation, pattern standard deviation,  and vfi
+
+Added a function that obtains demographics and statistics of the sample in vf object
+
+Created a function that obtains TD-rank curves and functions that obtains normative values for TD-rank values
+
+Exhaustive testing is still necessary
+
+No display functions yet, but soon
+
+v0.1-1 12/14/2011
+some patches fixed
+
+separation between visualFields and visualFieldsDevelIMF, a development package by IMF of functions that will be part of visualFields in the future
+
+Each developer can have their own visualFieldsDevelXXX mounted on top of visualFields that updates it
+
+v0.1-2 01/29/2012
+added a series of function to parse XML files. Contributed by Richard Russell
+
+added calculation of probability values for global indices
+
+v0.1-3 03/01/2012
+added functionality for pattern 30-2 and 10-2. NO NORMATIVE VALUES EXIST FOR THESE!!!! SO NO STATISTICAL ANALYSIS POSSIBLE
+
+added a function to obtain from XML files the (x,y)-coordinates of the locations tested
+
+v0.1-4 03/23/2012
+added layouts and graphs for plotting visualFields results
+
+v0.2-0 02/02/2012
+finished first version of printouts and added stimulus-location and bebie-curve graphs
+
+partially added PoPLR analysis. Contributed by Neil O'Leary
+
+added Paul Artes' lego plots. Contributed by Paul Artes
+
+v0.2-1 05/04/2012
+fixed a few of bugs, a HIPAA problem, and left-eye, right-eye problems
+completed PoPLR printout a bit more. Still need to confirm with them they are all right with it
+
+v0.2-2 07/26/2012
+seriusly reworked the documentation of the package and added relevant references
+
+changed defaults for vfplot
+
+fixed a bug in loadvfcsv
+
+added an example. Subject 1021
+
+v0.2-3 08/15/2012
+amended function bebie
+
+improved functions vflayout_poplr, vflplot_poplr, vfplotloc so that they now admit several versions to mark "clinical significance" and "statistical significance"
+
+added two functions that make operations on vf-objects: vfsort, and vfselectvisit
+
+added another function that creates legend for rings, ringmapgraph
+
+v0.2-4 09/16/2012
+finished documentation
+
+added a "expected number of years blind" in PoPLR analysis
+
+v0.2-5 10/08/2012
+fixed bug in vflayout_legoplots
+
+v0.2-6 10/17/2012
+fixed bug in vlplotloc
+
+v0.2-7 11/11/2012
+In plots of visual sensitivities show <0 for negative values and a couple of patches
+
+v0.2-8 11/13/2012
+removed unreliable controls from the normative values. Added option to capitalize tags or not in xmlblock and xlmitem functions
+
+v0.2-9 12/01/2012
+a patch in hist_poplr.R
+
+v0.2-10 12/03/2012
+Adapted PoPLRs to accept analysis with TD and PD values. Also added the possibility for a truncation value
+
+v0.2-11 01/18/2013
+change vflayout_poplr and vfplot_poplr to show years to blindness instead of years blind
+
+v0.2-12 01/18/2013
+created an environment vfenv to fix setnv(), so that nv is no longer in the .GlobalEnv which R does not allowed to modify from within a function
+
+added 10-2 Wyatt, et al control data
+
+generated 10-2 normative values from the control data
+changed name standard for some datasets
+
+v0.2-13 01/21/2013
+delete old documenation files
+
+v0.2-14 02/24/2013
+fix problem with change in dependent package flip
+
+v0.3 03/15/2013
+version to be included in the manuscript for Journal of Vision, except for some additional information about citations, etc.
+
+fixed a small problem technical problem with cutoffs in pmapsettings in the generation of with the 10-2
+
+fixed further problems with dependent package flip
+
+Submitted version for Journal of Vision depends on the packages:
+
+R version	2.15.2	2012-10-26 -- "Trick or Treat"
+gridBase 	0.4-5	2012-03-18
+flip		2.0	2013-02-23
+foreach		1.4.0	2012-04-16
+e1071		1.6	2011-09-12
+class		7.3-5	2012-10-08
+someMTP		1.4	2011-11-17
+cherry		0.2-6	2012-04-04
+bitops		1.0-4.1	2009-02-15
+matrixStats 	0.4.4 	2012-03-05
+R.methodsS3 	1.2.2 	2012-02-29
+Hmisc		3.9-3	2012-03-27
+survival	2.36-14	2012-04-25
+
+v0.3-1 06/06/2013 (EU date system, from here on)
+change in functionality of flip. Function poplr.r modified accordingly.
+
+v0.3-2 07/06/2013
+fix small bugs. Incorrect age calculation in loadvfxml and incorrect order for false positives, false negatives, and fixation loses in vflayout
+
+v0.3-3 16/06/2013
+allow calculation of age by dividing by a factor days per year
+
+v0.3-4 03/10/2013
+fixing new problem with quartz and windows, all calls to open a new window are now made with "dev.new".
+
+v0.3-5 09/10/2013
+removed opening new windows in examples, as not allowed in the new R-devel version 2013-10-08 r64038
+
+v0.3-6 20/12/2013
+fixed vfdemographics follow up time
+
+v0.4 22/02/2014
+inclusion of the novel GHr estimator for general height
+
+v0.4.1 07/09/2014
+fixed small bug in loadvfxml, mapped values for probability categories for MD and PSD
+fixed small bug in tdrankadjperc
+fixed agecalc so that we can ages from a vector of dates and of dobs
+
+v0.4.2 21/01/2015
+fixed small bug in loadvfxml: problem with dates
+fixed small bug in vflayout: correct format for duration and pause
+added ?visualFields::? to global variables and environment within visualFields
+changed fonts to make them compatible with both Windows and Mac
+
+v0.4.3 15/01/2016
+changes in documentation
+inclusion of 30-1 map for size III and of 10-2, 24-2, 30-2, and 30-1 maps for size V and VI
+other location maps
+
+v0.4.4 16/03/2016
+fixed some typos
+
+v0.4.5 10/05/2016
+patches, patches, patches
+inclusion of new grids of testing locations
+
+v0.5 26/03/2017
+add function to obtain retest conditional distributions used for graphs such as Fig 4 of Artes et al. IOVS, 2005. ?Threshold and Variability Properties of Matrix Frequency-Doubling Technology and Standard Automated Perimetry in Glaucoma?
+
+Major overhaul of vf printouts. Inclusion of Voronoi diagrams for tessellation. All previous vf printouts and vf plots have been renamed to:
+
+vfplotloc2.R
+vfplot2.R
+vflayout2.R
+vflayout2ghr.R
+vfplot2_poplr.R
+vflayout2_poplr.R
+vflayout2_legoplot.R
+
+New ones based on Voronoi and tessellation paradigm to determine the regions for printouts have been added:
+
+vfplotloc.R
+vfplot.R
+vflayout.R
+vflayoutghr.R
+vfplot_poplr.R
+vflayout_poplr.R
+
+along with the function that calculates the Voronoi diagrams for visual fields spatial locations.
+
+Inclusion of printouts to show progression
+
+vflayout_progress
+
+v0.5.1 12/11/2017
+Added patch in XML to read stimulus size too
+
+Added average GC displacement from Drasdo et al. VR 2007 (gcaveragedispl.rda).
+
+Added function vf2gcloc.r that calculates the corresponding GC body positions for each visual field from average GC displacement data as in Hood et al IOVS 2011 and Raza et al Ophthalmology 2011.
+
+v0.5.2 13/12/2017
+Added functions that implement the Jansonious structure-function map 2012:
+
+cart2jpolar: converts from (x,y) in degrees to polar coordinates. This is a necessary step to compute average fiber paths as a function of their angle of incidence in the optic nerve head with the Jansonius map.
+
+jpolar2cart: converts to (x,y) in degrees from polar coordinates.
+
+fiberpathpsi: generates a function that renders the average path of a nerve fiber bundle that exits through the optic nerve head with a particular angle.
+
+gcloc2psi: this is the inverse of the model: it obtains the angle of incidence psi of the average path that passes through position (x,y)
+
+psi2oct: Obtains the angle of incidence in the circular oct scan from the average path that starts at an angle psi from the optic nerve head. The operation psi2oct( gloc2psi ) maps vf locations with RNFLT angles so that the thickness that corresponds to each vf location can be estimated. This can be used in conjuction with vf2gcloc to correct for ganglion cell body displacement from vf location.
+
+v0.5.4 17/06/2018
+Many edits, including the addition of Artes data from
+
+[1] P. H. Artes, N. O?Leary, M. T. Nicolela, B. C. Chauhan, and D. P. Crabb. Visual field progression in glaucoma: What is the specificity of the guided progression analysis? American Academy of Ophthalmology, 121(10):2023-2027, 2014.
+
+Also added a function to load data extracted from the Octopus device
+
+v0.5.5 12/11/2018
+Final entry to this news file since now we use GITHUB to manage versions. In this version, the v2 display functions (vplot2, etc) have been removed and some other files for PoPLR visualization have been upgraded an improved.

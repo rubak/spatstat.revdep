@@ -1,0 +1,13 @@
+Version 1.0.2
+
+The dependency on the USAboundaries package was removed, since their new version 0.3.0 is not backwards compatible, which had affected the PlotUSAStates function of the sppmix package. As a result we have changed the license from "CC BY-NC-SA 4.0" to
+"GPL (>=2)". We further removed some imports from other packages.
+
+We processed two files from the USA Census Bureau Public Use Data (no license required) that contain the boundaries of USA states and counties and included the data in the object USAStatesCounties2016. This object is heavily utilized in many of our examples via the PlotUSAStates function.
+
+Made several minor corrections/additions to plotting and computation functions.
+
+Version 1.0.1
+
+Solaris Platform: Fixed ambiguity problems so that the package can properly compile in Solaris
+

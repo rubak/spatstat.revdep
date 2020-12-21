@@ -1,0 +1,2191 @@
+head	2.17;
+access;
+symbols;
+locks
+	adrian:2.17; strict;
+comment	@# @;
+
+
+2.17
+date	2019.04.13.15.37.08;	author adrian;	state Exp;
+branches;
+next	2.16;
+
+2.16
+date	2019.04.13.15.12.07;	author adrian;	state Exp;
+branches;
+next	2.15;
+
+2.15
+date	2016.10.19.08.37.16;	author adrian;	state Exp;
+branches;
+next	2.14;
+
+2.14
+date	2013.10.31.10.59.06;	author adrian;	state Exp;
+branches;
+next	2.13;
+
+2.13
+date	2013.10.31.10.54.06;	author adrian;	state Exp;
+branches;
+next	2.12;
+
+2.12
+date	2013.10.31.07.45.19;	author adrian;	state Exp;
+branches;
+next	2.11;
+
+2.11
+date	2013.10.31.07.41.14;	author adrian;	state Exp;
+branches;
+next	2.10;
+
+2.10
+date	2013.10.30.10.29.55;	author adrian;	state Exp;
+branches;
+next	2.9;
+
+2.9
+date	2013.10.04.08.53.36;	author adrian;	state Exp;
+branches;
+next	2.8;
+
+2.8
+date	2013.10.04.06.20.51;	author adrian;	state Exp;
+branches;
+next	2.7;
+
+2.7
+date	2013.10.04.06.01.21;	author adrian;	state Exp;
+branches;
+next	2.6;
+
+2.6
+date	2013.10.04.04.53.26;	author adrian;	state Exp;
+branches;
+next	2.5;
+
+2.5
+date	2013.10.03.10.32.30;	author adrian;	state Exp;
+branches;
+next	2.4;
+
+2.4
+date	2013.09.30.08.53.54;	author adrian;	state Exp;
+branches;
+next	2.3;
+
+2.3
+date	2013.09.30.07.25.24;	author adrian;	state Exp;
+branches;
+next	2.2;
+
+2.2
+date	2013.09.30.04.51.04;	author adrian;	state Exp;
+branches;
+next	2.1;
+
+2.1
+date	2013.09.30.02.38.45;	author adrian;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2013.09.05.06.05.05;	author adrian;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2013.09.05.04.26.07;	author adrian;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2013.09.04.11.24.44;	author adrian;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2013.09.04.11.23.08;	author adrian;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2013.09.04.02.28.18;	author adrian;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2013.09.03.02.09.13;	author adrian;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2013.09.02.09.45.51;	author adrian;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2013.09.02.00.45.39;	author adrian;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2013.08.31.02.26.41;	author adrian;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2013.08.31.01.29.18;	author adrian;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2013.08.28.10.46.30;	author adrian;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2013.08.28.10.36.49;	author adrian;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2013.08.28.10.36.17;	author adrian;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2013.08.28.09.30.48;	author adrian;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2012.12.12.07.55.20;	author adrian;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2012.12.10.08.54.20;	author adrian;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2012.11.23.02.10.52;	author adrian;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2012.11.08.00.42.50;	author adrian;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2012.11.07.07.01.28;	author adrian;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2012.11.07.07.00.33;	author adrian;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+2.17
+log
+@Summary: removed 'printStatusList' which is now in spatstat
+@
+text
+@#
+# loccit.R
+#
+# Local second-order composite likelihood
+# and local Palm likelihood
+# for cluster/Cox processes.
+#
+#  $Revision: 2.16 $ $Date: 2019/04/13 15:12:07 $
+#
+
+loccit <- local({
+
+  # define objective functions for optimization
+  
+  PalmObjPar <- function(par, objargs) {
+    with(objargs,
+#         sumWJloglamJ +
+         sum(wJ * log(paco(dIJ, par)))
+         - Gscale * unlist(stieltjes(paco, Gv, par=par)),
+         enclos=objargs$envir)
+  }
+  PalmObjTheta <- function(par, objargs) {
+    with(objargs,
+#         sumWJloglamJ +
+         sum(wJ * log(paco(dIJ, par)))
+         - Gscale * unlist(stieltjes(paco, Gv, theta=par)),
+         enclos=objargs$envir)
+  }
+
+  # kernel function 
+  wtfun <- function(x,y, xv, yv, sigma) {
+    dnorm(x - xv, sd=sigma) * dnorm(y - yv, sd=sigma)
+  }
+
+  # list of formal arguments of loccit that are
+  # not relevant to the 'template model'
+  loccitparams <- c("sigma", "f", "clustargs", "control",
+                    "rmax", "verbose")
+
+  loccit <-
+    function(X, trend = ~1, 
+             clusters = c("Thomas","MatClust","Cauchy","VarGamma","LGCP"),
+             covariates = NULL,
+             ...,
+             diagnostics=FALSE,
+             taylor = FALSE,
+             sigma=NULL, f=1/4,
+             clustargs=list(),
+             control=list(),
+             rmax,
+             covfunargs=NULL,
+             use.gam=FALSE,
+             nd=NULL, eps=NULL,
+             niter = 3,
+             fftopt = list(),
+             verbose=TRUE
+             ) {
+  starttime <- proc.time()
+  Xname <- short.deparse(substitute(X))
+  cl <- match.call()
+  stopifnot(is.ppp(X))
+  if(is.marked(X))
+    stop("Sorry, cannot handle marked point patterns")
+
+  clusters <- match.arg(clusters)
+  diagnostics <- identical(diagnostics, TRUE)
+  if(diagnostics && !taylor)
+    stop("Diagnostics are only implemented for the Taylor approximation")
+  
+  W <- as.owin(X)
+  nX <- npoints(X)
+  
+  # make a fake call representing the template model
+  templatecall <- cl[!(names(cl) %in% loccitparams)]
+  templatecall[[1]] <- as.name("kppm")
+  
+  # determine rmax and bandwidth
+  if(missing(rmax) || is.null(rmax))
+    rmax <- rmax.rule("K", W, intensity(X))
+  if(is.null(sigma)) {
+    sigma <- bw.frac(X, f=f)
+    if(verbose)
+      cat(paste("sigma = ", sigma, "\n"))
+  }
+  
+  # get pair correlation function (etc) for model
+  info <- spatstatClusterModelInfo(clusters)
+  pcfun      <- info$pcf
+  funaux     <- info$funaux
+  selfstart  <- info$selfstart
+  isPCP      <- info$isPCP
+  parhandler <- info$parhandler
+  modelname  <- info$modelname
+  # process additional parameters of cluster model
+  clargs <- if(is.function(parhandler)) do.call(parhandler, clustargs) else NULL
+  pcfunargs <- append(clargs, list(funaux=funaux))
+  # determine starting parameter values and parameter dimension
+  selfstartpar <- selfstart(X)
+  npar <- length(unlist(selfstartpar))
+
+  # get additional info
+  extra <- extraClusterModelInfo(clusters)
+  if(use.transform <- !is.null(extra)) {
+    # use transformed parameters
+    par2theta <- extra$par2theta
+    theta2par <- extra$theta2par
+    pcfun      <- extra$pcftheta
+  }
+
+  # ................................................................
+  #  Step 0: homogeneous model
+  # ................................................................
+  if(verbose) cat("Fitting homogeneous cluster model ... ")
+  homclusfit <- kppm(X,
+                     trend=trend,
+                     clusters=clusters,
+                     covariates=covariates,
+                     covfunargs=covfunargs,
+                     use.gam=use.gam,
+                     nd=nd, eps=eps,
+                     method="palm")
+  homcluspar <- homclusfit$par
+  if(use.transform) 
+    homclustheta <- applymaps(par2theta, homcluspar)
+  fit0 <- as.ppm(homclusfit)
+  Q <- quad.ppm(fit0)
+  U <- union.quad(Q)
+  Z <- is.data(Q)
+  ntrend <- length(coef(fit0))
+  if(verbose) cat("Done.\n")
+
+  
+  # ................................................................
+  #  Step 1: estimate intensity
+  # ................................................................
+  # ................................................................
+  #  fit local Poisson model
+  # ................................................................
+  if(verbose) cat("Fitting local Poisson model...")
+  # compute weights 
+  Swt <- strausscounts(U, X, rmax, EqualPairs=equalpairs.quad(Q))
+  # fit local Poisson model
+  locpoisfit <- locppm(Q,
+                       trend=trend,
+                       covariates=covariates, 
+                       covfunargs=covfunargs,
+                       locations="fine",
+                       use.gam=use.gam,
+                       weightfactor=Swt,
+                       sigma=sigma, use.fft=taylor, verbose=FALSE)
+  # fitted intensity at quadrature points
+  locpoislambdaU <- as.vector(fitted(locpoisfit))
+  # fitted local coefficients at quadrature points
+  locpoiscoef <- marks(coef(locpoisfit))
+  # predict intensity at all locations
+  locpoislambda <-
+    Smooth(ssf(U, locppmPredict(as.ppm(locpoisfit), locpoiscoef)))
+  #
+  if(verbose) cat("Done.\n")
+  #
+  # ..........................................................
+  #    Step 2. Fit cluster parameters
+  # ..........................................................
+  
+  # Fix intensity
+  lambdaU <- locpoislambdaU
+  lambda <- locpoislambda
+  #
+  
+  if(taylor) {
+    # ..........................................................
+    #          first-order Taylor approximation
+    # ..........................................................
+    if(verbose) cat("Computing Taylor approximation... ")
+#    what <- c("param", "lambda")
+    what <- "param"
+    if(diagnostics)
+      what <- c(what, "influence", "plik", "score", "grad", "delta")
+    FT <- loccitFFT(homclusfit, sigma, rmax,
+                    base.trendcoef=locpoiscoef,
+                    base.lambda=locpoislambdaU,
+                    base.lambdaim=locpoislambda,
+                    what=what, verbose=verbose,
+                    calcopt=fftopt,
+                    ...)
+    if(verbose) cat("Done.\nExtracting values... ")
+    # local cluster parameter estimates
+    estpar <- sample.imagelist(FT$parameters, U)[, ntrend+1:npar]
+    # fitted intensity
+    # DO NOT UPDATE!
+    # lambdaU <- sample.imagelist(FT$intensity, U)
+    #
+    if(diagnostics) {
+      score   <- sample.imagelist(FT$score, U)
+      hessian <- sample.imagelist(FT$gradient, U)
+      delta <- sample.imagelist(FT$delta, U)
+      # influence of each data point
+      influ <- FT$influence
+      # log Palm likelihood
+      logplik <- FT$logplik
+    }
+    if(verbose) cat("Done.\n")
+  } else {
+    # ..........................................................
+    #         Full fitting algorithm
+    # ..........................................................
+    Xx <- X$x
+    Xy <- X$y
+    Ux <- U$x
+    Uy <- U$y
+    nU <- npoints(U)
+    ok <- getglmsubset(as.ppm(homclusfit))
+    nV <- sum(ok)
+    # starting parameter vector
+    startpar <- if(use.transform) homclustheta else homcluspar
+    # allocate space for results
+    estpar <- matrix(NA_real_, nU, npar)
+    colnames(estpar) <- names(startpar)
+    # identify pairs of points that contribute
+    cl <- closepairs(X, rmax)
+    I <- cl$i
+    J <- cl$j
+    dIJ <- cl$d
+    xI <- cl$xi
+    yI <- cl$yi
+    # 
+    # create local function with additional parameters in its environment
+    paco.par <- function(d, par) {
+      do.call(pcfun, append(list(par=par, rvals=d), pcfunargs))
+    }
+    paco.theta <- function(d, theta) {
+      do.call(pcfun, append(list(theta=theta, rvals=d), pcfunargs))
+    }
+    paco <- if(use.transform) paco.theta else paco.par
+    
+    # define objective function obj(par, objargs)
+    obj <- if(use.transform) PalmObjTheta else PalmObjPar
+    
+    # collect data that doesn't change
+    objargs0 <- list(paco=paco, rmax=rmax, dIJ=dIJ, 
+                     envir=environment(paco))
+    # set up control arguments for 'optim'
+    ctrl <- resolve.defaults(list(fnscale=-1), control, list(trace=0))
+    # 
+    # ..............................................................
+    #             fit local cluster model at each quadrature point
+    # ..............................................................
+    #
+    # intensity at data points
+    lambdaX <- lambdaU[Z]
+    # total intensity
+    Lam <- integral.im(lambda)
+    warnlist <- NULL
+    if(verbose)
+      cat(paste0("Maximising local composite likelihood on ", nV,
+                 if(nV == nU) NULL else paste("out of ", nU),
+                 " quadrature points..."))
+    jok <- which(ok)
+    # ...................
+    for(k in seq_len(nV)) {
+      if(verbose) progressreport(k, nV)
+      j <- jok[k]
+      xv <- Ux[j]
+      yv <- Uy[j]
+      wX <- wtfun(Xx, Xy, xv, yv, sigma)
+      wI <- wX[I]
+      wJ <- wX[J]
+      wtf <- as.im(wtfun, W=lambda, xv=xv, yv=yv, sigma=sigma)
+      wlam <- eval.im(wtf * lambda)
+      Mv <- integral.im(wlam)
+      # compute cdf of distance between 
+      #   random point in W with density proportional to 'wlam'
+      # and
+      #   random point in X with equal probability
+      #
+      Gv <- distcdf(W, X, dW=wlam, dV=1)
+      Gscale <- nX * Mv
+      # trim Gv to [0, rmax] 
+      Gv <- Gv[with(Gv, .x) <= rmax,]
+      # pack up necessary information
+      objargs <- append(objargs0,
+                        list(wJ=wJ,
+ #                                    sumWJloglamI = sum(wJ * loglambdaJ),
+                             Gv=Gv,
+                             Gscale=Gscale))
+      # optimize it
+      opt <- optim(startpar, obj, objargs=objargs, control=ctrl)
+      # save warnings; stop if error
+      warnlist <- accumulateStatusList(optimStatus(opt), warnlist) 
+      # save fitted parameters
+      estpar[j, ] <- unlist(opt$par)
+    }
+    printStatusList(warnlist)
+    # transform back to original parameters
+    if(use.transform)
+      estpar <- applymaps(theta2par, estpar)
+  }
+  
+  # infer parameter 'mu'
+  if(isPCP) {
+    # Poisson cluster process: extract parent intensity kappa
+    kappaU <- estpar[, "kappa"]
+    # mu = mean cluster size
+    mu <- lambdaU/kappaU
+  } else {
+    # LGCP: extract variance parameter sigma2
+    sigma2U <- estpar[, "sigma2"]
+    # mu = mean of log intensity 
+    mu <- log(lambdaU) - sigma2U/2 
+  }
+  modelpar <- cbind(estpar, mu=as.vector(mu))
+  # pack up
+  result <-
+    list(homclusfit = homclusfit,
+         locpoisfit = locpoisfit,
+         lambda     = ssf(U, lambdaU),
+         modelpar   = ssf(U, modelpar),
+         coefs      = coef(locpoisfit),
+         score      = if(taylor && diagnostics) ssf(U, score) else NULL,
+         hessian    = if(taylor && diagnostics) ssf(U, hessian) else NULL,
+         delta      = if(taylor && diagnostics) ssf(U, delta) else NULL,
+         influence  = if(taylor && diagnostics) influ else NULL,
+         logplik    = if(taylor && diagnostics) logplik else NULL,
+         sigma      = sigma,
+         templatestring=format(templatecall))
+  class(result) <- c("loccit", class(result))
+  result <- timed(result, starttime=starttime)
+  return(result)
+}
+
+  loccit
+})
+
+
+plot.loccit <- function(x, ...,
+                        what=c("modelpar", "coefs", "lambda"),
+                        how=c("smoothed", "exact"),
+                        which=NULL, pre=NULL, post=NULL) {
+  xname <- deparse(substitute(x))
+  if(!any(what %in% c("score", "hessian")))
+     what <- match.arg(what)
+  how <- match.arg(how)
+  Z <- x[[what]]
+  if(!is.null(which))
+    Z <- Z[, which]
+  if(how == "smoothed") {
+    Z <- applymaps(pre, Z)
+    Z <- Smooth(Z, ...)
+    Z <- applymaps(post, Z)
+  }
+  do.call("plot", resolve.defaults(list(x=Z),
+                                   list(...),
+                                   list(main=xname)))
+}
+
+print.loccit <- function(x, ...) {
+  cat("Local Palm likelihood fit\n")
+  cat("Template model:\n")
+  cat(paste("\t", x$templatestring, "\n\n"))
+  cat(paste("Smoothing parameter sigma: ", x$sigma, "\n\n"))
+  cat("Coefficient estimates:\n")
+  print(x$coefs, brief=TRUE)
+  return(invisible(NULL))
+}
+
+predict.loccit <- function(object, ...)  {
+  predict(object$locpoisfit, ...)
+}
+
+fitted.loccit <- function(object, ..., new.coef=NULL) {
+  trap.extra.arguments(...)
+  lam <- predict(object, new.coef=new.coef)
+  return(marks(lam))
+}
+
+with.loccit <- function(data, ...) {
+  with(data$coefs, ...)
+}
+
+bw.loccit <- function(...,
+                      use.fft=TRUE,
+                      srange = NULL, ns=9, sigma = NULL,
+                      fftopt=list(),
+                      verbose=TRUE) {
+  starttime <- proc.time()
+  parenv <- sys.parent()
+
+  if(!use.fft) stop("Sorry, not yet implemented when use.fft=FALSE")
+  
+  # fit homogeneous model
+  homclusfit <- eval(substitute(kppm(..., method="palm", forcefit=TRUE)),
+                     envir=parenv)
+  ncluspar <- length(homclusfit$par)
+
+  # extract quadrature info
+  hompoisfit <- as.ppm(homclusfit)
+  ntrendcoef <- length(coef(hompoisfit))
+  X <- data.ppm(hompoisfit)
+  Q <- quad.ppm(hompoisfit)
+  U <- union.quad(Q)
+  wQ <- w.quad(Q)
+  Z <- is.data(Q)
+  nX <- npoints(X)
+  nU <- npoints(U)
+  Xindex <- seq_len(nU)[Z]
+
+  p <- ntrendcoef + ncluspar
+  
+  # determine values of smoothing parameter to be assessed
+  if(!missing(sigma) && !is.null(sigma)) {
+    stopifnot(is.numeric(sigma))
+    ns <- length(sigma)
+  } else {
+    if(is.null(srange)) {
+      srange <- range(bw.diggle(X) * c(1/2, 4),
+                      bw.frac(X, f=1/3))
+    } else check.range(srange)
+    sigma <- exp(seq(log(srange[1]), log(srange[2]), length=ns))
+  } 
+
+  # fit using each value of sigma
+  if(verbose) cat(paste("Assessing", ns, "values of sigma... "))
+  dof <- edof <- logL <- numeric(ns)
+  for(k in 1:ns) {
+    if(verbose) progressreport(k, ns)
+    sigk <- sigma[k]
+    fitk <- eval(substitute(loccit(..., sigma=sigk,
+                                   taylor=TRUE,
+                                   diagnostics=TRUE,
+                                   fftopt=fftopt,
+                                   verbose=FALSE)),
+                 envir=parenv)
+    # log Palm likelihood of fit
+    logL[k] <- fitk[[ "logplik" ]]
+    # influence calculation
+    influ <- fitk[[ "influence" ]]
+    score.data <- influ$score.data
+    delta.score <- influ$delta.score
+    hQ <- influ$HP
+    # Hessian at data points
+#    hQ <- as.matrix(fitk[[ "hessian" ]])
+    hX <- hQ[Z,,drop=FALSE]
+    # invert the Hessians
+    vX <- invert.flat.matrix(hX, p)
+    # compute 'leverage' approximation 
+    #    log(lambda(x_i)) - log(lambda_{-i}(x_i))
+    #    ~ Z(x_i) V(x_i) Y(x_i)^T
+    leve <- bilinear3.flat.matrices(score.data, vX, delta.score,
+                                    c(1,p), c(p, p), c(1, p))
+    dof[k] <- sum(leve)
+    # 'expected leverage'..
+    eleve <- bilinear3.flat.matrices(score.data, vX, score.data,
+                                    c(1,p), c(p, p), c(1, p))
+    kernel0 <- 1/(2 * pi * sigk^2)
+    edof[k] <- kernel0 * sum(eleve)
+  }
+  # compute cross-validation criterion
+  gcv <- logL - dof
+  # optimize
+  result <- bw.optim(gcv, sigma, iopt=which.max(gcv), cvname="cv",
+                     dof=dof, logL=logL, edof=edof)
+  timed(result, starttime=starttime)
+}
+
+
+psib.loccit <- function(object) {
+  clus <- object$homclusfit$clusters
+  info <- spatstatClusterModelInfo(clus)
+  if(!info$isPCP)
+    stop("The model is not a cluster process")
+  xtra <- extraClusterModelInfo(clus)
+  pmap <- xtra$psib
+  if(is.null(pmap))
+    stop(paste("Not implemented for", sQuote(clus)))
+  modpar <- object$modelpar
+  p <- applymaps(pmap, marks(modpar))
+  P <- ssf(unmark(modpar), p)
+  return(P)
+}
+
+accumulateStatusList <- function(x, stats=NULL, stoponerror=TRUE) {
+  if(inherits(x, "error") && stoponerror)
+    stop(conditionMessage(x))
+  if(is.null(stats))
+    stats <- list(values=list(), frequencies=integer(0))
+  if(!inherits(x, c("error", "warning", "message")))
+    return(stats)
+  same <- unlist(lapply(stats$values, identical, y=x))
+  if(any(same)) {
+    i <- min(which(same))
+    stats$frequencies[i] <- stats$frequencies[i] + 1
+  } else {
+    stats$values <- append(stats$values, list(x))
+    stats$frequencies <- c(stats$frequencies, 1)
+  }
+  return(stats)
+}
+
+@
+
+
+2.16
+log
+@Summary: bug fix thanks to Nicoletta D'Angelo
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.15 $ $Date: 2016/10/19 08:37:16 $
+a496 15
+}
+
+printStatusList <- function(stats) {
+  with(stats,
+       {
+         for(i in seq_along(values)) {
+           printStatus(values[[i]])
+           ni <- frequencies[i]
+           cat(paste("\t",
+                     paren(paste(ni,
+                                 ngettext(ni, "occurrence", "occurrences"))),
+                     "\n"))
+         }
+       })
+  invisible(NULL)
+@
+
+
+2.15
+log
+@added predict and fitted methods.
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.14 $ $Date: 2013/10/31 10:59:06 $
+d116 1
+a464 12
+psib <- function(object) UseMethod("psib")
+
+psib.kppm <- function(object) {
+  clus <- object$clusters
+  info <- spatstatClusterModelInfo(clus)
+  if(!info$isPCP)
+    stop("The model is not a cluster process")
+  modpar <- object$modelpar
+  g <- pcfmodel(object)
+  p <- 1 - 1/g(0)
+  return(p)
+}
+@
+
+
+2.14
+log
+@buglet fix
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.13 $ $Date: 2013/10/31 10:54:06 $
+d114 1
+a114 1
+  homclusfit <- Kppm(X,
+d151 1
+a151 1
+  locpoislambdaU <- as.vector(as.matrix(fitted(locpoisfit)))
+d153 1
+a153 1
+  locpoiscoef <- as.matrix(coef(locpoisfit))
+d337 1
+a337 1
+                        which=NULL) {
+d345 2
+a346 1
+  if(how == "smoothed")
+d348 2
+d365 10
+d390 1
+a390 1
+  homclusfit <- eval(substitute(Kppm(..., method="palm", forcefit=TRUE)),
+d487 2
+a488 2
+  p <- applymaps(pmap, as.matrix(modpar))
+  P <- ssf(as.ppp(modpar), p)
+@
+
+
+2.13
+log
+@uses transformed parameters
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.12 $ $Date: 2013/10/31 07:45:19 $
+d15 1
+a15 1
+  PalmObj <- function(par, objargs) {
+d22 7
+d236 2
+a237 1
+    obj <- PalmObj
+@
+
+
+2.12
+log
+@d'oh
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.11 $ $Date: 2013/10/31 07:41:14 $
+d91 11
+a101 2
+  startpar <- selfstart(X)
+  npar <- length(unlist(startpar))
+d114 3
+d123 1
+d206 2
+d220 1
+a220 1
+    paco <- function(d, par) {
+d223 5
+d285 3
+d473 1
+a473 1
+    error(conditionMessage(x))
+d478 8
+a485 12
+  with(stats,
+       {
+         same <- unlist(lapply(values, identical, y=x))
+         if(any(same)) {
+           i <- min(which(same))
+           frequencies[i] <- frequencies[i] + 1
+         } else {
+           values <- append(values, list(x))
+           frequencies <- c(frequencies, 1)
+         }
+       })
+  stats <- list(values=values, frequencies=frequencies)
+d493 1
+a493 1
+           printStatus(values[i])
+d497 2
+a498 2
+                                 ngettext(ni, "occurrence", "occurrences")),
+                           "\n")))
+@
+
+
+2.11
+log
+@now accumulates errors
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.10 $ $Date: 2013/10/30 10:29:55 $
+d264 1
+a265 1
+  printStatusList(warnlist)
+@
+
+
+2.10
+log
+@possible bug fix: no longer updates 'lambda' in Taylor case.
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.9 $ $Date: 2013/10/04 08:53:36 $
+d224 1
+d259 2
+a260 2
+      # raise warning/error if something went wrong
+      signalStatus(optimStatus(opt), errors.only=TRUE)
+d265 1
+d447 38
+@
+
+
+2.9
+log
+@now saves successive estimates.
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.8 $ $Date: 2013/10/04 06:20:51 $
+a14 16
+  GuanObj <- function(par, objargs) {
+    with(objargs,
+#         sumWIloglamIJ +
+         sum(wI * log(paco(dIJ, par)))
+         - sumWI * log(Gscale * unlist(stieltjes(paco, Gv, par=par))),
+         enclos=objargs$envir)
+  }
+
+  PalmObj.Old <- function(par, objargs) {
+    with(objargs,
+#         sumWIloglamI +
+         sum(wI * log(paco(dIJ, par)))
+         - Gscale * unlist(stieltjes(paco, Gv, par=par)),
+         enclos=objargs$envir)
+  }
+
+d30 1
+a30 1
+  loccitparams <- c("method", "sigma", "f", "clustargs", "control",
+a37 1
+             method = c("Palm", "Guan"),
+a58 1
+  method <- match.arg(method)
+a59 2
+  if(taylor && method == "Guan")
+    stop("Taylor approximation is only available for method='Palm'")
+d95 1
+a95 1
+  #  fit homogeneous cluster model
+d100 1
+a100 2
+                     clusters=clusters,
+                     covariates=covariates, 
+d105 2
+a106 2
+  hompoisfit <- as.ppm(homclusfit)
+  Q <- quad.ppm(hompoisfit)
+d109 1
+a109 1
+  ntrend <- length(coef(hompoisfit))
+d111 38
+a148 1
+
+d154 2
+a155 1
+    what <- c("param", "lambda")
+d159 3
+d166 2
+a167 3
+    # local parameter estimates
+    estpar <- sample.imagelist(FT$parameters, U)
+    loctrendcoef <- if(ntrend > 0) estpar[, 1:ntrend] else NULL
+d169 2
+a170 1
+    lambdaU <- sample.imagelist(FT$intensity, U)
+d191 1
+a191 1
+    ok <- getglmsubset(hompoisfit)
+d209 1
+a209 1
+    obj <- switch(method, Guan=GuanObj, Palm=PalmObj)
+a214 6
+    # create space for saving fitted parameters at each iteration
+    successive <- vector(mode="list", length=niter)
+    # initialise iteration
+    loctrendcoef <- coef(homclusfit)
+    lambdaU <- fitted(homclusfit)
+    lambda <- predict(homclusfit, window=W)
+d216 37
+a252 56
+    for(iter in 1:niter) {
+      if(verbose) cat(paste("Iteration", iter, "of", niter, "\n"))
+      # ..............................................................
+      #             fit local cluster model at each quadrature point
+      # ..............................................................
+      # intensity at data points
+      lambdaX <- lambdaU[Z]
+      # total intensity
+      Lam <- integral.im(lambda)
+      if(verbose)
+        cat(paste0("Maximising local composite likelihood on ", nV,
+                   if(nV == nU) NULL else paste("out of ", nU),
+                   " quadrature points..."))
+      jok <- which(ok)
+      # ...................
+      for(k in seq_len(nV)) {
+        if(verbose) progressreport(k, nV)
+        j <- jok[k]
+        xv <- Ux[j]
+        yv <- Uy[j]
+        wX <- wtfun(Xx, Xy, xv, yv, sigma)
+        wI <- wX[I]
+        wJ <- wX[J]
+        wtf <- as.im(wtfun, W=lambda, xv=xv, yv=yv, sigma=sigma)
+        wlam <- eval.im(wtf * lambda)
+        Mv <- integral.im(wlam)
+        switch(method,
+               Guan={
+                 # compute cdf of distance between two random points in W
+                 # one with density proportional to lambda
+                 # one with density proportional to lambda * kernel
+                 Gv <- distcdf(W, dW=lambda, dV=wlam)
+                 Gscale <- Mv * Lam
+                 # trim Gv to [0, rmax] 
+                 Gv <- Gv[with(Gv, .x) <= rmax,]
+                 # pack up necessary information
+                 objargs <- append(objargs0,
+                                   list(wI=wI,
+                                        sumWI = sum(wI),
+#                                     sumWIloglamIJ = sum(wI * loglambdaIJ),
+                                        Gv=Gv,
+                                        Gscale=Gscale))
+               },
+               Palm = {
+                 # compute cdf of distance between 
+                 #   random point in W with density proportional to 'wlam'
+                 # and
+                 #   random point in X with equal probability
+                 #
+                 Gv <- distcdf(W, X, dW=wlam, dV=1)
+                 Gscale <- nX * Mv
+                 # trim Gv to [0, rmax] 
+                 Gv <- Gv[with(Gv, .x) <= rmax,]
+                 # pack up necessary information
+                 objargs <- append(objargs0,
+                                   list(wJ=wJ,
+d254 8
+a261 26
+                                        Gv=Gv,
+                                        Gscale=Gscale))
+               })
+        # optimize it
+        opt <- optim(startpar, obj, objargs=objargs, control=ctrl)
+        # raise warning/error if something went wrong
+        signalStatus(optimStatus(opt), errors.only=TRUE)
+        # save fitted parameters
+        estpar[j, ] <- unlist(opt$par)
+      }
+      # ..............................................................
+      #             Newton-Raphson update of trend parameters
+      # ..............................................................
+      if(verbose) cat("Newton-Raphson update of trend coefficients..")
+      FT <- loccitFFT(homclusfit, sigma, rmax,
+                      what=c("param", "lambda"),
+                      base.cluspar=estpar,
+                      base.trendcoef=loctrendcoef,
+                      verbose=FALSE,
+                      calcopt=fftopt,
+                      ...)
+      loctrendcoef <- sample.imagelist(FT$parameters, U)[,1:ntrend, drop=FALSE]
+      lambda <- FT$intensity[[1]]
+      lambdaU <- lambda[U]
+      successive[[iter]] <- ssf(U, cbind(loctrendcoef, estpar))
+      if(verbose) cat("Done.\n")
+d281 1
+d284 1
+a284 1
+         coefs      = if(is.null(loctrendcoef)) NULL else ssf(U, loctrendcoef),
+a289 1
+         successive = if(!taylor) successive else NULL,
+a290 1
+         method     = method,
+d320 1
+a320 3
+  if(identical(x$method, "Palm")) {
+    cat("Local Palm likelihood fit\n")
+  } else cat("Local composite likelihood fit\n")
+a382 1
+                                   method="Palm",
+@
+
+
+2.8
+log
+@bug fix
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.7 $ $Date: 2013/10/04 06:01:21 $
+d84 1
+d195 2
+d247 1
+a247 1
+                 #   random point in W with density proportional to lambda
+d249 1
+a249 1
+                 #   random point in X with probability proportional to kernel
+d251 2
+a252 3
+                 Xwt <- pixellate(X, weights=wX)
+                 Gv <- distcdf(W, dW=lambda, dV=Xwt)
+                 Gscale <- sum(wX) * Lam
+d283 1
+d312 1
+@
+
+
+2.7
+log
+@buglet fixes
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.6 $ $Date: 2013/10/04 04:53:26 $
+d195 1
+a195 1
+    trendcoef <- coef(homclusfit)
+d274 1
+a274 1
+                      base.trendcoef=trendcoef,
+d278 1
+a278 1
+      trendcoef <- sample.imagelist(FT$parameters, U)[ , 1:ntrend, drop=FALSE]
+d280 1
+a280 1
+      lambda <- lambda[U]
+d300 1
+a300 2
+    list(locpoisfit = if(!taylor) locpoisfit else NULL,
+         homclusfit = homclusfit,
+@
+
+
+2.6
+log
+@new algorithm for exact case
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.5 $ $Date: 2013/10/03 10:32:30 $
+d197 1
+a197 1
+    lambda <- predict(homclusfit, locations=W)
+d278 3
+a280 1
+      trendcoef <- sample.imagelist(FT$parameters, U)[,1:ntrend]
+@
+
+
+2.5
+log
+@minor adjustments
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.4 $ $Date: 2013/09/30 08:53:54 $
+d64 1
+a64 1
+             niter.trend = 3,
+a112 3
+  #
+  if(!taylor) {
+    # Model will be fitted at each quadrature point
+d114 1
+a114 1
+  #    initial estimate of intensity using local Poisson likelihood
+d116 10
+a125 10
+  if(verbose) cat("Fitting local Poisson model...")
+  locpoisfit <- locppm(Q=X, trend=trend,
+                       covariates=covariates, sigma=sqrt(sigma^2+rmax^2),
+                       verbose=verbose && !taylor, vcalc="none",
+                       covfunargs=covfunargs, use.gam=use.gam,
+                       nd=nd, eps=eps,
+                       use.fft=taylor)
+  if(verbose) cat("Done.\nExtracting results...")
+  # basic data
+  hompoisfit <- as.ppm(locpoisfit)
+d128 1
+a129 27
+  # intensity at quadrature points
+  lambdaU <- fitted(locpoisfit)
+  # local coefficients at quadrature points
+  loctrendcoef <- as.matrix(coef(locpoisfit))
+  # intensity image
+  lambda <- nnmark(X=U %mark% lambdaU, ...)
+  # ................................................................
+  #    fit local Poisson model using Palm likelihood
+  # ................................................................
+  if(verbose) cat("Done.\nRefining local intensity estimate ... ")
+  for(iter in 1:niter.trend) {
+    if(verbose) progressreport(iter, niter.trend)
+    a <- loccitFFT(locpoisfit, sigma=sigma, rmax=rmax,
+                   base.trendcoef=loctrendcoef)
+    loctrendcoef <- sample.imagelist(a$parameters, U)
+  }
+  lambdaU <- fitted(locpoisfit, new.coef=loctrendcoef)
+  lambda <- nnmark(X=U %mark% lambdaU, ...)
+  # ................................................................
+  #    fit local cluster model with homogeneous covariance using Palm likelihood
+  # ................................................................
+  if(verbose) cat("Done.\nFitting model with homogeneous covariance ... ")
+  homclusfit <- Kppm(X=Q,
+                     trend=~offset(log(lam)) - 1,
+                     covariates=list(lam=lambda),
+                     clusters=clusters,
+                     method="palm")
+d131 19
+a149 8
+    # ..............................................................
+    #             fit local model at each quadrature point
+    # ..............................................................
+    # 
+    # intensity at data points
+    lambdaX <- lambdaU[is.data(Q)]
+    # total intensity
+    Lam <- integral.im(lambda)
+d151 16
+d182 1
+a182 6
+    # precompute things
+    #  lambdaI <- lambdaX[I]
+    #  lambdaIJ <- lambdaX[I] * lambdaX[J]
+    #  loglamX <- log(lambdaX)
+    #  loglambdaI <- loglamX[I] 
+    #  loglambdaIJ <- loglamX[I] + loglamX[J]
+d194 44
+a237 33
+    # ............................................................ 
+    #              loop through points
+    # ............................................................
+    if(verbose)
+      cat(paste0("Maximising local composite likelihood on ", nV,
+                 if(nV == nU) NULL else paste("out of ", nU),
+                 " quadrature points..."))
+    jok <- which(ok)
+    # ...................
+    for(k in seq_len(nV)) {
+      progressreport(k, nV)
+      j <- jok[k]
+      xv <- Ux[j]
+      yv <- Uy[j]
+      wX <- wtfun(X$x, X$y, xv, yv, sigma)
+      wI <- wX[I]
+      wJ <- wX[J]
+      wtf <- as.im(wtfun, W=lambda, xv=xv, yv=yv, sigma=sigma)
+      wlam <- eval.im(wtf * lambda)
+      Mv <- integral.im(wlam)
+      switch(method,
+             Guan={
+               # compute cdf of distance between two random points in W
+               # one with density proportional to lambda
+               # one with density proportional to lambda * kernel
+               Gv <- distcdf(W, dW=lambda, dV=wlam)
+               Gscale <- Mv * Lam
+               # trim Gv to [0, rmax] 
+               Gv <- Gv[with(Gv, .x) <= rmax,]
+               # pack up necessary information
+               objargs <- append(objargs0,
+                                 list(wI=wI,
+                                      sumWI = sum(wI),
+d239 17
+a255 17
+                                      Gv=Gv,
+                                      Gscale=Gscale))
+             },
+             Palm = {
+               # compute cdf of distance between 
+               #   random point in W with density proportional to lambda
+               # and
+               #   random point in X with probability proportional to kernel
+               #
+               Xwt <- pixellate(X, weights=wX)
+               Gv <- distcdf(W, dW=lambda, dV=Xwt)
+               Gscale <- sum(wX) * Lam
+               # trim Gv to [0, rmax] 
+               Gv <- Gv[with(Gv, .x) <= rmax,]
+               # pack up necessary information
+               objargs <- append(objargs0,
+                                 list(wJ=wJ,
+d257 23
+a279 9
+                                      Gv=Gv,
+                                      Gscale=Gscale))
+             })
+      # optimize it
+      opt <- optim(startpar, obj, objargs=objargs, control=ctrl)
+      # raise warning/error if something went wrong
+      signalStatus(optimStatus(opt), errors.only=TRUE)
+      # save fitted parameters
+      estpar[j, ] <- unlist(opt$par)
+a280 46
+  } else {
+    # ................................................................
+    #  fit homogeneous cluster model
+    # ................................................................
+    if(verbose) cat("Fitting homogeneous cluster model ... ")
+    homclusfit <- Kppm(X,
+                       trend=trend,
+                       clusters=clusters,
+                       covariates=covariates, 
+                       covfunargs=covfunargs,
+                       use.gam=use.gam,
+                       nd=nd, eps=eps,
+                       method="palm")
+    hompoisfit <- as.ppm(homclusfit)
+    Q <- quad.ppm(hompoisfit)
+    U <- union.quad(Q)
+    ntrend <- length(coef(hompoisfit))
+    if(verbose) cat("Done.\nPerforming FFT calculations... ")
+    # ..........................................................
+    #          first-order Taylor approximation
+    # ..........................................................
+    what <- c("param", "lambda")
+    if(diagnostics)
+      what <- c(what, "influence", "plik", "score", "grad", "delta")
+    FT <- loccitFFT(homclusfit, sigma, rmax,
+                    do.trend=TRUE,
+                    what=what, verbose=verbose,
+                    calcopt=fftopt,
+                    ...)
+    if(verbose) cat("Done.\nExtracting values... ")
+    # local parameter estimates
+    estpar <- sample.imagelist(FT$parameters, U)
+    loctrendcoef <- if(ntrend > 0) estpar[, 1:ntrend] else NULL
+    # fitted intensity
+    lambdaU <- sample.imagelist(FT$intensity, U)
+    #
+    if(diagnostics) {
+      score   <- sample.imagelist(FT$score, U)
+      hessian <- sample.imagelist(FT$gradient, U)
+      delta <- sample.imagelist(FT$delta, U)
+      # influence of each data point
+      influ <- FT$influence
+      # log Palm likelihood
+      logplik <- FT$logplik
+    }
+    if(verbose) cat("Done.\n")
+@
+
+
+2.4
+log
+@getting closer...
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.3 $ $Date: 2013/09/30 07:25:24 $
+d49 19
+a67 18
+  KitchenSink <- TRUE
+  
+  loccit <- function(X, trend = ~1, 
+                   clusters = c("Thomas","MatClust","Cauchy","VarGamma","LGCP"),
+                   covariates = NULL,
+                   ...,
+                   method = c("Guan", "Palm"),
+                   taylor = FALSE,
+                   sigma=NULL, f=1/4,
+                   clustargs=list(),
+                   control=list(),
+                   rmax,
+                   covfunargs=NULL,
+                   use.gam=FALSE,
+                   nd=NULL, eps=NULL,
+                   niter.trend = 3, 
+                   verbose=TRUE
+                   ) {
+d77 1
+d80 2
+d113 3
+d145 1
+a145 1
+                   new.trendcoef=loctrendcoef)
+d157 1
+a159 2
+  #
+  if(!taylor) {
+d264 17
+d284 3
+a286 3
+    if(verbose) cat("Performing FFT calculations... ")
+    what <- c("theta", "lambda", "influence", "plik", 
+              if(KitchenSink) c("score", "grad", "delta") else NULL)
+d288 3
+a290 4
+                    lambda=lambdaU, do.trend=TRUE,
+                    new.trendcoef=loctrendcoef,
+                    hompoisfit=hompoisfit,
+                    what=what, verbose=verbose, use.D2=FALSE,
+d293 1
+a293 1
+    # local cluster coefficients
+d295 1
+d299 1
+a299 1
+    if(KitchenSink) {
+d303 4
+a307 4
+    # score influence at each data point
+    influ <- FT$influence
+    # log Palm likelihood
+    logplik <- FT$logplik
+d310 1
+d326 1
+a326 1
+    list(locpoisfit = locpoisfit,
+d330 6
+a335 6
+         coefs      = ssf(U, loctrendcoef),
+         score      = if(taylor && KitchenSink) ssf(U, score) else NULL,
+         hessian    = if(taylor && KitchenSink) ssf(U, hessian) else NULL,
+         delta      = if(taylor && KitchenSink) ssf(U, delta) else NULL,
+         influence  = if(taylor) influ else NULL,
+         logplik    = if(taylor) logplik else NULL,
+d385 1
+d425 1
+a425 1
+  gcv <- dof <- numeric(ns)
+d430 4
+a433 2
+                                   taylor=TRUE, method="Palm",
+                                   niter.trend=1, 
+d437 1
+a437 1
+    logL <- fitk[[ "logplik" ]]
+d442 1
+d444 2
+a445 2
+    hQ <- fitk[[ "hessian" ]]
+    hX <- as.matrix(hQ)[Z,,drop=FALSE]
+a447 1
+
+d453 6
+a458 4
+
+    # compute cross-validation criterion
+    dof[k]    <- dof.k    <- sum(leve) 
+    gcv[k] <- logL - dof.k
+d460 3
+a462 1
+  
+d464 1
+a464 1
+                     dof=dof)
+@
+
+
+2.3
+log
+@hopefully fixed bandwidth + leverage
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.2 $ $Date: 2013/09/30 04:51:04 $
+d262 1
+a262 1
+    what <- c("theta", "lambda", "increm", "plik", 
+d281 2
+a282 2
+    # score residuals at each data point
+    scoresid <- FT$scoresid
+d310 1
+a310 1
+         scoresid   = if(taylor) scoresid else NULL,
+d411 4
+a414 4
+    # score increments
+    increm <- fitk[[ "increments" ]]
+    score.data <- increm$score.data
+    delta.score <- increm$delta.score
+d423 1
+a423 1
+    #    ~ Z(x_i) V(x_i) Z*(x_i)^T
+@
+
+
+2.2
+log
+@tweaked
+@
+text
+@d8 1
+a8 1
+#  $Revision: 2.1 $ $Date: 2013/09/30 02:38:45 $
+d262 1
+a262 1
+    what <- c("theta", "lambda", "scoresid", "plik", 
+a403 1
+    kernel0 <- 1/(2 * pi * sigk^2)
+d411 4
+a414 3
+    # score residuals at data points
+    scQ <- fitk[[ "scoresid" ]]
+    scX <- scQ[isdata, , drop=FALSE]
+d423 3
+a425 2
+    #    ~ kernel(0) Z(x_i) V(x_i) Z(x_i)^T
+    leve <- quadform2.flat.matrices(vX, scX, c(p, p), c(1, p))
+d428 1
+a428 1
+    dof[k]    <- dof.k    <- sum(leve) * kernel0
+@
+
+
+2.1
+log
+@Changed the maths underlying the local Palm likelihood.
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.20 $ $Date: 2013/09/05 06:05:05 $
+d413 2
+a414 1
+    scX <- fitk[[ "scoresid" ]]
+@
+
+
+1.20
+log
+@bug fix
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.19 $ $Date: 2013/09/05 04:26:07 $
+d23 1
+a23 1
+  PalmObj <- function(par, objargs) {
+d31 8
+d211 1
+d245 2
+a246 2
+                                 list(wI=wI,
+ #                                    sumWIloglamI = sum(wI * loglambdaI),
+@
+
+
+1.19
+log
+@added 'psib'
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.18 $ $Date: 2013/09/04 11:24:44 $
+d434 2
+a435 9
+  xtra <- extraClusterModelInfo(clus)
+  pmap <- xtra$psib
+  if(!is.null(pmap)) {
+    p <- applymaps(pmap, modpar)
+  } else {
+    g <- pcfmodel(object)
+    g0 <- g(0)
+    p <- (g0-1)/g0
+  }
+d449 3
+a451 2
+  p <- applymaps(pmap, modpar)
+  return(p)
+@
+
+
+1.18
+log
+@d'oh
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.17 $ $Date: 2013/09/04 11:23:08 $
+d253 1
+a253 1
+    what <- c("theta", "lambda", "scoreX", 
+d274 2
+d302 1
+d347 111
+@
+
+
+1.17
+log
+@many modifications to try to control behaviour of Taylor approx.
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.16 $ $Date: 2013/09/04 02:28:18 $
+d299 1
+a299 1
+         scoresid   = if(taylor) scoresid else NULL
+@
+
+
+1.16
+log
+@safety
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.15 $ $Date: 2013/09/03 02:09:13 $
+d56 1
+d101 3
+a103 1
+  # estimate intensity using local Poisson likelihood
+d106 1
+a106 1
+                       covariates=covariates, sigma=sigma,
+a113 1
+  ntrend <- length(coef(hompoisfit))
+d116 3
+a120 2
+  # intensity at quadrature points
+  lambdaU <- fitted(locpoisfit)
+d123 15
+a137 1
+  # 
+d253 2
+a254 1
+    what <- c("theta", if(KitchenSink) c("score", "grad") else NULL)
+d256 4
+a259 2
+                    lambda=lambdaU, do.trend=FALSE,
+                    what=what, verbose=verbose,
+d264 2
+d270 1
+d272 2
+d290 13
+a302 10
+  result <- list(locpoisfit=locpoisfit,
+                 homclusfit=homclusfit,
+                 lambda=ssf(U, lambdaU),
+                 modelpar=ssf(U, modelpar),
+                 coefs = ssf(U, loctrendcoef),
+                 score = if(taylor && KitchenSink) ssf(U, score) else NULL,
+                 hessian = if(taylor && KitchenSink) ssf(U, hessian) else NULL,
+                 sigma=sigma,
+                 method=method,
+                 templatestring=format(templatecall))
+@
+
+
+1.15
+log
+@changed Taylor approx strategy
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.14 $ $Date: 2013/09/02 09:45:51 $
+d104 1
+a104 1
+                       verbose=verbose, vcalc="none",
+d123 1
+a123 1
+                     trend=~offset(log(lam)),
+d235 1
+d238 1
+a238 1
+                    lambda=lambdaU,
+d241 1
+a241 1
+    if(verbose) cat("Done. Extracting values... \n")
+@
+
+
+1.14
+log
+@minor
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.13 $ $Date: 2013/09/02 00:45:39 $
+d100 28
+a131 8
+    # estimate intensity using local Poisson likelihood
+    if(verbose) cat("Fitting local Poisson model...")
+    locpoismod <- locppm(Q=X, trend=trend,
+                     covariates=covariates, sigma=sigma,
+                     verbose=verbose, vcalc="none",
+                     covfunargs=covfunargs, use.gam=use.gam,
+                     nd=nd, eps=eps)
+    if(verbose) cat("Done.\n")
+a132 5
+    homfit <- as.ppm(locpoismod)
+    Q <- quad.ppm(homfit)
+    U <- union.quad(Q)
+    # fitted intensity at quadrature points
+    lambdaU <- fitted(locpoismod)
+d135 1
+a135 4
+    # Local trend coefficients
+    loctrendcoef <- as.matrix(coef(locpoismod))
+    # intensity image
+    lambda <- nnmark(X=U %mark% lambdaU, ...)
+d141 1
+a141 1
+    ok <- getglmsubset(homfit)
+d235 3
+a237 8
+    if(verbose) cat("Fitting homogeneous cluster/Cox model ... ")
+    homfit <- Kppm(X=X, trend=trend, covariates=covariates, method="palm",
+                   covfunargs=covfunargs, use.gam=use.gam, nd=nd, eps=eps)
+    ntrend <- length(coef(as.ppm(homfit)))
+    U <- union.quad(quad.ppm(as.ppm(homfit)))
+    if(verbose) cat("Done.\nPerforming FFT calculations ... ")
+    what <- c("theta", "lambda", if(KitchenSink) c("score", "grad") else NULL)
+    FT <- loccitFFT(homfit, sigma, rmax,
+a240 4
+    allpars <- sample.imagelist(FT$parameters, U)
+    lambdaU <- sample.imagelist(FT$intensity, U)
+    # local trend coefficients
+    loctrendcoef <- allpars[, 1:ntrend]
+d242 1
+a242 1
+    estpar       <- allpars[, -(1:ntrend)]
+d264 2
+a265 2
+  result <- list(locpoisfit=if(!taylor) locpoismod else NULL,
+                 homfit = if(taylor) homfit else NULL,
+@
+
+
+1.13
+log
+@minor
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.12 $ $Date: 2013/08/31 02:26:41 $
+d223 1
+a223 1
+    if(verbose) cat("Fitting homogeneous model ... ")
+@
+
+
+1.12
+log
+@updated to 'Smooth'
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.11 $ $Date: 2013/08/31 01:29:18 $
+d39 3
+a41 1
+                    "rmax", "lamargs", "verbose")
+d53 3
+a55 1
+                   lamargs=list(),
+d108 3
+a110 1
+                     verbose=verbose, vcalc="none")
+d123 1
+a123 1
+    lambda <- nnmark(U %mark% lambdaU, ...)
+d224 2
+a225 1
+    homfit <- Kppm(X=X, trend=trend, covariates=covariates, method="palm")
+d229 1
+d231 1
+a231 1
+                    what=c("theta", "lambda"), verbose=verbose,
+d240 5
+d259 1
+a259 1
+  modelpar <- cbind(estpar, mu)
+d261 2
+a262 1
+  result <- list(locpoisfit=locpoismod,
+d266 2
+d281 1
+d285 2
+d288 1
+a288 1
+  Z <- x$coefs
+@
+
+
+1.11
+log
+@buglet fix
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.10 $ $Date: 2013/08/28 10:46:30 $
+d115 1
+a115 1
+    loctrendcoef <- coef(locpoismod)
+@
+
+
+1.10
+log
+@minor
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.9 $ $Date: 2013/08/28 10:36:49 $
+d44 1
+d46 1
+a46 1
+                   ...,
+d60 1
+d63 3
+d67 1
+a67 2
+  if(missing(rmax) || is.null(rmax))
+    rmax <- rmax.rule("K", W, intensity(X))
+d71 4
+a74 1
+  # determine bandwidth
+d80 1
+d89 3
+d95 117
+a211 124
+  # process additional parameters of cluster model
+  clargs <- if(is.function(parhandler)) do.call(parhandler, clustargs) else NULL
+  pcfunargs <- append(clargs, list(funaux=funaux))
+  # estimate intensity using local Poisson likelihood
+  if(verbose) cat("Fitting intensity...")
+  locmod <- locppm(Q=X, trend=trend,
+                   covariates=covariates, sigma=sigma,
+                   verbose=verbose, vcalc="none", ...)
+  lambdaQ <- predict(locmod)
+  lambda <- do.call("smooth.ssf", append(list(X=lambdaQ),
+                                         lamargs))
+  if(verbose) cat("Intensity fitted.\n")
+  # intensity at data points
+  lambdaX <- lambda[X]
+  # integral of intensity
+  Lam <- integral.im(lambda)
+  #
+  homfit <- as.ppm(locmod)
+  U <- union.quad(quad.ppm(homfit))
+  Ux <- U$x
+  Uy <- U$y
+  nU <- npoints(U)
+  ok <- getglmsubset(homfit)
+  nV <- sum(ok)
+  # allocate space for results
+  estpar <- matrix(NA_real_, nU, npar + 1)
+  colnames(estpar) <- c(names(startpar), "mu")
+  # identify pairs of points that contribute
+  cl <- closepairs(X, rmax)
+  I <- cl$i
+  J <- cl$j
+  dIJ <- cl$d
+  xI <- cl$xi
+  yI <- cl$yi
+  # precompute things
+#  lambdaI <- lambdaX[I]
+#  lambdaIJ <- lambdaX[I] * lambdaX[J]
+#  loglamX <- log(lambdaX)
+#  loglambdaI <- loglamX[I] 
+#  loglambdaIJ <- loglamX[I] + loglamX[J]
+  # create local function with additional parameters in its environment
+  paco <- function(d, par) {
+    do.call(pcfun, append(list(par=par, rvals=d), pcfunargs))
+  }
+  # define objective function obj(par, objargs)
+  obj <- switch(method, Guan=GuanObj, Palm=PalmObj)
+  # collect data that doesn't change
+  objargs0 <- list(paco=paco, rmax=rmax, dIJ=dIJ, 
+                   envir=environment(paco))
+  # set up control arguments for 'optim'
+  ctrl <- resolve.defaults(list(fnscale=-1), control, list(trace=0))
+  # ............................................................ 
+  #              loop through points
+  # ............................................................
+  if(verbose)
+    cat(paste0("Maximising local composite likelihood on ", nV,
+               if(nV == nU) NULL else paste("out of ", nU),
+               " quadrature points..."))
+  jok <- which(ok)
+  # ...................
+  for(k in seq_len(nV)) {
+    progressreport(k, nV)
+    j <- jok[k]
+    xv <- Ux[j]
+    yv <- Uy[j]
+    wX <- wtfun(X$x, X$y, xv, yv, sigma)
+    wI <- wX[I]
+    wtf <- as.im(wtfun, W=lambda, xv=xv, yv=yv, sigma=sigma)
+    wlam <- eval.im(wtf * lambda)
+    Mv <- integral.im(wlam)
+    switch(method,
+           Guan={
+            # compute cdf of distance between two random points in W
+            # one with density proportional to lambda
+            # one with density proportional to lambda * kernel
+            Gv <- distcdf(W, dW=lambda, dV=wlam)
+            Gscale <- Mv * Lam
+            # trim Gv to [0, rmax] 
+            Gv <- Gv[with(Gv, .x) <= rmax,]
+            # pack up necessary information
+            objargs <- append(objargs0,
+                              list(wI=wI,
+                                   sumWI = sum(wI),
+#                                   sumWIloglamIJ = sum(wI * loglambdaIJ),
+                                   Gv=Gv,
+                                   Gscale=Gscale))
+           },
+           Palm = {
+             # compute cdf of distance between 
+             #   random point in W with density proportional to lambda
+             # and
+             #   random point in X with probability proportional to kernel
+             #
+             Xwt <- pixellate(X, weights=wX)
+             Gv <- distcdf(W, dW=lambda, dV=Xwt)
+             Gscale <- sum(wX) * Lam
+             # trim Gv to [0, rmax] 
+             Gv <- Gv[with(Gv, .x) <= rmax,]
+             # pack up necessary information
+             objargs <- append(objargs0,
+                               list(wI=wI,
+ #                                   sumWIloglamI = sum(wI * loglambdaI),
+                                    Gv=Gv,
+                                    Gscale=Gscale))
+           })
+    # optimize it
+    opt <- optim(startpar, obj, objargs=objargs, control=ctrl)
+    # raise warning/error if something went wrong
+    signalStatus(optimStatus(opt), errors.only=TRUE)
+    # infer parameter 'mu'
+    if(isPCP) {
+      # Poisson cluster process: extract parent intensity kappa
+      kappa <- opt$par[["kappa"]]
+      # fitted intensity
+      lamj <- lambda[list(x=xv, y=yv)]
+      # mu = mean cluster size
+      mu <- lamj/kappa 
+    } else {
+      # LGCP: extract variance parameter sigma2
+      sigma2 <- opt$par[["sigma2"]]
+      # fitted intensity
+      lamj <- lambda[list(x=xv, y=yv)]
+      # mu = mean of log intensity 
+      mu <- log(lamj) - sigma2/2 
+d213 32
+a244 2
+    # save fitted parameters
+    estpar[j, ] <- c(unlist(opt$par), c(mu=mu))
+d246 1
+a246 1
+  coefs <- ssf(U, estpar)
+d248 4
+a251 3
+  result <- list(poisfit=locmod,
+                 lambda=lambda,
+                 coefs=coefs,
+d273 1
+a273 1
+    Z <- smooth.ssf(Z, ...)
+@
+
+
+1.9
+log
+@minor
+@
+text
+@d8 1
+a8 1
+#  $Revision: 1.8 $ $Date: 2013/08/28 10:36:17 $
+d36 3
+a38 1
+  loccitparams <- c("sigma", "f", "clustargs", "control",
+@
+
+
+1.8
+log
+@bugs fixed.
+@
+text
+@d5 2
+d8 1
+a8 1
+#  $Revision: 1.7 $ $Date: 2013/08/28 09:30:48 $
+@
+
+
+1.7
+log
+@added method='Palm'
+@
+text
+@d6 1
+a6 1
+#  $Revision: 1.6 $ $Date: 2012/12/12 07:55:20 $
+d34 3
+d51 1
+d60 3
+d88 3
+a90 1
+  lambda <- do.call("smooth.locppm", append(list(X=locmod), lamargs))
+a106 6
+  # create space for discrete distribution on X
+  if(method == "Palm") {
+    Xwt <- as.im(0, lambda)
+    Xind <- nearest.raster.point(X$x, X$y, w=as.mask(Xwt), indices=TRUE)
+    Xind <- as.matrix(as.data.frame(Xind))
+  }
+d115 5
+a119 5
+  lambdaI <- lambdaX[I]
+  lambdaIJ <- lambdaX[I] * lambdaX[J]
+  loglamX <- log(lambdaX)
+  loglambdaI <- loglamX[I] 
+  loglambdaIJ <- loglamX[I] + loglamX[J]
+d135 3
+a137 3
+    cat(paste("Maximising local composite likelihood on ",
+              nV, if(nV == nU) NULL else paste("out of ", nU),
+              "quadrature points..."), sep="")
+d172 2
+a173 2
+             # 
+             Xwt$v[Xind] <- wX   # faster than Xwt[X] <- wX
+d210 6
+a215 2
+  result <- list(poisfit=locmod, lambda=lambda, coefs=coefs,
+                 sigma=sigma, method=method)
+d241 3
+a243 1
+  cat("Local composite likelihood fit\n")
+d245 1
+a245 1
+  cat(paste("\t", x$poisfit$homfit$callstring, "\n\n"))
+@
+
+
+1.6
+log
+@accelerated computation
+@
+text
+@d6 1
+a6 1
+#  $Revision: 1.5 $ $Date: 2012/12/10 08:54:20 $
+d9 26
+a34 1
+loccit <- function(X, trend = ~1, 
+d36 2
+a37 1
+                   covariates = NULL, 
+d52 1
+a75 4
+  # create local function with additional parameters in its environment
+  paco <- function(d, par) {
+    do.call(pcfun, append(list(par=par, rvals=d), pcfunargs))
+  }
+d98 6
+d111 2
+a112 1
+  # 
+d114 6
+a119 3
+  #
+  wtfun <- function(x,y, xv, yv, sigma) {
+    dnorm(x - xv, sd=sigma) * dnorm(y - yv, sd=sigma)
+d121 10
+a130 1
+  # loop through points
+d136 1
+d142 2
+a143 1
+    wI <- wtfun(xI,yI, xv, yv, sigma)
+d147 35
+a181 15
+    Gv <- distcdf(W, dW=lambda, dV=wlam)
+    Gscale <- Mv * Lam
+    # trim Gv to [0, rmax] 
+    Gv <- Gv[with(Gv, .x) <= rmax,]
+    # pack up necessary information
+    objargs <- list(dIJ=dIJ, wI=wI, sumWI = sum(wI),
+                    Gv=Gv, Gscale=Gscale, rmax=rmax, lambdaIJ=lambdaIJ,
+                    envir=environment(paco))
+    # define objective function (with 'paco' in its environment)
+    obj <- function(par, objargs) {
+      with(objargs,
+           sum(wI * log(lambdaIJ * paco(dIJ, par)))
+           - sumWI * log(Gscale * unlist(stieltjes(paco, Gv, par=par))),
+           enclos=objargs$envir)
+    }
+a182 1
+    ctrl <- resolve.defaults(list(fnscale=-1), control, list(trace=0))
+d208 1
+a208 1
+                 sigma=sigma)
+d213 4
+@
+
+
+1.5
+log
+@forming into a package
+@
+text
+@d6 1
+a6 1
+#  $Revision: 1.4 $ $Date: 2012/11/23 02:10:52 $
+d17 1
+d55 4
+a58 3
+  locmod <- locppm(Q=X, trend=trend, covariates=covariates, sigma=sigma,
+                   verbose=verbose)
+  lambda <- smooth.ssf(predict(locmod), ...)
+@
+
+
+1.4
+log
+@updated to new spatstat code
+@
+text
+@d6 1
+a6 1
+#  $Revision: 1.3 $ $Date: 2012/11/08 00:42:50 $
+d19 1
+d145 1
+@
+
+
+1.3
+log
+@bug fixes
+@
+text
+@d6 1
+a6 1
+#  $Revision: 1.2 $ $Date: 2012/11/07 07:01:28 $
+d34 1
+a34 2
+  info <- spatstat:::.Spatstat.ClusterModelInfo[[clusters]]
+#  info <- .Spatstat.ClusterModelInfo[[clusters]]
+d139 35
+a173 1
+  ssf(U, estpar)
+@
+
+
+1.2
+log
+@name change
+@
+text
+@d6 1
+a6 1
+#  $Revision: 1.1 $ $Date: 2012/11/07 07:00:33 $
+d53 3
+a55 1
+  locmod <- locppm(Q=X, trend=trend, covariates=covariates, sigma=sigma)
+d57 1
+d88 3
+a90 3
+    cat(paste("Local composite likelihood fitting on",
+              nV, if(nV == nU) NULL else paste("out of", nU),
+              "quadrature points..."))
+d97 3
+a99 3
+    wtIJ <- wtfun(xI,yI, xv, yv, sigma)
+    wtim <- as.im(wtfun, W=lambda, xv=xv, yv=yv, sigma=sigma)
+    wlam <- eval.im(wtim * lambda)
+d106 1
+a106 1
+    objargs <- list(dIJ=dIJ, npairs=length(dIJ),
+d112 2
+a113 2
+           sum(log(lambdaIJ * paco(dIJ, par)))
+           - npairs * log(Gscale * unlist(stieltjes(paco, Gv, par=par))),
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+# locsec.R
+d6 1
+a6 1
+#  $Revision: 1.5 $ $Date: 2012/11/07 05:00:02 $
+d9 1
+a9 1
+locsec <- function(X, trend = ~1, 
+@

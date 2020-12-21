@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Michael D. Sumner" />
+
+<meta name="date" content="2020-12-02" />
+
+<title>Tabularaster</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Tabularaster</h1>
+<h4 class="author">Michael D. Sumner</h4>
+<h4 class="date">2020-12-02</h4>
+
+
+
+<div id="tabularaster" class="section level1">
+<h1>tabularaster</h1>
+<p>The <code>raster</code> package is extremely powerful in the R ecosystem for spatial data. It can be used very efficiently to drive data extraction and summary tools using its consistent cell-index and comprehensive helper functions for converting between cell values and less abstract raster grid properties.</p>
+<p>Tabularaster provides some more helpers for working with cells and tries to fill some of the (very few!) gaps in raster functionality. When raster returns cell values of hierarchical objects it returns a hierarchical (list) of cells to match the input query.</p>
+<p>Tabularaster provides:</p>
+<ul>
+<li><code>cellnumbers()</code>: extraction of cells as a simple data frame with “object ID” and “cell index”</li>
+<li><code>as_tibble()</code>: for raster data, with options for value column and cell, dimension and date indexing</li>
+<li><code>decimate()</code>: fast resolution-reduction without care</li>
+<li><code>index_extent()</code>: build an index extent, basically a raster Extent in row/column form</li>
+</ul>
+<p>The raster function <code>extentFromCells()</code> started life in tabularaster.</p>
+<p>There were some sf-features in early versions of tabularaster, but the raster package now supports that format (despite there being absolutely zero community development between the two worlds).</p>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<p>Extract the cell numbers of raster <code>r</code> that are co-located with object <code>q</code>. (The argument names are <code>x</code> and <code>query</code>).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">cellnumbers</span>(r, q)</span></code></pre></div>
+<p>In the above example, <code>r</code> is any <em>raster</em> object and <code>q</code> is another spatial object, used as a query. Cell numbers can be extracted from any raster object, any of a <code>raster::raster</code>, <code>raster::stack</code> or <code>raster::brick</code>. It’s not really relevant what that object contains, as only the <em>dimensions</em> (number of cells in x and y) and the <em>extent</em> (geographic range in x and y) determine the result. The <code>r</code> object can actually not contain any data - this is a very powerful but seemingly under-used feature of the <code>raster</code> package.</p>
+<p>The object <code>q</code> may be any of <code>sf</code>, <code>sp</code> layer types or a matrix of raw coordinates (x-y).</p>
+<p>Tabularaster follows the basic principles of tidy data and <em>hypertidy data</em> and aspires to keep the software design out of your way and simply help to get the task done.</p>
+</div>
+</div>
+<div id="simple-examples" class="section level1">
+<h1>Simple examples</h1>
+<p>In straightforward usage, <code>cellnumbers</code> returns a tibble with <code>object_</code> to identify the spatial object by number, and <code>cell_</code> which is specific to the raster object, a function of its <code>extent</code>, <code>dim</code>ensions and <code>projection</code> (crs - coordinate reference system).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(raster)</span></code></pre></div>
+<pre><code>## Loading required package: sp</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">library</span>(tabularaster)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>(r &lt;-<span class="st"> </span><span class="kw">raster</span>(volcano))</span></code></pre></div>
+<pre><code>## class      : RasterLayer 
+## dimensions : 87, 61, 5307  (nrow, ncol, ncell)
+## resolution : 0.01639344, 0.01149425  (x, y)
+## extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+## crs        : NA 
+## source     : memory
+## names      : layer 
+## values     : 94, 195  (min, max)</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>(cell &lt;-<span class="st"> </span><span class="kw">cellnumbers</span>(r, <span class="kw">cbind</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>)))</span></code></pre></div>
+<pre><code>## projections not the same 
+##     x: NA
+## query: NAFALSE</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;cli&#39;:
+##   method     from    
+##   print.boxx spatstat</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##   object_ cell_
+##     &lt;int&gt; &lt;dbl&gt;
+## 1       1  2654</code></pre>
+<p>This cell number query can be then be used to drive other raster functions, like <code>extract</code> and <code>xyFromCell</code> and many others.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">xyFromCell</span>(r, cell<span class="op">$</span>cell_)</span></code></pre></div>
+<pre><code>##        x   y
+## [1,] 0.5 0.5</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>raster<span class="op">::</span><span class="kw">extract</span>(r, cell<span class="op">$</span>cell_)</span></code></pre></div>
+<pre><code>## [1] 161</code></pre>
+<p>This is an extremely efficient way to drive extractions from raster objects, for performing the same query from multiple layers at different times. It’s also very useful for using <code>dplyr</code> to derive summaries, rather than juggling lists of extracted values, or different parts of raster objects.</p>
+<div id="as-tibble" class="section level2">
+<h2>as tibble</h2>
+<p>There is an <code>as_tibble</code> method with options for cell, dimension, and date.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">library</span>(dplyr)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:raster&#39;:
+## 
+##     intersect, select, union</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">as_tibble</span>(r)</span></code></pre></div>
+<pre><code>## # A tibble: 5,307 x 2
+##    cellvalue cellindex
+##        &lt;dbl&gt;     &lt;int&gt;
+##  1       100         1
+##  2       100         2
+##  3       101         3
+##  4       101         4
+##  5       101         5
+##  6       101         6
+##  7       101         7
+##  8       100         8
+##  9       100         9
+## 10       100        10
+## # … with 5,297 more rows</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>b &lt;-<span class="st"> </span><span class="kw">brick</span>(r, r<span class="op">*</span><span class="dv">2</span>)</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="kw">as_tibble</span>(b)</span></code></pre></div>
+<pre><code>## # A tibble: 10,614 x 3
+##    cellvalue cellindex dimindex
+##        &lt;dbl&gt;     &lt;int&gt;    &lt;int&gt;
+##  1       100         1        1
+##  2       100         2        1
+##  3       101         3        1
+##  4       101         4        1
+##  5       101         5        1
+##  6       101         6        1
+##  7       101         7        1
+##  8       100         8        1
+##  9       100         9        1
+## 10       100        10        1
+## # … with 10,604 more rows</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">as_tibble</span>(b, <span class="dt">cell =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(<span class="kw">desc</span>(dimindex)) <span class="co">## leave out the cell index</span></span></code></pre></div>
+<pre><code>## # A tibble: 10,614 x 2
+##    cellvalue dimindex
+##        &lt;dbl&gt;    &lt;int&gt;
+##  1       200        2
+##  2       200        2
+##  3       202        2
+##  4       202        2
+##  5       202        2
+##  6       202        2
+##  7       202        2
+##  8       200        2
+##  9       200        2
+## 10       200        2
+## # … with 10,604 more rows</code></pre>
+<p>The date or date-time is used as the dimension index if present.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>btime &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">setZ</span>(b, <span class="kw">Sys.time</span>() <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">10</span>))</span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="kw">as_tibble</span>(btime) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(dimindex) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>())</span></code></pre></div>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   dimindex                n
+##   &lt;dttm&gt;              &lt;int&gt;
+## 1 2020-12-02 04:25:47  5307
+## 2 2020-12-02 04:25:56  5307</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">as_tibble</span>(btime, <span class="dt">split_date =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 10,614 x 5
+##    cellvalue cellindex  year month   day
+##        &lt;dbl&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1       100         1  2020    12     2
+##  2       100         2  2020    12     2
+##  3       101         3  2020    12     2
+##  4       101         4  2020    12     2
+##  5       101         5  2020    12     2
+##  6       101         6  2020    12     2
+##  7       101         7  2020    12     2
+##  8       100         8  2020    12     2
+##  9       100         9  2020    12     2
+## 10       100        10  2020    12     2
+## # … with 10,604 more rows</code></pre>
+</div>
+</div>
+<div id="warnings" class="section level1">
+<h1>Warnings</h1>
+<ol style="list-style-type: decimal">
+<li>I tend to end up using <code>tidyr::extract</code> and <code>raster::extract</code>, <code>dplyr::select</code> and <code>raster::select</code> as I always use these packages together.</li>
+<li><code>cellnumbers</code> doesn’t currently reproject the second argument <code>query</code>, even when would make sense to do so like <code>extract</code> does. This is purely to reduce the required dependencies.</li>
+<li>There’s no formal link between the cell number values and the raster object itself. I use this “loose coupling” so extensively that I have developed habits that tend to make it pretty robust. Please use with caution, you can easily get incorrect answers by asking a different raster a question based on the wrong cell numbers.</li>
+</ol>
+<p>If you find that things don’t work, first check if it’s a namespace problem, there are a few function name overlaps in the <code>tidyverse</code> and <code>raster</code>, and in R generally. There is no way to fix this properly atm.</p>
+<p>Tabularaster doesn’t reproject on the fly, but might use the reproj package in future.</p>
+<p>Ultimately the cell index vector should probably be a formal class, with knowledge of its extent and grain. I’d love this to be formalized, but I seem to not have the design expertise required to get the system right. It’s something that <code>ggplot2</code> needs, but there aren’t any existing examples in R anywhere as far as I can tell. The <a href="https://github.com/r-spatial/stars">stars project</a> is a good place to see what else is happening in this space in R. Other examples are the unfinshed <code>tbl_cube</code> in <code>dplyr</code>, the R6 objects in <code>velox</code>, and the mesh indexing used by packages <code>rgl</code>, <code>Vcg</code>, <code>icosa</code>, <code>dggridR</code>, <code>deldir</code>, <code>geometry</code>, <code>RTriangle</code>, <code>TBA</code>, (and there are many others).</p>
+<p>If you are interested in these issues please get in touch, use the <a href="https://github.com/hypertidy/tabularaster/issues">Issues tab</a> or <a href="https://github.com/r-spatial/discuss">discuss at r-spatial</a>, get on <a href="https://twitter.com/hashtag/rstats">twitter #rstats</a> or contact me directly.</p>
+</div>
+<div id="applied-example" class="section level1">
+<h1>Applied example</h1>
+<p>This example uses extracted data per polygon and uses base R to lapply across the list of values extracted per polygon. Here we show a more dplyr-ish version after extracting the cell numbers with tabularaster.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">library</span>(tabularaster)</span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="co">## https://gis.stackexchange.com/questions/102870/step-by-step-how-do-i-extract-raster-values-from-polygon-overlay-with-q-gis-or</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="kw">library</span>(raster)</span>
+<span id="cb30-5"><a href="#cb30-5"></a></span>
+<span id="cb30-6"><a href="#cb30-6"></a><span class="co"># Create integer class raster</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a>r &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="dt">ncol=</span><span class="dv">36</span>, <span class="dt">nrow=</span><span class="dv">18</span>)</span>
+<span id="cb30-8"><a href="#cb30-8"></a>r[] &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">runif</span>(<span class="kw">ncell</span>(r),<span class="dv">1</span>,<span class="dv">10</span>),<span class="dt">digits=</span><span class="dv">0</span>)</span>
+<span id="cb30-9"><a href="#cb30-9"></a></span>
+<span id="cb30-10"><a href="#cb30-10"></a><span class="co"># Create two polygons</span></span>
+<span id="cb30-11"><a href="#cb30-11"></a>cds1 &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">180</span>,<span class="op">-</span><span class="dv">20</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">160</span>,<span class="dv">5</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">60</span>, <span class="dv">0</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">160</span>,<span class="op">-</span><span class="dv">60</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">180</span>,<span class="op">-</span><span class="dv">20</span>))</span>
+<span id="cb30-12"><a href="#cb30-12"></a>cds2 &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">80</span>,<span class="dv">0</span>), <span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">60</span>), <span class="kw">c</span>(<span class="dv">120</span>,<span class="dv">0</span>), <span class="kw">c</span>(<span class="dv">120</span>,<span class="op">-</span><span class="dv">55</span>), <span class="kw">c</span>(<span class="dv">80</span>,<span class="dv">0</span>))</span>
+<span id="cb30-13"><a href="#cb30-13"></a>polys &lt;-<span class="st"> </span><span class="kw">SpatialPolygonsDataFrame</span>(<span class="kw">SpatialPolygons</span>(<span class="kw">list</span>(<span class="kw">Polygons</span>(<span class="kw">list</span>(<span class="kw">Polygon</span>(cds1)), <span class="dv">1</span>), </span>
+<span id="cb30-14"><a href="#cb30-14"></a>                                                       <span class="kw">Polygons</span>(<span class="kw">list</span>(<span class="kw">Polygon</span>(cds2)), <span class="dv">2</span>))),<span class="kw">data.frame</span>(<span class="dt">ID=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)))</span>
+<span id="cb30-15"><a href="#cb30-15"></a></span>
+<span id="cb30-16"><a href="#cb30-16"></a><span class="co">## do extraction in abstract terms</span></span>
+<span id="cb30-17"><a href="#cb30-17"></a>(cn &lt;-<span class="st"> </span><span class="kw">cellnumbers</span>(r, polys))</span></code></pre></div>
+<pre><code>## projections not the same 
+##     x: +proj=longlat +datum=WGS84 +no_defs
+## query: NAFALSE</code></pre>
+<pre><code>## cellnumbers is very slow for SpatialPolygons, consider conversion with &#39;sf::st_as_sf&#39;TRUE</code></pre>
+<pre><code>## # A tibble: 63 x 2
+##    object_ cell_
+##      &lt;int&gt; &lt;dbl&gt;
+##  1       1   326
+##  2       1   327
+##  3       1   328
+##  4       1   329
+##  5       1   330
+##  6       1   331
+##  7       1   332
+##  8       1   333
+##  9       1   334
+## 10       1   335
+## # … with 53 more rows</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb34-2"><a href="#cb34-2"></a><span class="co">## now perform extraction for real</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="co">## and pipe into grouping by polygon (object_) and value, and</span></span>
+<span id="cb34-4"><a href="#cb34-4"></a><span class="co">## calculate class percentage from class counts per polygon</span></span>
+<span id="cb34-5"><a href="#cb34-5"></a>cn <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-6"><a href="#cb34-6"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">v =</span> raster<span class="op">::</span><span class="kw">extract</span>(r, cell_)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-7"><a href="#cb34-7"></a><span class="st">  </span><span class="kw">group_by</span>(object_, v) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-8"><a href="#cb34-8"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">count =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-9"><a href="#cb34-9"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">v.pct =</span> count <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(count)) </span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;object_&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 20 x 4
+## # Groups:   object_ [2]
+##    object_     v count  v.pct
+##      &lt;int&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+##  1       1     1     2 0.0526
+##  2       1     2     4 0.105 
+##  3       1     3     2 0.0526
+##  4       1     4     2 0.0526
+##  5       1     5     1 0.0263
+##  6       1     6     5 0.132 
+##  7       1     7     5 0.132 
+##  8       1     8     7 0.184 
+##  9       1     9     9 0.237 
+## 10       1    10     1 0.0263
+## 11       2     1     1 0.04  
+## 12       2     2     2 0.08  
+## 13       2     3     2 0.08  
+## 14       2     4     2 0.08  
+## 15       2     5     4 0.16  
+## 16       2     6     3 0.12  
+## 17       2     7     3 0.12  
+## 18       2     8     2 0.08  
+## 19       2     9     5 0.2   
+## 20       2    10     1 0.04</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">## here is the traditional code used in the stackoverflow example</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a><span class="co"># Extract raster values to polygons                             </span></span>
+<span id="cb37-3"><a href="#cb37-3"></a><span class="co">#( v &lt;- extract(r, polys) )</span></span>
+<span id="cb37-4"><a href="#cb37-4"></a><span class="co"># Get class counts for each polygon</span></span>
+<span id="cb37-5"><a href="#cb37-5"></a><span class="co">#v.counts &lt;- lapply(v,table)</span></span>
+<span id="cb37-6"><a href="#cb37-6"></a><span class="co"># Calculate class percentages for each polygon</span></span>
+<span id="cb37-7"><a href="#cb37-7"></a><span class="co">#( v.pct &lt;- lapply(v.counts, FUN=function(x){ x / sum(x) } ) )</span></span></code></pre></div>
+</div>
+<div id="extract-cell-numbers" class="section level1">
+<h1>Extract cell numbers</h1>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="kw">library</span>(tabularaster)</span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="kw">data</span>(<span class="st">&quot;ghrsst&quot;</span>)  <span class="co">## a RasterLayer</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="kw">data</span>(<span class="st">&quot;sst_regions&quot;</span>) <span class="co">## a polygon layer, contiguous with ghrsst</span></span>
+<span id="cb38-4"><a href="#cb38-4"></a></span>
+<span id="cb38-5"><a href="#cb38-5"></a>gcells &lt;-<span class="st"> </span><span class="kw">cellnumbers</span>(ghrsst, sst_regions) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">object_ =</span> <span class="kw">as.integer</span>(object_))</span></code></pre></div>
+<pre><code>## cellnumbers is very slow for SpatialPolygons, consider conversion with &#39;sf::st_as_sf&#39;TRUE</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>result &lt;-<span class="st"> </span>gcells <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">sst =</span> raster<span class="op">::</span><span class="kw">extract</span>(ghrsst, cell_)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-2"><a href="#cb40-2"></a><span class="st">  </span><span class="kw">group_by</span>(object_) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-3"><a href="#cb40-3"></a><span class="st">  </span><span class="kw">summarize_at</span>(<span class="kw">vars</span>(sst), <span class="kw">funs</span>(<span class="kw">mean</span>(., <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="kw">sd</span>(., <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), length))</span></code></pre></div>
+<pre><code>## Warning: `funs()` is deprecated as of dplyr 0.8.0.
+## Please use a list of either functions or lambdas: 
+## 
+##   # Simple named list: 
+##   list(mean = mean, median = median)
+## 
+##   # Auto named with `tibble::lst()`: 
+##   tibble::lst(mean, median)
+## 
+##   # Using lambdas
+##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+</div>
+<div id="extract-cells-from-rasters" class="section level1">
+<h1>Extract cells from rasters</h1>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="kw">library</span>(tabularaster)</span>
+<span id="cb42-2"><a href="#cb42-2"></a><span class="kw">library</span>(raster)</span>
+<span id="cb42-3"><a href="#cb42-3"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb42-4"><a href="#cb42-4"></a><span class="kw">data</span>(<span class="st">&quot;rastercano&quot;</span>)</span>
+<span id="cb42-5"><a href="#cb42-5"></a><span class="kw">data</span>(<span class="st">&quot;polycano&quot;</span>)</span>
+<span id="cb42-6"><a href="#cb42-6"></a>cells &lt;-<span class="st"> </span><span class="kw">cellnumbers</span>(rastercano, polycano[<span class="dv">4</span><span class="op">:</span><span class="dv">5</span>, ])</span></code></pre></div>
+<pre><code>## projections not the same 
+##     x: NA
+## query: NAFALSE</code></pre>
+<pre><code>## cellnumbers is very slow for SpatialPolygons, consider conversion with &#39;sf::st_as_sf&#39;TRUE</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="kw">cellnumbers</span>(rastercano, <span class="kw">as</span>(polycano[<span class="dv">4</span><span class="op">:</span><span class="dv">5</span>, ], <span class="st">&quot;SpatialLinesDataFrame&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 305 x 2
+##    object_ cell_
+##      &lt;int&gt; &lt;int&gt;
+##  1       1  1129
+##  2       1  1190
+##  3       1  1251
+##  4       2     1
+##  5       2     2
+##  6       2     3
+##  7       2     4
+##  8       2     5
+##  9       2     6
+## 10       2     7
+## # … with 295 more rows</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="kw">cellnumbers</span>(rastercano, <span class="kw">as</span>(<span class="kw">as</span>(polycano[<span class="dv">4</span><span class="op">:</span><span class="dv">5</span>, ], <span class="st">&quot;SpatialLinesDataFrame&quot;</span>), <span class="st">&quot;SpatialPointsDataFrame&quot;</span>))</span></code></pre></div>
+<pre><code>## projections not the same 
+##     x: NA
+## query: NAFALSE</code></pre>
+<pre><code>## # A tibble: 331 x 2
+##    object_ cell_
+##      &lt;int&gt; &lt;dbl&gt;
+##  1       1  1129
+##  2       1  1129
+##  3       1  1251
+##  4       1  1251
+##  5       1  1129
+##  6       1  1098
+##  7       1  1098
+##  8       1  1098
+##  9       1  1098
+## 10       1  1037
+## # … with 321 more rows</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

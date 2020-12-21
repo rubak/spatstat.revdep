@@ -1,0 +1,14 @@
+import(spatstat)
+importFrom("RandomFields","RMexp","RMcauchy","RMgencauchy","RMgauss","RMgneiting","RMmatern","RMnugget","RMspheric","RMstable","RMwhittle")
+importFrom("mvtnorm","dmvnorm")
+importFrom("sparr","rimpoly")
+importFrom("abind","abind")
+importFrom("stats","approx","runif","rpois","rchisq","rnorm")
+importFrom("grDevices","dev.flush","dev.hold")
+importFrom("graphics","axis","box","par","plot")
+
+exportPattern("^[[:alpha:]]+")
+
+export(sgmix,rrmix,rgmix,stgmix,unify.owin,stkey,rstpoint,rrstmix,rrpoint,rrstpoint,stintegral,rpoispoly,lgcpmix)
+
+S3method(plot,stim)

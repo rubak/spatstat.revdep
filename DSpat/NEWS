@@ -1,0 +1,29 @@
+DSpat 0.1.5 (07 Nov 2012)
+
+CHANGES
+
+* Removed dependency on gpclib; now imports from rgeos to do polygon intersection. Thanks to Prof Ripley for devising this solution.
+
+* Note that grid resolution (epsvu) was reduced in first dspat example.
+
+* Note: versions 0.1.2-0.1.4 were never posted to CRAN.
+
+
+DSpat 0.1.3 (05 Nov 2012)
+
+BUG FIXES
+
+* Removed legacy code of .First.lib and require to load RandomFields.
+
+
+DSpat 0.1.2 (13 Aug 2012)
+--------------------------
+	
+FEATURES
+
+* Added NAMESPACE and this NEWS file.		
+		
+BUG FIXES
+
+* Fixed bug in create.lines which had a incorrect test between spacing and transect width. Thanks to Darryl McKenzie for finding the error.
+

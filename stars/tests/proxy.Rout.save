@@ -1,0 +1,389 @@
+
+R version 4.0.1 (2020-06-06) -- "See Things Now"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> Sys.setenv(TZ="UTC")
+> suppressPackageStartupMessages(library(sf))
+> suppressPackageStartupMessages(library(stars))
+> tif = system.file("tif/L7_ETMs.tif", package = "stars")
+> (r = read_stars(tif, proxy = TRUE))
+stars_proxy object with 1 attribute in file:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> plot(r)
+> dim(r)
+   x    y band 
+ 349  352    6 
+> r[,,,2:3]
+stars_proxy object with 1 attribute in file:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+call list:
+[[1]]
+x[i = TRUE, , , 2:3]
+
+> r+r
+stars_proxy object with 1 attribute in file:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+call list:
+[[1]]
+e1 + r
+
+> st_as_stars(sin(r), downsample = 2)
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif      
+ Min.   :-0.99999  
+ 1st Qu.:-0.67677  
+ Median : 0.03540  
+ Mean   : 0.01865  
+ 3rd Qu.: 0.68326  
+ Max.   : 0.99991  
+dimension(s):
+     from  to  offset    delta                       refsys point values    
+x       1 116  288776  85.7457 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 117 9120761 -85.7436 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA       NA                           NA    NA   NULL    
+> aperm(r, c(3,2,1))
+stars_proxy object with 1 attribute in file:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+call list:
+[[1]]
+aperm(a = a, perm = c(3, 2, 1))
+
+> plot(r)
+> (xx = c(r,r))
+stars_proxy object with 2 attributes in files:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> st_redimension(xx)
+stars_proxy object with 1 attribute in files:
+$L7_ETMs.tif.L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif" "[...]/L7_ETMs.tif"
+
+dimension(s):
+        from  to  offset delta                       refsys point
+x          1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE
+y          1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE
+band       1   6      NA    NA                           NA    NA
+new_dim    1   2      NA    NA                           NA    NA
+                          values    
+x                           NULL [x]
+y                           NULL [y]
+band                        NULL    
+new_dim L7_ETMs.tif, L7_ETMs.tif    
+> st_as_stars(r)
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   :  1.00  
+ 1st Qu.: 54.00  
+ Median : 69.00  
+ Mean   : 68.91  
+ 3rd Qu.: 86.00  
+ Max.   :255.00  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> (y = st_apply(r, 1:2, max))
+stars_proxy object with 1 attribute in file:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+call list:
+[[1]]
+st_apply(X = X, MARGIN = 1:2, FUN = max)
+
+> (yy = st_as_stars(y, downsample = 1))
+stars object with 2 dimensions and 1 attribute
+attribute(s):
+      max       
+ Min.   : 56.0  
+ 1st Qu.: 85.0  
+ Median : 96.0  
+ Mean   : 98.5  
+ 3rd Qu.:111.0  
+ Max.   :255.0  
+dimension(s):
+  from  to  offset   delta                       refsys point values    
+x    1 174  288776 57.1638 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y    1 176 9120761     -57 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+> (y = adrop(st_apply(r, c("x", "y"), max)))
+stars_proxy object with 1 attribute in file:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+call list:
+[[1]]
+st_apply(X = X, MARGIN = c("x", "y"), FUN = max)
+
+[[2]]
+adrop(x = x)
+
+> (yy = st_as_stars(y, downsample = 1))
+stars object with 2 dimensions and 1 attribute
+attribute(s):
+      max       
+ Min.   : 56.0  
+ 1st Qu.: 85.0  
+ Median : 96.0  
+ Mean   : 98.5  
+ 3rd Qu.:111.0  
+ Max.   :255.0  
+dimension(s):
+  from  to  offset   delta                       refsys point values    
+x    1 174  288776 57.1638 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y    1 176 9120761     -57 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+> plot(yy)
+> (y = adrop(st_apply(r, c("x", "band"), max)))
+stars_proxy object with 1 attribute in file:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+call list:
+[[1]]
+st_apply(X = X, MARGIN = c("x", "band"), FUN = max)
+
+[[2]]
+adrop(x = x)
+
+> (yy = st_as_stars(y, downsample = 1))
+stars object with 2 dimensions and 1 attribute
+attribute(s):
+      max       
+ Min.   : 71.0  
+ 1st Qu.:102.8  
+ Median :119.0  
+ Mean   :123.2  
+ 3rd Qu.:139.0  
+ Max.   :255.0  
+dimension(s):
+     from  to offset   delta                       refsys point values
+x       1 174 288776 57.1638 UTM Zone 25, Southern Hem... FALSE   NULL
+band    1   6     NA      NA                           NA    NA   NULL
+Warning message:
+In FUN(X[[i]], ...) :
+  st_apply on x/y dimensions applied to downsampled image(s)
+> rm(yy)
+> 
+> (xx = c(r,r))
+stars_proxy object with 2 attributes in files:
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+$L7_ETMs.tif
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> names(xx) = c("a", "b")
+> xx["a"]
+stars_proxy object with 1 attribute in file:
+$a
+[1] "[...]/L7_ETMs.tif"
+
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> pt = st_point(c(x = 290462.103109179, y = 9114202.32594085))
+> buf = st_buffer(st_sfc(pt, crs = st_crs(r)), 1500)
+> buf = st_sfc(st_polygon(list(st_buffer(pt, 1500)[[1]], st_buffer(pt, 1000)[[1]])),
++   crs = st_crs(r))
+> r = r[buf] # crops
+> r = r[buf, epsilon = 1e-5] # crops with shrinked bounding box
+> 
+> # c:
+> f = system.file("netcdf/avhrr-only-v2.19810902.nc", package = "starsdata")
+> if (f != "") {
++   files = c("avhrr-only-v2.19810901.nc",
++   "avhrr-only-v2.19810902.nc",
++   "avhrr-only-v2.19810903.nc",
++   "avhrr-only-v2.19810904.nc",
++   "avhrr-only-v2.19810905.nc",
++   "avhrr-only-v2.19810906.nc",
++   "avhrr-only-v2.19810907.nc",
++   "avhrr-only-v2.19810908.nc",
++   "avhrr-only-v2.19810909.nc")
++   l = list()
++   for (f in files) {
++ 	from = system.file(paste0("netcdf/", f), package = "starsdata")
++   	l[[f]] = read_stars(from, sub = c("sst", "anom"), proxy = TRUE)
++   }
++   ret = do.call(c, l)
++   print(ret)
++   all = system.file(paste0("netcdf/", files), package = "starsdata")
++   ret = read_stars(all, sub = c("sst", "anom"))
++   print(ret)
++   print(st_redimension(ret)) # collapse the two attributes into new dimension
++ 
++   try(ret <- c(l[[1]], l[[2]], l[[3]], along = list(times = as.Date("1981-09-01") + 0:2)))
++   #print(ret)
++   #ret = adrop(adrop(c(l[[1]], l[[2]], l[[3]], along = "times")))
++   #print(ret)
++   ret <- st_redimension(l[[1]], along = list(times = as.Date("1981-09-01") + 0:1))
++   print(ret)
++ }
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+stars_proxy object with 2 attributes in files:
+$sst
+[1] "[...]/avhrr-only-v2.19810901.nc:sst" "[...]/avhrr-only-v2.19810902.nc:sst"
+[3] "[...]/avhrr-only-v2.19810903.nc:sst" "[...]/avhrr-only-v2.19810904.nc:sst"
+[5] "[...]/avhrr-only-v2.19810905.nc:sst" "[...]/avhrr-only-v2.19810906.nc:sst"
+[7] "[...]/avhrr-only-v2.19810907.nc:sst" "[...]/avhrr-only-v2.19810908.nc:sst"
+[9] "[...]/avhrr-only-v2.19810909.nc:sst"
+
+$anom
+[1] "[...]/avhrr-only-v2.19810901.nc:anom"
+[2] "[...]/avhrr-only-v2.19810902.nc:anom"
+[3] "[...]/avhrr-only-v2.19810903.nc:anom"
+[4] "[...]/avhrr-only-v2.19810904.nc:anom"
+[5] "[...]/avhrr-only-v2.19810905.nc:anom"
+[6] "[...]/avhrr-only-v2.19810906.nc:anom"
+[7] "[...]/avhrr-only-v2.19810907.nc:anom"
+[8] "[...]/avhrr-only-v2.19810908.nc:anom"
+[9] "[...]/avhrr-only-v2.19810909.nc:anom"
+
+dimension(s):
+     from   to         offset  delta  refsys point values    
+x       1 1440              0   0.25      NA    NA   NULL [x]
+y       1  720             90  -0.25      NA    NA   NULL [y]
+zlev    1    1          0 [m]     NA      NA    NA   NULL    
+time    1    9 1981-09-01 UTC 1 days POSIXct    NA   NULL    
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+stars object with 4 dimensions and 2 attributes
+attribute(s), summary of first 1e+05 cells:
+   sst [C*°]       anom [C*°]   
+ Min.   :-1.80   Min.   :-4.69  
+ 1st Qu.:-1.19   1st Qu.:-0.06  
+ Median :-1.05   Median : 0.52  
+ Mean   :-0.32   Mean   : 0.23  
+ 3rd Qu.:-0.20   3rd Qu.: 0.71  
+ Max.   : 9.36   Max.   : 3.70  
+ NA's   :13360   NA's   :13360  
+dimension(s):
+     from   to         offset  delta  refsys point values    
+x       1 1440              0   0.25      NA    NA   NULL [x]
+y       1  720             90  -0.25      NA    NA   NULL [y]
+zlev    1    1          0 [m]     NA      NA    NA   NULL    
+time    1    9 1981-09-01 UTC 1 days POSIXct    NA   NULL    
+stars object with 5 dimensions and 1 attribute
+attribute(s), summary of first 1e+05 cells:
+   sst.anom     
+ Min.   :-1.80  
+ 1st Qu.:-1.19  
+ Median :-1.05  
+ Mean   :-0.32  
+ 3rd Qu.:-0.20  
+ Max.   : 9.36  
+ NA's   :13360  
+dimension(s):
+        from   to         offset  delta  refsys point     values    
+x          1 1440              0   0.25      NA    NA       NULL [x]
+y          1  720             90  -0.25      NA    NA       NULL [y]
+zlev       1    1          0 [m]     NA      NA    NA       NULL    
+time       1    9 1981-09-01 UTC 1 days POSIXct    NA       NULL    
+new_dim    1    2             NA     NA      NA    NA sst , anom    
+Error in c.stars_proxy(l[[1]], l[[2]], l[[3]], along = list(times = as.Date("1981-09-01") +  : 
+  for proxy objects, along argument as list is not implemented
+stars_proxy object with 1 attribute in files:
+$sst.anom
+[1] "[...]/avhrr-only-v2.19810901.nc:sst" 
+[2] "[...]/avhrr-only-v2.19810901.nc:anom"
+
+dimension(s):
+      from   to         offset  delta  refsys point values    
+x        1 1440              0   0.25      NA    NA   NULL [x]
+y        1  720             90  -0.25      NA    NA   NULL [y]
+zlev     1    1          0 [m]     NA      NA    NA   NULL    
+time     1    1 1981-09-01 UTC     NA POSIXct    NA   NULL    
+times    1    2     1981-09-01 1 days    Date    NA   NULL    
+> 
+> proc.time()
+   user  system elapsed 
+  3.868   0.390   4.249 

@@ -1,0 +1,8 @@
+use_sppmix_objects   Defining, generating, working with and basic plotting of sppmix objects.
+use_sppmix_plots   Plotting in the sppmix package.
+use_sppmix_DAMCMC_noedgeeffects   How to perform model fitting for a Poisson point process with intensity surface assumed to be a mixture of normals. This demo assumes a fixed number of components and no edge effects present.
+use_sppmix_DAMCMC_edgeeffects   How to perform model fitting for a Poisson point process with intensity surface assumed to be a mixture of normals. This demo assumes a fixed number of components and edge effects present.
+use_sppmix_BDMCMC_noedgeeffects   How to perform model fitting for a Poisson point process with intensity surface assumed to be a mixture of normals. This demo assumes a random number of components and no edge effects present.
+use_sppmix_BDMCMC_edgeeffects   How to perform model fitting for a Poisson point process with intensity surface assumed to be a mixture of normals. This demo assumes a random number of components and edge effects present.
+use_sppmix_modelcheck   Model checking in the sppmix package.
+use_sppmix_MIPPP   How to perform model fitting for a Marked Poisson point process with intensity surface assumed to be a mixture of normals.

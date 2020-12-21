@@ -1,0 +1,241 @@
+---
+title: "Dallas Market Area Analysis with Contiguity Constraint"
+author: "Michael Tiefelsdorf"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+#output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DallasMarketAreas}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "R>", cache=FALSE, fig.width=7.2)
+rm(list=ls())                                        # start fresh
+library(TexMix)              # Get data and support function plotBoxesByFactor.r
+library(ClustGeo)                  # Hierarchical Cluster Analysis with Spatial Constraint
+library(maptools)
+library(sp)
+library(DMwR)
+library(spdep)
+```
+# Introduction
+
+The objective of this __prototype cluster analysis__ it to perform unsupervised 
+learning to identify distinct and homogeneous market areas in Dallas County with 
+respect to their 
+
+* socio-economic, 
+* demographic and 
+* infrastructure 
+
+characteristics of the underlying census tracts.
+
+The package "ClustGeo" is the workhorse of this analysis. It performs hierarchical
+cluster analysis using the Ward parametrization of the Lance & Williams algorithm
+under an imposed spatial contiguity constraint.
+
+Potential improvements could be:
+
+* Include additional features of the census tracts to the analysis. However, 
+  maintain a balance between the socio-economic, demographic and infrastructure 
+  themes. These features could be:
+  * school district information,
+  * characteristics of the housing and rental stock as well as occupancy,
+  * available employment opportunities etc.
+* Add relevant geographic characteristics to the analysis such as the distance
+  to the CBD, road network or recreational amenities.
+* Depending on data availability increase the spatial resolution and move from
+  census tracts to block groups.
+* Increase the number of clusters in order to boost the homogeneity of the market
+  areas.
+* Edit the spatial contiguity matrix to introduce physical boundaries between 
+  market areas, for instance, tracts located to left or right of the Trinity river.
+
+## Definition of the spatial dissimilarity metric
+
+Set the spatial tessellation of the census tracts up and prepare the contiguity 
+space dissimilarity among the census tracts.
+
+```{r Adjacency, echo=TRUE, fig.height=7.2}
+data(tractShp)
+tractShp <- tractShp[tractShp$NIGHTPOP!=0, ]         # Remove 2 airport tracts with NA's
+
+##
+## Identify spatial neighboring census tracts and process them
+##
+nb <- spdep::poly2nb(tractShp, queen=F)              # extract first order neighbors links
+B <- spdep::nb2mat(nb, style="B")                    # convert neighbor list to binary matrix
+
+## Visualize first order neighbors
+plot(tractShp, col="palegreen3", border=grey(0.9), axes=T) 
+plot(nb, coords=coordinates(tractShp), pch=19, cex=0.1, col="blue", add=T)
+title("Spatial Neighbors Links among Tracts") 
+
+## Transform the contiguity matrix into spatial dissimilarity matrix
+geoDist <- 1-B; 
+diag(geoDist) <- 0; 
+geoDist <- as.dist(geoDist)
+
+##
+## Alternative spatial dissimilarity matrices
+##
+# # Calculate shortest path distances between the tracts
+# BNa <- ifelse(B==0,NA,B)                             # recode 0's to NA's
+# allPath <- e1071::allShortestPaths(BNa)              # calucate the shortest path among all nodes
+# topoDist <- as.dist(allPath$length)                  # number of steps from origin to destination node
+# e1071::extractPath(allPath, 1, 527)                  # example: path between tract 1 and tract 527
+#
+# # spherical distances matrix among tracts in km
+# sphDist <- as.dist(sp::spDists(tractShp, longlat=T)) 
+```
+
+## Definition of the feature dissimilarity metric
+
+Set the variables of the census tracts up, impute 25 missing median home values 
+and define the feature space dissimilarity matrix.
+
+```{r DataPrep, echo=TRUE, fig.height=7.2, fig.width=7.2}
+##
+## Select variables for feature dissimilarity organized into three groups:
+##   [a] demographic features
+##   [b] socio-economic features
+##   [c] housing infrastructure features
+##
+
+## Calculate additional features
+tractShp$PRE1960 <- tractShp$PCTB1950+tractShp$PCTB1940+tractShp$PCTBPRE
+tractShp$POST2000 <- tractShp$PCTB2000+tractShp$PCTB2010
+
+## Feature list
+varKeep <- c("PCTWHITE","PCTBLACK","PCTHISPAN","MEDAGE",
+             "PCTUNIVDEG","HHMEDINC","PCTUNEMP","PCTNOHINS",
+             "POPDEN","PCTDAYPOP","PCTHUVAC","MEDVALHOME","PRE1960","POST2000")
+xVars <- tractShp@data
+xVars <- xVars[varKeep]
+summary(xVars)
+
+## Replace missing values in MEDVALHOME by neighbors average
+xVars <- DMwR::knnImputation(xVars, k=5, scale=T, meth="weighAve")
+summary(xVars$MEDVALHOME)
+
+## ID each row of xVars
+row.names(xVars) <- 1:nrow(xVars)
+
+## Calculate feature distance matrix
+featDist <- dist(scale(xVars))
+```
+
+## Identification of the combined dissimilarity metric
+
+Identify the $\alpha$ parameter which balances the convex mixture of the feature
+space dissimilarities (black curve) with the contiguity space dissimilarities 
+(red curve):
+
+$$(1-\alpha)*FeatureDissimilarity + \alpha*ContiguityDissimilarity$$.
+
+Preference should be given to the feature dissimilarity (black) and for neither 
+dissimilarity metric the intra-cluster homogeneity should not drop rapidly for 
+the sequence of $\alpha$-values. Low $\alpha$ values may lead to spatially split 
+clusters.
+
+For this prototype analysis the number of clusters is set to $K=12$, because $12$ 
+is the maximum number of factor levels that the function "mapColorQual" can display. 
+A work-around to increase the number of clusters is to split $K>12$ clusters 
+across several maps of maximal $12$ factor levels. Please see step 8 below.
+
+The selected mixture parameter $\alpha$ is set at $\alpha=0.2$ because for smaller
+$\alpha$-values the intra-cluster homogeneity for spatial contiguity metric drops
+rapidly.
+
+```{r AlphaMixture, echo=TRUE, fig.height=7.2}
+##
+## Evaluate mixture of feature and spatial dissimilarity.
+##
+K <- 12                            # Number of distinct clusters
+range.alpha <- seq(0, 1, by=0.1)   # Evaluation range
+cr <- choicealpha(featDist, geoDist, range.alpha, K, graph=TRUE)
+```
+
+## Spatially constrained cluster analysis
+
+Show the cluster generation history in a dendrogram and highlight the 12 market 
+areas of census tracts.
+
+```{r ClusterAnalysis, echo=TRUE, fig.height=7.2, fig.width=7.2}
+## 
+## Perform spatially constrained cluster analysis
+##
+tree <- hclustgeo(featDist, geoDist, alpha=0.2)
+plot(tree, hang=-1)
+rect.hclust(tree, k=K)
+```
+
+Evaluate the number of census tracts per market area.
+
+```{r TractCount, echo=TRUE, fig.height=7.2}
+## Number of census tracts per market area
+neighClus <- as.factor(cutree(tree, K))        # Determine cluster membership
+table(neighClus)                               # number of tracts in each cluster
+```
+
+# Evaluation of the identified market areas
+
+Map the identified homogeneous market area. An interpretation can be
+performed by their locations within Dallas County and by the levels and dispersion 
+of their underlying features. 
+
+Note that some internally homogeneous clusters of market areas are distributed 
+disjunctly across Dallas County. This implies that areas of similar characteristics can be
+found in several locations of Dallas County.
+
+## Map identified market areas
+```{r AllMap, echo=TRUE, fig.height=7.2}
+##
+## Map Results
+##
+mapColorQual(neighClus, tractShp, 
+             map.title ="Spatially constrained Cluster Analysis",
+             legend.title="Cluster\nId.", legend.cex=0.9)
+plot(lakesShp, col="skyblue", border="skyblue",add=T)
+plot(hwyShp, col="cornsilk2", lwd=4, add=T)
+```
+
+## Attribute analysis of the identified market areas
+
+Evaluate the unique feature compositions for each market area. A market area 
+should significantly differ from the remaining market areas in its variable 
+profile by at least one feature or a combination of features.
+
+To maintain a sufficient visual resolution, the variable box-plots by market areas
+are split into two panels.
+
+```{r AreaCharacteristics, echo=TRUE, fig.height=7.2, fig.width=7.2}
+##
+## Evaluate cluster characteristics
+##
+plotBoxesByFactor(xVars[,1:7], neighClus, ncol=2, zTrans=T, varwidth=F)
+plotBoxesByFactor(xVars[,8:14], neighClus, ncol=2, zTrans=T, varwidth=F)
+```
+
+## Map selected clusters
+To map just a set of selected clusters or, alternatively, for more than 12 
+generated clusters a sequence of maps with consecutive subsets of clusters the 
+remaining clusters are set to NA. Tract with NA's are displayed in light grey. 
+
+Clusters 4 and 10 are predominant employment centers with a proportionally higher
+number of day-time population relative to the nighttime population.
+
+```{r SelectMap, echo=TRUE, fig.height=7.2}
+## Select subset nLevels[c(4,10)] and set remaining clusters to NA
+nLevels <- levels(neighClus)
+neighClusSet <- as.factor(ifelse(neighClus %in% nLevels[c(4,10)], neighClus, NA))
+mapColorQual(neighClusSet, tractShp, 
+             map.title ="Clusters of Major Employment Centers",
+             legend.title="Cluster\nId.", legend.cex=0.9)
+plot(lakesShp, col="skyblue", border="skyblue",add=T)
+plot(hwyShp, col="cornsilk2", lwd=4, add=T)
+```

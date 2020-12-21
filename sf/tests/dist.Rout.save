@@ -1,0 +1,111 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> suppressPackageStartupMessages(library(sf))
+> library(sp)
+> suppressPackageStartupMessages(library(units))
+> 
+> x = st_sfc(
++ st_point(c(0,0)),
++ st_point(c(1,0)),
++ st_point(c(2,0)),
++ st_point(c(3,0)),
++ crs = 4326
++ )
+> 
+> y = st_sfc(
++ st_point(c(0,10)),
++ st_point(c(1,0)),
++ st_point(c(2,0)),
++ st_point(c(3,0)),
++ st_point(c(4,0)),
++ crs = 4326
++ )
+> 
+> d.sf = st_distance(x, y)
+> d.sp = spDists(as(x, "Spatial"), as(y, "Spatial"))
+> units(d.sp) = as_units("km")
+> round(d.sf - d.sp, 7)
+Units: [m]
+         [,1] [,2] [,3] [,4] [,5]
+[1,] 11.58615    0    0    0    0
+[2,] 11.76865    0    0    0    0
+[3,] 12.28011    0    0    0    0
+[4,] 13.02504    0    0    0    0
+> 
+> #summary(unclass(d.sf) - d.sp)
+> 
+> st_crs(x) = st_crs(y) = NA
+> d.sf = st_distance(x, y)
+> d.sp = spDists(as(x, "Spatial"), as(y, "Spatial"))
+> round(d.sf - d.sp, 7)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    0    0
+[2,]    0    0    0    0    0
+[3,]    0    0    0    0    0
+[4,]    0    0    0    0    0
+> 
+> # st_length:
+> st_crs(y) = 4326
+> (z = st_sfc(st_linestring(rbind(c(0,10), c(1,0), c(2,0), c(3,0), c(4,0))), crs = 4326))
+Geometry set for 1 feature 
+geometry type:  LINESTRING
+dimension:      XY
+bbox:           xmin: 0 ymin: 0 xmax: 4 ymax: 10
+geographic CRS: WGS 84
+LINESTRING (0 10, 1 0, 2 0, 3 0, 4 0)
+> d = st_distance(y, y)
+> round(d, 7)
+Units: [m]
+        [,1]      [,2]      [,3]      [,4]      [,5]
+[1,]       0 1111387.3 1127821.8 1154692.9 1191294.5
+[2,] 1111387       0.0  111319.5  222639.0  333958.5
+[3,] 1127822  111319.5       0.0  111319.5  222639.0
+[4,] 1154693  222639.0  111319.5       0.0  111319.5
+[5,] 1191295  333958.5  222639.0  111319.5       0.0
+> st_length(z)
+1445346 [m]
+> st_length(z) - sum(d[1,2], d[2,3], d[3,4], d[4,5])
+0 [m]
+> 
+> # st_line_sample:
+> ls = st_sfc(st_linestring(rbind(c(0,0),c(0,1))),
++ 	st_linestring(rbind(c(0,0),c(10,0))))
+> # set.seed(135)
+> st_line_sample(ls, density = 1)
+Geometry set for 2 features 
+geometry type:  MULTIPOINT
+dimension:      XY
+bbox:           xmin: 0 ymin: 0 xmax: 9.5 ymax: 0.5
+CRS:            NA
+MULTIPOINT ((0 0.5))
+MULTIPOINT ((0.5 0), (1.5 0), (2.5 0), (3.5 0),...
+> 
+> ls = st_sfc(st_linestring(rbind(c(0,0),c(0,1))),
++ 	st_linestring(rbind(c(0,0),c(.1,0))), crs = 4326)
+> 
+> st_length(ls)
+Units: [m]
+[1] 110574.39  11131.95
+> try(st_line_sample(ls, density = 1/1000))
+Error in st_line_sample(ls, density = 1/1000) : 
+  st_line_sample for longitude/latitude not supported; use st_segmentize?
+> x = st_line_sample(st_transform(ls, 3857), density = 1/1000) # one per km
+> 
+> proc.time()
+   user  system elapsed 
+  0.576   0.048   0.615 

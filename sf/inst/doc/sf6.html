@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Edzer Pebesma" />
+
+
+<title></title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore"><ol start="6" style="list-style-type: decimal">
+<li>Miscellaneous</li>
+</ol></h1>
+<h4 class="author">Edzer Pebesma</h4>
+
+
+
+<p><strong>For a better version of the sf vignettes see</strong> <a href="https://r-spatial.github.io/sf/articles/" class="uri">https://r-spatial.github.io/sf/articles/</a></p>
+<p>knitr::opts_chunk<span class="math inline">\(set(fig.height = 4.5) knitr::opts_chunk\)</span>set(fig.width = 6) This vignette describes a number of issues that did not come up in the previous vignettes, and that may or may not be categorized as &quot;frequently asked questions&quot;. Readers are encouraged to provide entries for this vignette (as for the others).</p>
+<div id="what-is-this-epsg-code-all-about" class="section level1">
+<h1>What is this EPSG code all about?</h1>
+<p>EPSG stands for a maintained, well-understood set of spatial reference systems, maintained by the International Association of Oil &amp; Gass Producers (IOGP). From R, we can get access to the EPSG dataset programmatically (as a <code>data.frame</code>) by:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rgdal<span class="op">::</span><span class="kw">make_EPSG</span>()</code></pre></div>
+<p>see also the first vignette.</p>
+</div>
+<div id="how-does-sf-deal-with-secondary-geometry-columns" class="section level1">
+<h1>How does <code>sf</code> deal with secondary geometry columns?</h1>
+<p><code>sf</code> objects can have more than one geometry list-column, but always only one geometry column is considered <em>active</em>, and returned by <code>st_geometry</code>. When there are multiple geometry columns, the default <code>print</code> methods reports which one is active:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
+<span class="kw">demo</span>(nc, <span class="dt">ask =</span> <span class="ot">FALSE</span>, <span class="dt">echo =</span> <span class="ot">FALSE</span>)
+## Reading layer `nc.gpkg' from data source `/tmp/Rtmp9oXvBv/Rinst15ae11ef4b38/sf/gpkg/nc.gpkg' using driver `GPKG'
+## Simple feature collection with 100 features and 14 fields
+## Attribute-geometry relationship: 0 constant, 8 aggregate, 6 identity
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+## geographic CRS: NAD27
+nc<span class="op">$</span>geom2 =<span class="st"> </span><span class="kw">st_centroid</span>(<span class="kw">st_geometry</span>(nc))
+## Warning in st_centroid.sfc(st_geometry(nc)): st_centroid does not give correct
+## centroids for longitude/latitude data
+<span class="kw">print</span>(nc, <span class="dt">n =</span> <span class="dv">2</span>)
+## Simple feature collection with 100 features and 14 fields
+## Attribute-geometry relationship: 0 constant, 8 aggregate, 6 identity, 1 NA's
+## Active geometry column: geom
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+## geographic CRS: NAD27
+## First 2 features:
+##    AREA PERIMETER CNTY_ CNTY_ID      NAME  FIPS FIPSNO CRESS_ID BIR74 SID74
+## 1 0.114     1.442  1825    1825      Ashe 37009  37009        5  1091     1
+## 2 0.061     1.231  1827    1827 Alleghany 37005  37005        3   487     0
+##   NWBIR74 BIR79 SID79 NWBIR79                           geom
+## 1      10  1364     0      19 MULTIPOLYGON (((-81.47276 3...
+## 2      10   542     3      12 MULTIPOLYGON (((-81.23989 3...
+##                        geom2
+## 1  POINT (-81.49826 36.4314)
+## 2 POINT (-81.12515 36.49101)</code></pre></div>
+<p>We can switch the active geometry by using <code>st_geometry&lt;-</code> or <code>st_set_geometry</code>, as in</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">st_geometry</span>(nc))</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_geometry</span>(nc) &lt;-<span class="st"> &quot;geom2&quot;</span>
+<span class="kw">plot</span>(<span class="kw">st_geometry</span>(nc))</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="does-st_simplify-preserve-topology" class="section level1">
+<h1>Does <code>st_simplify</code> preserve topology?</h1>
+<p><code>st_simplify</code> is a topology-preserving function, but does this on the level of individual feature geometries. That means, simply said, that after applying it, a polygon will still be a polygon. However when two features have a longer shared boundary, applying <code>st_simplify</code> to the object does not guarantee that in the resulting object these two polygons still have the same boundary in common, since the simplification is done independently, <em>for each feature geometry</em>.</p>
+</div>
+<div id="why-do-dplyr-verbs-not-work-for-sf-objects" class="section level1">
+<h1>Why do dplyr verbs not work for <code>sf</code> objects?</h1>
+<p>They do! However, many developers like to write scripts that never load packages but address all functions by the <code>sf::</code> prefix, as in</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">i =<span class="st"> </span>sf<span class="op">::</span><span class="kw">st_intersects</span>(sf1, sf2)</code></pre></div>
+<p>This works up to the moment that a <code>dplyr</code> generic like <code>select</code> for an <code>sf</code> object is needed: should one call <code>dplyr::select</code> (won't know it should search in package <code>sf</code>) or <code>sf::select</code> (which doesn't exist)? Neither works. One should in this case simply load <code>sf</code>, e.g. by</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre></div>
+</div>
+<div id="what-is-this-errorwarningmessage-about" class="section level1">
+<h1>What is this error/warning/message about?</h1>
+<div id="although-coordinates-are-longitudelatitude-xxx-assumes-that-they-are-planar" class="section level2">
+<h2><em>although coordinates are longitude/latitude, xxx assumes that they are planar</em></h2>
+<p>Most (but not all) of the geometry calculating routines used by <code>sf</code> come from the <a href="https://trac.osgeo.org/geos/">GEOS</a> library. This library considers coordinates in a two-dimensional, flat, Euclidian space. For longitude latitude data, this is not the case. A simple example is a polygon enclosing the North pole, which should include the pole:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">polygon =<span class="st"> </span><span class="kw">st_sfc</span>(<span class="kw">st_polygon</span>(<span class="kw">list</span>(<span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">80</span>), <span class="kw">c</span>(<span class="dv">120</span>,<span class="dv">80</span>), <span class="kw">c</span>(<span class="dv">240</span>,<span class="dv">80</span>), <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">80</span>)))), 
+        <span class="dt">crs =</span> <span class="dv">4326</span>)
+pole =<span class="st"> </span><span class="kw">st_sfc</span>(<span class="kw">st_point</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">90</span>)), <span class="dt">crs =</span> <span class="dv">4326</span>)
+<span class="kw">st_intersects</span>(polygon, pole)
+## although coordinates are longitude/latitude, st_intersects assumes that they are planar
+## Sparse geometry binary predicate list of length 1, where the predicate was `intersects'
+##  1: (empty)</code></pre></div>
+<p>which gives a wrong result (no intersection).</p>
+</div>
+<div id="st_centroid-does-not-give-correct-centroids-for-longitudelatitude-data" class="section level2">
+<h2><em>st_centroid does not give correct centroids for longitude/latitude data</em></h2>
+<p>Similar to the above, centroids are computed assuming flat, 2D space:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_centroid</span>(polygon)[[<span class="dv">1</span>]]
+## Warning in st_centroid.sfc(polygon): st_centroid does not give correct centroids
+## for longitude/latitude data
+## POINT (120 80)</code></pre></div>
+<p>where the centroid should have been the pole.</p>
+</div>
+<div id="dist-is-assumed-to-be-in-decimal-degrees-arc_degrees." class="section level2">
+<h2><em>dist is assumed to be in decimal degrees (arc_degrees).</em></h2>
+<p>This message indicates that <code>sf</code> assumes a distance value is given in degrees. To avoid this message, pass a value with the right units:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pt =<span class="st"> </span><span class="kw">st_sfc</span>(<span class="kw">st_point</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)), <span class="dt">crs =</span> <span class="dv">4326</span>)
+buf =<span class="st"> </span><span class="kw">st_buffer</span>(polygon, <span class="dv">1</span>)
+## Warning in st_buffer.sfc(polygon, 1): st_buffer does not correctly buffer
+## longitude/latitude data
+## dist is assumed to be in decimal degrees (arc_degrees).
+buf =<span class="st"> </span><span class="kw">st_buffer</span>(polygon, units<span class="op">::</span><span class="kw">set_units</span>(<span class="dv">1</span>, degree))
+## Warning in st_buffer.sfc(polygon, units::set_units(1, degree)): st_buffer does
+## not correctly buffer longitude/latitude data</code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

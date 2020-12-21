@@ -1,0 +1,10 @@
+citHeader("To cite stlnpp in publications, please use:")
+
+citEntry(entry = "manual",
+  author = "Mehdi Moradi, Ottmar Cronie, and Jorge Mateu",
+  title = "stlnpp: Spatio-temporal analysis of point patterns on linear networks",
+  publisher = "",
+  year = "2020",
+  url = "",
+  textVersion = "M. Moradi, O. Cronie, and J. Mateu. (2020) stlnpp: Spatio-temporal analysis of point patterns on linear networks."
+)

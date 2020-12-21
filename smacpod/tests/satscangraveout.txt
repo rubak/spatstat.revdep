@@ -1,0 +1,128 @@
+                                 _____________________________
+
+                                        SaTScan v9.3.1
+                                 _____________________________
+
+
+Program run on: Tue Sep 22 10:42:25 2015
+
+Purely Spatial analysis
+scanning for clusters with high rates
+using the Bernoulli model.
+_______________________________________________________________________________________________
+
+SUMMARY OF DATA
+
+Study period.......................: 2000/1/1 to 2000/12/31
+Number of locations................: 143
+Total population...................: 143
+Total number of cases..............: 30
+Percent cases in area..............: 21.0
+_______________________________________________________________________________________________
+
+CLUSTERS DETECTED
+
+1.Location IDs included.: 126, 124, 125, 132, 120, 113, 140, 141, 112, 41, 136, 30, 133, 108,
+                          31, 143, 110, 139, 75
+  Coordinates / radius..: (10324,4389) / 1359.71
+  Population............: 19
+  Number of cases.......: 11
+  Expected cases........: 3.99
+  Observed / expected...: 2.76
+  Relative risk.........: 3.78
+  Percent cases in area.: 57.9
+  Log likelihood ratio..: 7.419340
+  P-value...............: 0.050
+
+2.Location IDs included.: 66, 89, 71
+  Coordinates / radius..: (6934,6918) / 362.46
+  Population............: 3
+  Number of cases.......: 3
+  Expected cases........: 0.63
+  Observed / expected...: 4.77
+  Relative risk.........: 5.19
+  Percent cases in area.: 100.0
+  Log likelihood ratio..: 4.808517
+  P-value...............: 0.665
+
+3.Location IDs included.: 77, 78
+  Coordinates / radius..: (5305,6065) / 1.00
+  Population............: 2
+  Number of cases.......: 2
+  Expected cases........: 0.42
+  Observed / expected...: 4.77
+  Relative risk.........: 5.04
+  Percent cases in area.: 100.0
+  Log likelihood ratio..: 3.177442
+  P-value...............: 0.997
+_______________________________________________________________________________________________
+
+PARAMETER SETTINGS
+
+Input
+-----
+  Case File        : /Users/jfrench/Desktop/gravecases.txt
+  Control File     : /Users/jfrench/Desktop/gravecontrols.txt
+  Time Precision   : Year
+  Start Time       : 2000/1/1
+  End Time         : 2000/12/31
+  Coordinates File : /Users/jfrench/Desktop/gravecoords.txt
+  Coordinates      : Cartesian
+
+Analysis
+--------
+  Type of Analysis    : Purely Spatial
+  Probability Model   : Bernoulli
+  Scan for Areas with : High Rates
+
+Output
+------
+  Results File        : out2grave.txt
+  Simulated LLRs File : out2grave.llr.txt
+
+Data Checking
+-------------
+  Temporal Data Check     : Check to ensure that all cases and controls are within the specified temporal study period.
+  Geographical Data Check : Check to ensure that all observations (cases, controls and populations) are within the specified geographical area.
+
+Spatial Neighbors
+-----------------
+  Use Non-Euclidian Neighbors file : No
+  Use Meta Locations File          : No
+  Multiple Coordinates Type        : Allow only one set of coordinates per location ID.
+
+Spatial Window
+--------------
+  Maximum Spatial Cluster Size : 50 percent of population at risk
+  Window Shape                 : Circular
+  Isotonic Scan                : No
+
+Inference
+---------
+  P-Value Reporting                  : Default Combination
+  Number of Replications             : 999
+  Adjusting for More Likely Clusters : No
+
+Spatial Output
+--------------
+  Report Hierarchical Clusters              : Yes
+  Criteria for Reporting Secondary Clusters : No Geographical Overlap
+  Report Gini Optimized Cluster Collection  : No
+  Restrict Reporting to Smaller Clusters    : No
+
+Other Output
+------------
+  Report Critical Values     : No
+  Report Monte Carlo Rank    : No
+  Print ASCII Column Headers : No
+
+Run Options
+-----------
+  Processer Usage   : All Available Proccessors
+  Suppress Warnings : No
+  Logging Analysis  : Yes
+_______________________________________________________________________________________________
+
+Program completed  : Tue Sep 22 10:42:28 2015
+Total Running Time : 3 seconds
+Processor Usage    : 8 processors

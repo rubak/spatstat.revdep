@@ -1,0 +1,48 @@
+---
+title: "The raster functions for cell abstraction"
+author: "Michael Sumner"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Raster Abstraction Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The following functions in the `raster` package are designed to work with cell indexes. 
+
+`fun(r, cell)`
+
+* `[`
+* `adjacent`
+* `colFromCell`
+* `extentFromCells`
+* `rasterFromCells`
+* `rowColFromCell`	
+* `rowFromCell`
+* `validCell`
+* `xyFromCell`
+* `xFromCell`
+* `yFromCell`
+
+The following functions will return cell indexes. 
+
+`fun(r, query)` to return cells
+
+* `cellFromCol`
+* `cellFromLine`
+* `cellFromPolygon`
+* `cellFromRow`
+* `cellFromRowCol`
+* `cellFromRowColCombine`
+* `cellFromXY`
+* `cellsFromExtent`
+* `fourCellsFromXY`
+
+Others
+
+* `setValues` will work as `fun(r, vals, index)` only for `RasterLayerSparse`
+* `extent(Raster, r1, r2, c1, c2)` to crop an extent by row/column
+
+
+

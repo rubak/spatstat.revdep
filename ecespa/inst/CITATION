@@ -1,0 +1,30 @@
+citHeader("To cite", sQuote("ecespa"), "in publications, please use:")
+
+citEntry(entry = "inbook",
+         title = "Metodos para analizar datos puntuales.",
+         author = personList(
+           as.person("Marcelino de la Cruz Rot") 
+           ),
+	 chapter="3",  
+	 booktitle = "Introduccion al Analisis Espacial de Datos en Ecologia y Ciencias Ambientales: Metodos y Aplicaciones.",
+         editor= personList(
+           as.person(" Fernando T. Maestre"),
+	   as.person("Adrian Escudero"),
+	   as.person("Andreu Bonet") 
+           ),
+         pages = "76--127",
+         year  = "2008",
+	 publisher = "Asociacion Espanola de Ecologia Terrestre, Universidad Rey Juan Carlos and Caja de Ahorros del Mediterraneo",
+	 adress = "Madrid",
+          textVersion = paste(
+		"De la Cruz, M. (2008).",
+		"Metodos para analizar datos puntuales.",
+		"In: Introduccion al Analisis Espacial de Datos en Ecologia y Ciencias Ambientales: Metodos y Aplicaciones (eds. Maestre, F. T., Escudero, A. y Bonet, A.),",
+		"pp 76-127. Asociacion Espanola de Ecologia Terrestre, Universidad Rey Juan Carlos y Caja de Ahorros del Mediterraneo, Madrid.", 
+		"ISBN: 978-84-9849-308-5")
+         )
+
+citFooter("For references to additional papers describing the use of",
+          sQuote("ecespa"),
+	  "see", sQuote("help(\"ecespa\")."))
+

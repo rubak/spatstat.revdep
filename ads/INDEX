@@ -1,0 +1,36 @@
+Allogny       Spatial pattern of oaks suffering from frost shake in Allogny, France.
+BPoirier      Tree spatial pattern in Beau Poirier plot, Haye forest, France.
+Couepia       Spatial pattern of Couepia caryophylloides in Paracou, a canopy tree 
+              species of French Guiana.
+demopat		  Artificial data point pattern from \code{spatstat} package.
+Paracou15     Spatial pattern of trees in plot 15 of Paracou experimental station,
+              French Guiana.
+area.swin     Area of a sampling window.
+dval          Multiscale local density of a spatial point pattern.
+inside.swin   Test wether points are inside a sampling window.
+k12fun        Multiscale second-order neigbourhood analysis of a bivariate spatial 
+              point pattern.
+k12val        Multiscale local second-order neighbour density of a bivariate spatial 
+              point pattern.
+kdfun		  Multiscale second-order neigbourhood analysis of phylogentic/functional
+			  spatial structure of a multivariate spatial point pattern. 
+kfun          Multiscale second-order neigbourhood analysis of an univariate spatial 
+              point pattern.
+kmfun         Multiscale second-order neigbourhood analysis of a marked spatial point 
+              pattern.
+kp.fun        (Formerly ki.fun) Multiscale second-order neigbourhood analysis of a 
+              multivariate spatial point pattern.
+kpqfun        (Formerly kijfun) Multiscale second-order neigbourhood analysis of a 
+              multivariate spatial point pattern.
+krfun         Multiscale second-order neigbourhood analysis of a multivariate spatial 
+              point pattern using Rao quadratic entropy.
+ksfun         Multiscale second-order neigbourhood analysis of a multivariate spatial 
+              point pattern using Simpson diversity.
+kval          Multiscale local second-order neighbour density of a spatial point pattern.
+mimetic       Univariate point pattern replication by mimetic point process.
+plot.fads     Plot second-order neigbourhood functions.
+plot.spp      Plot a Spatial Point Pattern object.
+plot.vads     Plot local density values.
+spp           Creating a spatial point pattern.
+swin          Creating a sampling window.
+triangulate   Triangulate polygon.

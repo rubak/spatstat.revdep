@@ -1,0 +1,29 @@
+#' geometr: Generate and Modify Interoperable Geometric Shapes
+#'
+#' The geometr package provides tools that generate and process easily
+#' accessible and tidy geometric shapes (of class \code{geom}). Moreover, it
+#' aims to improve interoperability of spatial and other geometric classes.
+#' Spatial classes are typically a collection of geometric shapes (or their
+#' vertices) that are accompanied by various metadata (such as attributes and a
+#' coordinate reference system). Most spatial classes are thus conceptually
+#' quite similar, yet a common standard lacks for accessing features, vertices
+#' or the metadata. Geometr fills this gap by providing tools
+#' \itemize{
+#'   \item that produce an identical output for the same metadata of different
+#'         classes (via so-called getters) and
+#'   \item that use an identical input to write to various classes that
+#'         originally require different input (via so-called setters).
+#' }
+#'
+#' @author \strong{Maintainer, Author}: Steffen Ehrmann
+#'   \email{steffen.ehrmann@idiv.de}
+#' @author \strong{Copyright holder} Dan Sunday \href{http://geomalgorithms.com/a03-_inclusion.html}{fast point-in-polygon algorithm}
+#'
+#' @seealso \itemize{ \item Github project:
+#'   \href{https://github.com/EhrmannS/geometr}{https://github.com/EhrmannS/geometr}
+#'    \item Report bugs:
+#'   \href{https://github.com/EhrmannS/geometr/issues}{https://github.com/EhrmannS/geometr/issues}
+#'    }
+#' @docType package
+#' @name geometr
+NULL

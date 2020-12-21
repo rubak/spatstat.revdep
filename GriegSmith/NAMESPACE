@@ -1,0 +1,2 @@
+export(GriegSmith)
+S3method(plot, GriegSmith)

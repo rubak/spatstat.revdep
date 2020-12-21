@@ -1,0 +1,14 @@
+37058b6023ade95418b7ecd90c008eb6 *DESCRIPTION
+430ae54f4bef3cff0329c76513d36713 *NAMESPACE
+9dd716b95dd5001c78eae5a7b0a4ccb1 *R/HigherOrderRiskPreferences.R
+0fdf7f86c6a53dd39f4706551b98223b *man/bbase.Rd
+544549f6ae411ff0b53727a140002384 *man/compute_function.Rd
+2757f9f3dad02347ff0fd0b113c90752 *man/compute_function_aux.Rd
+5f6e2a3b33d452200250bae6ad0f450e *man/compute_higher_order_risk_preferences.Rd
+e1521dd2e39c91ac18519bb6a34b65d9 *man/compute_measures.Rd
+b96b5a12a09e643eb5fefd1ad0921a15 *man/compute_measures_aux.Rd
+c598bb2704639ab98d4aee38af348c84 *man/derivative.Rd
+b0a8e33e8069e5b237a20b6ffb309996 *man/estimate_model.Rd
+e2f0d294a1914bec1e730dcab97a6275 *man/evaluate_cross_validation.Rd
+6b89b565f73eaf56ffb2192e72233fc2 *man/find_optimal_lambda.Rd
+192a1b53f14fcc0a9f6e4385610e7d68 *man/tpower.Rd

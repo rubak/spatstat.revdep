@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Jamie Kass, Cory Merow, Brian Maitner, Hannah Owens, Brian Enquist, Rob Guralnick" />
+
+<meta name="date" content="2020-03-13" />
+
+<title>An example workflow for building rangeModelMetadata objects</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">An example workflow for building rangeModelMetadata objects</h1>
+<h4 class="author">Jamie Kass, Cory Merow, Brian Maitner, Hannah Owens, Brian Enquist, Rob Guralnick</h4>
+<h4 class="date">2020-03-13</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#building-a-range-model">Building a range model</a><ul>
+<li><a href="#get-data">Get data</a></li>
+<li><a href="#prepare-data">Prepare data</a></li>
+<li><a href="#model-fitting">Model Fitting</a></li>
+<li><a href="#model-evaluation">Model evaluation</a></li>
+<li><a href="#predictions">Predictions</a></li>
+<li><a href="#transfer-model">Transfer model</a></li>
+</ul></li>
+<li><a href="#build-an-rmm-object">Build an <code>rmm</code> object</a><ul>
+<li><a href="#authorship">Authorship</a></li>
+<li><a href="#study-objective">Study Objective</a></li>
+<li><a href="#autofill-when-possible">Autofill when possible</a></li>
+<li><a href="#data">Data</a></li>
+<li><a href="#data-preparation-cleaning">Data Preparation (cleaning)</a></li>
+<li><a href="#prediction">Prediction</a></li>
+<li><a href="#code">Code</a></li>
+<li><a href="#check-your-rmm-object">Check your <code>rmm</code> object</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(rangeModelMetadata)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(rgbif)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(raster)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(dismo)</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(ENMeval)</a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw">library</span>(sp)</a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="kw">library</span>(spThin)</a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="kw">library</span>(jsonlite)</a></code></pre></div>
+<div id="building-a-range-model" class="section level1">
+<h1>Building a range model</h1>
+<div id="get-data" class="section level2">
+<h2>Get data</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># search GBIF for occurrence data</span></a>
+<a class="sourceLine" id="cb2-2" title="2">bv &lt;-<span class="st"> </span>rgbif<span class="op">::</span><span class="kw">occ_search</span>(<span class="dt">scientificName =</span><span class="st">&#39;Bradypus variegatus&#39;</span>)</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co"># restrict table to coordinates</span></a>
+<a class="sourceLine" id="cb2-4" title="4">occs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(bv<span class="op">$</span>data, decimalLongitude, decimalLatitude)</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co"># remove duplicate values</span></a>
+<a class="sourceLine" id="cb2-6" title="6">occs &lt;-<span class="st"> </span>occs[<span class="op">!</span><span class="kw">duplicated</span>(occs),]</a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="co"># remove NAs</span></a>
+<a class="sourceLine" id="cb2-8" title="8">occs &lt;-<span class="st"> </span>occs[<span class="kw">complete.cases</span>(occs),]</a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co"># make a stack of Worldclim v1.4 bioclim rasters </span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="co"># Note 1: we are using the Worldclim version that comes with the current</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="co"># dismo distribution, which is the older v1.4 -- if you want to use v2.0 or</span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="co"># a different dataset entirely, download it and place the file path here, </span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="co"># instead of list.files(...)</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co"># Note 2: as categorical variable &quot;biome&quot; has cells with NA where other bioclim </span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co"># variables have values, you may see some warnings when the predict functions </span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="co"># are run</span></a>
+<a class="sourceLine" id="cb2-17" title="17">files &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path=</span><span class="kw">paste</span>(<span class="kw">system.file</span>(<span class="dt">package=</span><span class="st">&#39;dismo&#39;</span>), <span class="st">&#39;/ex&#39;</span>,</a>
+<a class="sourceLine" id="cb2-18" title="18">                               <span class="dt">sep=</span><span class="st">&#39;&#39;</span>), <span class="dt">pattern=</span><span class="st">&#39;grd&#39;</span>, <span class="dt">full.names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb2-19" title="19">envs &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">stack</span>(files)</a></code></pre></div>
+<!-- bv <- spocc::occ('Bradypus variegatus', 'gbif', limit=300, has_coords=TRUE) -->
+<!-- occs=dplyr::select(bv$gbif$data$Bradypus_variegatus, longitude, latitude) -->
+<!-- # remove correlated predictors -->
+<!-- (cors=layerStats(envs, 'pearson', na.rm=T)[[1]]) -->
+<!-- envs=envs[[c('bio1','bio7','bio12','bio16')]] -->
+<!-- (cors=layerStats(envs, 'pearson', na.rm=T)[[1]]) -->
+</div>
+<div id="prepare-data" class="section level2">
+<h2>Prepare data</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># thin points to remove spatial autocorrelation</span></a>
+<a class="sourceLine" id="cb3-2" title="2">occs.thinned &lt;-<span class="st"> </span>spThin<span class="op">::</span><span class="kw">thin.algorithm</span>(<span class="kw">data.frame</span>(occs), <span class="dt">thin.par=</span><span class="dv">20</span>, <span class="dt">reps=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co"># make a spatial points object for the occurrences</span></a>
+<a class="sourceLine" id="cb3-4" title="4">occs.sp &lt;-<span class="st"> </span>sp<span class="op">::</span><span class="kw">SpatialPoints</span>(occs.thinned[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co"># get the bounding box</span></a>
+<a class="sourceLine" id="cb3-6" title="6">bb &lt;-<span class="st"> </span>sp<span class="op">::</span><span class="kw">bbox</span>(occs.sp)</a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co"># make extent object and buffer by 5 degrees</span></a>
+<a class="sourceLine" id="cb3-8" title="8">bb.buf &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extent</span>(bb[<span class="dv">1</span>]<span class="op">-</span><span class="dv">5</span>, bb[<span class="dv">3</span>]<span class="op">+</span><span class="dv">5</span>, bb[<span class="dv">2</span>]<span class="op">-</span><span class="dv">5</span>, bb[<span class="dv">4</span>]<span class="op">+</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co"># crop environmental rasters by the extent to make the background extent</span></a>
+<a class="sourceLine" id="cb3-10" title="10">bg.ext &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">crop</span>(envs, bb.buf)</a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co"># generate up to 10,000 random points within the background extent (we&#39;ll sample from the &quot;biome&quot; raster as it has more holes)</span></a>
+<a class="sourceLine" id="cb3-12" title="12">bg &lt;-<span class="st"> </span>dismo<span class="op">::</span><span class="kw">randomPoints</span>(bg.ext[[<span class="dv">9</span>]], <span class="dt">n=</span><span class="dv">10000</span>) </a></code></pre></div>
+<pre><code>## Warning in dismo::randomPoints(bg.ext[[9]], n = 10000): generated random points
+## = 0.5604 times requested number</code></pre>
+</div>
+<div id="model-fitting" class="section level2">
+<h2>Model Fitting</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># run ENMeval</span></a>
+<a class="sourceLine" id="cb5-2" title="2">e &lt;-<span class="st"> </span>ENMeval<span class="op">::</span><span class="kw">ENMevaluate</span>(occs, bg.ext, bg, <span class="dt">method=</span><span class="st">&#39;block&#39;</span>, <span class="dt">RMvalues=</span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">fc=</span><span class="kw">c</span>(<span class="st">&#39;L&#39;</span>,<span class="st">&#39;LQ&#39;</span>), <span class="dt">algorithm=</span><span class="st">&#39;maxnet&#39;</span>)</a></code></pre></div>
+<pre><code>## *** Running ENMevaluate using maxnet v.0.1.2 ***</code></pre>
+<pre><code>## Doing evaluations using spatial blocks...</code></pre>
+<pre><code>## 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |============                                                          |  17%</code></pre>
+<pre><code>## 
+##  2 grid cells found with at least one NA value: these cells were excluded from raster predictions.</code></pre>
+<pre><code>## 
+  |                                                                            
+  |=======================                                               |  33%</code></pre>
+<pre><code>## 
+##  2 grid cells found with at least one NA value: these cells were excluded from raster predictions.</code></pre>
+<pre><code>## 
+  |                                                                            
+  |===================================                                   |  50%</code></pre>
+<pre><code>## 
+##  2 grid cells found with at least one NA value: these cells were excluded from raster predictions.</code></pre>
+<pre><code>## 
+  |                                                                            
+  |===============================================                       |  67%</code></pre>
+<pre><code>## 
+##  2 grid cells found with at least one NA value: these cells were excluded from raster predictions.</code></pre>
+<pre><code>## 
+  |                                                                            
+  |==========================================================            |  83%</code></pre>
+<pre><code>## 
+##  2 grid cells found with at least one NA value: these cells were excluded from raster predictions.</code></pre>
+<pre><code>## 
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+<pre><code>## 
+##  2 grid cells found with at least one NA value: these cells were excluded from raster predictions.</code></pre>
+<pre><code>## ENMeval completed in 0 minutes 16.3 seconds.</code></pre>
+</div>
+<div id="model-evaluation" class="section level2">
+<h2>Model evaluation</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># find the index number of the model with the highest mean test AUC: this will be the optimal model</span></a>
+<a class="sourceLine" id="cb21-2" title="2">i &lt;-<span class="st"> </span><span class="kw">which</span>(e<span class="op">@</span>results<span class="op">$</span>avg.test.AUC  <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(e<span class="op">@</span>results<span class="op">$</span>avg.test.AUC ))</a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="co"># extract the optimal model object</span></a>
+<a class="sourceLine" id="cb21-4" title="4">m &lt;-<span class="st"> </span>e<span class="op">@</span>models[[i]]</a></code></pre></div>
+<p>Note that the selected model uses linear and quadratic features with a regularization multiplier of 1.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1">e<span class="op">@</span>results[i,]</a></code></pre></div>
+<pre><code>##   settings features rm train.AUC avg.test.AUC var.test.AUC avg.diff.AUC
+## 5      L_3        L  3 0.8675127    0.8142638   0.04635953    0.1004334
+##   var.diff.AUC avg.test.orMTP var.test.orMTP avg.test.or10pct var.test.or10pct
+## 5   0.03026228     0.05802342    0.005202404        0.2426309       0.07737649
+##       AICc delta.AICc        w.AIC parameters
+## 5 7245.702   137.8355 1.173295e-30          6</code></pre>
+</div>
+<div id="predictions" class="section level2">
+<h2>Predictions</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="co"># the prediction rasters produced by ENMeval are &quot;raw&quot; values,</span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="co"># which correspond to the relative occurrence rate (ROR) per cell --</span></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="co"># see Merow et al. 2013 (Ecography)</span></a>
+<a class="sourceLine" id="cb24-4" title="4">p &lt;-<span class="st"> </span>e<span class="op">@</span>predictions[[i]]</a>
+<a class="sourceLine" id="cb24-5" title="5"><span class="kw">plot</span>(p)</a></code></pre></div>
+<p><img src="data:image/png;base64,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xEoSgWQiQAJKZr+yVUTACQRIQE50EytJBJKJAAkomf3KVhEBJxAgATnRTawkEUgmAiSgZPYrW0UEnECABOREN7GSRCCZCJCAktmvbBURcAIBEpAT3cRKEoFkIkACSma/slVEwAkESEBOdBMrSQSSiQAJKJn9ylYRAScQIAE50U2sJBFIJgIkoGT2K1tFBJxAgATkRDexkkQgmQiQgJLZr2wVEXACARKQE93EShKBZCJAAkpmv7JVRMAJBEhATnQTK0kEkokACSiZ/cpWEQEnECABOdFNrCQRSCYCJKBk9itbRQScQIAE5EQ3sZJEIJkIkICS2a9sFRFwAgESkBPdxEoSgWQiQAJKZr+yVUTACQRIQE50EytJBJKJAAkomf3KVhEBJxAgATnRTawkEUgmAiSgZPYrW0UEnECABOREN7GSRCCZCJCAktmvbBURcAIBEpAT3cRKEoFkIkACSma/slVEwAkESEBOdBMrSQSSiQAJKJn9ylYRAScQIAE50U2sJBFIJgIkoGT2K1tFBJxAgATkRDexkkQgmQiQgJLZr2wVEXACARKQE93EShKBZCJAAkpmv7JVRMAJBP4fSwvv8texTEAAAAAASUVORK5CYII=" /><!-- --></p>
+</div>
+<div id="transfer-model" class="section level2">
+<h2>Transfer model</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co"># specify extent further south for model transfer (this region</span></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="co"># should have different climatic conditions than the region</span></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="co"># used to train the model). This could be useful if no observations </span></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="co"># are available in this region, but you&#39;re interested in determining </span></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="co"># if there are any potentially suitable areas there.</span></a>
+<a class="sourceLine" id="cb25-6" title="6">pt.bb &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extent</span>(<span class="op">-</span><span class="dv">80</span>,<span class="op">-</span><span class="dv">40</span>,<span class="op">-</span><span class="dv">60</span>,<span class="op">-</span><span class="dv">30</span>)</a>
+<a class="sourceLine" id="cb25-7" title="7"><span class="co"># crop environmental predictors by transfer extent</span></a>
+<a class="sourceLine" id="cb25-8" title="8">pt.ext &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">crop</span>(envs, pt.bb)</a>
+<a class="sourceLine" id="cb25-9" title="9">pt &lt;-<span class="st"> </span>ENMeval<span class="op">::</span><span class="kw">maxnet.predictRaster</span>(m, pt.ext, <span class="dt">type =</span> <span class="st">&quot;exponential&quot;</span>, <span class="dt">clamp =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## 
+##  1 grid cells found with at least one NA value: these cells were excluded from raster predictions.</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">plot</span>(pt)</a></code></pre></div>
+<p><img src="data:image/png;base64,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ULn7wcu0NCmAMqwxNZpkqSaYpebSaG0Bmg8m86lmghMDJidee+21+oerdGcLE+TQCey3gwBVy0h0pznypYbZrRtuuKFBttatW2dhwiLu41BNRuvuu+9uEMaPi0zyFVTufvAyLU3aBVO/tmwc1iZt2LBBDjjgAKmoqEj6qGqyyMaNGxv1uyQN3IyeMEj46aef6rzbfUOJyVdVVYnqdBc1QqYnJSbe9+s6k3wFlbtfzExIlwLIhFpiHkkgpAQ4ETGkFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBCiATKgl5pEEQkqAAiikFctikYAJBP4/sxh6tH2r0kQAAAAASUVORK5CYII=" /><!-- --></p>
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+</div>
+</div>
+<div id="build-an-rmm-object" class="section level1">
+<h1>Build an <code>rmm</code> object</h1>
+<p>Begin by choosing a few families of fields relevant for this analysis and making a template. This will generate all the recommended fields, although the only fields that you must fill in are in <code>base</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># generate an empty range model metadata template</span></a>
+<a class="sourceLine" id="cb28-2" title="2">rmm &lt;-<span class="st"> </span><span class="kw">rmmTemplate</span>(<span class="dt">family=</span><span class="kw">c</span>(<span class="st">&#39;base&#39;</span>,<span class="st">&#39;dataPrep&#39;</span>,<span class="st">&#39;maxent&#39;</span>,<span class="st">&#39;prediction&#39;</span>,</a>
+<a class="sourceLine" id="cb28-3" title="3">                         <span class="st">&#39;transferEnv1&#39;</span>,<span class="st">&#39;binaryClassification&#39;</span>))</a></code></pre></div>
+<p>Note that to see a little bit less detail, it’s useful to use</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">str</span>(rmm, <span class="dv">1</span>)</a></code></pre></div>
+<pre><code>## List of 8
+##  $ authorship    :List of 8
+##  $ studyObjective:List of 4
+##  $ data          :List of 5
+##  $ dataPrep      :List of 4
+##  $ model         :List of 9
+##  $ prediction    :List of 6
+##  $ assessment    :List of 5
+##  $ code          :List of 8
+##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;list&quot; &quot;RMM&quot;</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">str</span>(rmm, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## List of 8
+##  $ authorship    :List of 8
+##   ..$ rmmName          : NULL
+##   ..$ names            : NULL
+##   ..$ license          : NULL
+##   ..$ contact          : NULL
+##   ..$ relatedReferences: NULL
+##   ..$ authorNotes      : NULL
+##   ..$ miscNotes        : NULL
+##   ..$ doi              : NULL
+##  $ studyObjective:List of 4
+##   ..$ purpose  : NULL
+##   ..$ rangeType: NULL
+##   ..$ invasion : NULL
+##   ..$ transfer : NULL
+##  $ data          :List of 5
+##   ..$ occurrence :List of 6
+##   ..$ environment:List of 9
+##   ..$ observation:List of 3
+##   ..$ dataNotes  : NULL
+##   ..$ transfer   :List of 1
+##  $ dataPrep      :List of 4
+##   ..$ dataPrepNotes: NULL
+##   ..$ geographic   :List of 6
+##   ..$ biological   :List of 5
+##   ..$ environmental:List of 3
+##  $ model         :List of 9
+##   ..$ algorithms        : NULL
+##   ..$ algorithmCitation : NULL
+##   ..$ speciesCount      : NULL
+##   ..$ selectionRules    : NULL
+##   ..$ finalModelSettings: NULL
+##   ..$ notes             : NULL
+##   ..$ partition         :List of 3
+##   ..$ references        : NULL
+##   ..$ algorithm         :List of 1
+##  $ prediction    :List of 6
+##   ..$ binary       :List of 2
+##   ..$ extrapolation: NULL
+##   ..$ transfer     :List of 2
+##   ..$ uncertainty  :List of 4
+##   ..$ continuous   :List of 3
+##   ..$ notes        : NULL
+##  $ assessment    :List of 5
+##   ..$ references         : NULL
+##   ..$ notes              : NULL
+##   ..$ trainingDataStats  :List of 12
+##   ..$ testingDataStats   :List of 12
+##   ..$ evaluationDataStats:List of 9
+##  $ code          :List of 8
+##   ..$ software        :List of 2
+##   ..$ demoCodeLink    : NULL
+##   ..$ vignetteCodeLink: NULL
+##   ..$ fullCodeLink    : NULL
+##   ..$ demoDataLink    : NULL
+##   ..$ vignetteDataLink: NULL
+##   ..$ fullDataLink    : NULL
+##   ..$ codeNotes       : NULL
+##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;list&quot; &quot;RMM&quot;</code></pre>
+<div id="authorship" class="section level2">
+<h2>Authorship</h2>
+<p>We start by filling in some key authorship information.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1">  <span class="co"># in the form Author_Year_Taxa_Model_fw (where the last 2 characters are random)</span></a>
+<a class="sourceLine" id="cb33-2" title="2">rmm<span class="op">$</span>authorship<span class="op">$</span>rmmName &lt;-<span class="st"> &#39;MerowMaitnerOwensKassEnquistJetzGuralnick_2018_BradypusVariegatus_Maxent_b3&#39;</span></a>
+<a class="sourceLine" id="cb33-3" title="3">  <span class="co"># names are distinct from citations (below) in case a citation does not exist </span></a>
+<a class="sourceLine" id="cb33-4" title="4">rmm<span class="op">$</span>authorship<span class="op">$</span>names &lt;-<span class="st"> &#39;Merow, Cory and Maitner, Brian and Owens, Hannah and Kass, Jamie and Enquist, Brian and Jetz, Walter and Guralnick, Rob&#39;</span></a>
+<a class="sourceLine" id="cb33-5" title="5">rmm<span class="op">$</span>authorship<span class="op">$</span>contact &lt;-<span class="st"> &#39;cory.merow@gmail.com&#39;</span></a>
+<a class="sourceLine" id="cb33-6" title="6">rmm<span class="op">$</span>authorship<span class="op">$</span>relatedReferences &lt;-<span class="st"> &#39;@article{, </span></a>
+<a class="sourceLine" id="cb33-7" title="7"><span class="st">  title={RMMS: Species’ Range Model Metadata Standards },</span></a>
+<a class="sourceLine" id="cb33-8" title="8"><span class="st">  author={Merow, Cory and Maitner, Brian S. and Owens, Hannah L. and Kass, </span></a>
+<a class="sourceLine" id="cb33-9" title="9"><span class="st">          Jamie M. and Enquist, Brian and Jetz, Walter and Guralnick, Robert},</span></a>
+<a class="sourceLine" id="cb33-10" title="10"><span class="st">  journal={Global Ecology and Biogeography},</span></a>
+<a class="sourceLine" id="cb33-11" title="11"><span class="st">  year={2019}}&#39;</span></a>
+<a class="sourceLine" id="cb33-12" title="12">rmm<span class="op">$</span>authorship<span class="op">$</span>license &lt;-<span class="st"> &#39;CC&#39;</span></a>
+<a class="sourceLine" id="cb33-13" title="13">rmm<span class="op">$</span>authorship<span class="op">$</span>miscNotes &lt;-<span class="st"> &#39;Funding from NSF grant DBI-1661510 and DBI-1913673.&#39;</span></a></code></pre></div>
+<!-- Would be nice to show how to make this a formal citation class, but i don't knowhow: -->
+<!-- ref='@article{, title={RMMS: Species’ Range Model Metadata Standards },author={Merow, Cory and Maitner, Brian and Owens, Hannah and Kass, Jamie and Enquist, Brian and Guralnick, Rob},journal={Unknown},year={2018}, publisher={Unknown}}' -->
+<!-- as(ref,'citation') -->
+</div>
+<div id="study-objective" class="section level2">
+<h2>Study Objective</h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">rmm<span class="op">$</span>studyObjective<span class="op">$</span>purpose=<span class="st">&#39;transfer&#39;</span></a>
+<a class="sourceLine" id="cb34-2" title="2">rmm<span class="op">$</span>studyObjective<span class="op">$</span>rangeType=<span class="st">&#39;potential&#39;</span></a>
+<a class="sourceLine" id="cb34-3" title="3">rmm<span class="op">$</span>studyObjective<span class="op">$</span>transfer=<span class="st">&#39;detect unoccupied suitable habitat&#39;</span></a></code></pre></div>
+<p>Note that the first two entities used standardized terms (<code>&#39;projection&#39;</code>) but the last one didn’t. That’s ok; the rules are meant to be flexible!</p>
+</div>
+<div id="autofill-when-possible" class="section level2">
+<h2>Autofill when possible</h2>
+<p>To make it easier to fill some <code>rmm</code> fields, we provide autofill functions that extract relevant information from common R objects used in the</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="co"># occurrence data</span></a>
+<a class="sourceLine" id="cb35-2" title="2">rmm &lt;-<span class="st"> </span><span class="kw">rmmAutofillspocc</span>(rmm, bv<span class="op">$</span>gbif) </a>
+<a class="sourceLine" id="cb35-3" title="3"><span class="co"># autofill info for environmental rasters used for model training and transfer</span></a>
+<a class="sourceLine" id="cb35-4" title="4">rmm &lt;-<span class="st"> </span><span class="kw">rmmAutofillEnvironment</span>(rmm, bg.ext, <span class="dt">transfer=</span><span class="dv">0</span>) </a>
+<a class="sourceLine" id="cb35-5" title="5">rmm &lt;-<span class="st"> </span><span class="kw">rmmAutofillEnvironment</span>(rmm, pt.ext, <span class="dt">transfer=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb35-6" title="6"><span class="co"># autofill for ENMeval</span></a>
+<a class="sourceLine" id="cb35-7" title="7">rmm &lt;-<span class="st"> </span><span class="kw">rmmAutofillENMeval</span>(rmm, e, </a>
+<a class="sourceLine" id="cb35-8" title="8">                          <span class="dt">selectionCriteria=</span><span class="st">&quot;highest mean test AUC&quot;</span>,</a>
+<a class="sourceLine" id="cb35-9" title="9">                          <span class="dt">optimalModelIndex=</span>i) </a>
+<a class="sourceLine" id="cb35-10" title="10"><span class="co"># R packages used</span></a>
+<a class="sourceLine" id="cb35-11" title="11">rmm &lt;-<span class="st"> </span><span class="kw">rmmAutofillPackageCitation</span>(<span class="dt">rmm=</span>rmm,</a>
+<a class="sourceLine" id="cb35-12" title="12">                                  <span class="dt">packages=</span> </a>
+<a class="sourceLine" id="cb35-13" title="13">                                    <span class="kw">c</span>(<span class="st">&#39;rgbif&#39;</span>,<span class="st">&#39;sp&#39;</span>,<span class="st">&#39;raster&#39;</span>,<span class="st">&#39;dismo&#39;</span>,<span class="st">&#39;ENMeval&#39;</span>))</a></code></pre></div>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Now we need to fill in some fields manually.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">rmm<span class="op">$</span>data<span class="op">$</span>occurrence<span class="op">$</span>sources &lt;-<span class="st"> </span><span class="kw">lapply</span>(rgbif<span class="op">::</span><span class="kw">gbif_citation</span>(bv),<span class="cf">function</span>(x) x<span class="op">$</span>citation<span class="op">$</span>citation)</a>
+<a class="sourceLine" id="cb36-2" title="2">rmm<span class="op">$</span>data<span class="op">$</span>occurrence<span class="op">$</span>yearMin &lt;-<span class="st"> </span><span class="dv">1970</span></a>
+<a class="sourceLine" id="cb36-3" title="3">rmm<span class="op">$</span>data<span class="op">$</span>occurrence<span class="op">$</span>yearMax &lt;-<span class="st"> </span><span class="dv">2000</span></a></code></pre></div>
+<p>Note that in the use of <code>gbif_citation</code> above, we use a journal formatted style for references, instead of bibtex, as used below. We chose this because the journal formatting is returned by <code>gbif_citation</code> and bibtex it not available. Rather than request that authors spend an inordinate amount of time manually reformatting perfectly good citations (which is error prone) we suggest simply using this default format.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">rmm<span class="op">$</span>data<span class="op">$</span>environment<span class="op">$</span>yearMin &lt;-<span class="st"> </span><span class="dv">1960</span></a>
+<a class="sourceLine" id="cb37-2" title="2">rmm<span class="op">$</span>data<span class="op">$</span>environment<span class="op">$</span>yearMin &lt;-<span class="st"> </span><span class="dv">1990</span></a>
+<a class="sourceLine" id="cb37-3" title="3">rmm<span class="op">$</span>data<span class="op">$</span>environment<span class="op">$</span>sources &lt;-<span class="st"> &#39;@article{hijmans2005,</span></a>
+<a class="sourceLine" id="cb37-4" title="4"><span class="st">  title={Very high resolution interpolated climate surfaces for global land areas},</span></a>
+<a class="sourceLine" id="cb37-5" title="5"><span class="st">  author={Hijmans, Robert J and Cameron, Susan E and Parra, Juan L and Jones, Peter G and Jarvis, Andy},</span></a>
+<a class="sourceLine" id="cb37-6" title="6"><span class="st">  journal={International Journal of Climatology: A Journal of the Royal Meteorological Society},</span></a>
+<a class="sourceLine" id="cb37-7" title="7"><span class="st">  volume={25},</span></a>
+<a class="sourceLine" id="cb37-8" title="8"><span class="st">  number={15},</span></a>
+<a class="sourceLine" id="cb37-9" title="9"><span class="st">  pages={1965--1978},</span></a>
+<a class="sourceLine" id="cb37-10" title="10"><span class="st">  year={2005},</span></a>
+<a class="sourceLine" id="cb37-11" title="11"><span class="st">  publisher={Wiley Online Library}</span></a>
+<a class="sourceLine" id="cb37-12" title="12"><span class="st">}&#39;</span></a>
+<a class="sourceLine" id="cb37-13" title="13">rmm<span class="op">$</span>data<span class="op">$</span>dataNotes &lt;-<span class="st"> &#39;WorldClim v1.4 data accessed through dismo v1.1-4&#39;</span></a></code></pre></div>
+<p>To fill in the min and max values of each data layer, it’s easiest to create a <code>data.frame</code> and convert that to JSON.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1">mm &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">rbind</span>(<span class="kw">apply</span>(<span class="kw">values</span>(envs),<span class="dv">2</span>,min,<span class="dt">na.rm=</span>T),</a>
+<a class="sourceLine" id="cb38-2" title="2">                    <span class="kw">apply</span>(<span class="kw">values</span>(envs),<span class="dv">2</span>,max,<span class="dt">na.rm=</span>T)))</a>
+<a class="sourceLine" id="cb38-3" title="3">rmm<span class="op">$</span>data<span class="op">$</span>environment<span class="op">$</span>minVal &lt;-<span class="st"> </span><span class="kw">toJSON</span>(mm[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb38-4" title="4">(rmm<span class="op">$</span>data<span class="op">$</span>environment<span class="op">$</span>maxVal &lt;-<span class="st"> </span><span class="kw">toJSON</span>(mm[<span class="dv">2</span>,])) <span class="co"># printed to show format</span></a></code></pre></div>
+<pre><code>## [{&quot;bio1&quot;:289,&quot;bio12&quot;:7682,&quot;bio16&quot;:2458,&quot;bio17&quot;:1496,&quot;bio5&quot;:422,&quot;bio6&quot;:242,&quot;bio7&quot;:461,&quot;bio8&quot;:323,&quot;biome&quot;:14}]</code></pre>
+<p>To fill in the extent of the layers, you can either do it manually or programatically. I do it programatically because I think it’s easier to make it JSON format.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1">(ex &lt;-<span class="st"> </span><span class="kw">extent</span>(envs))</a></code></pre></div>
+<pre><code>## class      : Extent 
+## xmin       : -125 
+## xmax       : -32 
+## ymin       : -56 
+## ymax       : 40</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="co"># make an extent object a data.frame, because that&#39;s easy to use with toJSON</span></a>
+<a class="sourceLine" id="cb42-2" title="2">tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">lapply</span>(<span class="kw">slotNames</span>(ex), <span class="cf">function</span>(i) <span class="kw">slot</span>(ex, i) )) </a>
+<a class="sourceLine" id="cb42-3" title="3"><span class="kw">names</span>(tmp) &lt;-<span class="st"> </span><span class="kw">slotNames</span>(ex)</a>
+<a class="sourceLine" id="cb42-4" title="4">rmm<span class="op">$</span>data<span class="op">$</span>environment<span class="op">$</span>extentSet &lt;-<span class="st"> </span><span class="kw">toJSON</span>(tmp)</a></code></pre></div>
+<p>Have I missed anything?</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="kw">rmmSuggest</span>(<span class="st">&#39;$data&#39;</span>) <span class="co"># note the use of quotes!</span></a></code></pre></div>
+<pre><code>## $type
+## [1] &quot;field2&quot;
+## 
+## $suggestions
+## [1] &quot;data$occurrence&quot;  &quot;data$environment&quot; &quot;data$observation&quot; &quot;data$transfer&quot;   
+## [5] &quot;data$dataNotes&quot;</code></pre>
+<p>Oh yeah, we haven’t dealt with the environment to which the model is transferred. In the modeling above we transferred to an adjacent region. So this follows analogous information provided for the fitting layers.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">rmm<span class="op">$</span>data<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>yearMin &lt;-<span class="st"> </span><span class="dv">1970</span></a>
+<a class="sourceLine" id="cb45-2" title="2">rmm<span class="op">$</span>data<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>yearMin &lt;-<span class="st"> </span><span class="dv">2000</span></a>
+<a class="sourceLine" id="cb45-3" title="3">rmm<span class="op">$</span>data<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>resolution=<span class="kw">paste0</span>(<span class="kw">res</span>(pt.ext)[<span class="dv">1</span>],<span class="st">&#39; degrees&#39;</span>)</a>
+<a class="sourceLine" id="cb45-4" title="4">rmm<span class="op">$</span>data<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>sources &lt;-<span class="st"> &#39;@article{hijmans2005,</span></a>
+<a class="sourceLine" id="cb45-5" title="5"><span class="st">  title={Very high resolution interpolated climate surfaces for global land areas},</span></a>
+<a class="sourceLine" id="cb45-6" title="6"><span class="st">  author={Hijmans, Robert J and Cameron, Susan E and Parra, Juan L and Jones, Peter G and Jarvis, Andy},</span></a>
+<a class="sourceLine" id="cb45-7" title="7"><span class="st">  journal={International Journal of Climatology: A Journal of the Royal Meteorological Society},</span></a>
+<a class="sourceLine" id="cb45-8" title="8"><span class="st">  volume={25},</span></a>
+<a class="sourceLine" id="cb45-9" title="9"><span class="st">  number={15},</span></a>
+<a class="sourceLine" id="cb45-10" title="10"><span class="st">  pages={1965--1978},</span></a>
+<a class="sourceLine" id="cb45-11" title="11"><span class="st">  year={2005},</span></a>
+<a class="sourceLine" id="cb45-12" title="12"><span class="st">  publisher={Wiley Online Library}</span></a>
+<a class="sourceLine" id="cb45-13" title="13"><span class="st">}&#39;</span></a>
+<a class="sourceLine" id="cb45-14" title="14"></a>
+<a class="sourceLine" id="cb45-15" title="15">mm.pt &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">rbind</span>(<span class="kw">apply</span>(<span class="kw">values</span>(pt.ext),<span class="dv">2</span>,min,<span class="dt">na.rm=</span>T),</a>
+<a class="sourceLine" id="cb45-16" title="16">                    <span class="kw">apply</span>(<span class="kw">values</span>(pt.ext),<span class="dv">2</span>,max,<span class="dt">na.rm=</span>T)))</a>
+<a class="sourceLine" id="cb45-17" title="17">rmm<span class="op">$</span>data<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>minVal &lt;-<span class="st"> </span><span class="kw">toJSON</span>(mm.pt[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb45-18" title="18">(rmm<span class="op">$</span>data<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>maxVal &lt;-<span class="st"> </span><span class="kw">toJSON</span>(mm.pt[<span class="dv">2</span>,])) <span class="co"># printed to show format</span></a></code></pre></div>
+<pre><code>## [{&quot;bio1&quot;:208,&quot;bio12&quot;:6045,&quot;bio16&quot;:1753,&quot;bio17&quot;:1284,&quot;bio5&quot;:345,&quot;bio6&quot;:101,&quot;bio7&quot;:336,&quot;bio8&quot;:270,&quot;biome&quot;:12}]</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">(ex &lt;-<span class="st"> </span><span class="kw">extent</span>(pt.ext))</a></code></pre></div>
+<pre><code>## class      : Extent 
+## xmin       : -80 
+## xmax       : -40 
+## ymin       : -56 
+## ymax       : -30</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co"># make an extent object a data.frame, because that&#39;s easy to use with toJSON</span></a>
+<a class="sourceLine" id="cb49-2" title="2">tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">lapply</span>(<span class="kw">slotNames</span>(ex), <span class="cf">function</span>(i) <span class="kw">slot</span>(ex, i) )) </a>
+<a class="sourceLine" id="cb49-3" title="3"><span class="kw">names</span>(tmp) &lt;-<span class="st"> </span><span class="kw">slotNames</span>(ex)</a>
+<a class="sourceLine" id="cb49-4" title="4">rmm<span class="op">$</span>data<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>extentSet &lt;-<span class="st"> </span><span class="kw">toJSON</span>(tmp)</a></code></pre></div>
+</div>
+<div id="data-preparation-cleaning" class="section level2">
+<h2>Data Preparation (cleaning)</h2>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1"><span class="co"># duplicated observations removed within the grid cells defined by the environmental layers</span></a>
+<a class="sourceLine" id="cb50-2" title="2">rmm<span class="op">$</span>dataPrep<span class="op">$</span>biological<span class="op">$</span>duplicateRemoval<span class="op">$</span>rule &lt;-<span class="st"> &#39;one observation per cell&#39;</span> </a>
+<a class="sourceLine" id="cb50-3" title="3">rmm<span class="op">$</span>dataPrep<span class="op">$</span>geographic<span class="op">$</span>spatialThin<span class="op">$</span>rule &lt;-<span class="st"> &quot;20 km used as minimum distance between points&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1">rmm<span class="op">$</span>modelFit<span class="op">$</span>maxent<span class="op">$</span>notes &lt;-<span class="st"> &#39;ENMeval was used to compare models with L and LQ features, each using regularization multipliers of 1,2,3. The best model was selected based on test AUC evaluated with spatial cross validation.&#39;</span></a></code></pre></div>
+<p>Note that we took the value of <code>rmm$modelFit$partition$partitionRule</code> straight from the helpfile of <code>ENMeval::get.block</code>; this can be useful for standardizing text. Also note that we demonstrate how to add a field which is not included in the standards metadata dictionary ’rmm<span class="math inline">\(modelFit\)</span>maxent$numberParameters` to describe the number of parameters retained in the selected model.</p>
+</div>
+<div id="prediction" class="section level2">
+<h2>Prediction</h2>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="co"># fill in remaining fields for model prediction in background extent</span></a>
+<a class="sourceLine" id="cb52-2" title="2">rmm<span class="op">$</span>prediction<span class="op">$</span>continuous<span class="op">$</span>units &lt;-<span class="st"> &quot;relative occurrence rate&quot;</span></a>
+<a class="sourceLine" id="cb52-3" title="3">rmm<span class="op">$</span>prediction<span class="op">$</span>continuous<span class="op">$</span>minVal &lt;-<span class="st"> </span><span class="kw">cellStats</span>(p, min)</a>
+<a class="sourceLine" id="cb52-4" title="4">rmm<span class="op">$</span>prediction<span class="op">$</span>continuous<span class="op">$</span>maxVal &lt;-<span class="st"> </span><span class="kw">cellStats</span>(p, max)</a>
+<a class="sourceLine" id="cb52-5" title="5"><span class="co"># we chose to clamp our model predictions</span></a>
+<a class="sourceLine" id="cb52-6" title="6">rmm<span class="op">$</span>prediction<span class="op">$</span>extrapolation &lt;-<span class="st"> &quot;clamping&quot;</span></a></code></pre></div>
+<p>Analogous fields for transfer</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1">rmm<span class="op">$</span>prediction<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>units &lt;-<span class="st"> &quot;relative occurrence rate&quot;</span></a>
+<a class="sourceLine" id="cb53-2" title="2">rmm<span class="op">$</span>prediction<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>minVal &lt;-<span class="st"> </span><span class="kw">cellStats</span>(pt, min)</a>
+<a class="sourceLine" id="cb53-3" title="3">rmm<span class="op">$</span>prediction<span class="op">$</span>transfer<span class="op">$</span>environment1<span class="op">$</span>maxVal &lt;-<span class="st"> </span><span class="kw">cellStats</span>(pt, max)</a>
+<a class="sourceLine" id="cb53-4" title="4">rmm<span class="op">$</span>prediction<span class="op">$</span>extrapolation &lt;-<span class="st"> &quot;clamping&quot;</span></a></code></pre></div>
+</div>
+<div id="code" class="section level2">
+<h2>Code</h2>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">rmm<span class="op">$</span>code<span class="op">$</span>software &lt;-<span class="st"> &#39;@Manual{</span></a>
+<a class="sourceLine" id="cb54-2" title="2"><span class="st">  title = {R: A Language and Environment for Statistical Computing},</span></a>
+<a class="sourceLine" id="cb54-3" title="3"><span class="st">  author = {{R Core Team}},</span></a>
+<a class="sourceLine" id="cb54-4" title="4"><span class="st">  organization = {R Foundation for Statistical Computing},</span></a>
+<a class="sourceLine" id="cb54-5" title="5"><span class="st">  address = {Vienna, Austria},</span></a>
+<a class="sourceLine" id="cb54-6" title="6"><span class="st">  year = {2017},</span></a>
+<a class="sourceLine" id="cb54-7" title="7"><span class="st">  url = {https://www.R-project.org/},}&#39;</span></a>
+<a class="sourceLine" id="cb54-8" title="8">rmm<span class="op">$</span>code<span class="op">$</span>vignetteCodeLink &lt;-<span class="st"> &#39;https://github.com/cmerow/rangeModelMetadata/blob/master/vignettes/rmm_workflowWithExampleRangeModel.Rmd&#39;</span></a></code></pre></div>
+</div>
+<div id="check-your-rmm-object" class="section level2">
+<h2>Check your <code>rmm</code> object</h2>
+<p>Let’s see how we’re doing so far by printing all the filled fields.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="co">#print just the non-NULL fields</span></a>
+<a class="sourceLine" id="cb55-2" title="2"><span class="kw">rmmCleanNULLs</span>(rmm)</a></code></pre></div>
+<pre><code>## $authorship
+## $authorship$rmmName
+## [1] &quot;MerowMaitnerOwensKassEnquistJetzGuralnick_2018_BradypusVariegatus_Maxent_b3&quot;
+## 
+## $authorship$names
+## [1] &quot;Merow, Cory and Maitner, Brian and Owens, Hannah and Kass, Jamie and Enquist, Brian and Jetz, Walter and Guralnick, Rob&quot;
+## 
+## $authorship$license
+## [1] &quot;CC&quot;
+## 
+## $authorship$contact
+## [1] &quot;cory.merow@gmail.com&quot;
+## 
+## $authorship$relatedReferences
+## [1] &quot;@article{, \n  title={RMMS: Species’ Range Model Metadata Standards },\n  author={Merow, Cory and Maitner, Brian S. and Owens, Hannah L. and Kass, \n          Jamie M. and Enquist, Brian and Jetz, Walter and Guralnick, Robert},\n  journal={Global Ecology and Biogeography},\n  year={2019}}&quot;
+## 
+## $authorship$miscNotes
+## [1] &quot;Funding from NSF grant DBI-1661510 and DBI-1913673.&quot;
+## 
+## 
+## $studyObjective
+## $studyObjective$purpose
+## [1] &quot;transfer&quot;
+## 
+## $studyObjective$rangeType
+## [1] &quot;potential&quot;
+## 
+## $studyObjective$transfer
+## [1] &quot;detect unoccupied suitable habitat&quot;
+## 
+## 
+## $data
+## $data$occurrence
+## $data$occurrence$dataType
+## [1] &quot;presence only&quot;
+## 
+## $data$occurrence$yearMin
+## [1] 1970
+## 
+## $data$occurrence$yearMax
+## [1] 2000
+## 
+## $data$occurrence$sources
+## $data$occurrence$sources[[1]]
+## [1] &quot;iNaturalist.org (2020). iNaturalist Research-grade Observations. Occurrence dataset https://doi.org/10.15468/ab3s5x accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[2]]
+## [1] &quot;naturgucker.de. naturgucker. Occurrence dataset https://doi.org/10.15468/uc1apo accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[3]]
+## [1] &quot;Villegas M, Moreno J (2019). Primer monitoreo y seguimiento de fauna terrestre para el AID y AII de la  Pequeña Central Hidráulica Riofrío. 2018. Corporación Paisajes Rurales. Occurrence dataset https://doi.org/10.15472/lh28wc accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[4]]
+## [1] &quot;Olaciregui C (2017). Evaluación de la presencia de &#39;Marmosa robinsoni&#39; e inventario de mamíferos en el Departamento del Atlántico. Fundación Botánica y Zoológica de Barranquilla. Occurrence dataset https://doi.org/10.15472/54fglv accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[5]]
+## [1] &quot;Villegas M, Bolaños A (2017). Monitoreo y seguimiento de fauna terrestre para el AID y AII de la  Central Hidroeléctrica de Calima - 2017. Corporación Paisajes Rurales. Occurrence dataset https://doi.org/10.15472/l3cboh accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[6]]
+## [1] &quot;Villegas M, Zambrano F H, Guerra Gonzalez G J, Gonzalez G J (2019). Establecimiento de línea base de fauna terrestre para el AID y AII de la  Pequeña Central Hidroeléctrica Riofrío. 2017.. Version 1.1. Corporación Paisajes Rurales. Occurrence dataset https://doi.org/10.15472/7s9kiw accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## 
+## $data$occurrence$presenceSampleSize
+## [1] 483
+## 
+## $data$occurrence$backgroundSampleSize
+## [1] 5604
+## 
+## 
+## $data$environment
+## $data$environment$variableNames
+## [1] &quot;bio1&quot;  &quot;bio12&quot; &quot;bio16&quot; &quot;bio17&quot; &quot;bio5&quot;  &quot;bio6&quot;  &quot;bio7&quot;  &quot;bio8&quot;  &quot;biome&quot;
+## 
+## $data$environment$yearMin
+## [1] 1990
+## 
+## $data$environment$extentSet
+## [{&quot;xmin&quot;:-125,&quot;xmax&quot;:-32,&quot;ymin&quot;:-56,&quot;ymax&quot;:40}] 
+## 
+## $data$environment$resolution
+## [1] 0.5 0.5
+## 
+## $data$environment$sources
+## [1] &quot;@article{hijmans2005,\n  title={Very high resolution interpolated climate surfaces for global land areas},\n  author={Hijmans, Robert J and Cameron, Susan E and Parra, Juan L and Jones, Peter G and Jarvis, Andy},\n  journal={International Journal of Climatology: A Journal of the Royal Meteorological Society},\n  volume={25},\n  number={15},\n  pages={1965--1978},\n  year={2005},\n  publisher={Wiley Online Library}\n}&quot;
+## 
+## $data$environment$minVal
+## [{&quot;bio1&quot;:-23,&quot;bio12&quot;:0,&quot;bio16&quot;:0,&quot;bio17&quot;:0,&quot;bio5&quot;:61,&quot;bio6&quot;:-212,&quot;bio7&quot;:60,&quot;bio8&quot;:-66,&quot;biome&quot;:1}] 
+## 
+## $data$environment$maxVal
+## [{&quot;bio1&quot;:289,&quot;bio12&quot;:7682,&quot;bio16&quot;:2458,&quot;bio17&quot;:1496,&quot;bio5&quot;:422,&quot;bio6&quot;:242,&quot;bio7&quot;:461,&quot;bio8&quot;:323,&quot;biome&quot;:14}] 
+## 
+## 
+## $data$dataNotes
+## [1] &quot;WorldClim v1.4 data accessed through dismo v1.1-4&quot;
+## 
+## $data$transfer
+## $data$transfer$environment1
+## $data$transfer$environment1$minVal
+## [{&quot;bio1&quot;:-23,&quot;bio12&quot;:96,&quot;bio16&quot;:42,&quot;bio17&quot;:0,&quot;bio5&quot;:90,&quot;bio6&quot;:-136,&quot;bio7&quot;:92,&quot;bio8&quot;:-66,&quot;biome&quot;:1}] 
+## 
+## $data$transfer$environment1$maxVal
+## [{&quot;bio1&quot;:208,&quot;bio12&quot;:6045,&quot;bio16&quot;:1753,&quot;bio17&quot;:1284,&quot;bio5&quot;:345,&quot;bio6&quot;:101,&quot;bio7&quot;:336,&quot;bio8&quot;:270,&quot;biome&quot;:12}] 
+## 
+## $data$transfer$environment1$yearMin
+## [1] 2000
+## 
+## $data$transfer$environment1$sources
+## [1] &quot;@article{hijmans2005,\n  title={Very high resolution interpolated climate surfaces for global land areas},\n  author={Hijmans, Robert J and Cameron, Susan E and Parra, Juan L and Jones, Peter G and Jarvis, Andy},\n  journal={International Journal of Climatology: A Journal of the Royal Meteorological Society},\n  volume={25},\n  number={15},\n  pages={1965--1978},\n  year={2005},\n  publisher={Wiley Online Library}\n}&quot;
+## 
+## $data$transfer$environment1$extentSet
+## [{&quot;xmin&quot;:-80,&quot;xmax&quot;:-40,&quot;ymin&quot;:-56,&quot;ymax&quot;:-30}] 
+## 
+## $data$transfer$environment1$resolution
+## [1] &quot;0.5 degrees&quot;
+## 
+## 
+## 
+## 
+## $dataPrep
+## $dataPrep$geographic
+## $dataPrep$geographic$spatialThin
+## $dataPrep$geographic$spatialThin$rule
+## [1] &quot;20 km used as minimum distance between points&quot;
+## 
+## 
+## 
+## $dataPrep$biological
+## $dataPrep$biological$duplicateRemoval
+## $dataPrep$biological$duplicateRemoval$rule
+## [1] &quot;one observation per cell&quot;
+## 
+## 
+## 
+## $dataPrep$environmental
+## named list()
+## 
+## 
+## $model
+## $model$algorithms
+## [1] &quot;maxnet v.0.1.2&quot;
+## 
+## $model$selectionRules
+## [1] &quot;highest mean test AUC&quot;
+## 
+## $model$finalModelSettings
+## [1] L_3
+## Levels: LQ_1 LQ_2 LQ_3 L_1 L_2 L_3
+## 
+## $model$partition
+## $model$partition$partitionSet
+## [1] &quot;spatial blocks&quot;
+## 
+## $model$partition$partitionRule
+## [1] &quot;4 spatial partitions defined by latitude/longitude lines that ensure a balanced number of occurrence localities in each bin&quot;
+## 
+## $model$partition$notes
+## [1] &quot;background points also partitioned&quot;
+## 
+## $model$partition$occurrenceSubsampling
+## [1] &quot;k-fold cross validation&quot;
+## 
+## $model$partition$numberFolds
+## [1] 4
+## 
+## 
+## $model$algorithm
+## $model$algorithm$maxent
+## $model$algorithm$maxent$regularizationMultiplierSet
+## [1] 3
+## 
+## $model$algorithm$maxent$samplingBiasRule
+## [1] &quot;ignored&quot;
+## 
+## 
+## 
+## 
+## $prediction
+## $prediction$extrapolation
+## [1] &quot;clamping&quot;
+## 
+## $prediction$transfer
+## $prediction$transfer$environment1
+## $prediction$transfer$environment1$units
+## [1] &quot;relative occurrence rate&quot;
+## 
+## $prediction$transfer$environment1$minVal
+## [1] 6.316346e-08
+## 
+## $prediction$transfer$environment1$maxVal
+## [1] 0.0004328058
+## 
+## 
+## 
+## $prediction$continuous
+## $prediction$continuous$units
+## [1] &quot;relative occurrence rate&quot;
+## 
+## $prediction$continuous$minVal
+## [1] 6.817044e-08
+## 
+## $prediction$continuous$maxVal
+## [1] 0.01327394
+## 
+## 
+## 
+## $assessment
+## $assessment$trainingDataStats
+## $assessment$trainingDataStats$AIC
+## [1] 7245.702
+## 
+## 
+## $assessment$testingDataStats
+## $assessment$testingDataStats$AUC
+## [1] 0.8142638
+## 
+## $assessment$testingDataStats$omissionRate
+## [1] 0.05802342 0.24263085
+## 
+## $assessment$testingDataStats$notes
+## [1] &quot;omission rate thresholds are 1) minimum training presence, 2) 10% training presence&quot;
+## 
+## 
+## 
+## $code
+## $code$software
+## [1] &quot;@Manual{\n  title = {R: A Language and Environment for Statistical Computing},\n  author = {{R Core Team}},\n  organization = {R Foundation for Statistical Computing},\n  address = {Vienna, Austria},\n  year = {2017},\n  url = {https://www.R-project.org/},}&quot;
+## 
+## $code$vignetteCodeLink
+## [1] &quot;https://github.com/cmerow/rangeModelMetadata/blob/master/vignettes/rmm_workflowWithExampleRangeModel.Rmd&quot;
+## 
+## 
+## $modelFit
+## $modelFit$maxent
+## $modelFit$maxent$notes
+## [1] &quot;ENMeval was used to compare models with L and LQ features, each using regularization multipliers of 1,2,3. The best model was selected based on test AUC evaluated with spatial cross validation.&quot;</code></pre>
+<p>Check the final object by printing all the filled fields.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1"><span class="co">#print just the non-NULL fields</span></a>
+<a class="sourceLine" id="cb57-2" title="2"><span class="kw">rmmCleanNULLs</span>(rmm)</a></code></pre></div>
+<pre><code>## $authorship
+## $authorship$rmmName
+## [1] &quot;MerowMaitnerOwensKassEnquistJetzGuralnick_2018_BradypusVariegatus_Maxent_b3&quot;
+## 
+## $authorship$names
+## [1] &quot;Merow, Cory and Maitner, Brian and Owens, Hannah and Kass, Jamie and Enquist, Brian and Jetz, Walter and Guralnick, Rob&quot;
+## 
+## $authorship$license
+## [1] &quot;CC&quot;
+## 
+## $authorship$contact
+## [1] &quot;cory.merow@gmail.com&quot;
+## 
+## $authorship$relatedReferences
+## [1] &quot;@article{, \n  title={RMMS: Species’ Range Model Metadata Standards },\n  author={Merow, Cory and Maitner, Brian S. and Owens, Hannah L. and Kass, \n          Jamie M. and Enquist, Brian and Jetz, Walter and Guralnick, Robert},\n  journal={Global Ecology and Biogeography},\n  year={2019}}&quot;
+## 
+## $authorship$miscNotes
+## [1] &quot;Funding from NSF grant DBI-1661510 and DBI-1913673.&quot;
+## 
+## 
+## $studyObjective
+## $studyObjective$purpose
+## [1] &quot;transfer&quot;
+## 
+## $studyObjective$rangeType
+## [1] &quot;potential&quot;
+## 
+## $studyObjective$transfer
+## [1] &quot;detect unoccupied suitable habitat&quot;
+## 
+## 
+## $data
+## $data$occurrence
+## $data$occurrence$dataType
+## [1] &quot;presence only&quot;
+## 
+## $data$occurrence$yearMin
+## [1] 1970
+## 
+## $data$occurrence$yearMax
+## [1] 2000
+## 
+## $data$occurrence$sources
+## $data$occurrence$sources[[1]]
+## [1] &quot;iNaturalist.org (2020). iNaturalist Research-grade Observations. Occurrence dataset https://doi.org/10.15468/ab3s5x accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[2]]
+## [1] &quot;naturgucker.de. naturgucker. Occurrence dataset https://doi.org/10.15468/uc1apo accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[3]]
+## [1] &quot;Villegas M, Moreno J (2019). Primer monitoreo y seguimiento de fauna terrestre para el AID y AII de la  Pequeña Central Hidráulica Riofrío. 2018. Corporación Paisajes Rurales. Occurrence dataset https://doi.org/10.15472/lh28wc accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[4]]
+## [1] &quot;Olaciregui C (2017). Evaluación de la presencia de &#39;Marmosa robinsoni&#39; e inventario de mamíferos en el Departamento del Atlántico. Fundación Botánica y Zoológica de Barranquilla. Occurrence dataset https://doi.org/10.15472/54fglv accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[5]]
+## [1] &quot;Villegas M, Bolaños A (2017). Monitoreo y seguimiento de fauna terrestre para el AID y AII de la  Central Hidroeléctrica de Calima - 2017. Corporación Paisajes Rurales. Occurrence dataset https://doi.org/10.15472/l3cboh accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## $data$occurrence$sources[[6]]
+## [1] &quot;Villegas M, Zambrano F H, Guerra Gonzalez G J, Gonzalez G J (2019). Establecimiento de línea base de fauna terrestre para el AID y AII de la  Pequeña Central Hidroeléctrica Riofrío. 2017.. Version 1.1. Corporación Paisajes Rurales. Occurrence dataset https://doi.org/10.15472/7s9kiw accessed via GBIF.org on 2020-03-13.. Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2020-03-13&quot;
+## 
+## 
+## $data$occurrence$presenceSampleSize
+## [1] 483
+## 
+## $data$occurrence$backgroundSampleSize
+## [1] 5604
+## 
+## 
+## $data$environment
+## $data$environment$variableNames
+## [1] &quot;bio1&quot;  &quot;bio12&quot; &quot;bio16&quot; &quot;bio17&quot; &quot;bio5&quot;  &quot;bio6&quot;  &quot;bio7&quot;  &quot;bio8&quot;  &quot;biome&quot;
+## 
+## $data$environment$yearMin
+## [1] 1990
+## 
+## $data$environment$extentSet
+## [{&quot;xmin&quot;:-125,&quot;xmax&quot;:-32,&quot;ymin&quot;:-56,&quot;ymax&quot;:40}] 
+## 
+## $data$environment$resolution
+## [1] 0.5 0.5
+## 
+## $data$environment$sources
+## [1] &quot;@article{hijmans2005,\n  title={Very high resolution interpolated climate surfaces for global land areas},\n  author={Hijmans, Robert J and Cameron, Susan E and Parra, Juan L and Jones, Peter G and Jarvis, Andy},\n  journal={International Journal of Climatology: A Journal of the Royal Meteorological Society},\n  volume={25},\n  number={15},\n  pages={1965--1978},\n  year={2005},\n  publisher={Wiley Online Library}\n}&quot;
+## 
+## $data$environment$minVal
+## [{&quot;bio1&quot;:-23,&quot;bio12&quot;:0,&quot;bio16&quot;:0,&quot;bio17&quot;:0,&quot;bio5&quot;:61,&quot;bio6&quot;:-212,&quot;bio7&quot;:60,&quot;bio8&quot;:-66,&quot;biome&quot;:1}] 
+## 
+## $data$environment$maxVal
+## [{&quot;bio1&quot;:289,&quot;bio12&quot;:7682,&quot;bio16&quot;:2458,&quot;bio17&quot;:1496,&quot;bio5&quot;:422,&quot;bio6&quot;:242,&quot;bio7&quot;:461,&quot;bio8&quot;:323,&quot;biome&quot;:14}] 
+## 
+## 
+## $data$dataNotes
+## [1] &quot;WorldClim v1.4 data accessed through dismo v1.1-4&quot;
+## 
+## $data$transfer
+## $data$transfer$environment1
+## $data$transfer$environment1$minVal
+## [{&quot;bio1&quot;:-23,&quot;bio12&quot;:96,&quot;bio16&quot;:42,&quot;bio17&quot;:0,&quot;bio5&quot;:90,&quot;bio6&quot;:-136,&quot;bio7&quot;:92,&quot;bio8&quot;:-66,&quot;biome&quot;:1}] 
+## 
+## $data$transfer$environment1$maxVal
+## [{&quot;bio1&quot;:208,&quot;bio12&quot;:6045,&quot;bio16&quot;:1753,&quot;bio17&quot;:1284,&quot;bio5&quot;:345,&quot;bio6&quot;:101,&quot;bio7&quot;:336,&quot;bio8&quot;:270,&quot;biome&quot;:12}] 
+## 
+## $data$transfer$environment1$yearMin
+## [1] 2000
+## 
+## $data$transfer$environment1$sources
+## [1] &quot;@article{hijmans2005,\n  title={Very high resolution interpolated climate surfaces for global land areas},\n  author={Hijmans, Robert J and Cameron, Susan E and Parra, Juan L and Jones, Peter G and Jarvis, Andy},\n  journal={International Journal of Climatology: A Journal of the Royal Meteorological Society},\n  volume={25},\n  number={15},\n  pages={1965--1978},\n  year={2005},\n  publisher={Wiley Online Library}\n}&quot;
+## 
+## $data$transfer$environment1$extentSet
+## [{&quot;xmin&quot;:-80,&quot;xmax&quot;:-40,&quot;ymin&quot;:-56,&quot;ymax&quot;:-30}] 
+## 
+## $data$transfer$environment1$resolution
+## [1] &quot;0.5 degrees&quot;
+## 
+## 
+## 
+## 
+## $dataPrep
+## $dataPrep$geographic
+## $dataPrep$geographic$spatialThin
+## $dataPrep$geographic$spatialThin$rule
+## [1] &quot;20 km used as minimum distance between points&quot;
+## 
+## 
+## 
+## $dataPrep$biological
+## $dataPrep$biological$duplicateRemoval
+## $dataPrep$biological$duplicateRemoval$rule
+## [1] &quot;one observation per cell&quot;
+## 
+## 
+## 
+## $dataPrep$environmental
+## named list()
+## 
+## 
+## $model
+## $model$algorithms
+## [1] &quot;maxnet v.0.1.2&quot;
+## 
+## $model$selectionRules
+## [1] &quot;highest mean test AUC&quot;
+## 
+## $model$finalModelSettings
+## [1] L_3
+## Levels: LQ_1 LQ_2 LQ_3 L_1 L_2 L_3
+## 
+## $model$partition
+## $model$partition$partitionSet
+## [1] &quot;spatial blocks&quot;
+## 
+## $model$partition$partitionRule
+## [1] &quot;4 spatial partitions defined by latitude/longitude lines that ensure a balanced number of occurrence localities in each bin&quot;
+## 
+## $model$partition$notes
+## [1] &quot;background points also partitioned&quot;
+## 
+## $model$partition$occurrenceSubsampling
+## [1] &quot;k-fold cross validation&quot;
+## 
+## $model$partition$numberFolds
+## [1] 4
+## 
+## 
+## $model$algorithm
+## $model$algorithm$maxent
+## $model$algorithm$maxent$regularizationMultiplierSet
+## [1] 3
+## 
+## $model$algorithm$maxent$samplingBiasRule
+## [1] &quot;ignored&quot;
+## 
+## 
+## 
+## 
+## $prediction
+## $prediction$extrapolation
+## [1] &quot;clamping&quot;
+## 
+## $prediction$transfer
+## $prediction$transfer$environment1
+## $prediction$transfer$environment1$units
+## [1] &quot;relative occurrence rate&quot;
+## 
+## $prediction$transfer$environment1$minVal
+## [1] 6.316346e-08
+## 
+## $prediction$transfer$environment1$maxVal
+## [1] 0.0004328058
+## 
+## 
+## 
+## $prediction$continuous
+## $prediction$continuous$units
+## [1] &quot;relative occurrence rate&quot;
+## 
+## $prediction$continuous$minVal
+## [1] 6.817044e-08
+## 
+## $prediction$continuous$maxVal
+## [1] 0.01327394
+## 
+## 
+## 
+## $assessment
+## $assessment$trainingDataStats
+## $assessment$trainingDataStats$AIC
+## [1] 7245.702
+## 
+## 
+## $assessment$testingDataStats
+## $assessment$testingDataStats$AUC
+## [1] 0.8142638
+## 
+## $assessment$testingDataStats$omissionRate
+## [1] 0.05802342 0.24263085
+## 
+## $assessment$testingDataStats$notes
+## [1] &quot;omission rate thresholds are 1) minimum training presence, 2) 10% training presence&quot;
+## 
+## 
+## 
+## $code
+## $code$software
+## [1] &quot;@Manual{\n  title = {R: A Language and Environment for Statistical Computing},\n  author = {{R Core Team}},\n  organization = {R Foundation for Statistical Computing},\n  address = {Vienna, Austria},\n  year = {2017},\n  url = {https://www.R-project.org/},}&quot;
+## 
+## $code$vignetteCodeLink
+## [1] &quot;https://github.com/cmerow/rangeModelMetadata/blob/master/vignettes/rmm_workflowWithExampleRangeModel.Rmd&quot;
+## 
+## 
+## $modelFit
+## $modelFit$maxent
+## $modelFit$maxent$notes
+## [1] &quot;ENMeval was used to compare models with L and LQ features, each using regularization multipliers of 1,2,3. The best model was selected based on test AUC evaluated with spatial cross validation.&quot;</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1"><span class="co"># you can also use this function to omit the NULLs at the end of your workflow using, so if you&#39;re happy with the above...</span></a>
+<a class="sourceLine" id="cb59-2" title="2">rmm &lt;-<span class="st"> </span><span class="kw">rmmCleanNULLs</span>(rmm)</a></code></pre></div>
+<p>Now run all availables checks to be sure you’re ready to go.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1"><span class="kw">rmmCheckFinalize</span>(rmm)</a></code></pre></div>
+<pre><code>## 
+## 
+## 
+##  Element name &#39; $data$occurrence$backgroundSampleSize &#39; not found in data dictionary !
+##  Did you mean: &#39; $data$occurrence$backgroundSampleSizeSet &#39;? The following names are similar to suggested names, please verify:
+## $data$occurrence$backgroundSampleSize
+## Suggested alternatives include: 
+## $data$occurrence$backgroundSampleSizeSet
+##  The following names are not similar to any suggested names, please verify that these are accurate:
+## $data$occurrence$sources[[1]]
+## $data$occurrence$sources[[2]]
+## $data$occurrence$sources[[3]]
+## $data$occurrence$sources[[4]]
+## $data$occurrence$sources[[5]]
+## $data$occurrence$sources[[6]]
+## $dataPrep$environmental
+## $code$software
+## $modelFit$maxent$notes
+##  
+## ==========================================
+## For the field rmm$authorship$license
+##  The following entries appear accurate:
+## 
+##  CC
+##  
+## ==========================================
+## For the field rmm$studyObjective$purpose
+##  The following entries are not similar to any suggested values, please verify that these are accurate:
+## transfer
+##  
+## ==========================================
+## For the field rmm$studyObjective$rangeType
+##  The following entries are not similar to any suggested values, please verify that these are accurate:
+## potential
+##  
+## ==========================================
+## For the field rmm$studyObjective$transfer
+##  The following entries are not similar to any suggested values, please verify that these are accurate:
+## detect unoccupied suitable habitat
+##  
+## ==========================================
+## For the field rmm$data$occurrence$dataType
+##  The following entries appear accurate:
+## 
+##  presence only
+##  
+## ==========================================
+## For the field rmm$data$environment$variableNames
+##  The following entries appear accurate:
+## 
+##  bio1; bio12; bio16; bio17; bio5; bio6; bio7; bio8
+##  The following entries are similar to suggested values, please verify:
+## biome
+## 
+## Suggested alternatives include: 
+## bio1
+##  
+## ==========================================
+## For the field rmm$dataPrep$biological$duplicateRemoval$rule
+##  The following entries are not similar to any suggested values, please verify that these are accurate:
+## one observation per cell
+##  
+## ==========================================
+## For the field rmm$model$algorithms
+##  The following entries are not similar to any suggested values, please verify that these are accurate:
+## maxnet v.0.1.2
+##  
+## ==========================================
+## For the field rmm$model$partition$occurrenceSubsampling
+##  The following entries are similar to suggested values, please verify:
+## k-fold cross validation
+## 
+## Suggested alternatives include: 
+## 5-fold cross validation
+##  
+## ==========================================
+## For the field rmm$model$algorithm$maxent$samplingBiasRule
+##  The following entries are not similar to any suggested values, please verify that these are accurate:
+## ignored
+##  
+## ==========================================
+## For the field rmm$prediction$continuous$units
+##  The following entries appear accurate:
+## 
+##  relative occurrence rate
+##  
+## ==========================================
+## For the field rmm$prediction$extrapolation
+##  The following entries appear accurate:
+## 
+##  clamping
+##  
+## ==========================================
+## For the field rmm$prediction$transfer$environment1$units
+##  The following entries are similar to suggested values, please verify:
+## relative occurrence rate
+## 
+## Suggested alternatives include: 
+##  relative occurrence rate
+##  ===================================
+## ===================================
+## All fields are populated.</code></pre>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

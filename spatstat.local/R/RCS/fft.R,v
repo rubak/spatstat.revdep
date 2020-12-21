@@ -1,0 +1,1803 @@
+head	1.40;
+access;
+symbols;
+locks
+	adrian:1.40; strict;
+comment	@# @;
+
+
+1.40
+date	2013.09.02.06.44.02;	author adrian;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	2013.09.02.01.59.31;	author adrian;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	2013.08.31.07.21.07;	author adrian;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	2013.08.31.02.26.20;	author adrian;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	2013.08.29.10.02.04;	author adrian;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	2013.07.23.09.17.27;	author adrian;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2013.07.23.07.02.51;	author adrian;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2013.07.23.06.57.06;	author adrian;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2013.07.23.05.50.15;	author adrian;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2013.07.23.04.36.50;	author adrian;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2013.07.23.03.39.36;	author adrian;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2013.07.22.06.14.45;	author adrian;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2013.07.22.05.58.57;	author adrian;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2013.07.20.03.14.51;	author adrian;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2013.07.19.08.36.57;	author adrian;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2013.07.16.07.02.16;	author adrian;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2013.07.07.09.32.36;	author adrian;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2013.07.07.07.42.29;	author adrian;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2013.07.07.06.11.56;	author adrian;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2013.07.07.05.44.52;	author adrian;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2013.07.07.03.54.27;	author adrian;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2013.07.06.11.03.25;	author adrian;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2013.07.06.10.57.55;	author adrian;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2013.07.06.01.45.29;	author adrian;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2013.07.06.01.44.51;	author adrian;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2013.07.05.08.58.15;	author adrian;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2013.07.05.08.46.08;	author adrian;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2013.07.05.01.23.12;	author adrian;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2013.07.04.10.39.37;	author adrian;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2013.07.04.10.27.06;	author adrian;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2013.07.04.10.25.26;	author adrian;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2013.07.03.08.18.06;	author adrian;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2013.07.03.02.49.19;	author adrian;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2013.07.03.02.36.29;	author adrian;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2013.07.03.01.34.19;	author adrian;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2013.07.02.09.59.49;	author adrian;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2013.07.02.07.22.35;	author adrian;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2013.07.02.04.31.57;	author adrian;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2013.07.02.02.06.40;	author adrian;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2013.07.02.01.07.14;	author adrian;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.40
+log
+@buglet fix
+@
+text
+@#
+# fft.R
+#
+# Calculations for locppm that are possible using Fast Fourier Transform
+#
+# $Revision: 1.39 $ $Date: 2013/09/02 01:59:31 $
+
+locppmFFT <- local({
+
+  # Dependence between calculations
+  #  ("Score", "Hessian" etc represent blocks of code in the main function)
+  .Score   <- "Score"
+  .Hessian <- c("Hdens", "Hessian")
+  .Fish    <- c("Hdens", "Fish")
+  .InvHess <- c(.Hessian, "InvHess")
+  .Var     <- c(union(.InvHess, .Fish), "Var")
+  .Coef    <- c(union(.Hessian, .Score), "Coef")
+  .Tstat   <- c(union(.Var, .Coef), "Tstat")
+  .Tgrad   <- c(union(.InvHess, .Coef), "Tgrad")
+
+  # Table mapping user options to calculations required
+  Dependence.Table <-
+    list(coef    = .Coef,
+         score   = .Score,
+         var     = .Var,
+         fish    = .Fish,
+         tstat   = .Tstat,
+         grad    = .Hessian,
+         invgrad = .InvHess,
+         tgrad   = .Tgrad)
+
+  FullNames <- 
+    c("coefficients",
+      "score",
+      "variance",
+      "fisher",
+      "tstatistic",
+      "gradient",
+      "invgradient",
+      "tgradient")
+  
+  opties <- names(Dependence.Table)
+
+
+  locppmFFT <- function(model, sigma, ...,
+                        lambda=fitted(model, new.coef=new.coef),
+                        new.coef=NULL,
+                        what = "coef",
+                        internals = NULL,
+                        algorithm=c("density","closepairs", "chop"),
+                        verbose=TRUE) {
+  starttime <- proc.time()
+
+  stopifnot(is.ppm(model))
+  algorithm <- match.arg(algorithm)
+
+  homcoef <- coef(model)
+  use.coef <- if(!is.null(new.coef)) new.coef else homcoef
+
+  if(missing(lambda) && !is.null(internals$lambda)) 
+    lambda <- internals$lambda
+  what <- match.arg(what, opties, several.ok=TRUE)
+  give <- as.list(!is.na(match(opties, what)))
+  names(give) <- opties
+
+  needed <- unique(unlist(Dependence.Table[what]))
+
+  p <- length(homcoef)
+  Q <- quad.ppm(model)
+  UQ <- union.quad(Q)
+  X <- Q$data
+  nX <- npoints(X)
+  
+  # make a template mask for images
+  W <- as.mask(as.owin(UQ), ...)
+  Wmat <- as.matrix(W)
+  npixels <- length(Wmat)
+
+  vec.names <- names(homcoef)
+  mat.names <- as.vector(outer(vec.names, vec.names, paste, sep="."))
+
+  if("Hdens" %in% needed) {
+    # Evaluate integrand of Hessian at quadrature points
+    if(is.null(m <- internals$mom))
+      internals$mom <- m <- model.matrix(model)
+    mo <- outersquare.flat.vector(m)
+    hQ <- UQ %mark% (lambda * mo)
+    # Interpolate onto pixel grid by nearest neighbour rule
+    Hdens <- nnmark(hQ, at="pixels", ...)
+    if(p == 1) Hdens <- list(Hdens)
+    names(Hdens) <- mat.names
+  } 
+  
+  if("Hessian" %in% needed) {
+    # Compute negative local Hessian as list of images
+    H <- lapply(Hdens, blur, sigma=sigma, bleed=FALSE, normalise=FALSE)
+    H <- as.listof(H)
+    # Convert to matrix
+    Hmat <- imagelist2matrix(H)
+  } else H <- NULL
+
+  if("InvHess" %in% needed) {
+    # Compute inverse of negative local Hessian as matrix
+    invHmat <- invert.flat.matrix(Hmat, p)
+    # convert back to images
+    invH <- matrix2imagelist(invHmat, W)
+    names(invH) <- mat.names
+  } else invH <- NULL
+
+  if("Score" %in% needed) {
+    # Compute local score residuals as list of images
+    R <- residuals(model, type="score")
+    U <- Smooth(R, sigma=sigma, ..., edge=FALSE)
+    if(is.im(U)) U <- list(U)
+    U <- as.listof(U)
+    names(U) <- vec.names
+    # convert to matrix
+    Umat <- imagelist2matrix(U)
+  } else U <- NULL
+
+  if("Coef" %in% needed) {
+    # evaluate Taylor approximation of locally fitted coefficients
+    if(!is.null(invH)) {
+      # use inverse Hessian: delta(theta) = invH %*% U
+      delta <- multiply2.flat.matrices(invHmat, Umat, c(p,p), c(p, 1))
+    } else if(!is.null(H)) {
+      # use Hessian: delta(theta) = solve(H, U)
+      delta <- solve2.flat.matrices(Hmat, Umat, c(p, p), c(p, 1))
+    } else stop("Internal error: coefficient calculation needs Hessian")
+    Cmat0 <- matrix(homcoef, nrow=npixels, ncol=p, byrow=TRUE)
+    Cmat <- Cmat0 + delta
+    # convert back to images
+    Coefs <- matrix2imagelist(Cmat, W)
+    names(Coefs) <- vec.names
+  } else Coefs <- NULL
+  
+  if("Fish" %in% needed) {
+    # compute local Fisher information
+    # Poisson/Poincare term: integral weighted by square of smoothing kernel
+    A1 <- lapply(Hdens, blur, sigma=sigma/sqrt(2),
+                   bleed=FALSE, normalise=FALSE)
+    A1 <- lapply(A1, function(z, a) { eval.im(a * z) },
+                 a = 1/(4 * pi * sigma^2))
+    if(is.poisson(model)) {
+      # Poisson process
+      Fish <- A1
+    } else {
+      # Gibbs process
+      # Compute cross-dependence terms A2, A3
+      Z <- internals$Z %orifnull% is.data(Q)
+      ok <- internals$ok %orifnull% getglmsubset(model)
+      okX <- ok[Z]
+      Xok <- X[okX]
+      # W is template mask
+      xcolW <- W$xcol
+      yrowW <- W$yrow
+      xrangeW <- W$xrange
+      yrangeW <- W$yrange
+      #
+      # Sufficient statistic h:
+      # momX[i, ] = h(X[i] | X)
+      momX <- internals$mom[Z, ,drop=FALSE]
+      # momdel[ ,i,j] = h(X[i] | X[-j])
+      momdel <- internals$momdel
+      # mom.array[ ,i,j] = momX[i, ] = h(X[i] | X)
+      mom.array <- array(t(momX), dim=c(p, nX, nX))
+      # ddS[ ,i,j] = h(X[i] | X) - h(X[i] | X[-j])
+      ddS <- mom.array - momdel
+      #
+      # Conditional intensity lambda:
+      lamX <- lambda[Z]
+      # lamdel[i,j] = lambda(X[i] | X[-j])
+      lamdel <- internals$lamdel
+      if(is.null(lamdel))
+        lamdel <- matrix(lamX, nX, nX) * exp(tensor(-use.coef, ddS, 1, 1))
+      # pairwise weight for A2
+      #   pairweight[i,j] = lamdel[i,j]/lambda[i] - 1
+      pairweight <- lamdel/lamX - 1
+      # 
+      if(algorithm %in% c("closepairs", "chop")) {
+        R <- reach(model)
+        if(!is.finite(R)) {
+          warning(paste("Reach of model is infinite or NA;",
+                        "algorithm", dQuote(algorithm), "not used"))
+          algorithm <- "density"
+        }
+      }
+      # start
+      A2 <- A3 <- rep(list(0), p^2)
+      switch(algorithm,
+             density = {
+               # run through points X[i] that contributed to pseudolikelihood
+               ii <- which(okX)
+               nok <- length(ii)
+               if(verbose)
+                 cat(paste("Running through", nok,
+                           "data points out of", nX, "..."))
+               for(k in seq_len(nok)) {
+                 if(verbose) progressreport(k, nok)
+                 i <- ii[k]
+                 # form a flat matrix dS_i[j] = outer(ddS[ ,i,j], ddS[,j,i])
+                 dSi <- outer2.flat.vectors(t(ddS[,i,okX]), t(ddS[,okX,i]))
+                 # form a flat matrix containing
+                 #   hout_i[j] = pairweight[i,j] h(X[i]|X[-j]) h(X[j]|X[-i])^T 
+                 hout.i <- pairweight[i,okX] *
+                   outer2.flat.vectors(t(momdel[,i,okX]), t(momdel[,okX,i]))
+                 # associate dS_i[j] to X[j] and convolve with kernel
+                 Si <- lapply(as.data.frame(dSi),
+                              function(z, XX, sigma, W) {
+                                density(XX, sigma=sigma, weights=z,
+                                        W=W, edge=FALSE)
+                              }, XX=Xok, sigma=sigma, W=W)
+                 # associate hout_i[j] to X[j] and convolve with kernel
+                 h.i <- lapply(as.data.frame(hout.i),
+                               function(z, XX, sigma, W) {
+                                 density(XX, sigma=sigma, weights=z,
+                                         W=W, edge=FALSE)
+                               }, XX=Xok, sigma=sigma, W=W)
+                 # kernel at X[i]
+                 #   Di <- density(X[i], sigma=sigma, W=W, edge=FALSE)
+                 dx <- dnorm(xcolW - X$x[i], sd=sigma)
+                 dy <- dnorm(yrowW - X$y[i], sd=sigma)
+                 Di <- im(outer(dy, dx, "*"),
+                          xcol=xcolW, yrow=yrowW,
+                          xrange=xrangeW, yrange=yrangeW)
+                 # multiply pointwise
+                 DiSi <- lapply(Si, function(z, y) eval.im(z * y), y=Di)
+                 Dihi <- lapply(h.i, function(z, y) eval.im(z * y), y=Di)
+                 # increment sums
+                 A2 <- Map(function(a,b) eval.im(a+b), A2, Dihi)
+                 A3 <- Map(function(a,b) eval.im(a+b), A3, DiSi)
+               }
+               Fish <- Map(function(x,y,z) eval.im(x+y+z), A1, A2, A3)
+             },
+             closepairs = {
+               # identify close pairs of data points
+               cl <- closepairs(X, R, what="indices")
+               I <- cl$i
+               J <- cl$j
+               # restrict to pairs of points which both contributed to PL
+               okIJ <- okX[I] & okX[J]
+               I <- I[okIJ]
+               J <- J[okIJ]
+               npairs <- length(I)
+               # group by index I
+               JsplitI <- split(J, I)
+               Igroup <- as.integer(names(JsplitI))
+               ngroups <- length(JsplitI)
+               # compute kernel centred at each data point
+               kernels <- vector(mode="list", length=nX)
+               for(k in sort(unique(c(I,J))))
+                 kernels[[k]] <-
+                   as.vector(outer(dnorm(yrowW - X$y[k], sd=sigma),
+                                   dnorm(xcolW - X$x[k], sd=sigma)))
+               # sum over close pairs
+               arrdim <- c(p^2, length(yrowW), length(xcolW))
+               A2array <- A3array <- numeric(prod(arrdim))
+               #
+               if(verbose)
+                 cat(paste("Running through", ngroups,
+                           "close groups of points..."))
+               for(k in seq_len(ngroups)) {
+                 if(verbose) progressreport(k, ngroups)
+                 i <- Igroup[k]
+                 ki <- kernels[[i]]
+                 for(j in JsplitI[[k]]) {
+                   kj <- kernels[[j]]
+                   kikj <- ki * kj
+                   A3ij <- outer(ddS[,i,j], ddS[,j,i])
+                   A2ij <- pairweight[i,j] * outer(momdel[,i,j],momdel[,j,i])
+                   A2array <- A2array + as.vector(outer(as.vector(A2ij), kikj))
+                   A3array <- A3array + as.vector(outer(as.vector(A3ij), kikj))
+                 }
+               }
+               A2array <- array(A2array, dim=arrdim)
+               A3array <- array(A3array, dim=arrdim)
+               # convert to images
+               for(k in seq_len(p^2)) {
+                 A2[[k]] <- im(A2array[k,,],
+                               xcol=xcolW, yrow=yrowW,
+                               xrange=xrangeW, yrange=yrangeW)
+                 A3[[k]] <- im(A3array[k,,],
+                               xcol=xcolW, yrow=yrowW,
+                               xrange=xrangeW, yrange=yrangeW)
+               }
+               # Finally evaluate variance
+               Fish <- Map(function(x,y,z) eval.im(x+y+z), A1, A2, A3)
+             },
+             chop = {
+               # identify close pairs of data points
+               cl <- closepairs(X, R, what="indices")
+               I <- cl$i
+               J <- cl$j
+               # restrict to pairs of points which both contributed to PL
+               okIJ <- okX[I] & okX[J]
+               I <- I[okIJ]
+               J <- J[okIJ]
+               npairs <- length(I)
+               # compute Gaussian kernel on larger image raster
+               nxc <- length(xcolW)
+               nyr <- length(yrowW)
+               rx <- W$xrange
+               ry <- W$yrange
+               xstep <- W$xstep
+               ystep <- W$ystep
+               xx <- seq(-nxc * xstep, nxc * xstep, length = 2 * nxc + 1)
+               yy <- seq(-nyr * ystep, nyr * ystep, length = 2 * nyr + 1)
+               Gauss <- outer(dnorm(yy, sd=sigma),
+                              dnorm(xx, sd=sigma),
+                              "*")
+               # sum over close pairs
+               arrdim <- c(p^2, length(yrowW), length(xcolW))
+               A2array <- A3array <- numeric(prod(arrdim))
+               if(verbose)
+                 cat(paste("Running through", npairs,
+                           "close pairs of points..."))
+               for(k in seq_len(npairs)) {
+                 if(verbose) progressreport(k, npairs)
+                 i <- I[k]
+                 j <- J[k]
+                 # kernel centred at X[i]
+                 rowXi <- grid1index(X$y[i], ry, nyr)
+                 colXi <- grid1index(X$x[i], rx, nxc)
+                 ki <- Gauss[nyr - rowXi + 1:nyr,
+                             nxc - colXi + 1:nxc]
+                 ki <- as.vector(ki)
+                 # kernel centred at X[j]
+                 rowXj <- grid1index(X$y[j], ry, nyr)
+                 colXj <- grid1index(X$x[j], rx, nxc)
+                 kj <- Gauss[nyr - rowXj + 1:nyr,
+                             nxc - colXj + 1:nxc]
+                 kj <- as.vector(kj)
+                 # multiply
+                 kikj <- ki * kj
+                 A3ij <- outer(ddS[,i,j], ddS[,j,i], "*")
+                 A2ij <- pairweight[i,j] * outer(momdel[,i,j],momdel[,j,i], "*")
+                 A2array <- A2array + as.vector(outer(as.vector(A2ij), kikj))
+                 A3array <- A3array + as.vector(outer(as.vector(A3ij), kikj))
+               }
+               A2array <- array(A2array, dim=arrdim)
+               A3array <- array(A3array, dim=arrdim)
+               # convert to images
+               for(k in seq_len(p^2)) {
+                 A2[[k]] <- im(A2array[k,,],
+                               xcol=xcolW, yrow=yrowW,
+                               xrange=xrangeW, yrange=yrangeW)
+                 A3[[k]] <- im(A3array[k,,],
+                               xcol=xcolW, yrow=yrowW,
+                               xrange=xrangeW, yrange=yrangeW)
+               }
+               # Finally evaluate variance
+               Fish <- Map(function(x,y,z) eval.im(x+y+z), A1, A2, A3)
+             })
+    }
+    names(Fish) <- mat.names
+    Fmat <- imagelist2matrix(Fish)
+  } else Fish <- NULL
+
+  if("Var" %in% needed) {
+    # evaluate local variance (assuming Poisson)
+    #  v = H^{-1} %*% I %*% H^{-1}
+    Vmat <- quadform2.flat.matrices(Fmat, invHmat, c(p,p), c(p,p))
+    # convert back to images
+    Vars <- matrix2imagelist(Vmat, W)
+    names(Vars) <- mat.names
+  } else Vars <- NULL
+
+  if("Tstat" %in% needed) {
+    # evaluate t statistics of Taylor approximate fit
+    # Extract standard errors
+    diagindices <- diag(matrix(1:(p^2), p, p))
+    Vdiags <- Vmat[, diagindices, drop=FALSE]
+    # Standardise 
+    Tmat <- Cmat/sqrt(Vdiags)
+    # convert back to images
+    Tstat <- matrix2imagelist(Tmat, W)
+    names(Tstat) <- vec.names
+  } else Tstat <- NULL
+
+  if("Tgrad" %in% needed) {
+    # evaluate surrogate t statistic based on inverse Hessian
+    diagindices <- diag(matrix(1:(p^2), p, p))
+    invHdiags <- invHmat[, diagindices, drop=FALSE]
+    TGmat <- Cmat/sqrt(invHdiags)
+    # convert back to images
+    Tgrad <- matrix2imagelist(TGmat, W)
+    names(Tgrad) <- vec.names
+  } else Tgrad <- NULL
+
+  answer <- list(coefficients = Coefs,
+                 score        = U,
+                 variance     = Vars,
+                 fisher       = Fish,
+                 tstatistic   = Tstat,
+                 gradient     = H,
+                 invgradient  = invH,
+                 tgradient    = Tgrad)
+
+  # return only those quantities that were commanded
+  indx <- pmatch(what, opties) # there are no NA's
+  answer <- answer[FullNames[indx]]
+  
+  return(timed(answer, starttime=starttime))
+}
+
+  locppmFFT
+})
+
+
+  matrix2imagelist <- function(mat, W) {
+    # 'mat' is a matrix whose rows correspond to pixels
+    # and whose columns are different quantities e.g. components of score.
+    # Convert it to a list of images using the template 'W'
+    if(!is.matrix(mat)) mat <- matrix(mat, ncol=1)
+    Mats <- lapply(as.list(as.data.frame(mat)),
+                   matrix,
+                   nrow=W$dim[1], ncol=W$dim[2])
+    result <- as.listof(lapply(Mats, as.im, W=W))
+    return(result)
+  }
+
+  imagelist2matrix <- function(x) {
+    if(is.im(x)) x <- list(x)
+    y <- as.matrix(as.data.frame(lapply(x, 
+                                        function(z) as.vector(as.matrix(z)))))
+    colnames(y) <- names(x)
+    return(y)
+  }
+
+@
+
+
+1.39
+log
+@dealt with 1-column matrices etc
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.38 $ $Date: 2013/08/31 07:21:07 $
+d423 1
+a423 1
+    if(is.im(z)) z <- list(z)
+@
+
+
+1.38
+log
+@bug fix
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.37 $ $Date: 2013/08/31 02:26:20 $
+d414 1
+d423 1
+@
+
+
+1.37
+log
+@updated to 'Smooth'
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.36 $ $Date: 2013/08/29 10:02:04 $
+d400 1
+a400 1
+  indx <- pmatch(what, FullNames) # there are no NA's
+@
+
+
+1.36
+log
+@imagelist <- matrix conversion has been pulled out of the 'local'
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.35 $ $Date: 2013/07/23 09:17:27 $
+d113 1
+a113 1
+    U <- smooth.msr(R, sigma=sigma, ..., edge=FALSE)
+@
+
+
+1.35
+log
+@done, I think.
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.34 $ $Date: 2013/07/23 07:02:51 $
+d370 1
+a370 1
+    # extract standard errors
+d373 1
+d406 4
+a426 3
+
+  locppmFFT
+})
+@
+
+
+1.34
+log
+@d'oh
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.33 $ $Date: 2013/07/23 06:57:06 $
+d184 1
+a184 1
+                        "closepairs algorithm not used"))
+d245 4
+d252 3
+a254 3
+                 kernels[[k]] <- outer(dnorm(yrowW - X$y[k], sd=sigma),
+                                       dnorm(xcolW - X$x[k], sd=sigma),
+                                       "*")
+d258 1
+d260 5
+a264 6
+                 cat(paste("Running through", npairs,
+                           "close pairs of points..."))
+               for(k in seq_len(npairs)) {
+                 if(verbose) progressreport(k, npairs)
+                 i <- I[k]
+                 j <- J[k]
+d266 8
+a273 6
+                 kj <- kernels[[j]]
+                 kikj <- as.vector(ki * kj)
+                 A3ij <- outer(ddS[,i,j], ddS[,j,i], "*")
+                 A2ij <- pairweight[i,j] * outer(momdel[,i,j],momdel[,j,i], "*")
+                 A2array <- A2array + as.vector(outer(as.vector(A2ij), kikj))
+                 A3array <- A3array + as.vector(outer(as.vector(A3ij), kikj))
+@
+
+
+1.33
+log
+@hopefully faster algorithm 'chop'
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.32 $ $Date: 2013/07/23 05:50:15 $
+d180 1
+a180 1
+      if(algorithm == "closepairs") {
+@
+
+
+1.32
+log
+@corrected names
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.31 $ $Date: 2013/07/23 04:36:50 $
+d50 1
+a50 1
+                        algorithm=c("density","closepairs"),
+d264 65
+@
+
+
+1.31
+log
+@bug fix?
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.30 $ $Date: 2013/07/23 03:39:36 $
+a104 1
+    colnames(invHmat) <- mat.names
+d107 1
+a131 1
+    colnames(Cmat) <- vec.names
+d134 1
+a291 1
+    names(Vmat) <- mat.names
+d294 1
+a302 1
+    colnames(Tmat) <- vec.names
+d305 1
+a312 1
+    colnames(TGmat) <- vec.names
+d315 1
+@
+
+
+1.30
+log
+@bug fix?
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.29 $ $Date: 2013/07/22 06:14:45 $
+d58 2
+d159 1
+a159 4
+      # Conditional intensity lambda:
+      lamX <- lambda[Z]
+      # lamdel[i,j] = lambda(X[i] | X[-j])
+      lamdel <- internals$lamdel
+d169 7
+@
+
+
+1.29
+log
+@bug in dependence table
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.28 $ $Date: 2013/07/22 05:58:57 $
+d84 1
+a84 2
+    mo <- if(p == 1) m else 
+          t(apply(m, 1, function(z) { as.vector(outer(z,z,"*"))}))
+d137 1
+a137 1
+    # Poisson/Poincare term
+d162 2
+a163 2
+      # mom[i, ] = h(X[i] | X)
+      mom <- internals$mom
+d166 2
+a167 2
+      # mom.array[ ,i,j] = h(X[i] | X)
+      mom.array <- array(t(mom), dim=c(p, nX, nX))
+d171 1
+@
+
+
+1.28
+log
+@new algorithm for Gibbs
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.27 $ $Date: 2013/07/20 03:14:51 $
+d16 1
+a17 1
+  .Var     <- c(union(.Hessian, .Fish), "Var")
+d246 2
+a247 2
+               A2array <- A3array <-
+                 array(0, dim=c(p^2, length(yrowW), length(xcolW)))
+d260 2
+a261 2
+                 A2array <- A2array + outer(as.vector(A2ij), kikj)
+                 A3array <- A3array + outer(as.vector(A3ij), kikj)
+d263 2
+@
+
+
+1.27
+log
+@inserted progress reports
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.26 $ $Date: 2013/07/19 08:36:57 $
+d46 6
+a51 4
+                      lambda=fitted(model, new.coef=new.coef),
+                      new.coef=NULL,
+                      what = "coef",
+                      internals = NULL) {
+d55 1
+d173 9
+d184 91
+a274 34
+      # run through all points X[i] that contributed to pseudolikelihood
+      cat(paste("Running through", sum(okX), "data points out of", nX, "..."))
+      for(i in which(okX)) {
+        progressreport(i, nX)
+        # form a flat matrix containing dS_i[j] = outer(ddS[ ,i,j], ddS[,j,i])
+        dSi <- outer2.flat.vectors(t(ddS[,i,okX]), t(ddS[,okX,i]))
+        # form a flat matrix containing
+        #     hout_i[j] = pairweight[i,j] h(X[i]|X[-j]) h(X[j]|X[-i])^T 
+        hout.i <- pairweight[i,okX] *
+            outer2.flat.vectors(t(momdel[,i,okX]), t(momdel[,okX,i]))
+        # associate dS_i[j] to X[j] and convolve with kernel
+        Si <- lapply(as.data.frame(dSi),
+                     function(z, XX, sigma, W) {
+                       density(XX, sigma=sigma, weights=z, W=W, edge=FALSE)
+                     }, XX=Xok, sigma=sigma, W=W)
+        # associate hout_i[j] to X[j] and convolve with kernel
+        h.i <- lapply(as.data.frame(hout.i),
+                     function(z, XX, sigma, W) {
+                       density(XX, sigma=sigma, weights=z, W=W, edge=FALSE)
+                     }, XX=Xok, sigma=sigma, W=W)
+        # kernel at X[i]
+        #   Di <- density(X[i], sigma=sigma, W=W, edge=FALSE)
+        dx <- dnorm(xcolW - X$x[i], sd=sigma)
+        dy <- dnorm(yrowW - X$y[i], sd=sigma)
+        Di <- im(outer(dy, dx, "*"),
+                 xcol=xcolW, yrow=yrowW, xrange=xrangeW, yrange=yrangeW)
+        # multiply pointwise
+        DiSi <- lapply(Si, function(z, y) eval.im(z * y), y=Di)
+        Dihi <- lapply(h.i, function(z, y) eval.im(z * y), y=Di)
+        # increment sums
+        A2 <- Map(function(a,b) eval.im(a+b), A2, DiSi)
+        A3 <- Map(function(a,b) eval.im(a+b), A3, DiSi)
+      }
+      Fish <- Map(function(x,y,z) eval.im(x+y+z), A1, A2, A3)
+@
+
+
+1.26
+log
+@variance calculation for Gibbs
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.25 $ $Date: 2013/07/16 07:02:16 $
+d150 5
+d173 1
+d175 1
+a175 2
+        # kernel at X[i]
+        Di <- density(X[i], sigma=sigma, W=W, edge=FALSE)
+d192 6
+@
+
+
+1.25
+log
+@minor
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.24 $ $Date: 2013/07/07 09:32:36 $
+a62 3
+  if(give$var && !is.poisson(model))
+    warning("Model is not Poisson: variance calculations are not correct")
+  
+d79 2
+a80 1
+    m <- internals$mom %orifnull% model.matrix(model)
+d135 2
+a136 1
+    Fish <- lapply(Hdens, blur, sigma=sigma/sqrt(2),
+d138 1
+a138 1
+    Fish <- lapply(Fish, function(z, a) { eval.im(a * z) },
+d140 56
+@
+
+
+1.24
+log
+@niets
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.23 $ $Date: 2013/07/07 07:42:29 $
+d102 1
+a102 1
+    invHmat <- invert.flat.matrices(Hmat, p)
+@
+
+
+1.23
+log
+@bug found + fixed
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.22 $ $Date: 2013/07/07 06:11:56 $
+a80 1
+    # Need integrand of Hessian
+d128 1
+a128 1
+    Cmat0 <- matrix(homcoef, nrow=npixels, ncol=p^2, byrow=TRUE)
+@
+
+
+1.22
+log
+@more bug hunting
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.21 $ $Date: 2013/07/07 05:44:52 $
+d123 2
+a124 2
+      # use inverse Hessian: theta = invH %*% U
+      theta <- multiply2.flat.matrices(invHmat, Umat, c(p,p), c(p, 1))
+d126 2
+a127 2
+      # use Hessian: theta = solve(H, U)
+      theta <- solve2.flat.matrices(Hmat, Umat, c(p, p), c(p, 1))
+d129 3
+a131 1
+    colnames(theta) <- vec.names
+d133 1
+a133 1
+    Coefs <- matrix2imagelist(theta, W)
+d160 1
+a160 1
+    Tmat <- theta/sqrt(Vdiags)
+d170 1
+a170 1
+    TGmat <- theta/sqrt(invHdiags)
+@
+
+
+1.21
+log
+@tweaked and reorganised
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.20 $ $Date: 2013/07/07 03:54:27 $
+a43 2
+  # Function for extracting pixel values as vectors
+  getvals <- function(z) as.vector(as.matrix(z))
+d94 1
+a94 1
+    # Compute negative local Hessian
+d97 2
+a98 2
+    names(H) <-  mat.names
+    Hmat <- as.matrix(as.data.frame(lapply(H, getvals)))
+d102 1
+a102 1
+    # Compute inverse of negative local Hessian
+d104 1
+a106 1
+    names(invH) <- mat.names
+d110 1
+a110 1
+    # Compute local score residuals
+d116 2
+a117 2
+    if(give$coef)
+      Umat <- as.matrix(as.data.frame(lapply(U, getvals)))
+d129 1
+a131 1
+    names(Coefs) <- vec.names
+d141 1
+a141 2
+    if(give$var)
+      Fmat <- as.matrix(as.data.frame(lapply(Fish, getvals)))
+d148 1
+a150 1
+    names(Vmat) <- mat.names
+d159 1
+a161 1
+    names(Tstat) <- vec.names
+d169 1
+a171 1
+    names(Tgrad) <- vec.names
+d200 8
+a207 1
+  
+@
+
+
+1.20
+log
+@totally reorganised
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.19 $ $Date: 2013/07/06 11:03:25 $
+d16 4
+a19 4
+  .Coef    <- c(.Hessian, .Score, "Coef")
+  .Var     <- union(.Hessian, .Fish, "Var")
+  .Tstat   <- union(.Var, .Coef)
+  .Tgrad   <- union(.InvHess, .Coef)
+d44 3
+a58 2
+  
+  
+d78 3
+a80 2
+  # Function for extracting pixel values as vectors
+  getvals <- function(z) as.vector(as.matrix(z))
+d86 2
+a87 5
+    if(p == 1) {
+      mo <- m
+    } else {
+      mo <- t(apply(m, 1, function(z) { as.vector(outer(z,z,"*"))}))
+    }
+d92 1
+a92 1
+    names(Hdens) <- names(homcoef)
+d98 2
+d108 1
+d116 2
+a117 1
+    names(U) <- names(homcoef)
+a130 1
+    colnames(theta) <- names(homcoef)
+d133 1
+d142 1
+d153 1
+d164 1
+d174 1
+d187 1
+a187 1
+  indx <- pmatch(which, FullNames) # there are no NA's
+@
+
+
+1.19
+log
+@reorganised
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.18 $ $Date: 2013/07/06 10:57:55 $
+d10 10
+a19 1
+  # Table of required calculations for each option
+d21 1
+d23 8
+a30 8
+    list(coef    = c("Hdens", "Hessian", "InvHess", "Score", "Coef"),
+         score   = "Score",
+         var     = c("Hdens", "Hessian", "InvHess", "Fish", "Var"),
+         fish    = c("Hdens", "Fish"),
+         tstat   = c("Hdens", "Hessian", "InvHess", "Score", "Coef", "Tstat"),
+         grad    = c("Hdens", "Hessian"),
+         invgrad = c("Hdens", "Hessian", "InvHess"),
+         tgrad   = c("Hdens", "Hessian", "InvHess", "Score", "Coef", "Tgrad"))
+d67 1
+a67 1
+  ncoef <- length(homcoef)
+d84 5
+a88 2
+    mo <- apply(m, 1, function(z) { as.vector(outer(z,z,"*"))})
+    mo <- if(ncoef == 1) matrix(mo, ncol=1) else t(mo)
+d92 1
+a92 1
+    if(ncoef == 1) Hdens <- list(Hdens)
+d104 1
+a104 1
+    invHmat <- invert.flat.matrices(Hmat, ncoef)
+d121 7
+a127 10
+    UiH <- cbind(Umat, invHmat)
+    dtheta <- apply(UiH,
+                    1, 
+                    function(z, n) {
+                      invHi <- matrix(z[-(1:n)], n, n)
+                      Ui <- matrix(z[1:n], n, 1)
+                      return(invHi %*% Ui)
+                    }, n=ncoef)
+    theta <- homcoef + dtheta
+    if(ncoef > 1) theta <- t(theta) else theta <- matrix(theta, ncol=1)
+d145 2
+a146 15
+    FH <- cbind(Fmat, Hmat)
+    ok <- complete.cases(FH)
+    Vmat <- matrix(NA_real_, ncoef^2, npixels)
+    if(any(ok)) 
+      Vmat[ , ok] <- apply(FH[ok,, drop=FALSE],
+                           1, 
+                           function(z, n, n2) {
+                             Iv <- matrix(z[1:n2], n, n)
+                             Hv <- matrix(z[n2 + (1:n2)], n, n)
+                             Hinv <- try(solve(Hv))
+                             if(inherits(Hinv, "try-error"))
+                               return(rep(NA_real_, n2))
+                             return(Hinv %*% Iv %*% Hinv)
+                           }, n=ncoef, n2=ncoef^2)
+    Vmat <- if(ncoef > 1)  t(Vmat) else matrix(Vmat, ncol=1)
+d154 1
+a154 1
+    diagindices <- diag(matrix(1:(ncoef^2), ncoef, ncoef))
+d163 1
+a163 1
+    diagindices <- diag(matrix(1:(ncoef^2), ncoef, ncoef))
+@
+
+
+1.18
+log
+@reorganised option handling
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.17 $ $Date: 2013/07/06 01:45:29 $
+d13 1
+a13 1
+    list(coef    = c("Hdens", "InvHess", "Score", "Coef"),
+d108 8
+a115 14
+    UH <- cbind(Umat, Hmat)
+    ok <- complete.cases(UH)
+    dtheta <- matrix(NA_real_, ncoef, npixels)
+    if(any(ok)) 
+      dtheta[ , ok] <- apply(UH[ok,, drop=FALSE],
+                             1, 
+                             function(z, n) {
+                               A <- matrix(z[-(1:n)], n, n)
+                               B <- matrix(z[1:n], n, 1)
+                               y <- try(solve(A, B), silent=TRUE)
+                               if(!inherits(y, "try-error"))
+                                 return(y)
+                               return(matrix(NA, n, 1))
+                             }, n=ncoef)
+@
+
+
+1.17
+log
+@d'oh
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.16 $ $Date: 2013/07/06 01:44:51 $
+d8 27
+a34 1
+locppmFFT <- function(model, sigma, ...,
+d47 1
+a47 1
+  opties <- c("coef", "var", "fish", "score", "grad", "tstat")
+d52 2
+d70 2
+a71 1
+  if(give$coef || give$grad || give$var || give$fish || give$tstat) {
+d83 2
+a84 2
+  if(give$coef || give$grad || give$var || give$tstat) {
+      # Compute negative local Hessian
+d89 8
+a96 2
+  
+  if(give$score || give$coef) {
+d106 1
+a106 1
+  if(give$coef || give$tstat) {
+a124 1
+    
+d126 1
+a126 5
+    thetamats <- lapply(as.list(as.data.frame(theta)),
+                        matrix,
+                        nrow=nrow(Wmat), ncol=ncol(Wmat))
+    Coefs <- lapply(thetamats, as.im, W=W)
+    Coefs <- as.listof(Coefs)
+d129 1
+a129 1
+  if(give$fish || give$var || give$tstat) {
+d139 1
+a139 1
+  if(give$var || give$tstat) {
+d157 1
+a157 5
+    varmats <- lapply(as.list(as.data.frame(Vmat)),
+                      matrix,
+                      nrow=nrow(Wmat), ncol=ncol(Wmat))
+    Vars <- lapply(varmats, as.im, W=W)
+    Vars <- as.listof(Vars)
+d160 1
+a160 1
+  if(give$tstat) {
+a165 1
+    
+d167 1
+a167 5
+    tstatmats <- lapply(as.list(as.data.frame(Tmat)),
+                        matrix,
+                        nrow=nrow(Wmat), ncol=ncol(Wmat))
+    Tstat <- lapply(tstatmats, as.im, W=W)
+    Tstat <- as.listof(Tstat)
+d170 9
+d180 1
+d183 1
+a183 1
+                 score        = U,
+d185 6
+a190 3
+                 tstatistic   = Tstat)
+  ok <- !unlist(lapply(answer, is.null))
+  answer <- answer[ok]
+d194 14
+@
+
+
+1.16
+log
+@trying to accelerate matrix calcs
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.15 $ $Date: 2013/07/05 08:58:15 $
+d85 1
+a85 1
+                               return(matrix(NA, n, 1)
+@
+
+
+1.15
+log
+@also does t-statistic
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.14 $ $Date: 2013/07/05 08:46:08 $
+d55 1
+a55 1
+      # Compute local Hessian
+d80 6
+a85 2
+                               solve(matrix(z[-(1:n)], n, n)) %*%
+                                 matrix(z[1:n], n, 1)
+@
+
+
+1.14
+log
+@reorganised interface
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.13 $ $Date: 2013/07/05 01:23:12 $
+d21 1
+a21 1
+  opties <- c("coef", "var", "fish", "score", "grad")
+d42 1
+a42 1
+  if(give$coef || give$grad || give$var || give$fish) {
+d54 1
+a54 1
+  if(give$coef || give$grad || give$var) {
+d71 1
+a71 1
+  if(give$coef) {
+d95 1
+a95 1
+  if(give$fish || give$var) {
+d105 1
+a105 1
+  if(give$var) {
+d130 15
+d149 2
+a150 1
+                 gradient     = H)
+@
+
+
+1.13
+log
+@no edge correction in smooth.msr
+(to match normalise=FALSE in calls to blur())
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.12 $ $Date: 2013/07/04 10:39:37 $
+d11 1
+a11 1
+                      what = "coef", opt=NULL,
+d21 2
+a22 14
+  maptable <- list(co1="coef",
+                   vh1="var",
+                   fh1="fish",
+                   sh1="score",
+                   vg1="var")  # vg1 requires non-default value for lambda
+  opties <- unname(unlist(maptable))
+  # 'opt' is an alternative to 'what'
+  if(missing(what) && !is.null(opt)) {
+    opt <- opt[names(opt) %in% names(maptable)]
+    what <- unname(unlist(maptable[names(opt)[unlist(opt)]]))
+  } else {
+    what <- match.arg(what, opties, several.ok=TRUE)
+  }
+  
+d42 1
+a42 2
+  if(give$coef || give$var || give$fish) {
+    
+d52 3
+a54 2
+    # 
+    if(give$coef || give$var) {
+d56 4
+a59 4
+      H <- lapply(Hdens, blur, sigma=sigma, bleed=FALSE, normalise=FALSE)
+      Hmat <- as.matrix(as.data.frame(lapply(H, getvals)))
+    }
+  }
+d130 7
+a136 4
+  answer <- list(coefficients=Coefs,
+                 variance=Vars,
+                 fisher=Fish,
+                 score=U)[unlist(give)]
+@
+
+
+1.12
+log
+@now uses 'blur' instead of measures, for Hessian
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.11 $ $Date: 2013/07/04 10:27:06 $
+d76 1
+a76 1
+    U <- smooth.msr(R, sigma=sigma, ...)
+@
+
+
+1.11
+log
+@d'oh
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.10 $ $Date: 2013/07/04 10:25:26 $
+d62 3
+a64 7
+    hP <- nnmark(hQ, at="pixels", ...)
+    if(ncoef == 1) hP <- list(hP)
+    names(hP) <- names(homcoef)
+    hPmat <- as.matrix(as.data.frame(lapply(hP, getvals)))
+    # convert density to a 'measure'
+    P <- pixelquad(X[integer(0)], W)
+    Hdens <- msr(P, discrete=0, density=hPmat)
+d68 1
+a68 3
+      H <- smooth.msr(Hdens, sigma=sigma, ...)
+      if(is.im(H)) H <- list(H)
+      names(H) <- names(homcoef)
+d109 2
+a110 3
+    Fish <- smooth.msr(Hdens, sigma=sigma/sqrt(2), ...)
+    if(is.im(Fish)) Fish <- list(Fish)
+    names(Fish) <- names(homcoef)
+@
+
+
+1.10
+log
+@corrected the maths.
+Now uses 'nnmark' to interpolate the integrand of the Hessian
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.9 $ $Date: 2013/07/03 08:18:06 $
+d115 1
+a115 1
+    Fish <- smooth.ppp(dH, sigma=sigma/sqrt(2), ...)
+@
+
+
+1.9
+log
+@has argument 'internals'
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.8 $ $Date: 2013/07/03 02:49:19 $
+d42 4
+a45 1
+  Q <- union.quad(quad.ppm(model))
+d48 1
+a48 1
+  W <- as.mask(as.owin(Q), ...)
+d56 1
+a56 1
+    # Form increments of Hessian
+d60 10
+a69 2
+    dH <- Q %mark% (lambda * mo)
+    
+d72 1
+a72 1
+      H <- smooth.ppp(dH, sigma=sigma, ...)
+d74 1
+d84 1
+d117 1
+@
+
+
+1.8
+log
+@fixed dimension error
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.7 $ $Date: 2013/07/03 02:36:29 $
+d11 2
+a12 1
+                      what = "coef", opt=NULL) {
+a15 1
+  force(lambda)
+d17 4
+a40 1
+  homcoef <- coef(model)
+d54 1
+a54 1
+    m <- model.matrix(model)
+@
+
+
+1.7
+log
+@buglet fix
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.6 $ $Date: 2013/07/03 01:34:19 $
+d111 1
+a111 1
+    Vmat <- matrix(NA_real_, ncoef, npixels)
+@
+
+
+1.6
+log
+@extended options
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.5 $ $Date: 2013/07/02 09:59:49 $
+d44 2
+d77 1
+a77 1
+    dtheta <- matrix(NA_real_, ncol(Umat), nrow(Umat))
+d84 1
+a84 1
+                             }, n=ncol(Umat))
+d111 1
+a111 1
+    Vmat <- matrix(NA_real_, ncol(Fmat), nrow(Umat))
+@
+
+
+1.5
+log
+@buglet fix
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.4 $ $Date: 2013/07/02 07:22:35 $
+d20 2
+a21 1
+                   sh1="score")
+d25 1
+d57 1
+d66 1
+d98 1
+@
+
+
+1.4
+log
+@tweaked interface
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.3 $ $Date: 2013/07/02 04:31:57 $
+d11 1
+a11 1
+                      what = "coef") {
+d17 12
+a28 2
+  opties <- c("coef", "var", "fish", "score")
+  what <- match.arg(what, opties, several.ok=TRUE)
+d44 3
+a46 2
+  if(give$coef || give$var) {
+    # Compute local Hessian
+d51 6
+a56 2
+    H <- smooth.ppp(dH, sigma=sigma, ...)
+    Hmat <- as.matrix(as.data.frame(lapply(H, getvals)))
+d132 1
+@
+
+
+1.3
+log
+@reorganised options (again)
+implemented 'vh1'
+@
+text
+@d6 1
+a6 1
+# $Revision: 1.2 $ $Date: 2013/07/02 02:06:40 $
+d11 1
+a11 2
+                      give.coef=TRUE,
+                      give.var=FALSE) {
+a13 1
+  what <- match.arg(what, several.ok=TRUE)
+d17 6
+a22 1
+  if(give.var && !is.poisson(model))
+d28 4
+a31 7
+
+  # Compute local Hessian matrix 
+  m <- model.matrix(model)
+  mo <- apply(m, 1, function(z) { as.vector(outer(z,z,"*"))})
+  mo <- if(ncoef == 1) matrix(mo, ncol=1) else t(mo)
+  dH <- Q %mark% (lambda * mo)
+  H <- smooth.ppp(dH, sigma=sigma, ...)
+a32 1
+  Hmat <- as.matrix(as.data.frame(lapply(H, getvals)))
+d34 9
+a42 3
+  # store a template window mask
+  W <- as.mask(if(ncoef == 1) H else H[[1]])
+  Wmat <- as.matrix(W)
+d44 2
+a45 2
+  if(give.coef) {
+    # smooth the score residuals
+d48 3
+a50 1
+    Umat <- as.matrix(as.data.frame(lapply(U, getvals)))
+d52 2
+a53 1
+    # evaluate Taylor approximation
+d76 1
+a76 1
+  if(give.var) {
+d78 2
+a79 2
+    II <- smooth.ppp(dH, sigma=sigma/sqrt(2), ...)
+    II <- lapply(II, function(z, a) { eval.im(a * z) },
+d81 5
+a85 1
+    Imat <- as.matrix(as.data.frame(lapply(II, getvals)))
+d87 3
+a89 3
+    IH <- cbind(Imat, Hmat)
+    ok <- complete.cases(IH)
+    Vmat <- matrix(NA_real_, ncol(Imat), nrow(Umat))
+d91 1
+a91 1
+      Vmat[ , ok] <- apply(IH[ok,, drop=FALSE],
+d93 1
+a93 1
+                           function(z, n) {
+d110 4
+a113 1
+  answer <- list(coefficients=Coefs, variance=Vars)[c(give.coef, give.var)]
+@
+
+
+1.2
+log
+@now calculates variance too (for Poisson)
+@
+text
+@d2 1
+a2 1
+# taylor.R
+d4 1
+a4 1
+# First order Taylor approximation to locppm
+d6 1
+a6 1
+# $Revision: 1.1 $ $Date: 2013/07/02 01:07:14 $
+d8 5
+a12 4
+locppmTaylor <- function(model, sigma, ...,
+                         lambda=fitted(model, new.coef=new.coef),
+                         new.coef=NULL,
+                         what = c("coefficients", "variance")) {
+d18 3
+d39 1
+a39 1
+  if("coefficients" %in% what) {
+d68 1
+a68 1
+  if("variance" %in% what) {
+d98 1
+a98 2
+  answer <- list(coefficients=Coefs, variance=Vars)[what]
+  if(length(what) == 1) answer <- answer[[1]]
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d6 1
+a6 1
+# $Revision$ $Date$
+d8 4
+a11 1
+locppmTaylor <- function(model, sigma, ...) {
+d14 1
+d16 2
+d22 1
+a22 5
+  # smooth the score residuals
+  R <- residuals(model, type="score")
+  U <- smooth.msr(R, sigma=sigma, ...)
+  
+  # smooth the lambda-weighted variance contributions
+d25 5
+a29 8
+  if(ncoef == 1) {
+    mo <- matrix(mo, ncol=1)
+  } else {
+    mo <- t(mo)
+  }
+  M <- fitted(model) * mo
+  M <- Q %mark% M
+  H <- smooth.ppp(M, sigma=sigma, ...)
+d33 30
+d64 12
+a75 11
+  # convert to matrices
+  getvals <- function(z) as.vector(as.matrix(z))
+  Umat <- as.matrix(as.data.frame(lapply(U, getvals)))
+  Hmat <- as.matrix(as.data.frame(lapply(H, getvals)))
+
+  # evaluate Taylor approximation
+  UH <- cbind(Umat, Hmat)
+  ok <- complete.cases(UH)
+  dtheta <- matrix(NA_real_, ncol(Umat), nrow(Umat))
+  if(any(ok)) 
+    dtheta[ , ok] <- apply(UH[ok,, drop=FALSE],
+d78 10
+a87 10
+                             solve(matrix(z[-(1:n)], n, n)) %*%
+                               matrix(z[1:n], n, 1)
+                           }, n=ncol(Umat))
+  theta <- homcoef + dtheta
+  if(ncoef > 1) theta <- t(theta) else theta <- matrix(theta, ncol=1)
+  colnames(theta) <- names(homcoef)
+  
+  # convert back to images
+  Wmat <- as.matrix(W)
+  thetamats <- lapply(as.list(as.data.frame(theta)),
+d90 3
+a92 3
+  answer <- lapply(thetamats, as.im, W=W)
+
+  answer <- as.listof(answer)
+d94 3
+@

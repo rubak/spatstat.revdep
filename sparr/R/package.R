@@ -1,0 +1,316 @@
+#' The sparr Package: Spatial and Spatiotemporal Relative Risk
+#' 
+#' Provides functions to estimate fixed and adaptive kernel-smoothed spatial relative
+#' risk surfaces via the density-ratio method and perform subsequent inference. Fixed-bandwidth spatiotemporal density and relative risk estimation is also supported.
+#' 
+#' @template version
+#' @details
+#'
+#' Kernel smoothing, and the
+#' flexibility afforded by this methodology, provides an attractive approach to
+#' estimating complex probability density functions.
+#' 
+#' The \emph{spatial relative risk function}, constructed as a ratio of estimated case
+#' to control densities (Bithell, 1990; 1991; Kelsall and Diggle, 1995a,b), describes the variation in the
+#' `risk' of the disease, given the underlying at-risk population. This is a
+#' technique that has been applied successfully for mainly exploratory purposes
+#' in a number of different analyses (see for example Sabel et al., 2000;
+#' Prince et al., 2001; Wheeler, 2007). It has also grown in popularity in very
+#' different fields that pose similarly styled research questions, such as ecology
+#' (e.g. Campos and Fedigan, 2014); physiology (Davies et al., 2013); and archaeology
+#' (e.g. Bevan, 2012; Smith et al. 2015).
+#' 
+#' This package provides functions for spatial (i.e. bivariate/planar/2D) kernel density estimation
+#' (KDE), implementing both fixed and `variable' or `adaptive' (Abramson, 1982)
+#' smoothing parameter options. A selection of bandwidth calculators for bivariate KDE and the
+#' relative risk function are provided, including one based on the maximal
+#' smoothing principle (Terrell, 1990), and others involving a leave-one-out
+#' cross-validation (see below). In addition, the ability to
+#' construct both Monte-Carlo and asymptotic \emph{p}-value surfaces (`tolerance'
+#' contours of which signal statistically significant sub-regions of extremity
+#' in a risk surface - Hazelton and Davies, 2009; Davies and Hazelton, 2010) as
+#' well as some visualisation tools are provided.
+#' 
+#' Spatiotemporal estimation is also supported, largely following developments
+#' in Fernando and Hazelton (2014). This includes their fixed-bandwith kernel estimator
+#' of spatiotemporal densities, relative risk, and asymptotic tolerance contours.
+#' 
+#' Key content of \code{sparr} can be broken up as follows:\cr
+#' 
+#' \bold{DATASETS/DATA GENERATION}
+#' 
+#' \code{\link{pbc}} a case/control planar point pattern (\code{\link[spatstat]{ppp.object}}) concerning liver disease in northern
+#' England.
+#' 
+#' \code{\link{fmd}} an anonymised (jittered) case/control spatiotemporal point pattern of the 2001 outbreak of veterinary foot-and-mouth disease in Cumbria (courtesy of the Animal and Plant Health Agency, UK).
+#' 
+#' \code{\link{burk}} a spatiotemporal point pattern of Burkitt's lymphoma in Uganda; artificially simulated control data are also provided for experimentation.
+#' 
+#' Also available are a number of relevant additional spatial datasets built-in to the
+#' \code{\link[spatstat]{spatstat}} package (Baddeley and Turner, 2005; Baddeley et al., 2015) through \code{spatstat.data}, such as
+#' \code{\link[spatstat.data]{chorley}}, which concerns the distribution of
+#' laryngeal cancer in an area of Lancashire, UK.
+#' 
+#' \code{\link{rimpoly}} a wrapper function of \code{\link[spatstat]{rpoint}} to allow generated
+#' spatial point patterns based on a pixel \code{\link[spatstat]{im}}age to be returned with a
+#' polygonal \code{\link[spatstat]{owin}}.\cr
+#' 
+#' 
+#' \bold{SPATIAL}
+#' 
+#' \emph{Bandwidth calculators}
+#' 
+#' \code{\link{OS}} estimation of an isotropic
+#' smoothing parameter for fixed-bandwidth bivariate KDE, based on the
+#' oversmoothing principle introduced by Terrell (1990).
+#' 
+#' \code{\link{NS}}
+#' estimation of an isotropic smoothing parameter for fixed-bandwidth bivariate
+#' KDE, based on the asymptotically optimal value for a normal density
+#' (bivariate normal scale rule - see e.g. Wand and Jones, 1995).
+#' 
+#' \code{\link{LSCV.density}} a least-squares cross-validated (LSCV) estimate
+#' of an isotropic fixed bandwidth for bivariate, edge-corrected KDE (see e.g. Bowman and
+#' Azzalini, 1997).
+#' 
+#' \code{\link{LIK.density}} a likelihood cross-validated (LIK) estimate
+#' of an isotropic fixed bandwidth for bivariate, edge-corrected KDE (see e.g. Silverman, 1986).
+#' 
+#' \code{\link{SLIK.adapt}} an experimental likelihood cross-validation function
+#' for simultaneous global/pilot bandwidth selection for adaptive density estimates.
+#' 
+#' \code{\link{BOOT.density}} a bootstrap approach to optimisation
+#' of an isotropic fixed bandwidth for bivariate, edge-corrected KDE (see e.g. Taylor, 1989).
+#' 
+#' \code{\link{LSCV.risk}} Estimation of a jointly optimal,
+#' common isotropic case-control fixed bandwidth for the kernel-smoothed risk
+#' function based on the mean integrated squared error (MISE), a weighted MISE,
+#' or the asymptotic MISE (see respectively Kelsall and Diggle, 1995a; Hazelton, 2008;
+#' Davies, 2013).
+#'
+#' \emph{Density and relative risk estimation}
+#' 
+#' \code{\link{bivariate.density}} kernel density
+#' estimate of bivariate data; fixed or adaptive smoothing.
+#' 
+#' \code{\link{multiscale.density}} multi-scale adaptive kernel density
+#' estimates for multiple global bandwidths as per Davies and Baddeley
+#' (2018).
+#' 
+#' \code{\link{multiscale.slice}} a single adaptive kernel estimate
+#' based on taking a slice from a multi-scale estimate.
+#' 
+#' \code{\link{risk}} estimation of a (log) spatial relative risk function, either from data or
+#' pre-existing bivariate density estimates; fixed (Kelsall and Diggle, 1995a) or both asymmetric (Davies and Hazelton, 2010) and symmetric (Davies et al., 2016) adaptive estimates are possible.
+#' 
+#' \code{\link{tolerance}}
+#' calculation of asymptotic or Monte-Carlo \emph{p}-value surfaces.
+#' 
+#' \emph{Visualisation}
+#' 
+#' \code{S3} methods of the \code{plot} function; see
+#' \code{\link{plot.bivden}} for visualising a single bivariate density
+#' estimate from \code{\link{bivariate.density}}, \code{\link{plot.rrs}} for
+#' visualisation of a spatial relative risk function from
+#' \code{\link{risk}}, or \code{\link{plot.msden}} for viewing animations of
+#' multi-scale density estimates from \code{\link{multiscale.density}}.
+#'
+#' \code{\link{tol.contour}} provides more flexibility for plotting and
+#' superimposing tolerance contours upon an existing plot of spatial relative risk (i.e. given output from
+#' \code{\link{tolerance}}).
+#' 
+#' \emph{Printing and summarising}
+#' 
+#' \code{S3} methods (\code{\link{print.bivden}}, \code{\link{print.rrs}},
+#' \code{\link{print.msden}}, \code{\link{summary.bivden}},
+#' \code{\link{summary.rrs}}, and \code{\link{summary.msden}}) are available for
+#' the bivariate density, spatial relative risk, and multi-scale adaptive density objects.
+#' 
+#' 
+#' \bold{SPATIOTEMPORAL}
+#' 
+#' \emph{Bandwidth calculators}
+#' 
+#' \code{\link{OS.spattemp}} estimation of an isotropic
+#' smoothing parameter for the spatial margin and another for the temporal margin
+#' for spatiotemporal densities, based on the 2D and 1D versions, respectively, of the
+#' oversmoothing principle introduced by Terrell (1990).
+#' 
+#' \code{\link{NS.spattemp}} as above, based on the 2D and 1D versions of the
+#' normal scale rule (Silverman, 1986).
+#' 
+#' \code{\link{LSCV.spattemp}} least-squares cross-validated (LSCV) estimates
+#' of scalar spatial and temporal bandwidths for edge-corrected spatiotemporal KDE.
+#' 
+#' \code{\link{LIK.spattemp}} as above, based on likelihood cross-validation.
+#' 
+#' \code{\link{BOOT.spattemp}} bootstrap bandwidth selection for the spatial and temporal margins; 
+#' for spatiotemporal, edge-corrected KDE (Taylor, 1989).
+#' 
+#' 
+#' \emph{Density and relative risk estimation}
+#'  
+#' \code{\link{spattemp.density}} fixed-bandwidth kernel density estimate of spatiotemporal data.
+#' 
+#' \code{\link{spattemp.risk}} fixed-bandwidth kernel density estimate of spatiotemporal relative risk, either with a time-static or time-varying control density (Fernando and Hazelton, 2014).
+#' 
+#' \code{\link{spattemp.slice}} extraction function of the spatial density/relative risk at prespecified time(s).
+#' 
+#' 
+#' 
+#' \emph{Visualisation}
+#' 
+#' \code{S3} methods of the \code{plot} function; see
+#' \code{\link{plot.stden}} for various options (including animation) for visualisation of a spatiotemporal density,
+#' and \code{\link{plot.rrst}} for viewing spatiotemporal relative risk surfaces (including animation and tolerance contour superimposition).
+#'
+#'
+#' \emph{Printing and summarising objects}
+#' 
+#' \code{S3} methods (\code{\link{print.stden}}, \code{\link{print.rrst}}, \code{\link{summary.stden}}, and \code{\link{summary.rrst}}) are available for
+#' the spatiotemporal density and spatiotemporal relative risk objects respectively.
+#' 
+#' 
+#' 
+#' 
+#' 
+#' @name sparr-package
+#' @aliases sparr-package sparr
+#' @docType package
+#' @section Dependencies: The \code{sparr} package depends upon
+#' \code{\link[spatstat]{spatstat}}. In particular, the user should familiarise
+#' themselves with \code{\link[spatstat]{ppp}} objects and
+#' \code{\link[spatstat]{im}} objects, which are used throughout. For spatiotemporal density estimation, \code{sparr} is assisted by importing from the \code{misc3d} package, and for the
+#' experimental capabilities involving parallel processing, \code{sparr} also
+#' currently imports \code{\link[doParallel]{doParallel}},
+#' \code{\link[parallel]{parallel}}, and \code{\link[foreach]{foreach}}.
+#' 
+#' @author T.M. Davies\cr \emph{Dept. of Mathematics & Statistics, University of
+#' Otago, Dunedin, New Zealand.}\cr
+#' J.C. Marshall\cr
+#' \emph{Institute of Fundamantal Sciences, Massey University, Palmerston North, New Zealand.}\cr
+#' 
+#' Maintainer: T.M.D. \email{tdavies@@maths.otago.ac.nz}
+#' 
+#' @section Citation:
+#' To cite use of current versions of \code{sparr} in publications or research projects please use:\cr
+#' 
+#' Davies, T.M., Marshall, J.C. and Hazelton, M.L. (2018) Tutorial on kernel estimation of continuous spatial
+#' and spatiotemporal relative risk, \emph{Statistics in Medicine}, \bold{37}(7), 1191-1221. <DOI:10.1002/sim.7577>
+#' 
+#' Old versions of \code{sparr} (<= 2.1-09) can be referenced by Davies et al. (2011) (see reference list).
+#' 
+#' 
+#' @references
+#' Abramson, I. (1982), On bandwidth variation in kernel estimates
+#' --- a square root law, \emph{Annals of Statistics}, \bold{10}(4),
+#' 1217-1223.
+#' 
+#' Baddeley, A. and Turner, R. (2005),
+#' spatstat: an R package for analyzing spatial point patterns, \emph{Journal
+#' of Statistical Software}, \bold{12}(6), 1-42.
+#' 
+#' Baddeley, A., Rubak, E. and Turner, R. (2015) \emph{Spatial Point Patterns: Methodology and Applications with R}, Chapman and Hall/CRC Press, UK.
+#' 
+#' Bevan A. (2012), Spatial methods for analysing large-scale artefact inventories. \emph{Antiquity}, \bold{86}, 492-506.
+#' 
+#' Bithell, J.F. (1990), An
+#' application of density estimation to geographical epidemiology,
+#' \emph{Statistics in Medicine}, \bold{9}, 691-701.
+#' 
+#' Bithell, J.F. (1991),
+#' Estimation of relative risk function, \emph{Statistics in Medicine},
+#' \bold{10}, 1745-1751.
+#' 
+#' Bowman, A.W. and Azzalini, A. (1997), \emph{Applied
+#' Smoothing Techniques for Data Analysis: The Kernel Approach with S-Plus
+#' Illustrations.} Oxford University Press Inc., New York. ISBN
+#' 0-19-852396-3.
+#' 
+#' Campos, F.A. and Fedigan, L.M. (2014) Spatial ecology of perceived predation risk and vigilance behavior in white-faced capuchins, \emph{Behavioral Ecology}, \bold{25}, 477-486.
+#' 
+#' Davies, T.M. (2013), Jointly optimal bandwidth selection
+#' for the planar kernel-smoothed density-ratio, \emph{Spatial and
+#' Spatio-temporal Epidemiology}, \bold{5}, 51-65.
+#' 
+#' Davies, T.M. and Baddeley A. (2018), Fast computation of spatially adaptive kernel estimates,
+#' \emph{Statistics and Computing}, \bold{28}(4), 937-956.
+#' 
+#' Davies, T.M., Cornwall, J. and Sheard, P.W. (2013) Modelling dichotomously marked muscle fibre configurations, \emph{Statistics in Medicine}, \bold{32}, 4240-4258.
+#' 
+#' Davies, T.M. and Hazelton, M.L. (2010), Adaptive kernel
+#' estimation of spatial relative risk, \emph{Statistics in Medicine},
+#' \bold{29}(23) 2423-2437.
+#' 
+#' Davies, T.M., Hazelton, M.L. and Marshall, J.C.
+#' (2011), \code{sparr}: Analyzing spatial relative risk using fixed and
+#' adaptive kernel density estimation in \code{R}, \emph{Journal of Statistical
+#' Software} \bold{39}(1), 1-14.
+#' 
+#' Davies, T.M., Jones, K. and Hazelton, M.L.
+#' (2016), Symmetric adaptive smoothing regimens for estimation of the spatial
+#' relative risk function, \emph{Computational Statistics & Data Analysis},
+#' \bold{101}, 12-28.
+#' 
+#' Fernando, W.T.P.S. and Hazelton, M.L. (2014), Generalizing the spatial relative risk function, \emph{Spatial and Spatio-temporal Epidemiology}, \bold{8}, 1-10.
+#' 
+#' Hazelton, M.L. (2008), Letter to the editor: Kernel
+#' estimation of risk surfaces without the need for edge correction,
+#' \emph{Statistics in Medicine}, \bold{27}, 2269-2272.
+#' 
+#' Hazelton, M.L. and
+#' Davies, T.M. (2009), Inference based on kernel estimates of the relative
+#' risk function in geographical epidemiology, \emph{Biometrical Journal},
+#' \bold{51}(1), 98-109.
+#' 
+#' Kelsall, J.E. and Diggle, P.J. (1995a), Kernel
+#' estimation of relative risk, \emph{Bernoulli}, \bold{1}, 3-16.
+#' 
+#' Kelsall, J.E. and Diggle, P.J. (1995b), Non-parametric estimation of spatial
+#' variation in relative risk, \emph{Statistics in Medicine}, \bold{14},
+#' 2335-2342.
+#' 
+#' Prince, M. I., Chetwynd, A., Diggle, P. J., Jarner, M.,
+#' Metcalf, J. V. and James, O. F. W. (2001), The geographical distribution of
+#' primary biliary cirrhosis in a well-defined cohort, \emph{Hepatology}
+#' \bold{34}, 1083-1088.
+#' 
+#' Sabel, C. E., Gatrell, A. C., Loytonen, M.,
+#' Maasilta, P. and Jokelainen, M. (2000), Modelling exposure opportunitites:
+#' estimating relative risk for motor disease in Finland, \emph{Social Science
+#' & Medicine} \bold{50}, 1121-1137.
+#' 
+#' Smith, B.A., Davies, T.M. and Higham, C.F.W. (2015) Spatial and social variables in the Bronze Age phase 4 cemetery of Ban Non Wat, Northeast Thailand, \emph{Journal of Archaeological Science: Reports}, \bold{4}, 362-370.
+#' 
+#' Taylor, C.C. (1989) Bootstrap choice of the smoothing parameter in kernel density estimation, \emph{Biometrika}, \bold{76}, 705-712.
+#' 
+#' Terrell, G.R. (1990), The maximal
+#' smoothing principle in density estimation, \emph{Journal of the American
+#' Statistical Association}, \bold{85}, 470-477.
+#' 
+#' Venables, W. N. and Ripley,
+#' B. D. (2002). \emph{Modern Applied Statistics with S}, Fourth Edition,
+#' Springer, New York.
+#' 
+#' Wand, M.P. and Jones, C.M., 1995. \emph{Kernel
+#' Smoothing}, Chapman & Hall, London.
+#' 
+#' Wheeler, D. C. (2007), A comparison
+#' of spatial clustering and cluster detection techniques for childhood
+#' leukemia incidence in Ohio, 1996-2003, \emph{International Journal of Health
+#' Geographics}, \bold{6}(13).
+#' 
+#' @keywords package
+NULL
+
+#' @importFrom utils setTxtProgressBar txtProgressBar packageDescription packageVersion
+#' @importFrom stats IQR density dnorm fft optimise pnorm quantile rnorm sd var bw.SJ spline optim
+#' @importFrom graphics axis box contour pairs par plot points title
+#' @importFrom grDevices dev.hold dev.flush
+#' @importFrom spatstat.utils prange tapplysum inside.range
+#' @importFrom parallel detectCores
+#' @importFrom doParallel registerDoParallel
+#' @importFrom foreach %dopar% foreach
+#' @importFrom misc3d kde3d
+#' @import spatstat
+NULL

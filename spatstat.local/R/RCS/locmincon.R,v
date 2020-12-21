@@ -1,0 +1,597 @@
+head	1.10;
+access;
+symbols;
+locks
+	adrian:1.10; strict;
+comment	@# @;
+
+
+1.10
+date	2014.06.28.09.44.38;	author adrian;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2013.09.05.06.13.02;	author adrian;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2013.08.31.02.41.40;	author adrian;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2013.08.31.02.27.15;	author adrian;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2012.12.12.01.52.55;	author adrian;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2012.12.10.08.54.20;	author adrian;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2012.12.03.06.30.02;	author adrian;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2012.11.29.02.14.06;	author adrian;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2012.09.04.07.15.52;	author adrian;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2012.09.04.01.07.52;	author adrian;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@bug fix in connecting to new 'kppm'
+@
+text
+@#
+#  locmincon.R
+#
+#  Local minimum-contrast estimation
+#
+#   $Revision: 1.9 $  $Date: 2013/09/05 06:13:02 $
+#
+
+#require(spatstat)
+
+locmincon <- function(...,
+                      sigma=NULL, f = 1/4, verbose=TRUE,
+                      localstatargs=list(), LocalStats=NULL,
+                      tau=NULL) {
+  starttime <- proc.time()
+  if(verbose) cat("Fitting template model...")
+  kfit <- kppm(...)
+  if(verbose) cat("Done.\n")
+
+  argh <- list(...)
+  
+  X <- kfit$X
+  nX <- npoints(X)
+  pfit <- as.ppm(kfit)
+
+  if(is.null(getglmfit(pfit)))
+    pfit <- update(pfit, forcefit=TRUE)
+  
+  # determine bandwidth
+  if(is.null(sigma)) {
+    sigma <- bw.frac(X, f=f)
+    if(verbose)
+      cat(paste("sigma = ", sigma, "\n"))
+  }
+
+  stationary <- kfit$stationary   # logical
+  isPCP      <- kfit$isPCP
+  homlambda  <- kfit$lambda
+  hompar     <- kfit$par 
+
+  kFIT <- kfit$Fit
+  HomStat <- kFIT$Stat # e.g. K-function object
+  FitFun  <- kFIT$FitFun         # e.g. "thomas.estK"
+  StatFun <- kFIT$StatFun         # e.g. "Kest"
+
+  localmap <- c(Kest="localK",
+                Kinhom="localKinhom",
+                pcf="localpcf",
+                pcfinhom="localpcfinhom")
+  if(!(StatFun %in% names(localmap)))
+    stop(paste("A local version of the function", sQuote(StatFun),
+               "is not available"))
+  LocalStatFun <- localmap[[StatFun]]
+
+  # Compute predicted intensity of local model at each data point 
+  if(is.stationary(pfit)) {
+    # shortcut: equivalent to kernel smoothing
+    if(verbose) cat("Estimating intensity by kernel smoothing.\n")
+    lambda <- density(X, sigma=sigma, at="points")
+  } else {
+    # fit local Poisson models
+    if(verbose) cat("Fitting local Poisson models.\n")
+    coefs <- locppmEngine(pfit, sigma, X,
+                          verbose=verbose, Vname="data points")
+    # Compute predicted intensity of local model at each data point 
+    gfit <- getglmfit(pfit)
+    gdat <- getglmdata(pfit)
+    lambda <- numeric(nX)
+    for(i in seq_len(nX)) 
+      lambda[i] <- GLMpredict(gfit, gdat[i,, drop=FALSE], coefs[i,],
+                              changecoef=TRUE)
+  }
+
+  # compute local statistics
+  if(is.null(LocalStats)) {
+    if(verbose)
+      cat(paste("Computing local statistics for", nX, "points..."))
+    argh <- append(if(stationary) list(X) else list(X, lambda=lambda),
+                   localstatargs)
+    LocalStats <- do.call(LocalStatFun, argh)
+    if(verbose) cat("Done.\n")
+  } else {
+    # validate
+    stopifnot(is.fv(LocalStats))
+    if(ncol(LocalStats) != nX + 2)
+      stop(paste("Argument LocalStats has",
+                 ncol(LocalStats), "columns",
+                 "but", nX + 2, "columns were expected"))
+    if(length(localstatargs) > 0)
+      warning("Argument localstatargs ignored, because LocalStats was given")
+  }
+  # Allocate space to store all the weighted statistics
+  WeightedStatistics <- LocalStats
+  # It is assumed that the first nX columns contain the local functions.
+  
+  # Derive a 'template' fv object for the local weighted average statistic
+  # at the current point, for minimum contrast fitting
+  whichr <- which(fvnames(LocalStats, ".x") == colnames(LocalStats))
+  fvnames(LocalStats, ".y") <- colnames(LocalStats)[1]
+  WeightedStatJ <- LocalStats[, c(1, whichr)]
+  # make it acceptable to FitFun
+  attr(WeightedStatJ, "fname") <- attr(HomStat, "fname")
+  
+  # Extract matrix of local statistics
+  LocalMatrix <- as.matrix(as.data.frame(LocalStats)[ , 1:nX])
+
+  # detect NA or Inf entries, record their positions, replace by zeroes
+  LocalMatrixValid <- is.finite(LocalMatrix)
+  LocalMatrix[!LocalMatrixValid] <- 0
+    
+  # save r values
+  rvals <- with(WeightedStatJ, .x)
+   
+  # Now compute local fits
+  xx <- X$x
+  yy <- X$y
+
+  if(verbose) 
+    cat(paste("Fitting", nX, "models...\n"))
+
+  # set up space for results
+  pars <- matrix(NA_real_, nrow=nX, ncol=3)
+  colnames(pars) <- c(names(hompar), "mu")
+  
+  for(j in seq_len(nX)) {
+    if(verbose)
+      progressreport(j, nX)
+    # compute vector of weights relative to point j
+    localwt <- dnorm(xx - xx[j], sd=sigma) * dnorm(yy - yy[j], sd=sigma)
+    localwt <- matrix(localwt, ncol=1)
+    # compute weighted average of statistics
+    numer <- LocalMatrix %*% localwt
+    denom <- LocalMatrixValid %*% localwt
+    weightedstat.j <- as.vector(numer/denom)
+    WeightedStatJ[,1] <- weightedstat.j
+    WeightedStatistics[, j] <- weightedstat.j
+    # trim the recommended range of r values
+    attr(WeightedStatJ, "alim") <- c(0, max(rvals[denom > 0]))
+    # apply minimum contrast
+    mcfitj <- do.call.matched(FitFun,
+                              resolve.defaults(
+                                               list(X=WeightedStatJ),
+                                               argh,
+                                               list(startpar=hompar)),
+                              extrargs=names(formals(optim)))
+    # extract fitted parameters
+    parj <- mcfitj$par
+    lambdaj <- lambda[j]
+    if(isPCP) {
+      kappaj <- parj[1]
+      muj <- lambdaj/kappaj
+    } else {
+      sigma2j <- parj[1]
+      muj <- lambdaj - sigma2j/2
+    }
+    pars[j, ] <- c(parj, muj)
+  }
+  if(verbose) cat("Done.\n")
+  # assemble results
+  ok <- complete.cases(pars)
+  smoo <- Smooth(X[ok] %mark% pars[ok,], sigma=tau)
+  tau <- attr(smoo, "sigma")
+  # pack up
+  result <- list(homfit=kfit, pars=pars, ok=ok, smoo=smoo,
+                 localstats=LocalStats, weightedstats=WeightedStatistics,
+                 sigma=sigma, tau=tau)
+  class(result) <- c("locmincon", class(result))
+  result <- timed(result, starttime=starttime)
+  return(result)
+}
+
+plot.locmincon <- function(x, ...,
+                           how=c("exact", "smoothed"),
+                           which = NULL,
+                           sigma=NULL,
+                           do.points=TRUE) {
+  xname <- deparse(substitute(x))
+  how <- match.arg(how)
+  X <- x$homfit$X
+  switch(how,
+           smoothed = {
+             if(is.null(sigma)) {
+               objects <- x$smoo
+             } else {
+               pars <- x$pars
+               ok   <- x$ok 
+               objects <- Smooth(X[ok] %mark% pars[ok,], sigma=sigma)
+             }
+           },
+           exact = {
+             objects <- lapply(as.list(as.data.frame(x$pars)),
+                               setmarks,
+                               x=X)
+             objects <- as.listof(objects)
+           }
+           )
+  if(!is.null(which))
+    objects <- objects[which]
+  pe <- if(do.points) function(...) { plot(X, pch=".", add=TRUE) } else NULL
+  do.call("plot", resolve.defaults(list(x=objects),
+                                   list(...),
+                                   list(main=xname, panel.end=pe)))
+}
+
+print.locmincon <- function(x, ...) {
+  cat("Local minimum contrast fit\n")
+  cat("....................................\n")
+  cat("Template model:\n")
+  print(x$homfit)
+  cat("....................................\n")
+  cat(paste("\nLocalisation bandwidth sigma:", x$sigma, "\n"))
+  cat(paste("\nInterpolation bandwidth tau:", x$tau, "\n"))
+  cat("\nSmoothed coefficient estimates:\n ")
+  print(x$smoo)
+  return(invisible(NULL))
+}
+
+as.ppp.locmincon <- function(X, ...) { (X$homfit$X) %mark% (X$pars) }
+
+Smooth.locmincon <- function(X, tau=NULL, ...) {
+  # if sigma is missing, return the precomputed smooth images
+  if(is.null(tau))
+    return(X$smoo)
+  # recompute with new sigma
+  XX   <- X$homfit$X
+  pars <- X$pars
+  ok   <- X$ok
+  Y <- XX[ok] %mark% pars[ok,]
+  ans <- do.call("Smooth",
+                 resolve.defaults(list(X=Y, sigma=tau),
+                                  list(...)))
+  return(ans)
+}
+
+with.locmincon <- function(data, ...) {
+  result <- with(as.data.frame(data$pars), ...)
+  X <- as.ppp(data)
+  if((is.matrix(result) && nrow(result) == npoints(X)) ||
+     (is.vector(result) && is.numeric(result) && length(result) == npoints(X)))
+    result <- ssf(X, result)
+  return(result)
+}
+
+     
+psib.locmincon <- function(object) {
+  clus <- object$homfit$clusters
+  info <- spatstatClusterModelInfo(clus)
+  if(!info$isPCP)
+    stop("The model is not a cluster process")
+  X <- data.ppm(as.ppm(object$homfit))
+  xtra <- extraClusterModelInfo(clus)
+  pmap <- xtra$psib
+  if(is.null(pmap))
+    stop(paste("Not implemented for", sQuote(clus)))
+  p <- applymaps(pmap, object$pars)
+  P <- ssf(X, p)
+  return(P)
+}
+@
+
+
+1.9
+log
+@added psib.locmincon
+@
+text
+@d6 1
+a6 1
+#   $Revision: 1.8 $  $Date: 2013/08/31 02:41:40 $
+a14 1
+
+d19 2
+a21 2
+  otherargs <- passthrough(kppm, ...)
+
+d140 6
+a145 5
+    mcfitj <- do.call(FitFun,
+                    resolve.defaults(
+                                     list(X=WeightedStatJ),
+                                     otherargs,
+                                     list(startpar=hompar)))
+d250 1
+a250 1
+  X <- as.ppp(object$homfit)
+@
+
+
+1.8
+log
+@adjustments for generic Smooth
+@
+text
+@d6 1
+a6 1
+#   $Revision: 1.7 $  $Date: 2013/08/31 02:27:15 $
+d245 14
+@
+
+
+1.7
+log
+@updated to 'Smooth'
+@
+text
+@d6 1
+a6 1
+#   $Revision: 1.6 $  $Date: 2012/12/12 01:52:55 $
+d220 1
+a220 1
+Smooth.locmincon <- function(X, tau=NULL) {
+d228 4
+a231 1
+  ans <- Smooth(XX[ok] %mark% pars[ok,], sigma=tau)
+@
+
+
+1.6
+log
+@bug fix
+@
+text
+@d6 1
+a6 1
+#   $Revision: 1.5 $  $Date: 2012/12/10 08:54:20 $
+a36 3
+  HomStat <- kfit$Stat # e.g. K-function object
+  FitFun <- kfit$FitFun         # e.g. "thomas.estK"
+  StatFun <- kfit$StatFun         # e.g. "Kest"
+d38 8
+a45 4
+  isPCP    <- kfit$isPCP
+
+  hompar <- kfit$mcfit$par 
+  homlambda   <- kfit$lambda
+d161 1
+a161 1
+  smoo <- smooth.ppp(X[ok] %mark% pars[ok,], sigma=tau)
+d178 1
+a178 1
+  what <- match.arg(what)
+d187 1
+a187 1
+               objects <- smooth.ppp(X[ok] %mark% pars[ok,], sigma=sigma)
+d220 1
+a220 1
+smooth.locmincon <- function(X, tau=NULL) {
+d228 1
+a228 1
+  ans <- smooth.ppp(XX[ok] %mark% pars[ok,], sigma=tau)
+@
+
+
+1.5
+log
+@forming into a package
+@
+text
+@d6 1
+a6 1
+#   $Revision: 1.4 $  $Date: 2012/12/03 06:30:02 $
+d172 1
+a172 1
+                           what=c("points", "smoothed"),
+d179 1
+a179 1
+  switch(what,
+d189 1
+a189 1
+           points = {
+d234 1
+a234 1
+  if((is.matrix(result) && nrows(result) == npoints(X)) ||
+@
+
+
+1.4
+log
+@more improvements
+@
+text
+@d6 1
+a6 1
+#   $Revision: 1.3 $  $Date: 2012/11/29 02:14:06 $
+d9 1
+a9 1
+require(spatstat)
+@
+
+
+1.3
+log
+@tweaked
+added 'with' method
+@
+text
+@d6 1
+a6 1
+#   $Revision: 1.2 $  $Date: 2012/09/04 07:15:52 $
+d173 1
+d196 2
+@
+
+
+1.2
+log
+@debugged
+@
+text
+@d6 1
+a6 1
+#   $Revision: 1.1 $  $Date: 2012/09/04 01:07:52 $
+d13 2
+a14 1
+                      localstatargs=list(), LocalStats=NULL) {
+d16 1
+a54 6
+  # fit local Poisson models
+  if(verbose) cat("Fitting local Poisson models...")
+  coefs <- locppmEngine(pfit, sigma, X,
+                        verbose=verbose, Vname="data points")
+  if(verbose) cat("Done.\n")
+
+d56 17
+a72 6
+  gfit <- getglmfit(pfit)
+  gdat <- getglmdata(pfit)
+  lambda <- numeric(nX)
+  for(i in seq_len(nX)) 
+    lambda[i] <- GLMpredict(gfit, gdat[i,, drop=FALSE], coefs[i,],
+                            changecoef=TRUE)
+d92 2
+d95 4
+d100 1
+a100 4
+  whichr <- which(fvnames(LocalStats, ".x") == colnames(LocalStats))
+  
+  # Derive a 'template' fv object
+  WeightedStat <- LocalStats[, c(1, whichr)]
+d102 1
+a102 1
+  attr(WeightedStat, "fname") <- attr(HomStat, "fname")
+d112 2
+a113 2
+  rvals <- with(WeightedStat, .x)
+  
+d134 3
+a136 1
+    WeightedStat[,1] <- as.vector(numer/denom)
+d138 1
+a138 1
+    attr(WeightedStat, "alim") <- c(0, max(rvals[denom > 0]))
+d142 1
+a142 1
+                                     list(X=WeightedStat),
+d160 2
+a161 1
+  smoo <- smooth.ppp(X[ok] %mark% pars[ok,], sigma=1.4 * max(nndist(X)))
+d163 3
+a165 1
+  result <- list(homfit=kfit, pars=pars, smoo=smoo, sigma=sigma)
+d167 1
+d171 4
+a174 1
+plot.locmincon <- function(x, ...) {
+d176 21
+a196 1
+  do.call("plot", resolve.defaults(list(x=x$smoo),
+d198 1
+a198 1
+                                   list(main=xname)))
+d207 2
+a208 1
+  cat(paste("\nSmoothing parameter sigma:", x$sigma, "\n"))
+d213 25
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d6 1
+a6 1
+#   $Revision$  $Date$
+d9 9
+a17 6
+locmincon <- function(X, trend = ~1, clusters="Thomas", covariates=NULL, ...,
+                      statistic="K", sigma=NULL, f = 1/4, verbose=TRUE,
+                      localstatargs=list()) {
+  
+  kfit <- kppm(X=X, trend=trend, clusters=clusters, covariates=covariates,
+               ..., statistic=statistic)
+d19 3
+d23 1
+d25 4
+a38 2
+  startpar <- kfit$mcfit$startpar 
+  lambda   <- kfit$lambda
+d41 3
+d53 4
+a56 6
+  # compute local statistics
+  if(verbose)
+    cat(paste("Computing local statistics for", nX, "points..."))
+  argh <- append(if(stationary) list(X) else list(X, lambda=lambda),
+                 localstatargs)
+  LocalStats <- do.call(LocalStatFun, argh)
+d59 26
+d97 7
+d113 1
+a113 1
+  colnames(pars) <- c(names(startpar), "mu")
+d120 1
+d122 5
+a126 3
+    localwt <- localwt/sum(localwt)
+    localaverage <- LocalMatrix %*% matrix(localwt, ncol=1)
+    WeightedStat[,1] <- as.vector(localaverage)
+d130 3
+a132 3
+                                     list(X=WeightedStat, lambda=lambda),
+                                     list(...),
+                                     list(startpar=startpar)))
+d135 1
+a135 1
+    lambdaj <- if(stationary) lambda else lambda[X[j]]
+@

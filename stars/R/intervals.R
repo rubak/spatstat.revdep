@@ -1,0 +1,59 @@
+#' create an intervals object
+#' 
+#' create an intervals object, assuming left-closed and right-open intervals
+#' @param start vector with start values, or 2-column matrix with start and end values in column 1 and 2, respectively
+#' @param end vector with end values
+#' @export
+make_intervals = function(start, end) {
+	if (missing(end) && is.matrix(start) && ncol(start) == 2) {
+		end = start[,2]
+		start = start[,1]
+	}
+	stopifnot(length(start) > 0, length(start) == length(end))
+	structure(list(start = start, end = end), class = "intervals")
+}
+
+as_intervals = function(x, add_last = FALSE) {
+	stopifnot(is.atomic(x))
+	if (add_last)
+		x = c(x, tail(x, 1) + diff(tail(x, 2)))
+	make_intervals(start = head(x, -1), end = tail(x, -1))
+}
+
+length.intervals = function(x) length(x$start)
+
+head.intervals = function(x, n) make_intervals(head(x$start, n), head(x$end, n))
+
+tail.intervals = function(x, n) make_intervals(tail(x$start, n), tail(x$end, n))
+
+c.intervals = function(...) {
+	dots = list(...)
+	start = do.call(c, lapply(dots, function(x) x$start))
+	end = do.call(c, lapply(dots, function(x) x$end))
+	make_intervals(start, end)
+}
+
+`[.intervals` = function(x, i, ...) {
+	make_intervals(x$start[i], x$end[i])
+}
+
+format.intervals = function(x, ...) {
+	mformat = function(x, ..., digits = getOption("digits")) {
+		if (inherits(x, "PCICt")) 
+			format(x, ...)
+		else
+			format(x, digits = digits, ...) 
+	}
+	if (inherits(x$start, "units")) {
+		stopifnot(units(x$start) == units(x$end))
+		paste0("[", format(as.numeric(x$start), ...), ",", format(as.numeric(x$end), ...), ") ",
+			"[", as.character(units(x$start)), "]")
+	} else
+		paste0("[", mformat(x$start, ...), ",", mformat(x$end, ...), ")")
+}
+
+find_interval = function(x, intervals) {
+	i = findInterval(x, c(intervals$start, tail(intervals$end, 1)))
+	i[i == 0 | i > length(intervals)] = NA
+	i
+}

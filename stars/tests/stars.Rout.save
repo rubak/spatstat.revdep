@@ -1,0 +1,695 @@
+
+R version 4.0.1 (2020-06-06) -- "See Things Now"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> Sys.setenv(TZ="UTC")
+> suppressPackageStartupMessages(library(stars))
+> set.seed(13521) # runif
+> tif = system.file("tif/L7_ETMs.tif", package = "stars")
+> (x_ = read_stars(c(tif,tif))) # FIXME: not what you'd expect
+stars object with 3 dimensions and 2 attributes
+attribute(s):
+  L7_ETMs.tif     L7_ETMs.tif.1   
+ Min.   :  1.00   Min.   :  1.00  
+ 1st Qu.: 54.00   1st Qu.: 54.00  
+ Median : 69.00   Median : 69.00  
+ Mean   : 68.91   Mean   : 68.91  
+ 3rd Qu.: 86.00   3rd Qu.: 86.00  
+ Max.   :255.00   Max.   :255.00  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> (x = read_stars(tif))
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   :  1.00  
+ 1st Qu.: 54.00  
+ Median : 69.00  
+ Mean   : 68.91  
+ 3rd Qu.: 86.00  
+ Max.   :255.00  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> image(x)
+> gdal_crs(tif)
+Coordinate Reference System:
+  User input: PROJCS["UTM Zone 25, Southern Hemisphere",GEOGCS["GRS 1980(IUGG, 1980)",DATUM["unknown",SPHEROID["GRS80",6378137,298.257222101],TOWGS84[0,0,0,0,0,0,0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-33],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",10000000],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH]] 
+  wkt:
+BOUNDCRS[
+    SOURCECRS[
+        PROJCRS["UTM Zone 25, Southern Hemisphere",
+            BASEGEOGCRS["GRS 1980(IUGG, 1980)",
+                DATUM["unknown",
+                    ELLIPSOID["GRS80",6378137,298.257222101,
+                        LENGTHUNIT["metre",1,
+                            ID["EPSG",9001]]]],
+                PRIMEM["Greenwich",0,
+                    ANGLEUNIT["degree",0.0174532925199433,
+                        ID["EPSG",9122]]]],
+            CONVERSION["UTM zone 25S",
+                METHOD["Transverse Mercator",
+                    ID["EPSG",9807]],
+                PARAMETER["Latitude of natural origin",0,
+                    ANGLEUNIT["degree",0.0174532925199433],
+                    ID["EPSG",8801]],
+                PARAMETER["Longitude of natural origin",-33,
+                    ANGLEUNIT["degree",0.0174532925199433],
+                    ID["EPSG",8802]],
+                PARAMETER["Scale factor at natural origin",0.9996,
+                    SCALEUNIT["unity",1],
+                    ID["EPSG",8805]],
+                PARAMETER["False easting",500000,
+                    LENGTHUNIT["metre",1],
+                    ID["EPSG",8806]],
+                PARAMETER["False northing",10000000,
+                    LENGTHUNIT["metre",1],
+                    ID["EPSG",8807]],
+                ID["EPSG",17025]],
+            CS[Cartesian,2],
+                AXIS["easting",east,
+                    ORDER[1],
+                    LENGTHUNIT["metre",1,
+                        ID["EPSG",9001]]],
+                AXIS["northing",north,
+                    ORDER[2],
+                    LENGTHUNIT["metre",1,
+                        ID["EPSG",9001]]]]],
+    TARGETCRS[
+        GEOGCRS["WGS 84",
+            DATUM["World Geodetic System 1984",
+                ELLIPSOID["WGS 84",6378137,298.257223563,
+                    LENGTHUNIT["metre",1]]],
+            PRIMEM["Greenwich",0,
+                ANGLEUNIT["degree",0.0174532925199433]],
+            CS[ellipsoidal,2],
+                AXIS["latitude",north,
+                    ORDER[1],
+                    ANGLEUNIT["degree",0.0174532925199433]],
+                AXIS["longitude",east,
+                    ORDER[2],
+                    ANGLEUNIT["degree",0.0174532925199433]],
+            ID["EPSG",4326]]],
+    ABRIDGEDTRANSFORMATION["Transformation from GRS 1980(IUGG, 1980) to WGS84",
+        METHOD["Position Vector transformation (geog2D domain)",
+            ID["EPSG",9606]],
+        PARAMETER["X-axis translation",0,
+            ID["EPSG",8605]],
+        PARAMETER["Y-axis translation",0,
+            ID["EPSG",8606]],
+        PARAMETER["Z-axis translation",0,
+            ID["EPSG",8607]],
+        PARAMETER["X-axis rotation",0,
+            ID["EPSG",8608]],
+        PARAMETER["Y-axis rotation",0,
+            ID["EPSG",8609]],
+        PARAMETER["Z-axis rotation",0,
+            ID["EPSG",8610]],
+        PARAMETER["Scale difference",1,
+            ID["EPSG",8611]]]]
+> plot(x)
+> plot(x, join_zlim = FALSE)
+> x %>% st_set_dimensions(names = c('a', 'b', 'c'))
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   :  1.00  
+ 1st Qu.: 54.00  
+ Median : 69.00  
+ Mean   : 68.91  
+ 3rd Qu.: 86.00  
+ Max.   :255.00  
+dimension(s):
+  from  to  offset delta                       refsys point values    
+a    1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+b    1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+c    1   6      NA    NA                           NA    NA   NULL    
+> st_get_dimension_values(x, 3)
+[1] 1 2 3 4 5 6
+> 
+> (x1 = st_set_dimensions(x, "band", values = c(1,2,3,4,5,7), names = "band_number", point = TRUE))
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   :  1.00  
+ 1st Qu.: 54.00  
+ Median : 69.00  
+ Mean   : 68.91  
+ 3rd Qu.: 86.00  
+ Max.   :255.00  
+dimension(s):
+            from  to  offset delta                       refsys point  values
+x              1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE    NULL
+y              1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE    NULL
+band_number    1   6      NA    NA                           NA  TRUE 1,...,7
+               
+x           [x]
+y           [y]
+band_number    
+> rbind(c(0.45,0.515), c(0.525,0.605), c(0.63,0.69), c(0.775,0.90), c(1.55,1.75), c(2.08,2.35)) %>%
++ 	units::set_units(um) -> bw # units::set_units(µm) -> bw
+> # set bandwidth midpoint:
+> (x2 = st_set_dimensions(x, "band", values = 0.5 * (bw[,1]+bw[,2]), 
++    names = "bandwidth_midpoint", point = TRUE))
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   :  1.00  
+ 1st Qu.: 54.00  
+ Median : 69.00  
+ Mean   : 68.91  
+ 3rd Qu.: 86.00  
+ Max.   :255.00  
+dimension(s):
+                   from  to  offset delta                       refsys point
+x                     1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE
+y                     1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE
+bandwidth_midpoint    1   6      NA    NA                      udunits  TRUE
+                                       values    
+x                                        NULL [x]
+y                                        NULL [y]
+bandwidth_midpoint 0.4825 [um],...,2.215 [um]    
+> # set bandwidth intervals:
+> (x3 = st_set_dimensions(x, "band", values = make_intervals(bw), names = "bandwidth"))
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   :  1.00  
+ 1st Qu.: 54.00  
+ Median : 69.00  
+ Mean   : 68.91  
+ 3rd Qu.: 86.00  
+ Max.   :255.00  
+dimension(s):
+          from  to  offset delta                       refsys point
+x            1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE
+y            1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE
+bandwidth    1   6      NA    NA                      udunits    NA
+                                          values    
+x                                           NULL [x]
+y                                           NULL [y]
+bandwidth [0.45,0.515) [um],...,[2.08,2.35) [um]    
+> 
+> x + x
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif   
+ Min.   :  2.0  
+ 1st Qu.:108.0  
+ Median :138.0  
+ Mean   :137.8  
+ 3rd Qu.:172.0  
+ Max.   :510.0  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> x * x
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif   
+ Min.   :    1  
+ 1st Qu.: 2916  
+ Median : 4761  
+ Mean   : 5512  
+ 3rd Qu.: 7396  
+ Max.   :65025  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> x[,,,1:3]
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   : 21.00  
+ 1st Qu.: 58.00  
+ Median : 70.00  
+ Mean   : 70.36  
+ 3rd Qu.: 83.00  
+ Max.   :255.00  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   3      NA    NA                           NA    NA   NULL    
+> x[,1:100,100:200,]
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   : 13.00  
+ 1st Qu.: 54.00  
+ Median : 65.00  
+ Mean   : 67.22  
+ 3rd Qu.: 77.00  
+ Max.   :252.00  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 100  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y     100 200 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> sqrt(x)
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   : 1.000  
+ 1st Qu.: 7.348  
+ Median : 8.307  
+ Mean   : 8.094  
+ 3rd Qu.: 9.274  
+ Max.   :15.969  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> st_apply(x, 3, min)
+stars object with 1 dimensions and 1 attribute
+attribute(s):
+      min       
+ Min.   : 1.00  
+ 1st Qu.: 3.00  
+ Median :15.00  
+ Mean   :18.50  
+ 3rd Qu.:29.25  
+ Max.   :47.00  
+dimension(s):
+     from to offset delta refsys point values
+band    1  6     NA    NA     NA    NA   NULL
+> st_apply(x, 1:2, max)
+stars object with 2 dimensions and 1 attribute
+attribute(s):
+      max        
+ Min.   : 55.00  
+ 1st Qu.: 85.00  
+ Median : 96.00  
+ Mean   : 99.36  
+ 3rd Qu.:113.00  
+ Max.   :255.00  
+dimension(s):
+  from  to  offset delta                       refsys point values    
+x    1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y    1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+> st_apply(x, 1:2, range)
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+  L7_ETMs.tif    
+ Min.   :  1.00  
+ 1st Qu.: 50.00  
+ Median : 71.00  
+ Mean   : 72.44  
+ 3rd Qu.: 96.00  
+ Max.   :255.00  
+dimension(s):
+      from  to  offset delta                       refsys point values    
+range    1   2      NA    NA                           NA    NA   NULL    
+x        1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y        1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+> 
+> geomatrix = system.file("tif/geomatrix.tif", package = "stars")
+> x = read_stars(geomatrix)
+> y = st_transform(x, st_crs(4326))
+> st_coordinates(x)[1:10,]
+         x       y
+1  1841000 1144000
+2  1841002 1143995
+3  1841003 1143990
+4  1841004 1143985
+5  1841006 1143980
+6  1841008 1143975
+7  1841009 1143970
+8  1841010 1143965
+9  1841012 1143960
+10 1841014 1143955
+> 
+> nc = system.file("nc/tos_O1_2001-2002.nc", package = "stars")
+> (x = read_stars(nc))
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+ tos_O1_2001-2002.nc [K]
+ Min.   :271.2          
+ 1st Qu.:275.1          
+ Median :285.5          
+ Mean   :286.7          
+ 3rd Qu.:299.1          
+ Max.   :305.5          
+ NA's   :228240         
+dimension(s):
+     from  to     offset   delta refsys point values    
+x       1 180          0       2     NA    NA   NULL [x]
+y       1 170         90      -1     NA    NA   NULL [y]
+time    1  24 2001-01-16 30 days  PCICt    NA   NULL    
+> st_bbox(x)
+xmin ymin xmax ymax 
+   0  -80  360   90 
+> s = st_as_stars(st_bbox(x))
+> st_bbox(s)
+     xmin      ymin      xmax      ymax 
+  0.00000 -80.06943 360.54719  90.00000 
+> s = st_as_stars(st_bbox(x), inside = TRUE)
+> st_bbox(s)
+    xmin     ymin     xmax     ymax 
+  0.0000 -79.0976 359.5754  90.0000 
+> (s = st_as_stars(st_bbox(x), dy = 1))
+stars object with 2 dimensions and 1 attribute
+attribute(s):
+    values  
+ Min.   :0  
+ 1st Qu.:0  
+ Median :0  
+ Mean   :0  
+ 3rd Qu.:0  
+ Max.   :0  
+dimension(s):
+  from  to offset delta refsys point values    
+x    1 360      0     1     NA    NA   NULL [x]
+y    1 170     90    -1     NA    NA   NULL [y]
+> st_bbox(s)
+xmin ymin xmax ymax 
+   0  -80  360   90 
+> identical(st_as_stars(st_bbox(x), dx = 1), st_as_stars(st_bbox(x), dy = 1))
+[1] TRUE
+> s = st_as_stars(st_bbox(x), dx = 10)
+> st_bbox(s)
+xmin ymin xmax ymax 
+   0  -80  360   90 
+> s = st_as_stars(st_bbox(x), dx = 20)
+> st_bbox(s)
+xmin ymin xmax ymax 
+   0  -90  360   90 
+> 
+> df = as.data.frame(x)
+> units::drop_units(x)
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+ tos_O1_2001-2002.nc 
+ Min.   :271.2       
+ 1st Qu.:275.1       
+ Median :285.5       
+ Mean   :286.7       
+ 3rd Qu.:299.1       
+ Max.   :305.5       
+ NA's   :228240      
+dimension(s):
+     from  to     offset   delta refsys point values    
+x       1 180          0       2     NA    NA   NULL [x]
+y       1 170         90      -1     NA    NA   NULL [y]
+time    1  24 2001-01-16 30 days  PCICt    NA   NULL    
+> 
+> dimnames(x)
+[1] "x"    "y"    "time"
+> dimnames(x) <- letters[1:3]
+> dimnames(x)
+[1] "a" "b" "c"
+> st_as_stars()
+stars object with 2 dimensions and 1 attribute
+attribute(s):
+    values  
+ Min.   :0  
+ 1st Qu.:0  
+ Median :0  
+ Mean   :0  
+ 3rd Qu.:0  
+ Max.   :0  
+dimension(s):
+  from  to offset delta refsys point values    
+x    1 360   -180     1 WGS 84    NA   NULL [x]
+y    1 180     90    -1 WGS 84    NA   NULL [y]
+> 
+> # multiple sub-datasets:
+> nc_red = system.file("nc/reduced.nc", package = "stars")
+> red = read_stars(nc_red)
+sst, anom, err, ice, 
+> red
+stars object with 4 dimensions and 4 attributes
+attribute(s):
+    sst [°C]       anom [°C]          err [°C]     ice [percent]  
+ Min.   :-1.80   Min.   :-10.160   Min.   :0.110   Min.   :0.010  
+ 1st Qu.:-0.03   1st Qu.: -0.580   1st Qu.:0.160   1st Qu.:0.470  
+ Median :13.65   Median : -0.080   Median :0.270   Median :0.920  
+ Mean   :12.99   Mean   : -0.186   Mean   :0.263   Mean   :0.718  
+ 3rd Qu.:24.81   3rd Qu.:  0.210   3rd Qu.:0.320   3rd Qu.:0.960  
+ Max.   :32.97   Max.   :  2.990   Max.   :0.840   Max.   :1.000  
+ NA's   :4448    NA's   :4448      NA's   :4448    NA's   :13266  
+dimension(s):
+     from  to         offset delta  refsys point values    
+x       1 180             -1     2      NA    NA   NULL [x]
+y       1  90             90    -2      NA    NA   NULL [y]
+zlev    1   1          0 [m]    NA      NA    NA   NULL    
+time    1   1 1981-12-31 UTC    NA POSIXct    NA   NULL    
+> plot(red)
+> 
+> x = st_xy2sfc(read_stars(tif)[,1:10,1:10,], as_points = FALSE)
+> st_bbox(x)
+     xmin      ymin      xmax      ymax 
+ 288776.3 9120475.8  289061.3 9120760.8 
+> x = read_stars(tif)
+> merge(split(x, "band"))
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+       X         
+ Min.   :  1.00  
+ 1st Qu.: 54.00  
+ Median : 69.00  
+ Mean   : 68.91  
+ 3rd Qu.: 86.00  
+ Max.   :255.00  
+dimension(s):
+   from  to  offset delta                       refsys point    values    
+x     1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE      NULL [x]
+y     1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE      NULL [y]
+X1    1   6      NA    NA                           NA    NA X1,...,X6    
+> 
+> read_stars(c(tif,tif)) # merges as attributes
+stars object with 3 dimensions and 2 attributes
+attribute(s):
+  L7_ETMs.tif     L7_ETMs.tif.1   
+ Min.   :  1.00   Min.   :  1.00  
+ 1st Qu.: 54.00   1st Qu.: 54.00  
+ Median : 69.00   Median : 69.00  
+ Mean   : 68.91   Mean   : 68.91  
+ 3rd Qu.: 86.00   3rd Qu.: 86.00  
+ Max.   :255.00   Max.   :255.00  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> read_stars(c(tif,tif), along = "sensor")
+stars object with 4 dimensions and 1 attribute
+attribute(s), summary of first 1e+05 cells:
+  L7_ETMs.tif    
+ Min.   : 47.00  
+ 1st Qu.: 65.00  
+ Median : 76.00  
+ Mean   : 77.34  
+ 3rd Qu.: 87.00  
+ Max.   :255.00  
+dimension(s):
+       from  to  offset delta                       refsys point values    
+x         1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y         1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band      1   6      NA    NA                           NA    NA   NULL    
+sensor    1   2      NA    NA                           NA    NA   NULL    
+> read_stars(c(tif,tif), along = 4)
+stars object with 4 dimensions and 1 attribute
+attribute(s), summary of first 1e+05 cells:
+  L7_ETMs.tif    
+ Min.   : 47.00  
+ 1st Qu.: 65.00  
+ Median : 76.00  
+ Mean   : 77.34  
+ 3rd Qu.: 87.00  
+ Max.   :255.00  
+dimension(s):
+        from  to  offset delta                       refsys point values    
+x          1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y          1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band       1   6      NA    NA                           NA    NA   NULL    
+new_dim    1   2      NA    NA                           NA    NA   NULL    
+> read_stars(c(tif,tif), along = "band")
+stars object with 3 dimensions and 1 attribute
+attribute(s), summary of first 1e+05 cells:
+  L7_ETMs.tif    
+ Min.   : 47.00  
+ 1st Qu.: 65.00  
+ Median : 76.00  
+ Mean   : 77.34  
+ 3rd Qu.: 87.00  
+ Max.   :255.00  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1  12      NA    NA                           NA    NA   NULL    
+> read_stars(c(tif,tif), along = 3)
+stars object with 3 dimensions and 1 attribute
+attribute(s), summary of first 1e+05 cells:
+  L7_ETMs.tif    
+ Min.   : 47.00  
+ 1st Qu.: 65.00  
+ Median : 76.00  
+ Mean   : 77.34  
+ 3rd Qu.: 87.00  
+ Max.   :255.00  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1  12      NA    NA                           NA    NA   NULL    
+> 
+> # cut:
+> tif = system.file("tif/L7_ETMs.tif", package = "stars")
+> x = read_stars(tif)
+> cut(x, c(0, 50, 100, 255))
+stars object with 3 dimensions and 1 attribute
+attribute(s):
+    L7_ETMs.tif    
+ (0,50]   :156060  
+ (50,100] :503764  
+ (100,255]: 77264  
+dimension(s):
+     from  to  offset delta                       refsys point values    
+x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y       1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+band    1   6      NA    NA                           NA    NA   NULL    
+> cut(x[,,,1,drop=TRUE], c(0, 50, 100, 255))
+stars object with 2 dimensions and 1 attribute
+attribute(s):
+    L7_ETMs.tif    
+ (0,50]   :     1  
+ (50,100] :117134  
+ (100,255]:  5713  
+dimension(s):
+  from  to  offset delta                       refsys point values    
+x    1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]
+y    1 352 9120761 -28.5 UTM Zone 25, Southern Hem... FALSE   NULL [y]
+> plot(cut(x[,,,1,drop=TRUE], c(0, 50, 100, 255)))
+> 
+> st_bbox(st_dimensions(x))
+     xmin      ymin      xmax      ymax 
+ 288776.3 9110728.8  298722.8 9120760.8 
+> x[x < 0] = NA
+> x[is.na(x)] = 0
+> 
+> # c:
+> f = system.file("netcdf/avhrr-only-v2.19810902.nc", package = "starsdata")
+> if (f != "") {
++   files = c("avhrr-only-v2.19810901.nc",
++   "avhrr-only-v2.19810902.nc",
++   "avhrr-only-v2.19810903.nc",
++   "avhrr-only-v2.19810904.nc",
++   "avhrr-only-v2.19810905.nc",
++   "avhrr-only-v2.19810906.nc",
++   "avhrr-only-v2.19810907.nc",
++   "avhrr-only-v2.19810908.nc",
++   "avhrr-only-v2.19810909.nc")
++   l = list()
++   for (f in files) {
++ 	from = system.file(paste0("netcdf/", f), package = "starsdata")
++   	l[[f]] = read_stars(from, sub = c("sst", "anom"))
++   }
++   ret = do.call(c, l)
++   print(ret)
++   ret = adrop(c(l[[1]], l[[2]], l[[3]], along = list(times = as.Date("1981-09-01") + 0:2)))
++   print(ret)
++   #ret = adrop(adrop(c(l[[1]], l[[2]], l[[3]], along = "times")))
++   #print(ret)
++ }
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+sst, anom, 
+stars object with 4 dimensions and 2 attributes
+attribute(s), summary of first 1e+05 cells:
+   sst [C*°]       anom [C*°]   
+ Min.   :-1.80   Min.   :-4.69  
+ 1st Qu.:-1.19   1st Qu.:-0.06  
+ Median :-1.05   Median : 0.52  
+ Mean   :-0.32   Mean   : 0.23  
+ 3rd Qu.:-0.20   3rd Qu.: 0.71  
+ Max.   : 9.36   Max.   : 3.70  
+ NA's   :13360   NA's   :13360  
+dimension(s):
+     from   to         offset  delta  refsys point values    
+x       1 1440              0   0.25      NA    NA   NULL [x]
+y       1  720             90  -0.25      NA    NA   NULL [y]
+zlev    1    1          0 [m]     NA      NA    NA   NULL    
+time    1    9 1981-09-01 UTC 1 days POSIXct    NA   NULL    
+stars object with 3 dimensions and 2 attributes
+attribute(s), summary of first 1e+05 cells:
+   sst [C*°]       anom [C*°]   
+ Min.   :-1.80   Min.   :-4.69  
+ 1st Qu.:-1.19   1st Qu.:-0.06  
+ Median :-1.05   Median : 0.52  
+ Mean   :-0.32   Mean   : 0.23  
+ 3rd Qu.:-0.20   3rd Qu.: 0.71  
+ Max.   : 9.36   Max.   : 3.70  
+ NA's   :13360   NA's   :13360  
+dimension(s):
+      from   to     offset  delta refsys point values    
+x        1 1440          0   0.25     NA    NA   NULL [x]
+y        1  720         90  -0.25     NA    NA   NULL [y]
+times    1    3 1981-09-01 1 days   Date    NA   NULL    
+> 
+> st_dimensions(list(matrix(1, 4, 4))) # st_dimensions.default
+   from to offset delta refsys point
+X1    1  1     NA    NA     NA FALSE
+                                           values
+X1 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+> 
+> if (FALSE && require("starsdata")) {
++   # curvilinear:
++   s5p = system.file(
++       "sentinel5p/S5P_NRTI_L2__NO2____20180717T120113_20180717T120613_03932_01_010002_20180717T125231.nc",
++       package = "starsdata")
++   print(s5p)
++   lat_ds = paste0("HDF5:\"", s5p, "\"://PRODUCT/latitude")
++   lon_ds = paste0("HDF5:\"", s5p, "\"://PRODUCT/longitude")
++   nit_ds = paste0("HDF5:\"", s5p, "\"://PRODUCT/SUPPORT_DATA/DETAILED_RESULTS/nitrogendioxide_summed_total_column")
++   lat = read_stars(lat_ds)
++   lon = read_stars(lon_ds)
++   nit = read_stars(nit_ds)
++   nit[[1]][nit[[1]] > 9e+36] = NA
++   
++   ll = setNames(c(lon, lat), c("x", "y"))
++   nit.c = st_as_stars(nit, curvilinear = ll)
++   print(nit.c)
++ 
++   s5p = system.file(
++       "sentinel5p/S5P_NRTI_L2__NO2____20180717T120113_20180717T120613_03932_01_010002_20180717T125231.nc",
++       package = "starsdata")
++   nit.c2 = read_stars(s5p, 
++   	sub = "//PRODUCT/SUPPORT_DATA/DETAILED_RESULTS/nitrogendioxide_summed_total_column",
++     curvilinear = c("//PRODUCT/latitude", "//PRODUCT/longitude"))
++   print(all.equal(nit.c, nit.c2))
++ }
+> 
+> proc.time()
+   user  system elapsed 
+  7.167   0.439   7.603 

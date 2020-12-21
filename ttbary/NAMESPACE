@@ -1,0 +1,18 @@
+import(spatstat)
+
+importFrom("grDevices", "grey")
+importFrom("graphics", "arrows", "par", "plot", "segments")
+importFrom("stats", "na.omit", "rbinom", "runif")
+importFrom("Rcpp", "evalCpp")
+
+useDynLib(ttbary, .registration = TRUE)
+
+export("kmeansbary",
+       "kmeansbaryeps",
+       "kmeansbarynet",
+       "netsplit",
+       "plotmatch",
+       "ppdist",
+       "ppdistnet",
+       "sumppdist",
+       "sumppdistnet")

@@ -1,0 +1,241 @@
+\documentclass[twoside,11pt]{article}
+
+% \VignetteIndexEntry{Reading shapefiles into R}
+
+\SweaveOpts{eps=TRUE}
+
+<<echo=FALSE,results=hide,fig=FALSE>>=
+options(SweaveHooks=list(fig=function() par(mar=c(1,1,1,1))))
+@ 
+
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{color}
+\usepackage{anysize}
+\marginsize{2cm}{3cm}{2cm}{3cm}
+
+\newcommand{\pkg}[1]{\texttt{#1}}
+\newcommand{\bold}[1]{{\textbf {#1}}}
+\newcommand{\R}{{\sf R}}
+
+\begin{document}
+%\bibliographystyle{plain}
+\thispagestyle{empty}
+
+<<echo=FALSE,results=hide>>=
+library(spatstat)
+options(useFancyQuotes=FALSE)
+sdate <- read.dcf(file = system.file("DESCRIPTION", package = "overlapptest"),
+         fields = "Date")
+sversion <- read.dcf(file = system.file("DESCRIPTION", package = "overlapptest"),
+         fields = "Version")
+@ 
+
+\title{Reading shapefiles into \R{} for use with the \texttt{overlapptest} 
+package}
+\author{Marcelino de la Cruz}
+\date{
+\Sexpr{sdate} \\ 
+\pkg{overlapptest} version \texttt{\Sexpr{sversion}}
+}
+\maketitle
+
+This vignette explains how to read shapefile data into \R{} for use the  
+\pkg{overlapptest} package. It is based on the vignette about handling shape 
+files in the package \texttt{spatstat} (Baddeley et al. 2015).
+
+This vignette is part of the documentation included in \pkg{overlapptest} 
+version \texttt{\Sexpr{sversion}}.
+The information applies to \pkg{overlapptest} versions \texttt{1.0-0} and  
+above.
+
+\section{Shapefiles}
+
+As explained by Baddeley et al. (2015), a shapefile represents a list of spatial 
+objects --- a list of points, a list of lines, or a list of polygonal regions --- 
+and each object in the list may have additional variables attached to it. 
+The \pkg{overlapptest} package deals only with polygonal objects.
+
+A dataset stored in shapefile format is actually stored in a collection of text 
+files, for example
+\begin{verbatim}
+     mydata.shp
+     mydata.prj
+     mydata.sbn
+     mydata.dbf
+\end{verbatim}
+which all have the same base name \texttt{mydata} but different file extensions.
+To refer to this collection you will always use the filename with the extension 
+\texttt{shp}, for example \texttt{mydata.shp}. 
+
+\section{Helper packages}
+\label{S:helpers}
+
+We'll use two other packages to handle shapefile data.
+
+The \pkg{maptools} package is designed specifically for handling file formats for spatial data. It contains facilities for reading and writing files in shapefile format.
+
+The \pkg{spatstat} package contains functions for handling polygons (as 
+\texttt{owin} objects) which allow computing areas, centroids, intersections 
+and rotations.
+
+\section{How to read shapefiles into \R{} for use with \pkg{overlapptest}} 
+
+To read shapefile data into \R{}, for use with \pkg{overlapptest}, two steps 
+must be followed:
+\begin{enumerate}
+\item 
+  using the facilities of \pkg{maptools}, read the shapefiles
+  as a Spatial*DataFrame object.
+\item
+  convert the Spatial*DataFrame object  into a multi-polygonal owin object
+  supported by \pkg{spatstat}.
+\end{enumerate}
+
+\subsection{Read shapefiles using \pkg{maptools}} 
+
+Here's how to read shapefile data.
+
+\begin{enumerate}
+\item ensure that the package \pkg{maptools} is installed. You will need version 
+\texttt{0.7-16} or later.
+\item start R and load the package: 
+<<>>=
+library(maptools)
+@ 
+\item read the shapefile into \texttt{R} 
+using \texttt{readShapeSpatial}, for example
+<<eval=FALSE>>=
+x <- readShapeSpatial("mydata.shp")
+@ 
+\item 
+To find out what kind of spatial objects are represented by the dataset,
+inspect its class:
+<<eval=FALSE>>=
+class(x)
+@ 
+For applications of the \pkg{overlapptest} package, the class should typicaly 
+be a \texttt{SpatialPolygonsDataFrame}.
+\end{enumerate}
+
+
+For example, to read in the shapefile data supplied in the \pkg{overlapptest} 
+package, we just should set the working directory to the folder where there are 
+the sapefile data and use the \texttt{readShapeSpatial()} function of 
+\pkg{maptools}.
+<<echo=FALSE>>=
+dire<-getwd()
+@
+
+<<>>=
+setwd(system.file("shapes", package="overlapptest"))
+Androsace <- readShapeSpatial("Androsace.shp")
+@ 
+<<>>=
+class(Androsace)
+@ 
+<<echo=FALSE>>=
+setwd(dire)
+@
+
+\subsection{Convert data to \pkg{spatstat} format}
+
+Both packages \pkg{maptools} and \pkg{spatstat} must be loaded
+in order to convert the data.
+
+<<>>=
+library(maptools)
+library(spatstat)
+@ 
+
+In addition, for applications of the \pkg{overlapptest} package, it is 
+fundamental to avoid the automatic correction of polygons implemented in 
+\pkg{spatstat} which, by default, will try to "repare" overlapping pieces (it 
+would also try repairing polygon self-intersections, so the geometry of the 
+shapefiles should be reliable). For  this, just type,
+
+<<>>=
+spatstat.options(fixpolygons=FALSE)
+@ 
+
+There are different ways to convert the dataset to an object in the
+\pkg{spatstat} package, as  explained in the corresponding vignette in 
+\pkg{spatstat}. For applications of the \pkg{overlapptest}, the most convenient 
+way is combining all the polygonal elements of the same type (ussually present 
+in a unique shapefile) into a single "polygonal region", and convert this to a 
+single object of class \texttt{owin}. To do this, use \verb!as(x, "owin")! or 
+\texttt{as.owin(x)}.  The result is a single window (object of class 
+\texttt{"owin"})  in the \pkg{spatstat} package. In our example, 
+
+<<>>=
+Androsace<- as(Androsace, "owin")
+@ 
+
+\subsection{Checking the reliability of the  \texttt{owin} object} 
+
+
+For this, we should load the  \pkg{overlapptest} package.
+
+<<eval=FALSE>>=
+library(overlapptest)
+@ 
+
+The function  \texttt{check.ventana()} will check that the vertices of all polygons 
+are listed anticlockwise (to ensure that \pkg{spatstat} considers 
+them as "solid" polygons and not "holes", something necessary to be able to compute 
+intersections among them). If it finds some clockwise listed vertices, it would try to 
+reorder them, and will return the corrected \texttt{owin} object. If it succeded, 
+the order number of the corrected polygon(s) would be listed as the attribute  
+\texttt{corrected} of the \texttt{owin} object. If it would not, the order number of 
+the wrong polygon(s) would be listed as the attribute \texttt{not.corrected}. 
+These polygons should be corrected manually before using the other functions in 
+the \pkg{overlapptest} package.
+
+<<echo=FALSE>>=
+check.ventana <-
+function(ventana){
+    malos1 <- NULL
+    malos2<- NULL
+    for( i in 1:length(ventana$bdry)){
+       test <- try(owin(poly=ventana$bdry[[i]]), silent=TRUE)
+       if(class(test)=="try-error"){
+            malos1<- c(malos1, i) # anota en que subpoligono hay un error
+            # intenta darle la vuelta a las coordenadas a ver si eso lo resuleve
+            test2 <- try( owin(poly=lapply(ventana$bdry[[i]], rev), silent=TRUE))
+              if(class(test2)!="try-error"){
+                   # si al dar la vuelta a las cooredenadas se arregla, grabamos las nuevas coordenadas
+                   ventana$bdry[[i]] <-lapply(ventana$bdry[[i]], rev)
+	        } else malos2<- c(malos2, i)
+	}
+     }
+   attr(ventana, "corrected")  <-malos1
+   attr(ventana, "not.corrected") <- malos2
+   if(!is.null(malos1)) cat( length(malos1), "problematic polygon(s) detected \n \n")
+   if(!is.null(malos1) & is.null(malos2)) cat("all problematic polygons have been repared\n \n")
+   if(!is.null(malos2)) cat(length(malos2), "problematic polygon(s) could not been repared\n \n")
+   return(ventana)
+}
+@ 
+
+<<>>=
+Androsace <- check.ventana(Androsace)
+@ 
+In this case the message warns that 57 polygons have been corrected so no 
+manual correction is necessary.  To re-check this, we can examine the  
+attributes of the \texttt{owin} object.
+
+<<echo=FALSE>>=
+options(width=80)
+@ 
+<<>>=
+attributes (Androsace)
+@ 
+
+In case that running \texttt{check.ventana()}  would not produce any warnings 
+that would mean that all the polygons were correct. Once the polygons have 
+been checked, the \texttt{owin} object could be used with the other functions 
+in the \pkg{overlapptest} package.
+    
+\end{document}
+

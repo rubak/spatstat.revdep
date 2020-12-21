@@ -1,0 +1,19 @@
+# Export regular functions
+export("aic.function" , "ipc.estK2", "select.model2","select.model.gof", "envelope.selectedmod", "simulate.selectedmod","envelope.selectedmodgof", "simulate.selectedmodgof", "LF.gof")
+
+# imports
+import(spatstat, ecespa)
+# ToDo: "importFrom" only required functions 
+
+
+## Registration of S3 methods
+import(stats)
+import(graphics)
+S3method(plot, selectedmod)
+S3method(print, selectedmod)
+S3method(envelope, selectedmod)
+S3method(simulate, selectedmod)
+S3method(plot, selectedmodgof)
+S3method(print, selectedmodgof)
+S3method(envelope, selectedmodgof)
+S3method(simulate, selectedmodgof)

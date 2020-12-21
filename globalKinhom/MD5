@@ -1,0 +1,16 @@
+0a9cac640f2e5308459c9b8f7e4d4dc9 *DESCRIPTION
+c1c1faeb5d3c4a7891dd68594de8e9c3 *NAMESPACE
+fd70d4d2b7089e583688538f4e15be0b *R/Kfuncs.R
+967484ab715ee26566738e5f9ed7e48a *R/edge.R
+4c46bf2e09e59fd084562a64089cf251 *R/expected_pairs.R
+4e4b668c728b48699afd7f9614e8a78c *R/expected_pairs_withc.R
+6aaff54f77f75d936a5c640d8f43c179 *R/isotropic_pcf.R
+3755babbd78c588fbe7bae4a3ce3d6aa *R/rho_rho.R
+601017638e500492d9a461e70aab890e *build/partial.rdb
+92ba3bdd5a490961f4387fa452b9c0d2 *man/Kfuncs.Rd
+e922c454eac22fde79d9cb8acefb76ab *man/expected_pairs.Rd
+7d8e9d565392deba4c95f7089cc24510 *man/globalKinhom-package.Rd
+6b144a774f3479670506f847d8f7c047 *man/pcfs.Rd
+ee16b6170dc0d3a37e7cebb442eb1969 *src/rho_rho_excess.c
+e586fd4765a21bf975277e953fe330a5 *tests/tests.R
+1152d32fae761040dd3619b0486c0f14 *tests/tests.Rout

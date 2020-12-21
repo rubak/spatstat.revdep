@@ -1,0 +1,41 @@
+citHeader("To cite lgcp in publications use:")
+
+citEntry(entry = "Article",
+  title        = "{lgcp}: An {R} Package for Inference with Spatial and Spatio-Temporal Log-{G}aussian {C}ox Processes",
+  author       = personList(as.person("Benjamin M. Taylor"),
+                   as.person("Tilman M. Davies"),
+                   as.person("Barry S. Rowlingson"),
+                   as.person("Peter J. Diggle")),
+  journal      = "Journal of Statistical Software",
+  year         = "2013",
+  volume       = "52",
+  number       = "4",
+  pages        = "1--40",
+  url          = "http://www.jstatsoft.org/v52/i04/",
+
+  textVersion  =
+  paste("Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, Peter J. Diggle (2013).",
+        "lgcp: An R Package for Inference with Spatial and Spatio-Temporal Log-Gaussian Cox Processes.",
+        "Journal of Statistical Software, 52(4), 1-40.",
+        "URL http://www.jstatsoft.org/v52/i04/.")
+)
+
+citEntry(entry = "Article",
+  title        = "{B}ayesian Inference and Data Augmentation Schemes for Spatial, Spatiotemporal and Multivariate Log-{G}aussian {C}ox Processes in {R}",
+  author       = personList(as.person("Benjamin M. Taylor"),
+                   as.person("Tilman M. Davies"),
+                   as.person("Barry S. Rowlingson"),
+                   as.person("Peter J. Diggle")),
+  journal      = "Journal of Statistical Software",
+  year         = "2015",
+  volume       = "63",
+  number       = "7",
+  pages        = "1--48",
+  url          = "http://www.jstatsoft.org/v63/i07/",
+
+  textVersion  =
+  paste("Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, Peter J. Diggle (2015).",
+        "Bayesian Inference and Data Augmentation Schemes for Spatial, Spatiotemporal and Multivariate Log-Gaussian Cox Processes in R.",
+        "Journal of Statistical Software, 63(7), 1-48.",
+        "URL http://www.jstatsoft.org/v63/i07/.")
+)

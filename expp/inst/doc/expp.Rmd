@@ -1,0 +1,264 @@
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Blue Tits Case study}
+-->
+
+---
+title: "Extra-pair paternity in Blue Tits (_Cyanistes caeruleus_): a case study from Westerholz, Bavaria, Germany"
+author: "Mihai Valcu"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Blue Tits Case study}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+#### Supplement to  Schlicht, Valcu and Kempenaers Schlicht, Lotte, Mihai Valcu, and Bart Kempenaers. "Spatial patterns of extra-pair paternity: beyond paternity gains and losses." Journal of Animal Ecology 84.2 (2015): 518-531.
+
+
+******
+
+#### 1. Getting started
+ * Download and install R.
+ * Open R, and install _expp_ with `install.packages("expp")` :  
+
+  
+```{r echo=FALSE, message=FALSE}
+require(rgeos); require(sp); require(spdep); require(deldir)
+par(mar = c(0,0,1,0) )
+```
+ * To load _expp_ type `r require(expp)`:   
+
+#### 2. Load datasets
+For info on the data-sets type: 
+```{r eval=FALSE }
+help(bluetit_breeding)
+help(bluetit_epp)
+help(bluetit_boundary)
+```
+
+```{r}
+data(bluetit_breeding)
+head(bluetit_breeding[bluetit_breeding$year_ == 2011, ])
+```
+
+
+```{r, eval = FALSE}
+data(bluetit_epp)
+head(bluetit_epp[bluetit_epp$year_ == 2011, ])
+```
+
+```{r, echo=FALSE, results='asis'}
+data(bluetit_epp)
+knitr::kable(head(bluetit_epp[bluetit_epp == 2011, ]))
+```
+
+```{r}
+data(bluetit_boundary)
+summary(bluetit_boundary)
+```
+
+#### 3. Prepare data
+
+##### 3.1 Split by year (each year needs to be processed separately)
+
+```{r}
+b = split(bluetit_breeding, bluetit_breeding$year_)
+e = split(bluetit_epp, bluetit_epp$year_) 
+
+# sample sizes by year
+
+# number of breeding pairs
+sapply(b, nrow)
+
+# number of extra-pair events
+sapply(e, nrow)
+
+# For the sake of conciseness only two years are used in the folowing analyses
+b = b[c("2009", "2010")]
+e = e[c("2009", "2010")]
+p = bluetit_boundary[bluetit_boundary$year_ %in% c("2009", "2010"), ]
+
+```
+
+##### 3.2 Run a couple of helper functions on both breeding data and extra-pair paternity data 
+```{r tidy=FALSE}
+breedingDat = lapply(b, SpatialPointsBreeding, coords= ~x+y, id='id', breeding= ~male + female, 
+  proj4string = CRS(proj4string(p)))
+
+eppDat = lapply(e, eppMatrix, pairs = ~ male + female)
+
+
+```
+
+##### 3.3. Compute Dirichlet polygons based on the `SpatialPointsBreeding` object
+
+```{r}
+polygonsDat = mapply(DirichletPolygons, x = breedingDat, boundary = split(p, p$year_)) 
+```  
+********************************************************************************
+
+#### 4. All the objects are now ready to be processed by the `epp` function.
+```{r}
+maxlag = 10
+eppOut = mapply(FUN = epp, breedingDat, polygonsDat, eppDat, maxlag)
+```
+
+```{r results='hide', dpi=100, fig.width=7, fig.height=10, fig.align='left', warning=FALSE}
+op = par(mar = c(0,0,2,0))
+
+for(year in c("2009", "2010") ) { 
+  plot(eppOut[[year]], cex = 0.7, lwd = .5, border = "navy" )
+  title(main = year)
+  }
+
+
+```
+##### Select one nest-box of a given year and zoom in.
+```{r, warning=FALSE, dpi=100, fig.width=6, fig.height=8, fig.align='left'}
+year = '2010'
+box = 110
+eppOut10 = eppOut[[year]]
+plot(eppOut10 , zoom = box, maxlag = 2,cex = .7,  border = 'white', col = 'grey70', zoom.col = "bisque")
+
+par(op)
+```
+
+```{r results='hide',fig.width=8, fig.height=6}
+op = par(mfrow = c(1,2))
+    
+#barplot(eppOut[[1]],relativeValues = TRUE, main = 2009) 
+#legend(x="topright", legend = c('Observed', 'Potential'), lty = c(1, 2),bty='n')
+#barplot(eppOut[[2]], relativeValues = TRUE, main = 2010)
+
+par(op)
+```
+
+#### 5. Fitting a _glmm_ 
+
+##### 5.1 Convert `eppOut` (a list of 2 _epp_ objects) into a `data.frame`.
+```{r}
+dat = lapply(eppOut, as.data.frame) # a list of data.frame(s)
+dat = do.call(rbind, dat)
+dat$year_ = dat$year__MALE; dat$year__FEMALE = NULL
+
+```
+
+##### 5.2. Data transformations prior to modelling.
+
+###### Rescale rank; rank 1 becames rank 0
+```{r}
+dat$rank = dat$rank - min(dat$rank)
+table(dat$rank)
+```
+###### Center and re-scale breeding asynchrony (i.e. the difference in laying data between male and female) within each rank.
+
+```{r}
+center = function(x) { return(x - mean(x, na.rm = TRUE)) }
+scale2 = function(x) { return(x/(2*sd(x, na.rm = TRUE))) }
+
+# Compute asynchrony
+dat$asynchrony = abs(dat$layingDate_MALE - dat$layingDate_FEMALE)
+
+#a Compute relative within-rank asynchrony
+MALE_splitBy = paste(dat$year_, dat$id_MALE, dat$male, dat$rank, sep = "_")
+dat$relative_asynchrony_MALE = unsplit(lapply(split(dat$asynchrony, MALE_splitBy), center), MALE_splitBy)
+dat$relative_asynchrony_MALE = scale2(dat$relative_asynchrony_MALE)
+
+FEMALE_splitBy = paste(dat$year_, dat$id_FEMALE, dat$female, dat$rank, sep = "_")
+dat$relative_asynchrony_FEMALE = unsplit(lapply(split(dat$asynchrony, FEMALE_splitBy), center), FEMALE_splitBy)
+dat$relative_asynchrony_FEMALE = scale2(dat$relative_asynchrony_FEMALE)
+```
+
+##### 5.3 Run _glmm_
+###### Check if sample size is sufficient for the number of variables we aim to include into the model.
+```{r eval=FALSE}
+table(dat$epp, dat$year_) #extra-pair frequency by year.
+```
+```{r echo = FALSE, results='asis'}
+knitr::kable(table(dat$epp, dat$year_))
+```
+
+###### Run the glmm model (this may take a while depending on your system!).
+```{r eval=FALSE}
+require(lme4)
+fm = glmer(epp ~ rank + male_age_MALE + relative_asynchrony_MALE + relative_asynchrony_FEMALE + 
+             (1|male) + (1|female) + (1|year_), data = dat, family = binomial)
+summary(fm)
+```
+
+```
+## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+## Family: binomial  ( logit )
+## Formula: epp ~ rank + male_age_MALE + relative_asynchrony_MALE + relative_asynchrony_FEMALE +  
+## (1 | male) + (1 | female) + (1 | year_)
+## Data: dat
+
+## AIC      BIC   logLik deviance df.resid 
+## 599.4    658.8   -291.7    583.4    12406 
+
+## Scaled residuals: 
+## Min     1Q Median     3Q    Max 
+## -0.568 -0.048 -0.017 -0.006 96.102 
+
+## Random effects:
+## Groups Name        Variance  Std.Dev. 
+## male   (Intercept) 1.245e+00 1.116e+00
+## female (Intercept) 8.376e-02 2.894e-01
+## year_  (Intercept) 3.121e-15 5.586e-08
+## Number of obs: 12414, groups:  male, 121; female, 118; year_, 2
+
+## Fixed effects:
+## Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                -3.325738   0.331005 -10.047  < 2e-16 ***
+## rank                       -1.166547   0.132700  -8.791  < 2e-16 ***
+## male_age_MALEjuv           -1.380823   0.418108  -3.303 0.000958 ***
+## relative_asynchrony_MALE   -0.476106   0.402514  -1.183 0.236876    
+## relative_asynchrony_FEMALE -0.004861   0.376569  -0.013 0.989700    
+## ---
+
+## Correlation of Fixed Effects:
+## (Intr) rank   m__MAL r__MAL
+## rank        -0.272                     
+## ml_g_MALEjv -0.198  0.025              
+## rltv_s_MALE  0.075  0.022  0.004       
+## rlt__FEMALE  0.006 -0.004 -0.003 -0.393
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
