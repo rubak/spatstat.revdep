@@ -86,7 +86,7 @@ additional information on the fit.
 }
 \examples{
 \donttest{
-fit <- est_mix_damcmc(spatstat::redwood, m = 3)
+fit <- est_mix_damcmc(spatstat.data::redwood, m = 3)
 fit
 plot(fit)
 #We work with the California Earthquake data. We fit an IPPP with intensity surface modeled
@@ -113,7 +113,7 @@ plot_chains(post_fixed)
 plot_chains(post_fixed,separate = FALSE)}
 
 \donttest{
-fitBD <- est_mix_bdmcmc(spatstat::redwood, m = 5)
+fitBD <- est_mix_bdmcmc(spatstat.data::redwood, m = 5)
 fitBD
 plotsBDredwood=plot(fitBD)
 #Earthquakes example

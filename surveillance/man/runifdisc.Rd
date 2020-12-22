@@ -49,4 +49,4 @@ plot(x)
 
 \keyword{datagen}
 \keyword{distribution}
-\keyword{internal}  % not exported to avoid clash with spatstat::runifdisc
+\keyword{internal}  % not exported to avoid clash with spatstat.core::runifdisc

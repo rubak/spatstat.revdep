@@ -9,7 +9,7 @@ plotstring("We discuss the DAMCMC Bayesian approach\nfor fitting a Poisson point
 plotstring("We generate a mixture with\n4 components and build the\nPoisson intensity surface. The\noriginal window used is [-2,2]x[-2,2]")
 truemix4=rnormmix(m = 4, sig0 = .1, df = 5,xlim= c(-2,2), ylim = c(-2,2))
 plot(truemix4,xlim= c(-2,2), ylim = c(-2,2),whichplots=0,open_new_window=open_new_plot)+add_title("True mixture of normals density")
-trueintsurfmix4=to_int_surf(truemix4,lambda = 150,win =spatstat::owin( c(-2,2),c(-2,2)))
+trueintsurfmix4=to_int_surf(truemix4,lambda = 150,win =spatstat.geom::owin( c(-2,2),c(-2,2)))
 
 plotstring("Then based on a point pattern\nfrom this model, our goal is\nto estimate the parameters of the mixture\nmodel and lambda, in order to recover\nthe true Poisson intensity surface.")
 
@@ -18,11 +18,11 @@ ppmix4 <- rsppmix(intsurf = trueintsurfmix4,truncate = FALSE)# draw points
 plotstring("We set the truncate parameter to FALSE\nin the rsppmix function, in order\nto generate a point pattern on the\nwhole plane from the Poisson process\nwith the created intensity surface.")
 
 plotstring("The window of observation has no\neffect in calculations in this case.\nParameter truncate is set to FALSE in\nall functions called. We display the\npattern over several windows.")
-plotmix_2d(trueintsurfmix4,ppmix4,colors = TRUE,open_new_window=open_new_plot,win=spatstat::owin(c(-1,1),c(-1,1)))+add_title("True Poisson intensity surface along with the point pattern, W=[-1,1]x[-1,1]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n)
+plotmix_2d(trueintsurfmix4,ppmix4,colors = TRUE,open_new_window=open_new_plot,win=spatstat.geom::owin(c(-1,1),c(-1,1)))+add_title("True Poisson intensity surface along with the point pattern, W=[-1,1]x[-1,1]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n)
 plotmix_2d(trueintsurfmix4,ppmix4,colors = TRUE,open_new_window=open_new_plot,win=trueintsurfmix4$window)+add_title("True Poisson intensity surface along with the point pattern, W=[-2,2]x[-2,2]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n)
-plotmix_2d(trueintsurfmix4,ppmix4,colors = TRUE,open_new_window=open_new_plot,win=spatstat::owin(c(-3,3),c(-3,3)))+add_title("True Poisson intensity surface along with the point pattern, W=[-3,3]x[-3,3]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n)
-plotmix_2d(trueintsurfmix4,ppmix4,colors = TRUE,open_new_window=open_new_plot,win=spatstat::owin(c(-4,4),c(-4,4)))+add_title("True Poisson intensity surface along with the point pattern, W=[-4,4]x[-4,4]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n)
-bigwin=spatstat::owin(c(-4,4),c(-4,4))
+plotmix_2d(trueintsurfmix4,ppmix4,colors = TRUE,open_new_window=open_new_plot,win=spatstat.geom::owin(c(-3,3),c(-3,3)))+add_title("True Poisson intensity surface along with the point pattern, W=[-3,3]x[-3,3]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n)
+plotmix_2d(trueintsurfmix4,ppmix4,colors = TRUE,open_new_window=open_new_plot,win=spatstat.geom::owin(c(-4,4),c(-4,4)))+add_title("True Poisson intensity surface along with the point pattern, W=[-4,4]x[-4,4]",lambda =trueintsurfmix4$lambda,m=trueintsurfmix4$m,n=ppmix4$n)
+bigwin=spatstat.geom::owin(c(-4,4),c(-4,4))
 
 plotstring("\nThe function est_mix_damcmc can be\nused to fit the DAMCMC for a fixed\nnumber of mixture components. We\ncall the routine with the truncate\nparameter set to FALSE (no edge effects)\nand entertain a mixture with m=4 components.")
 

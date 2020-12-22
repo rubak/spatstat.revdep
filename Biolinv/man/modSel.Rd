@@ -7,7 +7,7 @@
 modSel(WIN, M0, M2, AV, RAD)
 }
 \arguments{
-\item{WIN}{window of observation for the point patterns (MOD0 and MOD2)(see ?spatstat::owin). Object of class 'sp::owin'.}
+\item{WIN}{window of observation for the point patterns (MOD0 and MOD2)(see ?spatstat.geom::owin). Object of class 'sp::owin'.}
 
 \item{M0}{data frame containing 'y' and 'x' coordinates (projected coordinate system) to compare with M2.}
 

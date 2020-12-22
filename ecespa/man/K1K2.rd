@@ -14,7 +14,7 @@ K1K2(X, i, j, nsim = 99, nrank = 1, r = NULL,
 	 correction = "isotropic")
 }
 \arguments{
-  \item{X}{ Multitype marked point pattern. An object with the \code{\link[spatstat]{ppp}} format of \pkg{spatstat}.  }
+  \item{X}{ Multitype marked point pattern. An object with the \code{\link[spatstat.geom]{ppp}} format of \pkg{spatstat}.  }
   \item{i}{ Number or character string identifying the mark value of the  I pattern in X. }
   \item{j}{ Number or character string identifying the mark value of the  J pattern in X. }
   \item{nsim}{ Number of simulated point patterns to be generated when computing the envelopes.}
@@ -42,7 +42,7 @@ Dixon (2002) sugested that some differences of these functions could provide pro
   \item{k2k12 }{Difference between \eqn{Kj(r)} and \eqn{Kij(r)}, with simulation envelopes.}
   \item{}{}
     \item{}{}
-\item{}{Each of the above elements is a \code{\link[spatstat]{fv.object}}, essentially a \code{data.frame} with the following items:}
+\item{}{Each of the above elements is a \code{\link[spatstat.core]{fv.object}}, essentially a \code{data.frame} with the following items:}
 \item{r }{The values of the argument r at which the functions have been estimated.}
 \item{hi }{Upper envelope of simulations.}
 \item{D }{The respective difference function \eqn{D(r)}, i.e., respectively, \eqn{Ki(r)-Kj(r)},  \eqn{Ki(r)-K^*ij(r)} or \eqn{Kj(r)-K^*ij(r)}.}

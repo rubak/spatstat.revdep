@@ -144,7 +144,7 @@ get_stats19 = function(year = NULL,
       i = i + 1
     }
     if (output_format == "ppp") {
-      all = do.call(spatstat::superimpose, all)
+      all = do.call(spatstat.geom::superimpose, all)
     } else {
       all_colnames = unique(unlist(lapply(all, names)))
       all = lapply(all, function(x) {

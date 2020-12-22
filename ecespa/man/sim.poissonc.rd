@@ -11,7 +11,7 @@ sim.poissonc(x.ppp, rho, sigma)
 
 \arguments{
   \item{x.ppp}{ Point pattern whose window and intensity will be simulated. An object with the
-  \code{\link[spatstat]{ppp}} format of \pkg{spatstat}. }
+  \code{\link[spatstat.geom]{ppp}} format of \pkg{spatstat}. }
   \item{rho}{ Parameter \eqn{rho} of the Poisson Cluster process.  }
   \item{sigma}{ Parameter \eqn{sigma} of the Poisson Cluster process.  }
 }
@@ -40,8 +40,8 @@ its square root, i.e. \eqn{sigma}.
 This implementation simulates only point patterns within rectangular windows. Use  \code{\link{ipc.estK}} to fit and 
  \code{\link{rIPCP}} (or the \code{spatstat} functions) to simulate point patterns within irregular windows.
 }
-\seealso{ \code{\link{rIPCP}} to simulate inhomogeneous PCP; \code{\link[spatstat]{rNeymanScott}} 
-and \code{\link[spatstat]{rThomas}} in \pkg{spatstat} }
+\seealso{ \code{\link{rIPCP}} to simulate inhomogeneous PCP; \code{\link[spatstat.core]{rNeymanScott}} 
+and \code{\link[spatstat.core]{rThomas}} in \pkg{spatstat} }
 \examples{
 
 

@@ -68,7 +68,7 @@
 #' \code{\link{rnormmix}}
 #' @examples
 #' \donttest{
-#' fit <- est_mix_damcmc(spatstat::redwood, m = 3)
+#' fit <- est_mix_damcmc(spatstat.data::redwood, m = 3)
 #' fit
 #' plot(fit)
 #' #We work with the California Earthquake data. We fit an IPPP with intensity surface modeled
@@ -149,7 +149,7 @@ print.damcmc_res <- function(x,...) {
 #' The Annals of Statistics, 28, 1, 40-74.
 #' @examples
 #' \donttest{
-#' fitBD <- est_mix_bdmcmc(spatstat::redwood, m = 5)
+#' fitBD <- est_mix_bdmcmc(spatstat.data::redwood, m = 5)
 #' fitBD
 #' plotsBDredwood=plot(fitBD)
 #' #Earthquakes example

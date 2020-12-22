@@ -24,7 +24,7 @@ Description: Functions for estimating the gliding box lacunarity (GBL),
     is based on research conducted during the author's PhD studies.
 License: GPL (>= 2)
 URL: https://github.com/kasselhingee/lacunaritycovariance
-Depends: spatstat.geom, spatstat.core, spatstat.linnet
+Depends: spatstat.geom, spatstat.core, spatstat.linnet, spatstat
 Imports: RcppRoll
 Suggests: raster, maptools, rgdal, cubature, testthat
 ByteCompile: true

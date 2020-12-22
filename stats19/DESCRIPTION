@@ -36,7 +36,7 @@ LazyData: true
 Imports: sf, readr
 Suggests: curl (>= 3.2), dplyr, ggplot2, knitr, lubridate, rmarkdown,
         stringr, testthat (>= 2.1.0), tidyr, pkgdown, kableExtra,
-        leaflet, geojsonsf, htmltools, tmap, jsonlite, pct, spatstat.geom, spatstat.core, spatstat.linnet,
+        leaflet, geojsonsf, htmltools, tmap, jsonlite, pct, spatstat.geom, spatstat.core,
         osmdata
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1

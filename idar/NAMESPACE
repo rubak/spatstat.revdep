@@ -5,7 +5,7 @@ useDynLib(idar, .registration = TRUE)
 export("controldis","envelope4idar","ifdar","ipscar","ipsear","ipsim","ipsimlist","ipsrar","ipsvar","isar","LF.gof","localdar","midar","mitable","pisar","proportion.idar","plot.pidar","risar","simulador2", "checktraits", "checktree","multifocalsimulator")
 
 # imports
-import(spatstat.geom,spatstat.core,spatstat.linnet,FD,picante)
+import(spatstat.geom,spatstat.core,spatstat.linnet,spatstat,FD,picante)
 importFrom("ape", "is.ultrametric")
 importFrom("ape", "vcv.phylo")
 # ToDo: "importFrom" only required functions 

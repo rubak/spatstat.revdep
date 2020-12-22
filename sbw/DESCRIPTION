@@ -14,7 +14,7 @@ Authors@R: c(person("Jose R.", "Zubizarreta", role = c("aut", "cre"),
                      email = "ngreifer@live.unc.edu"))
 Maintainer: Jose R. Zubizarreta <zubizarreta@hcp.med.harvard.edu>
 Depends: R (>= 3.2), Matrix, quadprog, slam
-Imports: MASS, spatstat.geom, spatstat.core, spatstat.linnet
+Imports: MASS, spatstat.geom
 Enhances: gurobi, Rcplex, Rmosek, pogs
 License: GPL-2 | GPL-3
 Description: Implements the Stable Balancing Weights by Zubizarreta (2015) <DOI:10.1080/01621459.2015.1023805>. These are the weights of minimum variance that approximately balance the empirical distribution of the observed covariates. For an overview, see Chattopadhyay, Hase and Zubizarreta (2020) <DOI:10.1002/(ISSN)1097-0258>. To solve the optimization problem in 'sbw', the default solver is 'quadprog', which is readily available through CRAN. To enhance the performance of 'sbw', users are encouraged to install other solvers such as 'gurobi' and 'Rmosek', which require special installation. 

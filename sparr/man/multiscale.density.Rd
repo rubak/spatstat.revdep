@@ -54,7 +54,7 @@ estimate (default, integrates to 1).}
 \item{pilot.density}{An optional pixel image (class
 \code{\link[spatstat.geom]{im}}) giving the pilot density to be used for
 calculation of the variable bandwidths in adaptive estimation, \bold{or} a
-\code{\link[spatstat.geom]{ppp.object}} giving the data upon which to base a
+\code{\link[spatstat.geom:ppp]{ppp.object}} giving the data upon which to base a
 fixed-bandwidth pilot estimate using \code{hp}. See the documentation for
 \code{\link{bivariate.density}}.}
 
@@ -97,7 +97,7 @@ components (instead of standalone images).
 \item{geometric}{The geometric mean of the
   untrimmed variable bandwidth factors. This will be identical to \code{gamma}
   if \code{gamma.scale = "geometric"} as per default.}
-\item{pp}{A copy of the \code{\link[spatstat.geom]{ppp.object}} initially passed to the
+\item{pp}{A copy of the \code{\link[spatstat.geom:ppp]{ppp.object}} initially passed to the
   \code{pp} argument, containing the data that were smoothed.}
 }
 \description{

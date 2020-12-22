@@ -9,8 +9,8 @@ plotstring("\nWe discuss the BDMCMC Bayesian approach\nfor fitting a Poisson poi
 plotstring("We generate a mixture with\nm=4 components and build the\nPoisson intensity surface. The\noriginal window used is [-2,2]x[-2,2]")
 truemix4=rnormmix(m = 4, sig0 = .1, df = 5,xlim= c(-2,2), ylim = c(-2,2))
 plot(truemix4,xlim= c(-2,2), ylim = c(-2,2),whichplots=0,open_new_window=open_new_plot)+add_title("True mixture of normals density")
-trueintsurfmix4=to_int_surf(truemix4,lambda = 150,win =spatstat::owin( c(-2,2),c(-2,2)))
-bigwin=spatstat::owin(c(-2,2),c(-2,2))
+trueintsurfmix4=to_int_surf(truemix4,lambda = 150,win =spatstat.geom::owin( c(-2,2),c(-2,2)))
+bigwin=spatstat.geom::owin(c(-2,2),c(-2,2))
 
 plotstring("Then based on a point pattern from this model,\nour goal is to estimate the parameters of the\nmixture model (including the number of\ncomponents) and lambda, in order to\nrecover the true Poisson intensity surface.")
 

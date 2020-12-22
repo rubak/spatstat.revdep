@@ -136,7 +136,7 @@ select.model2 returns an object of class "\code{selectedmod}",i.e., a list with 
   \item{AIC}{AIC value.}
   \item{AICc}{Small sample AIC value.}
 }
-\code{envelope.selectedmod} returns a an object of class "fv", see \link[spatstat.geom]{fv.object}, which can be printed and plotted directly. Essentially a data frame containing columns 
+\code{envelope.selectedmod} returns a an object of class "fv", see \link[spatstat.core]{fv.object}, which can be printed and plotted directly. Essentially a data frame containing columns 
   \describe{
   \item{r}{the vector of values of the argument r at which the summary function fun has been estimated.}
   \item{obs}{values of the summary function for the data point pattern.}

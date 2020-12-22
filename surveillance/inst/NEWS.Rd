@@ -1756,7 +1756,7 @@
     construction of \code{"epidataCS"}-objects. Instead, we make use of
     the new dedicated package \CRANpkg{polyclip} (licensed under the
     BSL) for polygon clipping operations (via
-    \code{spatstat::intersect.owin()}). This results in a slightly
+    \code{spatstat.geom::intersect.owin()}). This results in a slightly
     different \code{$events$.influenceRegion} component of
     \code{"epidataCS"} objects, one reason being that
     \pkg{polyclip} uses integer arithmetic.
@@ -2303,7 +2303,7 @@
       \item Fixed problem with \code{simEpidataCS()} related to missing
       \file{NAMESPACE} imports (and re-exports) of \code{marks.ppp} and
       \code{markformat.default} from \CRANpkg{spatstat}, which are required
-      for \code{spatstat::runifpoint()} to work, probably because
+      for \code{spatstat.core::runifpoint()} to work, probably because
       \pkg{spatstat} currently does not register its S3-methods.
       \item Improved error handling in \code{simEpidataCS()}. Removed a
       \code{browser()}-call and avoid potentially infinite loop.

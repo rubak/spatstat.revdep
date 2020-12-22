@@ -43,8 +43,8 @@
 #'@export
 GapsSpatPattern<-function(gap_SPDF_layer, chm_layer){
   P  <- spatstat.geom::as.ppp(sp::coordinates(gap_SPDF_layer),raster::extent(chm_layer)[])
-  K <- spatstat.core::envelope(P, spatstat::Kest, nsim=99, verbose=F)
-  L <- spatstat.core::envelope(P, spatstat::Lest, nsim=99, verbose=F)
+  K <- spatstat.core::envelope(P, spatstat.core::Kest, nsim=99, verbose=F)
+  L <- spatstat.core::envelope(P, spatstat.core::Lest, nsim=99, verbose=F)
   graphics::par(mfrow=c(1,2), mar=c(6, 5, 4, 2))
   graphics::plot(K); graphics::plot(L) 
   CE <- spatstat.core::clarkevans.test(P)

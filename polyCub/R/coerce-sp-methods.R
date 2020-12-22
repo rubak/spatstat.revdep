@@ -53,9 +53,9 @@ NULL
 ##' @rdname coerce-sp-methods
 ##' @export
 ##' @rawNamespace if(getRversion() >= "3.6.0") {  # delayed registration
-##'     S3method(spatstat::as.owin, SpatialPolygons)
-##'     S3method(spatstat::as.owin, Polygons)
-##'     S3method(spatstat::as.owin, Polygon)
+##'     S3method(spatstat.geom::as.owin, SpatialPolygons)
+##'     S3method(spatstat.geom::as.owin, Polygons)
+##'     S3method(spatstat.geom::as.owin, Polygon)
 ##' }
 as.owin.SpatialPolygons <- function (W, ...)
     spatstat.geom::owin(poly = xylist.SpatialPolygons(W), ...)

@@ -222,7 +222,7 @@ dist.lines <- dist.lines[order(dist.lines$dist0),]
 ## Part 3. Calculate the gaps growth lines form along the main axis using the function from Section I.
 
 tmp <- seg.fun(int)
-dist.main <- data.frame(gap.l.main = lengths.psp(tmp), gap = marks(tmp), line = gsub("\\-.*", "", as.character(marks(tmp))))
+dist.main <- data.frame(gap.l.main = lengths_psp(tmp), gap = marks(tmp), line = gsub("\\-.*", "", as.character(marks(tmp))))
 
 # Add distance along the main axis (dist0)
 

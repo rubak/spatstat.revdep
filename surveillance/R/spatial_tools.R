@@ -18,7 +18,7 @@ discpoly <- function (center, radius, npoly = 64,
                       hole = FALSE)
 {
     class <- match.arg(class)
-    if (class == "owin") { # use spatstat::disc
+    if (class == "owin") { # use spatstat.geom::disc
         res <- disc(radius=radius, centre=center, mask=FALSE, npoly=npoly)
         if (hole) {
             res$bdry[[1]]$x <- rev(res$bdry[[1]]$x)

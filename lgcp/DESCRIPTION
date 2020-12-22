@@ -11,7 +11,7 @@ Description: Spatial and spatio-temporal modelling of point patterns using the
     multivariate and aggregated point processes using Markov chain Monte Carlo. See Benjamin M. Taylor, Tilman M. Davies, Barry S. Rowlingson, Peter J. Diggle (2015) <doi:10.18637/jss.v063.i07>.
 Version: 1.6
 Date: 2020-03-05
-Imports: spatstat.geom, spatstat.core, spatstat.linnet, spatstat.utils, sp, raster, tcltk,
+Imports: spatstat.geom, spatstat.core, spatstat.utils, sp, raster, tcltk,
         RandomFields, iterators, ncdf4, methods, rpanel (>= 1.1-3),
         fields, maptools, Matrix, rgeos
 Suggests: sparr, rgdal, gpclib

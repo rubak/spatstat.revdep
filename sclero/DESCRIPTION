@@ -7,7 +7,7 @@ Maintainer: Mikko Vihtakari <mikko.vihtakari@gmail.com>
 Description: Provides functions to measure growth patterns and align
     sampling spots in chronologically deposited materials. The package is
     intended for the fields of sclerochronology, dendrochronology and geology.
-Depends: R (>= 3.0), RImageJROI, spatstat.geom, spatstat.core, spatstat.linnet, plyr
+Depends: R (>= 3.0), RImageJROI, spatstat.geom, spatstat.core, spatstat.linnet, spatstat, plyr
 License: GPL-3
 LazyData: true
 URL: https://github.com/MikkoVihtakari/sclero

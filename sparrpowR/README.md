@@ -75,7 +75,7 @@ set.seed(1234)
 # Statistical power to detect both case and control relative clustering
 # 100 simulations (more recommended for power calculation)
 
-unit.circle <- spatstat::disc(radius = 0.5, centre = c(0.5,0.5))
+unit.circle <- spatstat.geom::disc(radius = 0.5, centre = c(0.5,0.5))
 
 foo <- spatial_power(win = unit.circle,
                      sim_total = 100,

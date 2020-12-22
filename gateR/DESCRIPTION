@@ -43,7 +43,7 @@ LazyData: true
 RoxygenNote: 7.1.1
 Depends: R (>= 3.5.0)
 Imports: fields, graphics, grDevices, maptools, pgirmess, raster, sp,
-        sparr, spatstat.geom, spatstat.core, spatstat.linnet, stats, tibble, utils
+        sparr, spatstat.geom, stats, tibble, utils
 Suggests: R.rsp, spelling, testthat
 VignetteBuilder: R.rsp
 Language: en-US

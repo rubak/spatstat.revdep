@@ -37,7 +37,7 @@
   \code{misc},
   \code{redoak} and
   \code{whiteoak}.
-  See \code{\link[spatstat.geom]{ppp.object}} for details of the format of a
+  See \code{\link[spatstat.geom:ppp]{ppp.object}} for details of the format of a
   point pattern object.
 }
 \usage{data(lansing)}

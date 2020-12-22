@@ -11,7 +11,7 @@ spatSim(MOD0, MOD2, WINDOW, R)
 
 \item{MOD2}{data frame containing 'y' and 'x' coordinates (projected coordinate system) to compare with MOD0.}
 
-\item{WINDOW}{window of observation of the point patterns (MOD0 and MOD2)(see ?spatstat::owin).Must be an object of class 'owin'.}
+\item{WINDOW}{window of observation of the point patterns (MOD0 and MOD2)(see ?spatstat.geom::owin).Must be an object of class 'owin'.}
 
 \item{R}{numeric vector of searc distances for the K-function.}
 }

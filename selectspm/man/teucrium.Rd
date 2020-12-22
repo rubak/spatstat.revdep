@@ -9,7 +9,7 @@ Locations of  \emph{Teucrium capitatum} plants in a dwarf-shrub community in Cen
 }
 \usage{data(teucrium)}
 \format{
-  An object of class "ppp" representing the point pattern of tree locations. See \link[spatstat.geom]{ppp.object} for details of the format of a ppp object.
+  An object of class "ppp" representing the point pattern of tree locations. See \link[spatstat.geom:ppp]{ppp.object} for details of the format of a ppp object.
 }
 \references{
 Chacon-Labella, J., De la Cruz, M. and Escudero, A. Beyond the classical nurse species effect: diversity assembly in a Mediterranean semiarid dwarf  shrubland. \emph{Journal of Vegetaation Science}. Accepted for publication, July 2015.

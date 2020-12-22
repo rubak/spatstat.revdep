@@ -39,7 +39,7 @@
 #' 
 #' \bold{DATASETS/DATA GENERATION}
 #' 
-#' \code{\link{pbc}} a case/control planar point pattern (\code{\link[spatstat.geom]{ppp.object}}) concerning liver disease in northern
+#' \code{\link{pbc}} a case/control planar point pattern (\code{\link[spatstat.geom:ppp]{ppp.object}}) concerning liver disease in northern
 #' England.
 #' 
 #' \code{\link{fmd}} an anonymised (jittered) case/control spatiotemporal point pattern of the 2001 outbreak of veterinary foot-and-mouth disease in Cumbria (courtesy of the Animal and Plant Health Agency, UK).

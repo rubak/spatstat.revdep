@@ -336,7 +336,7 @@ batty=function(data, data.assign, is.pointdata=FALSE, category, win=NULL, G.coor
       dirich=spatstat.geom::dirichlet(G.coords)} else{
         G.pp=spatstat.geom::ppp(G.coords[,1], G.coords[,2], window=win)
         dirich=spatstat.geom::dirichlet(G.pp)}
-    Tg=as.numeric(lapply(dirich$tiles, spatstat::area.owin))
+    Tg=as.numeric(lapply(dirich$tiles, spatstat.geom::area.owin))
     G.count=cbind(G.count, Tg)
   }
 

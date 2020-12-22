@@ -49,7 +49,7 @@ s2 <- 0.025
 dens1 <- sgmix(mean=cbind(m1,m2),vcv=c(s1,s2),window=toywin,p0=0.3,p=c(0.5,0.2))
 
 plot(dens1,log=TRUE)
-pts1 <- rpoint(200,dens1) # generate random points via spatstat::rpoint
+pts1 <- rpoint(200,dens1) # generate random points via spatstat.core::rpoint
 points(pts1)
 
 

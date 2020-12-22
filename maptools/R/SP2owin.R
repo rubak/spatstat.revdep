@@ -1,8 +1,8 @@
 .SP2owin <- function(SP) {
-    # require(spatstat.core)
+    # require(spatstat.linnet)
     if (!is.na(sp::is.projected(SP)) && !sp::is.projected(SP))
       stop("Only projected coordinates may be converted to spatstat class objects")
-    if (!requireNamespace("spatstat.core", quietly = TRUE))
+    if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 	stop("package spatstat required for .SP2owin")
     pls <- slot(SP, "polygons")
     nParts <- sapply(pls, function(x) length(slot(x, "Polygons")))

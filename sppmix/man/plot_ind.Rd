@@ -27,7 +27,7 @@ For examples see
 }
 \examples{
 \donttest{
-fit <- est_mix_damcmc(pp = spatstat::redwood, m = 10)
+fit <- est_mix_damcmc(pp = spatstat.data::redwood, m = 10)
 plot_ind(fit)}
 
 }

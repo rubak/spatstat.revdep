@@ -10,7 +10,7 @@
 \format{
   \code{shapley} is an object of class \code{"ppp"}
   representing the point pattern of galaxy locations
-  (see \code{\link[spatstat.geom]{ppp.object}}).
+  (see \code{\link[spatstat.geom:ppp]{ppp.object}}).
 
   \code{shapley.extra} is a list containing additional data
   described under Notes.

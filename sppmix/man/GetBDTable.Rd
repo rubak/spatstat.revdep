@@ -29,7 +29,7 @@ For examples see
 }
 \examples{
 \donttest{
-fit <- est_mix_bdmcmc(pp = spatstat::redwood, m = 7)
+fit <- est_mix_bdmcmc(pp = spatstat.data::redwood, m = 7)
 GetBDTable(fit)}
 
 }

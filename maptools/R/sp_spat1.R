@@ -42,8 +42,8 @@ as.SpatialPointsDataFrame.ppp = function(from) {
 setAs("ppp", "SpatialPointsDataFrame", as.SpatialPointsDataFrame.ppp)
 
 as.SpatialGridDataFrame.ppp = function(from) {
-	# require(spatstat.core)
-    #if (!requireNamespace("spatstat.core", quietly = TRUE))
+	# require(spatstat.linnet)
+    #if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 	#	stop("package spatstat required for .SP2owin")
 	w = from$window
 	if (w$type != "mask")
@@ -60,7 +60,7 @@ as.SpatialGridDataFrame.ppp = function(from) {
 setAs("ppp", "SpatialGridDataFrame", as.SpatialGridDataFrame.ppp)
 
 as.SpatialGridDataFrame.im = function(from) {
-    # require(spatstat.core)
+    # require(spatstat.linnet)
     offset = c(from$xrange[1] + 0.5 * from$xstep, from$yrange[1] + 
         0.5 * from$ystep)
     cellsize = c(diff(from$xrange)/from$dim[2], diff(from$yrange)/from$dim[1])
@@ -73,8 +73,8 @@ as.SpatialGridDataFrame.im = function(from) {
 setAs("im", "SpatialGridDataFrame", as.SpatialGridDataFrame.im)
 
 as.im.SpatialGridDataFrame = function(from) {
-    #require(spatstat.core)
-    if (!requireNamespace("spatstat.core", quietly = TRUE))
+    #require(spatstat.linnet)
+    if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required for as.im.SpatialGridDataFrame")
     xi <- as.image.SpatialGridDataFrame(from)
     spatstat.geom::im(t(xi$z), xcol=xi$x, yrow=xi$y)
@@ -83,7 +83,7 @@ setAs("SpatialGridDataFrame", "im", as.im.SpatialGridDataFrame)
 
 #as.im.RasterLayer <- function(from) 
 #{
-#    if (!requireNamespace("spatstat.core", quietly = TRUE))
+#    if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 #		stop("package spatstat required for coercion")
 #    if (!requireNamespace("raster", quietly = TRUE))
 #		stop("package raster required for coercion")
@@ -105,7 +105,7 @@ setAs("SpatialGridDataFrame", "im", as.im.SpatialGridDataFrame)
 
 as.im.RasterLayer <- function(from, factor.col.name = NULL) 
 {
-  if (!requireNamespace("spatstat.core", quietly = TRUE))
+  if (!requireNamespace("spatstat.linnet", quietly = TRUE))
     stop("package spatstat required for coercion")
   if (!requireNamespace("raster", quietly = TRUE))
     stop("package raster required for coercion")
@@ -142,7 +142,7 @@ as.im.RasterLayer <- function(from, factor.col.name = NULL)
 }
 
 
-#if (requireNamespace("spatstat.core", quietly = TRUE) && requireNamespace("raster", quietly = TRUE)) {
+#if (requireNamespace("spatstat.linnet", quietly = TRUE) && requireNamespace("raster", quietly = TRUE)) {
 #  setAs("RasterLayer", "im", as.im.RasterLayer)
 #}
 

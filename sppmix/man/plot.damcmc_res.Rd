@@ -25,7 +25,7 @@ For examples see
 }
 \examples{
 \donttest{
-fit <- est_mix_damcmc(pp = spatstat::redwood, m = 10)
+fit <- est_mix_damcmc(pp = spatstat.data::redwood, m = 10)
 plot(fit)
 #Tornadoes
 Tornfit=est_mix_damcmc(Tornadoes2011MO, m=5, L = 20000)

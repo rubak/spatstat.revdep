@@ -34,7 +34,7 @@ Sensitivity_k_n <- function(X,rel_probs,ks,ns){
   }
   network_lix=X$domain
   midpoints=midpoints.psp(as.psp(network_lix))
-  segment_lengths=lengths.psp(as.psp(network_lix))
+  segment_lengths=lengths_psp(as.psp(network_lix))
   
   # Midpoints as a point pattern (on the original network)
   lpp_midpoints=lpp(midpoints,network)

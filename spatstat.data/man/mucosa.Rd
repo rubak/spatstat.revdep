@@ -12,7 +12,7 @@
 }
 \usage{data(mucosa)}
 \format{
-  An object of class \code{"ppp"}, see \code{\link[spatstat.geom]{ppp.object}}.
+  An object of class \code{"ppp"}, see \code{\link[spatstat.geom:ppp]{ppp.object}}.
   This is a multitype point pattern with two types of points,
   \code{ECL} and \code{other}.
 }

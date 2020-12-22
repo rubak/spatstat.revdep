@@ -75,7 +75,7 @@ plot_polyregion <- function (polyregion, lwd=2, add=FALSE)
             polyregion <- SpatialPolygons(list(polyregion))
         if (inherits(polyregion, "owin"))
             ## && ! "plot.owin" %in% getNamespaceInfo("spatstat", "S3methods")
-            plot <- spatstat::plot.owin  # spatstat <1.33-0 has no registration
+            plot <- spatstat.geom::plot.owin  # spatstat <1.33-0 has no registration
         ## plot call which works for "SpatialPolygons" and "owin"
         plot(polyregion, lwd=lwd, axes=TRUE, main="", add=add)
     }

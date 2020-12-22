@@ -10,7 +10,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.1.0)
-Imports: Rcpp, lazyeval, stats, utils, arrangements, spatstat.geom, spatstat.core, spatstat.linnet, EigenR,
+Imports: Rcpp, lazyeval, stats, utils, arrangements, spatstat.geom, EigenR,
         data.table
 Suggests: heavy, kde1d, knitr, rmarkdown
 LinkingTo: Rcpp, RcppEigen, BH

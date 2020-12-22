@@ -51,7 +51,7 @@
 } 
 \format{
   \code{clmfires} is a marked point pattern (object of class \code{"ppp"}). 
-  See \code{\link[spatstat.geom]{ppp.object}}.
+  See \code{\link[spatstat.geom:ppp]{ppp.object}}.
 
   \code{clmfires.extra} is a list with two components, named
   \code{clmcov100} and \code{clmcov200}, which are lists of pixel images

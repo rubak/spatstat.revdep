@@ -7,7 +7,7 @@ Authors@R: c(
   person("Lotte", "Schlicht", role = "ctb")
     )
 Depends: R(>= 3.5.0)
-Imports: graphics, methods, sp, stats, spdep, rgeos, deldir, spatstat.geom, spatstat.core, spatstat.linnet
+Imports: graphics, methods, sp, stats, spdep, rgeos, deldir, spatstat.geom
 Suggests: roxygen2, knitr, lme4
 VignetteBuilder: knitr
 Description: 

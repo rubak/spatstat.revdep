@@ -50,7 +50,7 @@ number of components allowed.
 }
 \examples{
 \donttest{
-fit <- est_mix_bdmcmc(pp = spatstat::redwood, m = 10)
+fit <- est_mix_bdmcmc(pp = spatstat.data::redwood, m = 10)
 plot(fit)
 #Tornadoes
 ret=PlotUSAStates(states=c('Iowa','Arkansas', 'Missouri','Illinois','Indiana','Kentucky',

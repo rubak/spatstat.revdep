@@ -53,8 +53,7 @@ Author: Michael Höhle [aut, ths] (<https://orcid.org/0000-0002-0423-6702>),
 Maintainer: Sebastian Meyer <seb.meyer@fau.de>
 Depends: R (>= 3.2.0), methods, grDevices, graphics, stats, utils, sp
         (>= 1.0-15), xtable (>= 1.7-0)
-Imports: Rcpp (>= 0.11.1), polyCub (>= 0.6.0), MASS, Matrix, nlme,
-        spatstat.core, spatstat.geom
+Imports: Rcpp (>= 0.11.1), polyCub (>= 0.6.0), MASS, Matrix, nlme, spatstat.core, spatstat.geom
 LinkingTo: Rcpp, polyCub
 Suggests: parallel, grid, xts, gridExtra (>= 2.0.0), lattice,
         colorspace, scales, animation, rmapshaper, msm, spc, quadprog,

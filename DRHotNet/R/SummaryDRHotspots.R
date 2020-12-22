@@ -45,7 +45,7 @@ SummaryDRHotspots <- function(X,rel_probs,hotspots,order_extension=NULL,compute_
   }
   network_lix=X$domain
   middle_points=midpoints.psp(as.psp(network_lix))
-  segment_lengths=lengths.psp(as.psp(network_lix))
+  segment_lengths=lengths_psp(as.psp(network_lix))
   
   # Neighbourhood matrix
   

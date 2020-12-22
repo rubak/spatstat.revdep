@@ -14,7 +14,7 @@ data(seedlings1)
 data(seedlings2)
 }
 \format{
-  \code{seedlings1} and \code{seedlings2} are objects of class "ppp" representing the point pattern of seedling locations marked by their heights. See \code{\link[spatstat.geom]{ppp.object}} 
+  \code{seedlings1} and \code{seedlings2} are objects of class "ppp" representing the point pattern of seedling locations marked by their heights. See \code{\link[spatstat.geom:ppp]{ppp.object}} 
   for details of the format. }
 
 \source{

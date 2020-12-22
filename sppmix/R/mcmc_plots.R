@@ -27,7 +27,7 @@
 #' @author Jiaxun Chen, Sakis Micheas
 #' @examples
 #' \donttest{
-#' fit <- est_mix_damcmc(pp = spatstat::redwood, m = 10)
+#' fit <- est_mix_damcmc(pp = spatstat.data::redwood, m = 10)
 #' plot(fit)
 #' plot_chains(fit)
 #' #plot the chains in the same plot with different colors
@@ -172,7 +172,7 @@ plot_chains <- function(fit, burnin = floor(fit$L / 10), chain = c("p", "x", "y"
 #' @author Sakis Micheas, Yuchen Wang
 #' @examples
 #' \donttest{
-#' fit <- est_mix_damcmc(pp = spatstat::redwood, m = 10)
+#' fit <- est_mix_damcmc(pp = spatstat.data::redwood, m = 10)
 #' plot_ind(fit)}
 #'
 #' @export
@@ -395,7 +395,7 @@ plot_avgsurf <- function(fit,
 #' \code{\link{plot_chains}}
 #' @examples
 #' \donttest{
-#' fit <- est_mix_damcmc(pp = spatstat::redwood, m = 10)
+#' fit <- est_mix_damcmc(pp = spatstat.data::redwood, m = 10)
 #' plot(fit)
 #' #Tornadoes
 #' Tornfit=est_mix_damcmc(Tornadoes2011MO, m=5, L = 20000)
@@ -479,7 +479,7 @@ plot.damcmc_res <- function(
 #' \code{\link{GetBDTable}},
 #' @examples
 #' \donttest{
-#' fit <- est_mix_bdmcmc(pp = spatstat::redwood, m = 10)
+#' fit <- est_mix_bdmcmc(pp = spatstat.data::redwood, m = 10)
 #' plot(fit)
 #' #Tornadoes
 #' ret=PlotUSAStates(states=c('Iowa','Arkansas', 'Missouri','Illinois','Indiana','Kentucky',
@@ -584,7 +584,7 @@ plot.bdmcmc_res <- function(x, win = fit$data$window,
 #' @author Sakis Micheas
 #' @examples
 #' \donttest{
-#' fitBD <- est_mix_bdmcmc(spatstat::redwood, m = 10)
+#' fitBD <- est_mix_bdmcmc(spatstat.data::redwood, m = 10)
 #' plot_CompDist(fitBD)
 #' CAfitBD=est_mix_bdmcmc(pp = CAQuakes2014.RichterOver3.0, m = 10)
 #' plot_CompDist(CAfitBD)}

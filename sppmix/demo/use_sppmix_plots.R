@@ -25,7 +25,7 @@ plot2dPP(Tornadoes2011MO,open_new_window=open_new_plot,
 #fit a Poisson with mixture intensity surface
 plotstring("\nFor this tutorial we will work\nwith a known intensity and generate a\n point pattern from it. In order to\n show the full variety of plots, we\n fit the DAMCMC to this pattern.\nSee the model fitting tutorial\nfor more details on DAMCMC.")
 truemix5=rnormmix(m = 5, sig0 = .1, df = 5,xlim= c(-3,3), ylim = c(-3,3))
-trueintsurfmix5=to_int_surf(truemix5,lambda = 150,win =spatstat::owin( c(-3,3),c(-3,3)))
+trueintsurfmix5=to_int_surf(truemix5,lambda = 150,win =spatstat.geom::owin( c(-3,3),c(-3,3)))
 ppmix5 <- rsppmix(intsurf = trueintsurfmix5)# draw points
 
 #retrieve the surface of posterior means

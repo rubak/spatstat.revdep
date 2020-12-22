@@ -15,7 +15,7 @@ if (!isClass("linnet"))
 as.linnet.SpatialLines <- function(X, ..., fuse=TRUE) {
   if (!is.na(sp::is.projected(X)) && !sp::is.projected(X))
     stop("Only projected coordinates may be converted to spatstat class objects")
-  if(!requireNamespace("spatstat.core", quietly = TRUE)) 
+  if(!requireNamespace("spatstat.linnet", quietly = TRUE)) 
     stop("package spatstat is required for as.linnet.SpatialLines")
   #' extract bounding box to use as window
   bb <- bbox(X)

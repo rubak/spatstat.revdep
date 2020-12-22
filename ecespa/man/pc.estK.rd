@@ -18,7 +18,7 @@ Kclust(r, sigma2, rho)
 \details{
 The algorithm fits the Poisson cluster point process to a point pattern, by finding the parameters of the Poisson cluster model
 which give the closest match between the theoretical K function of the Poisson cluster process and the observed
-K function. For a more detailed explanation of the Method of Minimum Contrast, see \code{\link[spatstat]{mincontrast}}
+K function. For a more detailed explanation of the Method of Minimum Contrast, see \code{\link[spatstat.core]{mincontrast}}
  in \pkg{spatstat} or Diggle (2003: 86). 
 
  The Poisson cluster processes are defined by the following postulates (Diggle 2003):
@@ -44,7 +44,7 @@ correct parameters even without starting values for these parameters.
 This Poisson cluster process can be simulated with \code{\link{sim.poissonc}}.
 
 }
-\note{The exponents \eqn{p} and \eqn{q} of the contrast criterion (see \code{\link[spatstat]{mincontrast}}) are fixed 
+\note{The exponents \eqn{p} and \eqn{q} of the contrast criterion (see \code{\link[spatstat.core]{mincontrast}}) are fixed 
 respectively to \eqn{p = 2} and \eqn{q = 1/4}. The \eqn{rmin} and \eqn{rmax} limits of integration of the 
 contrast criterion are set up by the sequence of values of \eqn{r} and \eqn{Kobs} passed to \code{pc.estK}.}
 
@@ -56,8 +56,8 @@ contrast criterion are set up by the sequence of values of \eqn{r} and \eqn{Kobs
 \author{ Marcelino de la Cruz Rot, inspired by some code of  Philip M. Dixon }
 
 \seealso{ \code{\link{ipc.estK}} for fitting the inhomogeneous Poisson cluster process; some functions in \pkg{spatstat}
-( \code{\link[spatstat]{matclust.estK}} and \code{\link[spatstat]{lgcp.estK}}) fit other appropriate processes for clustered patterns;
-\code{\link[spatstat]{mincontrast}} performs a more general implementation of the method of mimimum contrast.}
+( \code{\link[spatstat.core]{matclust.estK}} and \code{\link[spatstat.core]{lgcp.estK}}) fit other appropriate processes for clustered patterns;
+\code{\link[spatstat.core]{mincontrast}} performs a more general implementation of the method of mimimum contrast.}
 \examples{
 
 

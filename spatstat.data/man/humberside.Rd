@@ -21,7 +21,7 @@
     \tab indicating whether this is a disease case\cr
     \tab or a control.
   }
-  See \code{\link[spatstat.geom]{ppp.object}} for details of the format.
+  See \code{\link[spatstat.geom:ppp]{ppp.object}} for details of the format.
 
   The dataset \code{humberside.convex} is an object of the
   same format, representing the same point pattern data,

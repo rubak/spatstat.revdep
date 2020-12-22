@@ -23,7 +23,7 @@ For examples see
 }
 \examples{
 \donttest{
-fitBD <- est_mix_bdmcmc(spatstat::redwood, m = 10)
+fitBD <- est_mix_bdmcmc(spatstat.data::redwood, m = 10)
 plot_CompDist(fitBD)
 CAfitBD=est_mix_bdmcmc(pp = CAQuakes2014.RichterOver3.0, m = 10)
 plot_CompDist(CAfitBD)}

@@ -28,7 +28,7 @@
     \code{y} \tab Cartesian \eqn{y}-coordinate of bronze grain profile centre\cr
     \code{marks} \tab radius of bronze grain profile
   }
-  See \code{\link[spatstat.geom]{ppp.object}} for details of the format.
+  See \code{\link[spatstat.geom:ppp]{ppp.object}} for details of the format.
   All coordinates are recorded in mm.
 }
 \usage{data(bronzefilter)}

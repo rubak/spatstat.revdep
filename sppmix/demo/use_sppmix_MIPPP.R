@@ -18,7 +18,7 @@ plotstring("If the marks are discrete valued, we use\na Markov Random Field (e.g
 newMPP=rMIPPP_cond_loc(
   open_new_window=open_new_plot,
   gammas=c(.1,.2,.3),r=.5,
-  bigwin=spatstat::owin(c(-5,5),c(-5,5)))
+  bigwin=spatstat.geom::owin(c(-5,5),c(-5,5)))
 
 plotstring("The parameters 'gammas' act as weights\nin the discrete mark distribution.\nLarge values lead to small probabilities\nof observing the corresponding mark value.\nFunction 'rMIPPP_cond_loc' returns both the\nground process and the mark distribution,\nas well as, plots the probability\nfields of observing a mark.")
 
@@ -58,13 +58,13 @@ plotstring("\nThe mark probability fields implemented\ninclude Gaussian random f
 plotstring("\nReal marks first (Gaussian random field)...")
 newMPPcontGRF=rMIPPP_cond_loc(discrete_mark = FALSE,
   open_new_window=open_new_plot,
-  bigwin=spatstat::owin(c(-5,5),c(-5,5)))
+  bigwin=spatstat.geom::owin(c(-5,5),c(-5,5)))
 
 plotstring("\nPositive real marks next (Chi-square random field)...")
 newMPPcontChiSQ=rMIPPP_cond_loc(mark_distr_choice=1,
   open_new_window=open_new_plot,
   discrete_mark = FALSE,
-  bigwin=spatstat::owin(c(-5,5),c(-5,5)))
+  bigwin=spatstat.geom::owin(c(-5,5),c(-5,5)))
 
 plotstring("\nTurn to an application. We visualize\naggregate income levels in MO by county\nusing data from the American Community\nSurvey (ACS). We plot in the original\nscale first. We use function 'PlotUSAStates'\nto produce these plots.")
 

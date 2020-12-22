@@ -24,7 +24,7 @@
     \code{area} \tab numeric vector giving the \cr
 		\tab areas of cell profiles (in square microns)
   }
-  See \code{\link[spatstat.geom]{ppp.object}} for details of the format.
+  See \code{\link[spatstat.geom:ppp]{ppp.object}} for details of the format.
 }
 \usage{data(betacells)}
 \source{

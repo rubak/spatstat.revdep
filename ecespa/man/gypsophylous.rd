@@ -10,7 +10,7 @@
 }
 \usage{data(gypsophylous)}
 \format{
- An object of class "ppp"  of \code{spatstat} representing the point pattern of plants locations. See \code{\link[spatstat]{ppp.object}} 
+ An object of class "ppp"  of \code{spatstat} representing the point pattern of plants locations. See \code{\link[spatstat.geom:ppp]{ppp.object}} 
   for details of the format.
 }
 \source{

@@ -15,7 +15,7 @@ Description: Locally weighted regression, semiparametric and
 License: GPL
 LazyLoad: yes
 Depends: lattice, locfit, maptools, quantreg, RANN, SparseM
-Suggests: car, classInt, mlogit, RColorBrewer, spatstat.geom, spatstat.core, spatstat.linnet, spdep
+Suggests: car, classInt, mlogit, RColorBrewer, spatstat.core, spdep
 Packaged: 2013-05-26 08:34:40 UTC; Dan
 NeedsCompilation: no
 Repository: CRAN

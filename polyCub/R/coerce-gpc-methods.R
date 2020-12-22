@@ -109,7 +109,7 @@ gpc2owin <- function (object, ...)
 ##' @rdname coerce-gpc-methods
 ##' @export
 ##' @rawNamespace if(getRversion() >= "3.6.0") {  # delayed registration
-##'     S3method(spatstat::as.owin, gpc.poly)
+##'     S3method(spatstat.geom::as.owin, gpc.poly)
 ##' }
 as.owin.gpc.poly <- function (W, ...)
 {

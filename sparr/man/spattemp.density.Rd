@@ -22,7 +22,7 @@ An object of class \code{\link[spatstat.geom]{ppp}} giving the spatial coordinat
 Fixed bandwidth to smooth the spatial margin. A numeric value > 0. If unsupplied, the oversmoothing bandwidth is used as per \code{\link{OS}}.
 }
   \item{tt}{
-A numeric vector of equal length to the number of points in \code{pp}, giving the time corresponding to each spatial observation. If unsupplied, the function attempts to use the values in the \code{\link[spatstat.geom]{marks}} attribute of the \code{\link[spatstat.geom]{ppp.object}} in \code{pp}.
+A numeric vector of equal length to the number of points in \code{pp}, giving the time corresponding to each spatial observation. If unsupplied, the function attempts to use the values in the \code{\link[spatstat.geom]{marks}} attribute of the \code{\link[spatstat.geom:ppp]{ppp.object}} in \code{pp}.
 }
   \item{lambda}{
 Fixed bandwidth to smooth the temporal margin; a numeric value > 0. If unsupplied, the function internally computes the Sheather-Jones bandwith using \code{\link[stats]{bw.SJ}} (Sheather & Jones, 1991).
@@ -92,7 +92,7 @@ A pixel \code{\link[spatstat.geom]{im}}age giving the edge-correction surface fo
 A numeric vector giving the edge-correction weights for the temporal margin. \code{NULL} if \code{tedge = "none"}.
 }
 \item{pp}{
-A \code{\link[spatstat.geom]{ppp.object}} of the spatial data passed to the argument of the same name in the initial function call, with \code{\link[spatstat.geom]{marks}} of the observation times.
+A \code{\link[spatstat.geom:ppp]{ppp.object}} of the spatial data passed to the argument of the same name in the initial function call, with \code{\link[spatstat.geom]{marks}} of the observation times.
 }
 \item{tgrid}{
 A numeric vector giving the discretised time grid at which the spatiotemporal density was evaluated (matches the names of \code{z} and \code{z.cond}).

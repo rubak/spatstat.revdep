@@ -74,7 +74,7 @@
 }
 \examples{
   run <- FALSE
-  if(require(spatstat.core, quietly=TRUE)) run <- TRUE
+  if(require(spatstat.linnet, quietly=TRUE)) run <- TRUE
 if (run) {
    dname <- system.file("shapes", package="maptools")
    fname <- file.path(dname, "fylk-val.shp")

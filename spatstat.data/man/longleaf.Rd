@@ -30,7 +30,7 @@
     \code{y} \tab Cartesian \eqn{y}-coordinate of tree \cr
     \code{marks} \tab diameter at breast height, in centimetres.
   }
-  See \code{\link[spatstat.geom]{ppp.object}} for details of the format of a
+  See \code{\link[spatstat.geom:ppp]{ppp.object}} for details of the format of a
   point pattern object.
 }
 \usage{data(longleaf)}

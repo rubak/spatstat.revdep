@@ -1,4 +1,4 @@
-import(spatstat.geom,spatstat.core,spatstat.linnet,spatstat.utils)
+import(spatstat.geom,spatstat.core,spatstat.linnet,spatstat,spatstat.utils)
 import(rpanel,tcltk,stats,graphics,grDevices,utils,methods)
 
 # Export all names

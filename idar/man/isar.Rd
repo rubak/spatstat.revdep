@@ -57,7 +57,7 @@ Although recent litterature (e.g., Wiegand and Moloney 2014) suggest that buffer
 
 
 \value{
-  An object of class "\code{fv}", see  \link[spatstat.geom]{fv.object}, which can be plotted directly using  \link[spatstat.core]{plot.fv}. 
+  An object of class "\code{fv}", see  \link[spatstat.core]{fv.object}, which can be plotted directly using  \link[spatstat.core]{plot.fv}. 
 
 Essentially a data frame containing a column named \emph{r} with the vector of values of the argument r at which the IDAR(r) function has been estimated and  aonther column, named \emph{"isar", "ipsvar", "ipsrar", "ipsear", "ipscar"} or \emph{"ifdar"}, according to the selected idar argment. This column contains an estimate of the selected IDAR(R) function.
 

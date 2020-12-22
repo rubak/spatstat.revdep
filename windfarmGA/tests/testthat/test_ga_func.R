@@ -129,8 +129,8 @@ test_that("Test Genetic Algorithm Function", {
   rm(HexGrid)
     
   ## TESS2SPDF #############
-  # HexaGrid <- spatstat::hextess(maptools::as.owin.SpatialPolygons(Polygon1),s = 100)
-  HexaGrid <- spatstat::hextess(windfarmGA:::owin_spatialPolygons(Polygon1),s = 100)
+  # HexaGrid <- spatstat.geom::hextess(maptools::as.owin.SpatialPolygons(Polygon1),s = 100)
+  HexaGrid <- spatstat.geom::hextess(windfarmGA:::owin_spatialPolygons(Polygon1),s = 100)
   expect_true(class(HexaGrid)[1] == "tess")
   
   ## Convert the Tesselation to SpatialPolygons

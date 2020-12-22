@@ -28,7 +28,7 @@
 #' @param domain Optional. Calculations will be restricted
 #'   to this subset of the window. See Details of
 #'   \code{\link[spatstat.core]{Kest}}.
-#' @inheritParams spatstat::Kest
+#' @inheritParams spatstat.core::Kest
 #'   
 #' @return Returns a \code{kdenv} object.  See documentation
 #'   for \code{spatstat::Kest}.

@@ -15,7 +15,7 @@ Description: Utilities to support spatial data manipulation, query, sampling
     auto-logistic model, sampling models, cluster optimization, statistical
     exploratory tools and raster-based metrics.
 Depends: R (>= 3.6.0)
-Imports: sp, sf, raster, spatstat.geom, spatstat.core, spatstat.linnet, spdep, rgeos, MASS, methods
+Imports: sp, sf, raster, spatstat.geom, spatstat.core, spdep, rgeos, MASS, methods
 Suggests: exactextractr, cluster, readr, RCurl, RANN, rms, yaImpute,
         SpatialPack (>= 0.3), mgcv, EnvStats, maptools, GeNetIt, gstat,
         RStoolbox, terra

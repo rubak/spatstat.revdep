@@ -108,7 +108,7 @@ select.model.gof returns an object of class "\emph{selectedmodgof}",i.e., a list
   \item{pp }{ The analyzed point pattern, with the ppp format of spatstat.}
   \item{best.sigma}{The value of the selected bandwith.}
 
-\emph{envelope.selectedmod} returns a an object of class "fv", see \link[spatstat.geom]{fv.object}, which can be printed and plotted directly. Essentially a data frame containing columns 
+\emph{envelope.selectedmod} returns a an object of class "fv", see \link[spatstat.core]{fv.object}, which can be printed and plotted directly. Essentially a data frame containing columns 
   \item{r}{the vector of values of the argument r at which the summary function fun has been estimated.}
   \item{obs}{values of the summary function for the data point pattern.}
   \item{lo}{lower envelope of simulations.}

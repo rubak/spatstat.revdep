@@ -51,8 +51,8 @@ plot.logrrenv = function(x, ..., conlist = list(), main = "") {
     argi = list(x = xtemp, main = main, ...)
        
     # plot colors for regions outside non-rejection envelopes
-    do.call(spatstat::image.im, argi)
+    do.call(spatstat.geom::image.im, argi)
     # add contour to plot
-    do.call(spatstat::contour.im, argc) 
+    do.call(spatstat.geom::contour.im, argc) 
   }
 }

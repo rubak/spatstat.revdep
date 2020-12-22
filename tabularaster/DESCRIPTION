@@ -15,7 +15,7 @@ Description: Facilities to work with vector and raster data in efficient
 License: GPL-3
 LazyData: TRUE
 Depends: R (>= 3.2.5)
-Imports: dplyr, fasterize, magrittr, raster, silicate, spatstat.geom, spatstat.core, spatstat.linnet, tibble
+Imports: dplyr, fasterize, magrittr, raster, silicate, spatstat.geom, tibble
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 Suggests: covr, knitr, rmarkdown, testthat (>= 2.1.0), spelling

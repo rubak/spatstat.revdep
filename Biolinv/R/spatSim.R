@@ -6,7 +6,7 @@
 #'
 #' @param MOD0 data frame containing 'y' and 'x' coordinates (projected coordinate system) to compare with MOD2.
 #' @param MOD2 data frame containing 'y' and 'x' coordinates (projected coordinate system) to compare with MOD0.
-#' @param WINDOW window of observation of the point patterns (MOD0 and MOD2)(see ?spatstat::owin).Must be an object of class 'owin'.
+#' @param WINDOW window of observation of the point patterns (MOD0 and MOD2)(see ?spatstat.geom::owin).Must be an object of class 'owin'.
 #' @param R numeric vector of searc distances for the K-function.
 #'
 #' @return squared sum of distances between K-functions. This is a measure of spatial dissimilarity.

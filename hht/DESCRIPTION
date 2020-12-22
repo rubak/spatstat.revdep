@@ -7,7 +7,7 @@ Authors@R: c(person(given="Daniel C.",family="Bowman", role=c("aut", "cre"),
         email="danny.c.bowman@gmail.com"),
         person(given="Jonathan M.", family="Lees", role=c("ctb")))
 Depends: R (>= 3.1.1)
-Imports: EMD (>= 1.5.5), fields (>= 6.7.6), spatstat.geom, spatstat.core, spatstat.linnet
+Imports: EMD (>= 1.5.5), fields (>= 6.7.6), spatstat.geom, spatstat.core
 Description: Builds on the EMD package to provide additional tools for empirical mode decomposition (EMD) and Hilbert spectral analysis. It also implements the ensemble empirical decomposition (EEMD) and the complete ensemble empirical mode decomposition (CEEMD) methods to avoid mode mixing and intermittency problems found in EMD analysis.  The package comes with several plotting methods that can be used to view intrinsic mode functions, the HHT spectrum, and the Fourier spectrum. 
 License: GPL (>= 3)
 Maintainer: Daniel C. Bowman <danny.c.bowman@gmail.com>

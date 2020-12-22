@@ -221,7 +221,7 @@ check_surface_dat <- function (dat)
 #' @param grid_size Size of interpolation grid as taken from 'add_osm_surface()'
 #' @param method Either 'idw' (Inverse Distance Weighting as spatstat::idw;
 #' default), otherwise uses 'Gaussian' for kernel smoothing (as
-#' spatstat::Smooth.ppp)
+#' spatstat.core::Smooth.ppp)
 #' @return A single data frame of object IDs, coordinates, and z-values
 #'
 #' @noRd
@@ -237,9 +237,9 @@ list2df_with_data <- function (map, obj, obj_type, xy_mn, dat, bg,
         indx <- rep (NA, length (obj))
     if (!missing (bg))
     {
-        xyh <- spatstat::ppp (xyz$x, xyz$y,
+        xyh <- spatstat.geom::ppp (xyz$x, xyz$y,
                               xrange = range (xyz$x), yrange = range (xyz$y))
-        ch <- spatstat::convexhull (xyh)
+        ch <- spatstat.geom::convexhull (xyh)
         bdry <- cbind (ch$bdry[[1]]$x, ch$bdry[[1]]$y)
 
         indx <- apply (xy_mn, 1, function (x)
@@ -326,13 +326,13 @@ get_surface_z <- function (dat, method, grid_size)
     y <- y [indx]
     marks <- z [indx]
 
-    xyp <- spatstat::ppp (x, y, xrange = range (x), yrange = range(y),
+    xyp <- spatstat.geom::ppp (x, y, xrange = range (x), yrange = range(y),
                           marks = marks)
 
     if (method == 'idw')
-        z <- spatstat::idw (xyp, at = "pixels", dimyx = grid_size)$v
+        z <- spatstat.core::idw (xyp, at = "pixels", dimyx = grid_size)$v
     else if (method == 'smooth')
-        z <- spatstat::Smooth (xyp, at = "pixels", dimyx = grid_size,
+        z <- spatstat.core::Smooth (xyp, at = "pixels", dimyx = grid_size,
                                diggle = TRUE)$v
     else
     {

@@ -41,11 +41,11 @@
   \describe{
     \item{gold}{a point pattern (object of class \code{"ppp"})
       representing the point pattern of gold deposits.
-      See \code{\link[spatstat.geom]{ppp.object}} for details of the format.
+      See \code{\link[spatstat.geom:ppp]{ppp.object}} for details of the format.
     }
     \item{faults}{a line segment pattern (object of class \code{"psp"})
       representing the geological faults.
-      See \code{\link[spatstat.geom]{psp.object}} for details of the format.
+      See \code{\link[spatstat.geom:psp]{psp.object}} for details of the format.
     }
     \item{greenstone}{the greenstone bedrock region.
       An object of class \code{"owin"}. Consists of multiple

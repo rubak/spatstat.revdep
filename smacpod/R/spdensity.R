@@ -6,7 +6,7 @@
 #' The \code{\link[spatstat.core]{density.ppp}} function computes
 #' the spatial intensity of a point pattern; the \code{spdensity}
 #' function scales the intensity to produce a true spatial density. 
-#' @inheritParams spatstat::density.ppp
+#' @inheritParams spatstat.core::density.ppp
 #' 
 #' @return This function produces the spatial density of \code{x}
 #' as an object of class \code{im} from the \code{spatstat} package.  

@@ -34,7 +34,7 @@ RoxygenNote: 7.1.1
 Depends: R (>= 3.5.0)
 Imports: concaveman, cvAUC, doParallel, fields, foreach, graphics,
         grDevices, maptools, parallel, pls, raster, rgeos, ROCR, sp,
-        sparr, spatstat, stats, utils
+        sparr, spatstat.geom, spatstat.core, stats, utils
 Suggests: R.rsp, spatstat.data, spelling, testthat
 VignetteBuilder: R.rsp
 Language: en-US

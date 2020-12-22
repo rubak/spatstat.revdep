@@ -15,7 +15,7 @@ marksum(mippp, R = 10, nx = 30, ny = 30)
 
 }
 \arguments{
-  \item{mippp}{ A marked point pattern. An object with the \code{\link[spatstat]{ppp}} format of \pkg{spatstat}. }
+  \item{mippp}{ A marked point pattern. An object with the \code{\link[spatstat.geom]{ppp}} format of \pkg{spatstat}. }
   \item{R}{ Radius. The distance argument \emph{ r} at which the mark-sum measure should be computed }
   \item{nx}{Grid density (for estimation) in the x-side. }
   \item{ny}{ Grid density (for estimation) in the y-side. }
@@ -30,7 +30,7 @@ marksum(mippp, R = 10, nx = 30, ny = 30)
     \item{xlab}{Text or expression to add as a label to axis x.}
     \item{ylab}{Text or expression to add as a label to axis y.}
         
-    \item{...}{Additional parameters to \code{\link[spatstat]{Smooth.ppp}}, \code{\link[spatstat]{density.ppp}} or \code{\link[spatstat]{as.mask}}, to control 
+    \item{...}{Additional parameters to \code{\link[spatstat.core]{Smooth.ppp}}, \code{\link[spatstat.core]{density.ppp}} or \code{\link[spatstat.geom]{as.mask}}, to control 
                   the  parameters of the smoothing kernel, pixel resolution, etc. }
 }
 \details{
@@ -63,7 +63,7 @@ Penttinen, A. 2006. Statistics for Marked Point Patterns. In \emph{The Yearbook 
 }
 \author{ Marcelino de la Cruz Rot }
 
-\seealso{ \code{\link{getis}}, related to the point-sum measure, and  \code{\link[spatstat]{markstat}} for designing different implementations. }
+\seealso{ \code{\link{getis}}, related to the point-sum measure, and  \code{\link[spatstat.geom]{markstat}} for designing different implementations. }
 \examples{
 
    

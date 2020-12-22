@@ -12,7 +12,7 @@ Description: Bespoke images of 'OpenStreetMap' ('OSM') data and data
     visualisation using 'OSM' objects.
 Depends: R (>= 3.2.3)
 Imports: curl, e1071, ggm, ggplot2, httr, mapproj, methods, osmdata,
-        rgeos, sp, spatstat.geom, spatstat.core, spatstat.linnet
+        rgeos, sp, spatstat.geom, spatstat.core
 Suggests: knitr, magrittr, roxygen2, rmarkdown, devtools, testthat
 License: GPL-3
 URL: https://github.com/ropensci/osmplotr

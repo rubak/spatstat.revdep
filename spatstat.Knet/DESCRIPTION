@@ -3,7 +3,7 @@ Type: Package
 Title: Extension to 'spatstat' for Large Datasets on a Linear Network
 Version: 1.12-2
 Date: 2020-04-27
-Depends: R (>= 3.5.0), spatstat.geom, spatstat.core, spatstat.linnet
+Depends: R (>= 3.5.0), spatstat.geom, spatstat.core, spatstat.linnet, spatstat
 Imports: spatstat.utils, Matrix
 Authors@R: c(person(given="Suman",
 		    family="Rakshit",

@@ -5,7 +5,7 @@ Author: Oscar Garcia <https://orcid.org/0000-0002-8995-1341>
 Maintainer: Oscar Garcia <garcia@dasometrics.net>
 Description: A platform for computing competition indices and experimenting
     with spatially explicit individual-based vegetation models.
-Depends: spatstat.geom, spatstat.core, spatstat.linnet
+Depends: spatstat.geom, spatstat.core, spatstat.linnet, spatstat
 License: GPL (>= 2)
 LazyData: true
 Suggests: knitr

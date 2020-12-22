@@ -111,7 +111,7 @@ NULL
 
 #' Landmasses of the two main islands of New Zealand as Window object.
 #'
-#' Object of class spatstat::owin of the North and South Islands of New Zealand in the New Zealand Transverse Mercatore projection obtained from object 'nzp' (see ?nzp).
+#' Object of class spatstat.geom::owin of the North and South Islands of New Zealand in the New Zealand Transverse Mercatore projection obtained from object 'nzp' (see ?nzp).
 #'
 #' @docType data
 #' @keywords datasets

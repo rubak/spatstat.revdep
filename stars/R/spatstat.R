@@ -1,7 +1,7 @@
 as.owin.stars = function(W, ..., fatal) {
 	if (isTRUE(st_is_longlat(W)))
 		stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.geom", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	if (length(dim(W)) != 2)
 		stop("as.owin.stars requires a 2-dimensional object (single raster layer)")

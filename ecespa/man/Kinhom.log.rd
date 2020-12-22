@@ -13,10 +13,10 @@ Kinhom.log (A, lambda=NULL, mod=NULL, lifemark="0", prob=NULL,
 }
 
 \arguments{
-  \item{A}{ A marked point pattern with the \code{\link[spatstat]{ppp}} format of \code{spatstat}. }
+  \item{A}{ A marked point pattern with the \code{\link[spatstat.geom]{ppp}} format of \code{spatstat}. }
 \item{lambda}{ Optional. Values of the estimated intensity function as a pixel image (object of class
-"\code{\link[spatstat]{im}}" of spatstat) giving the intensity values at all locations of \code{A}. } 
- \item{mod}{ A fitted model. An object of class \code{\link[spatstat]{ppm}}. }
+"\code{\link[spatstat.geom]{im}}" of spatstat) giving the intensity values at all locations of \code{A}. } 
+ \item{mod}{ A fitted model. An object of class \code{\link[spatstat.core]{ppm}}. }
   \item{lifemark}{ Level of  the marks of  \code{A} which represents the "live" or "succes" cases.}
   \item{prob}{Numeric vector, with length equal to the number of points of \code{A}, represeting 
   the fitted values of a logistic model fitted to \code{A} marks.}
@@ -24,7 +24,7 @@ Kinhom.log (A, lambda=NULL, mod=NULL, lifemark="0", prob=NULL,
   \item{nsim}{ Number of simulated point patterns to be generated when computing the envelopes. }
    \item{correction}{ A character item selecting any of the options "border", "bord.modif",  or "translate". It specifies 
   the edge correction to be applied when computing K-functions. }
-    \item{ngrid}{ Dimensions (ngrid by ngrid) of a rectangular grid of locations where \code{\link[spatstat]{predict.ppm}} 
+    \item{ngrid}{ Dimensions (ngrid by ngrid) of a rectangular grid of locations where \code{\link[spatstat.core]{predict.ppm}} 
   would evaluate the spatial trend of the fitted models. }
    
 }
@@ -46,7 +46,7 @@ will compute random thinning envelopes.
 \code{Kinhom.log} will compute envelopes both to homogeneous and inhomogeneous K functions. If no \code{lambda} or \code{mode} arguments
 are provided, \code{Kinhom.log} assumes that the original pattern is homogeneous and will use a constant \code{lambda} to compute the inhomogeneous K 
 (i.e. it will compute the homogeneous K). The most convenient use with inhomogeneous point patterns is to provide the argument \code{mod}
-with an inhomogeneous Poisson model fitted to the original pattern of 'live' points (with spatstat function \code{\link[spatstat]{ppm}}; see the examples).
+with an inhomogeneous Poisson model fitted to the original pattern of 'live' points (with spatstat function \code{\link[spatstat.core]{ppm}}; see the examples).
 This model will be used to compute (and to update in the simulations) the inhomogeneous trend (i.e. the "lambda") of the patterns.  
 If the argument \code{lambda} is provided but not \code{mod},  these lambda will be used as a covariate to fit an inhomogeneous Poisson model that 
 will be used to compute (and to update in the simulations) the inhomogeneous spatial trend.

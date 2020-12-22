@@ -20,7 +20,7 @@
     \tab indicating whether this is a case of cancer of the larynx\cr
     \tab or cancer of the lung.
   }
-  See \code{\link[spatstat.geom]{ppp.object}} for details of the format.
+  See \code{\link[spatstat.geom:ppp]{ppp.object}} for details of the format.
 
   The dataset \code{chorley.extra} is a list with two components.
   The first component \code{plotit} is a function which will 

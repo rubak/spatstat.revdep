@@ -40,7 +40,7 @@ Encoding: UTF-8
 Depends: R (>= 2.10), sp (>= 1.0-11)
 Imports: foreign (>= 0.8), methods, grid, lattice, stats, utils,
         grDevices
-Suggests: rgeos (>= 0.1-8), spatstat.geom, spatstat.core, spatstat.linnet, PBSmapping, maps,
+Suggests: rgeos (>= 0.1-8), spatstat.geom, spatstat.linnet, PBSmapping, maps,
         RColorBrewer, raster, polyclip, spatstat.utils, plotrix
 Enhances: gpclib
 Description: Set of tools for manipulating geographic data. It includes binary access to 'GSHHG' shoreline files. The package also provides interface wrappers for exchanging spatial objects with packages such as 'PBSmapping', 'spatstat', 'maps', and others.

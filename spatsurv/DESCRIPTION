@@ -11,7 +11,7 @@ Maintainer: Benjamin M. Taylor <benjamin.taylor.software@gmail.com>
 Description: Bayesian inference for parametric proportional hazards spatial
     survival models; flexible spatial survival models. See Benjamin M. Taylor, Barry S. Rowlingson (2017) <doi:10.18637/jss.v077.i04>.
 License: GPL-3
-Imports: survival, sp, spatstat.geom, spatstat.core, spatstat.linnet, raster, iterators, RandomFields,
+Imports: survival, sp, spatstat.geom, spatstat.core, raster, iterators, RandomFields,
         fields, Matrix, stringr, rgeos, RColorBrewer, methods,
         lubridate
 Suggests: rgdal, rgl, OpenStreetMap

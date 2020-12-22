@@ -37,7 +37,7 @@ For examples see
 }
 \examples{
 \donttest{
-fit=est_mix_bdmcmc(pp = spatstat::redwood, m = 5)
+fit=est_mix_bdmcmc(pp = spatstat.data::redwood, m = 5)
 BMA=GetBMA(fit)
 burnin=.1*fit$L
 title1 = paste("Bayesian model average of",fit$L-burnin,"posterior realizations")

@@ -53,7 +53,7 @@ function(study.area,observations,lines,width=NULL,epsvu=c(1,.01),show.warnings=F
   angles=lines.psp$angles
   transects=transect.list$transects
   full.transects=transect.list$full.transects
-  lengths=lengths.psp(lines.psp)
+  lengths=lengths_psp(lines.psp)
 #
 # Loop over each line
 #

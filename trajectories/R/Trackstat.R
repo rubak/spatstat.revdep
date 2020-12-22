@@ -162,7 +162,7 @@ as.Track.ppp <- function(X,timestamp){
   
   Tppp <- lapply(X=1:length(allZ), function(i){
     p <- spatstat.geom::as.ppp(allZ[[i]][,-c(3,4)],W=w)
-    p <- spatstat::`marks<-`(p, value = allZ[[i]][,4])
+    p <- spatstat.geom::`marks<-`(p, value = allZ[[i]][,4])
     return(p)
   })
   class(Tppp) <- c("list","ppplist")
@@ -189,7 +189,7 @@ density.list <- function(x, timestamp, ...) {
   
   p <- as.Track.ppp(x, timestamp)
   p <- p[!sapply(p, is.null)] 
-  imlist <- lapply(p, spatstat::density.ppp, ...)
+  imlist <- lapply(p, spatstat.core::density.ppp, ...)
   out <- Reduce("+", imlist) / length(imlist)
   attr(out, "Tracksim") <- imlist
   attr(out, "ppps") <- p
@@ -227,7 +227,7 @@ as.Track.arrow <- function(X,timestamp,epsilon=epsilon){
     arrows[[i]] <- l
     center <- spatstat.geom::midpoints.psp(l)
     mark <- spatstat.geom::lengths_psp(l)
-    center <- spatstat::`marks<-`(center, value = mark)
+    center <- spatstat.geom::`marks<-`(center, value = mark)
     if (missing(epsilon)) epsilon <- 0
     Y[[i]] <- center[mark>epsilon]
   }
@@ -253,7 +253,7 @@ Track.idw <- function(X,timestamp,epsilon=epsilon,...){
   if(missing(epsilon))  epsilon <- 0
   
   Y <- as.Track.arrow(X,timestamp,epsilon=epsilon)
-  Z <- lapply(Y, spatstat::idw, ...)
+  Z <- lapply(Y, spatstat.core::idw, ...)
   meanIDW <- Reduce("+",Z)/length(Z)
   return(meanIDW)
 }

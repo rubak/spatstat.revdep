@@ -185,7 +185,7 @@ The \code{two.sided} alternative test assesses
 data(grave)
 r = logrr(grave)
 plot(r)
-r2 = logrr(grave, sigma = spatstat::bw.scott)
+r2 = logrr(grave, sigma = spatstat.core::bw.scott)
 plot(r2)
 rsim = logrr(grave, nsim = 9)
 plot(rsim)

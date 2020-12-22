@@ -6,7 +6,7 @@
 #'
 #' @param M0 data frame containing 'y' and 'x' coordinates (projected coordinate system) to compare with M2.
 #' @param M2 list of dataframes with same structure of M0, typically generated with simulacro() function.
-#' @param WIN window of observation for the point patterns (MOD0 and MOD2)(see ?spatstat::owin). Object of class 'sp::owin'.
+#' @param WIN window of observation for the point patterns (MOD0 and MOD2)(see ?spatstat.geom::owin). Object of class 'sp::owin'.
 #' @param RAD numeric vector of search distances for the K-function.
 #' @param AV numeric vector of the Alpha values of the simulated datasets in the same order as in the list of argument M2. Used to save the output data frame.
 #'

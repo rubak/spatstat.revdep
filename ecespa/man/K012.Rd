@@ -47,7 +47,7 @@ one can not apply the usual technique of toroidal shifting one pattern over the 
 
  \item{ }{}
 
- \item{ }{Each of the above elements is a \code{\link[spatstat.geom]{fv.object}}, essentially a \code{data.frame} with the following items:
+ \item{ }{Each of the above elements is a \code{\link[spatstat.core]{fv.object}}, essentially a \code{data.frame} with the following items:
 }
 \item{r }{the values of the argument r at which the functions kave been estimated}
 \item{hi }{upper envelope of simulations}

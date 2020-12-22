@@ -40,7 +40,7 @@ plot(truemix5,whichplots=0,xlim=c(-3,3),ylim=c(-3,3),open_new_window=open_new_pl
 
 plotstring("Build an intensity_surface object\nbased on the last normmix object by\nsetting the parameter lambda=100,\nwhich denotes the average number\nof points over the window\n[-3,3]x[-3,3].")
 intsurf=to_int_surf(truemix5,lambda = 100,
-                    win =spatstat::owin( c(-3,3),c(-3,3)))
+                    win =spatstat.geom::owin( c(-3,3),c(-3,3)))
 
 #plot(intsurf)
 
@@ -54,7 +54,7 @@ demo_truemix3comp <- normmix(ps=c(.2, .5,.3),
   mus=list(c(-0.3, -1.3), c(.1,.5),c(0.7, 1.7)),
   sigmas = list(.3*diag(2),.5*diag(2),
    .2*diag(2)), lambda = 200,
-          win = spatstat::owin(c(-1,1),c(-2,3)))
+          win = spatstat.geom::owin(c(-1,1),c(-2,3)))
 demo_truemix3comp
 
 #use summary to get extra info on
@@ -70,8 +70,8 @@ pp1 <- rsppmix(intsurf = intsurf)# draw points
 plot(pp1, mus = intsurf$mus,open_new_window=open_new_plot)#plot the mixture means as well
 plotmix_2d(intsurf, pp1,colors = TRUE, open_new_window=open_new_plot)
 plotmix_2d(intsurf, pp1,colors = TRUE,contour = TRUE,open_new_window=open_new_plot)+add_title("Contour plot of the intensity surface",lambda =intsurf$lambda,m=intsurf$m,n=pp1$n )
-plotmix_2d(intsurf, pp1,colors = TRUE,win=spatstat::owin(c(-1,2),c(-1,2)),open_new_window=open_new_plot)
-plotmix_2d(intsurf, pp1,colors = TRUE,win=spatstat::owin(c(-1,2),c(-1,2)),contour = TRUE,open_new_window=open_new_plot)+add_title("Contour plot of the intensity surface",lambda =intsurf$lambda,m=intsurf$m,n=pp1$n )
+plotmix_2d(intsurf, pp1,colors = TRUE,win=spatstat.geom::owin(c(-1,2),c(-1,2)),open_new_window=open_new_plot)
+plotmix_2d(intsurf, pp1,colors = TRUE,win=spatstat.geom::owin(c(-1,2),c(-1,2)),contour = TRUE,open_new_window=open_new_plot)+add_title("Contour plot of the intensity surface",lambda =intsurf$lambda,m=intsurf$m,n=pp1$n )
 
 plotstring("Finally, we produce 3d plots\nof the intensity surfaces we saw.")
 

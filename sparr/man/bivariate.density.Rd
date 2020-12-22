@@ -58,7 +58,7 @@ supplied, \code{resolution} is ignored.}
 \item{pilot.density}{An optional pixel image (class
   \code{\link[spatstat.geom]{im}}) giving the pilot density to be used for
   calculation of the variable bandwidths in adaptive estimation, \bold{or} a
-  \code{\link[spatstat.geom]{ppp.object}} giving the data upon which to base a
+  \code{\link[spatstat.geom:ppp]{ppp.object}} giving the data upon which to base a
   fixed-bandwidth pilot estimate using \code{hp}. If used, the pixel image
   \emph{must} be defined over the same domain as the data given
 \code{resolution} or the supplied pre-set \code{xy} evaluation grid;
@@ -114,7 +114,7 @@ bandwidths. \code{NA} if a fixed bandwidth estimate is computed.}
 factors \eqn{\tilde{f}(x_i)^{-1/2}}. \code{NA} if a fixed bandwidth estimate
 is computed.}
 
-\item{pp}{A copy of the \code{\link[spatstat.geom]{ppp.object}}
+\item{pp}{A copy of the \code{\link[spatstat.geom:ppp]{ppp.object}}
 initially passed to the \code{pp} argument, containing the data that were
 smoothed.}
 

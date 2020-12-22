@@ -27,7 +27,7 @@ export(circle, fithd, func.recweib1, func.recweib2,
        dll,pll,qll,rll,
        dPercbas,pPercbas,qPercbas,rPercbas,
        qtree.moments,qtree.jointdens,qtree.exy,qtree.varcov,interpolate.D)
-import(nlme,stats4,spatstat.geom,spatstat.core,spatstat.linnet)
+import(nlme,stats4,spatstat.geom,spatstat.core,spatstat.linnet,spatstat)
 importFrom("grDevices", "devAskNewPage")
 importFrom("graphics", "abline", "legend", "lines", "par", "points","polygon")
 importFrom("stats", "as.formula", "ecdf", "integrate", "lm", "lowess",

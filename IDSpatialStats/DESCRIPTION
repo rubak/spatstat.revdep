@@ -11,7 +11,7 @@ Description: Implements various novel and standard
 RoxygenNote: 7.0.0
 Encoding: UTF-8
 LazyData: true
-Imports: igraph, spatstat.geom, spatstat.core, spatstat.linnet
+Imports: igraph, spatstat.geom, spatstat.core
 Depends: doParallel, foreach, parallel, R (>= 2.10)
 Suggests: knitr, rmarkdown, testthat
 NeedsCompilation: yes

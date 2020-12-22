@@ -252,7 +252,7 @@ as.psp.MULTILINESTRING <- function(from, ..., window=NULL, marks=NULL, fatal) {
 	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	y <- lapply(from, as.psp.LINESTRING, window=window)
-    z <- do.call(spatstat::superimpose,c(y,list(W=window)))
+    z <- do.call(spatstat.geom::superimpose,c(y,list(W=window)))
 	if(!is.null(marks))
 		spatstat.geom::setmarks(z, marks)
 	else
@@ -273,7 +273,7 @@ as.psp.sfc_MULTILINESTRING <- function(from, ..., window=NULL, marks=NULL,
 	}
 	lin <- unclass(from)
 	y <- lapply(lin, as.psp.MULTILINESTRING, window=window)
-    z <- do.call(spatstat::superimpose, c(y, list(W = window)))
+    z <- do.call(spatstat.geom::superimpose, c(y, list(W = window)))
 	if(!is.null(marks))
 		spatstat.geom::setmarks(z, marks)
 	else

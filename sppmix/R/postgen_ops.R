@@ -43,7 +43,7 @@ MakeMixtureList<- function(allgens_List,burnin=1000)
 #' \code{\link{plot.normmix}}
 #' @examples
 #' \donttest{
-#' fit <- est_mix_bdmcmc(pp = spatstat::redwood, m = 7)
+#' fit <- est_mix_bdmcmc(pp = spatstat.data::redwood, m = 7)
 #' GetBDTable(fit)
 #' #retrieve all BDMCMC realizations corresponding to a mixture with 5 components
 #' BDfit5comp=GetBDCompfit(fit,5)
@@ -166,7 +166,7 @@ GetBDCompfit<- function(BDfit,num_comp,burnin=floor(BDfit$L/10))
 #' @seealso \code{\link{est_mix_bdmcmc}}
 #' @examples
 #' \donttest{
-#' fit <- est_mix_bdmcmc(pp = spatstat::redwood, m = 7)
+#' fit <- est_mix_bdmcmc(pp = spatstat.data::redwood, m = 7)
 #' GetBDTable(fit)}
 #'
 #' @export

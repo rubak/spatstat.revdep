@@ -8,7 +8,7 @@ Date: 2020-11-09
 Description: Visualizing cuts for either axis-align or non axis-align tree methods (e.g. decision tree, random tessellation process).
 License: BSD_2_clause + file LICENCE
 Encoding: UTF-8
-Imports: ggplot2,ape,cowplot,tree,stringr,spatstat.utils,stats
+Imports: ggplot2,ape,cowplot,tree,stringr,spatstat.geom, spatstat.core,utils,stats
 Suggests: testthat
 Packaged: 2020-11-10 01:57:21 UTC; wendywang
 RoxygenNote: 7.1.1

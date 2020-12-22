@@ -31,7 +31,7 @@ Depends: R (>= 3.5.0)
 Imports: stats, ggplot2, dplyr, tidyr, RColorBrewer, fancycut, scales,
         plotly, gridExtra, ggpubr, ICSNP, AnalyzeFMRI, rrcov, geometry,
         DT, forecast, fmri, pracma, zoo, extraDistr, parallel, foreach,
-        spatstat.geom, spatstat.core, spatstat.linnet, cubature, doParallel, reshape2, MultiwayRegression
+        spatstat.geom, spatstat.core, cubature, doParallel, reshape2, MultiwayRegression
 Suggests: oro.nifti, magrittr, knitr, rmarkdown, webshot
 License: GPL-3
 VignetteBuilder: knitr

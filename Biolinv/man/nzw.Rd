@@ -9,7 +9,7 @@
 data(nzw)
 }
 \description{
-Object of class spatstat::owin of the North and South Islands of New Zealand in the New Zealand Transverse Mercatore projection obtained from object 'nzp' (see ?nzp).
+Object of class spatstat.geom::owin of the North and South Islands of New Zealand in the New Zealand Transverse Mercatore projection obtained from object 'nzp' (see ?nzp).
 }
 \keyword{datasets}
 

@@ -16,7 +16,7 @@ data(SFphylotree)
 data(SFtraits)
 }
 \format{
- \code{SF} is an object of class \code{ppp}  of \pkg{spatstat} representing the point pattern of trees locations, with a data.frame of marks. See \code{\link[spatstat.geom]{ppp.object}} 
+ \code{SF} is an object of class \code{ppp}  of \pkg{spatstat} representing the point pattern of trees locations, with a data.frame of marks. See \code{\link[spatstat.geom:ppp]{ppp.object}} 
   for details of the format.The dataset has 822 points with the following marks: 
   \describe{
     \item{species}{Species to which each tree belongs}

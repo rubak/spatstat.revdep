@@ -14,7 +14,7 @@ Author: Thomas Shaw [aut, cre],
   Adrian Baddeley [ctb],
   Rolf Turner [ctb]
 Maintainer: Thomas Shaw <shawtr@umich.edu>
-Depends: R (>= 3.5.0), spatstat.geom, spatstat.core, spatstat.linnet
+Depends: R (>= 3.5.0), spatstat.geom, spatstat.core, spatstat.linnet, spatstat
 Imports: stats, utils, grDevices
 Description: Second-order summary statistics K- and pair-correlation functions describe
     interactions in point pattern data. This package provides computations to estimate those

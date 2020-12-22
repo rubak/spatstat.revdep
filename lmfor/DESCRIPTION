@@ -5,7 +5,7 @@ Version: 1.5
 Date: 2020-06-16
 Author: Lauri Mehtatalo and Kasper Kansanen
 Maintainer: Lauri Mehtatalo <lauri.mehtatalo@uef.fi>
-Depends: R (>= 2.10), stats4, nlme, spatstat.geom, spatstat.core, spatstat.linnet, grDevices, graphics,
+Depends: R (>= 2.10), stats4, nlme, spatstat.geom, spatstat.core, spatstat.linnet, spatstat, grDevices, graphics,
         stats, magic
 Suggests: lme4
 Description: Functions for different purposes related to forest biometrics, including illustrative graphics, numerical computation, modeling height-diameter relationships, prediction of tree volumes, modelling of diameter distributions and estimation off stand density using ITD. Several empirical datasets are also included. 

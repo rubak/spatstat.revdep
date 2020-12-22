@@ -34,7 +34,7 @@ For examples see
 }
 \examples{
 \donttest{
-fit <- est_mix_damcmc(pp = spatstat::redwood, m = 10)
+fit <- est_mix_damcmc(pp = spatstat.data::redwood, m = 10)
 plot(fit)
 plot_chains(fit)
 #plot the chains in the same plot with different colors

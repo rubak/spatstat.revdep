@@ -23,7 +23,7 @@ LazyData: true
 RoxygenNote: 7.1.1
 Depends: methods, foreach, doParallel
 Imports: ggplot2, stabledist, reshape2, plyr, Rdpack, Rcpp
-Suggests: elliptic, spatstat.geom, spatstat.core, spatstat.linnet, testthat, stringi
+Suggests: elliptic, spatstat.core, testthat, stringi
 RdMacros: Rdpack
 LinkingTo: Rcpp
 NeedsCompilation: yes

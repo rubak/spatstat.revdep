@@ -22,7 +22,7 @@ Kmulti.ls(X, I, J, r = NULL, corre = "isotropic")
 \eqn{ni} and \eqn{nj} being respectively the number of points in \eqn{I} and \eqn{J}. 
 }
 \value{
-  An object of class "fv"  (see \code{\link[spatstat.geom]{fv.object}}). Essentially a data frame containing numeric columns 
+  An object of class "fv"  (see \code{\link[spatstat.core]{fv.object}}). Essentially a data frame containing numeric columns 
   \item{r }{The values of the argument r at which the function \eqn{K^*ij(r)}  has been estimated}.
   \item{theo }{The theoretical value of \eqn{K*ij(r)} for a marked Poisson process, namely \eqn{pi * r^2}}.
 

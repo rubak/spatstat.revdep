@@ -237,7 +237,7 @@
 
 	* DESCRIPTION, NAMESPACE, R/as.linnet.SL.R,
 	  man/as.linnet.SpatialLines.Rd: adding coercion to
-	  spatstat::linnet
+	  spatstat.linnet::linnet
 
 2016-11-14 13:33  rsbivand
 

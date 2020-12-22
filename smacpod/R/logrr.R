@@ -15,7 +15,7 @@
 #' The shaded regions indicate the locations of potential
 #' clustering.
 #' 
-#' @inheritParams spatstat::density.ppp
+#' @inheritParams spatstat.core::density.ppp
 #' @param sigma Standard deviation of isotropic smoothing
 #'   kernel for cases. Either a numerical value, or a function that
 #'   computes an appropriate value of \code{sigma}.
@@ -86,7 +86,7 @@
 #' data(grave)
 #' r = logrr(grave)
 #' plot(r)
-#' r2 = logrr(grave, sigma = spatstat::bw.scott)
+#' r2 = logrr(grave, sigma = spatstat.core::bw.scott)
 #' plot(r2)
 #' rsim = logrr(grave, nsim = 9)
 #' plot(rsim)
@@ -121,12 +121,12 @@ logrr = function(x, sigma = NULL, sigmacon = NULL, case = 2,
       sigma = do.call(sigma, list(X = x))
     }
   }
-  if (is.null(sigma)) { # use spatstat::bw.relrisk if nothing given
-    which_bwargs <- names(bwargs) %in% names(formals(spatstat::bw.relrisk))[-1]
+  if (is.null(sigma)) { # use spatstat.core::bw.relrisk if nothing given
+    which_bwargs <- names(bwargs) %in% names(formals(spatstat.core::bw.relrisk))[-1]
     if (length(which_bwargs) > 0 ) {
-      sigma = do.call(spatstat::bw.relrisk, c(list(X = x, bwargs[which_bwargs])))
+      sigma = do.call(spatstat.core::bw.relrisk, c(list(X = x, bwargs[which_bwargs])))
     } else {
-      sigma = do.call(spatstat::bw.relrisk, list(X = x))
+      sigma = do.call(spatstat.core::bw.relrisk, list(X = x))
     }
   }
   if (is.null(sigmacon)) sigmacon = sigma # determine sigmacon, if NULL

@@ -63,7 +63,7 @@ While  \code{envelope4idar} manages data and results, \code{idar2} actually comp
 
 
 \value{
-  An object of class "\code{fv}", see  \link[spatstat.geom]{fv.object}, and \link[spatstat.core]{envelope},which can be plotted directly using  \link[spatstat.core]{plot.fv}. 
+  An object of class "\code{fv}", see  \link[spatstat.core]{fv.object}, and \link[spatstat.core]{envelope},which can be plotted directly using  \link[spatstat.core]{plot.fv}. 
 Essentially a data frame containing columns 
    \describe{
       \item{r}{the vector of values of the argument r at which the \code{idar(r)} function has been estimated}

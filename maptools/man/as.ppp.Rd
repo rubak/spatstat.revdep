@@ -70,7 +70,7 @@ and finally converts the TRUE/FALSE grid to a \code{SpatialGridDataFrame}.}
 \author{Edzer Pebesma \email{edzer.pebesma@uni-muenster.de}, Roger Bivand}
 \examples{
 run <- FALSE
-if (require(spatstat.core, quietly=TRUE)) run <- TRUE
+if (require(spatstat.linnet, quietly=TRUE)) run <- TRUE
 if (run) {
 ## Convert SpatialPointsDataFrame into a marked ppp
 data(meuse)

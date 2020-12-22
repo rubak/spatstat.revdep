@@ -12,7 +12,7 @@ in \enc{Chinchón}{Chinchon} (near Madrid, Spain). These are part of the data col
 }
 \usage{data(Helianthemum)}
 \format{
- An object of class "ppp"  of \code{spatstat} representing the point pattern of plants locations marked by their type. See \code{\link[spatstat.geom]{ppp.object}} 
+ An object of class "ppp"  of \code{spatstat} representing the point pattern of plants locations marked by their type. See \code{\link[spatstat.geom:ppp]{ppp.object}} 
   for details of the format.The dataset has 866 points with the following levels: 
   \describe{
     \item{adultHS}{adult \emph{H. squamatum} plants}

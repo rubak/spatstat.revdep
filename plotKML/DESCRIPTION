@@ -15,7 +15,7 @@ Imports: methods, tools, utils, XML, sp, raster, rgdal, aqp, spacetime,
         colorspace, plotrix, dismo, pixmap, plyr, stringr, colorRamps,
         scales, gstat, zoo, RColorBrewer, RSAGA, classInt
 Suggests: adehabitatLT, maptools, fossil, spcosa, rjson, animation,
-        spatstat.geom, spatstat.core, spatstat.linnet, RCurl, rgbif, Hmisc, GSIF, uuid, intervals, reshape,
+        spatstat.geom, spatstat.core, RCurl, rgbif, Hmisc, GSIF, uuid, intervals, reshape,
         gdalUtils, snowfall, parallel
 Description: Writes sp-class, spacetime-class, raster-class and similar spatial and spatio-temporal objects to KML following some basic cartographic rules.
 License: GPL
