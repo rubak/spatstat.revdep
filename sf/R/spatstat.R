@@ -12,13 +12,13 @@
 #' @name st_as_sf
 #' @export
 #' @examples
-#' if (require(spatstat.core)) {
+#' if (require(spatstat.linnet)) {
 #'   g = st_as_sf(gorillas)
 #'   # select only the points:
 #'   g[st_is(g, "POINT"),]
 #' }
 st_as_sf.ppp = function(x, ...) {
-  if (!requireNamespace("spatstat.core", quietly = TRUE))
+  if (!requireNamespace("spatstat.linnet", quietly = TRUE))
     stop("package spatstat required, please install it first") # nocov
   # window:
   win = st_sf(label = "window", geom = st_as_sfc(spatstat.geom::as.owin(x)))
@@ -42,7 +42,7 @@ st_as_sf.ppp = function(x, ...) {
 #' @name st_as_sf
 #' @export
 st_as_sf.psp = function(x, ...) {
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required, please install it first")
 	# line segments:
  	m = as.matrix(x$ends)
@@ -76,13 +76,13 @@ st_as_sfc.psp <- function(x, ...) {
 #' @name st_as_sf
 #' @export
 #' @examples
-#' if (require(spatstat.core)) {
+#' if (require(spatstat.linnet)) {
 #'  data(chicago)
 #'  plot(st_as_sf(chicago)["label"])
 #'  plot(st_as_sf(chicago)[-1,"label"])
 #' }
 st_as_sf.lpp = function(x, ...) {
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required, please install it first")
 	# lines, polygon:
 	linework_sf = st_as_sf(spatstat.geom::as.psp(spatstat.geom::domain(x)))
@@ -98,10 +98,10 @@ st_as_sf.lpp = function(x, ...) {
 # as.ppp etc methods: from maptools/pkg/R/spatstat1.R
 
 as.ppp.sfc = function(X) {
-	# require(spatstat.core)
+	# require(spatstat.linnet)
 	if (isTRUE(st_is_longlat(X)))
 		stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	d = st_dimension(X)
 	if (d[1] == 2 && all(d[-1] == 0)) {
@@ -121,7 +121,7 @@ as.ppp.sfc = function(X) {
 as.ppp.sf = function(X) {
 	if (isTRUE(st_is_longlat(X)))
 		stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	pp = spatstat.geom::as.ppp(st_geometry(X))
 	if (st_dimension(X[1,]) == 2)
@@ -139,7 +139,7 @@ as.ppp.sf = function(X) {
 as.owin.POLYGON = function(W, ..., fatal, check_polygons = TRUE) {
 	if (isTRUE(st_is_longlat(W)))
 		stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	if (check_polygons)
 		W = check_ring_dir(W)
@@ -148,7 +148,7 @@ as.owin.POLYGON = function(W, ..., fatal, check_polygons = TRUE) {
 }
 
 as.owin.MULTIPOLYGON = function(W, ..., fatal, check_polygons = TRUE) {
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	if (check_polygons)
 		W = check_ring_dir(W)
@@ -187,7 +187,7 @@ as.owin.sf = function(W, ...) {
 #' @export
 st_as_sfc.owin = function(x, ...) {
 # FROM: methods for coercion to Spatial Polygons by Adrian Baddeley, pkg maptools
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	if (!requireNamespace("spatstat.utils", quietly = TRUE))
 		stop("package spatstat.utils required: install first?")
@@ -218,7 +218,7 @@ st_as_sf.owin = function(x, ...) {
 
 #' @export
 st_as_sfc.tess <- function(x, ...) {
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	stopifnot(spatstat.geom::is.tess(x))
 	y <- spatstat.geom::tiles(x)
@@ -236,7 +236,7 @@ st_as_sfc.tess <- function(x, ...) {
 
 # methods for 'as.psp' for sp classes by Adrian Baddeley
 as.psp.LINESTRING <- function(from, ..., window=NULL, marks=NULL, fatal) {
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	xy <- unclass(from)
 	df <- as.data.frame(cbind(xy[-nrow(xy), , drop=FALSE], xy[-1, , drop=FALSE]))
@@ -249,7 +249,7 @@ as.psp.LINESTRING <- function(from, ..., window=NULL, marks=NULL, fatal) {
 }
 
 as.psp.MULTILINESTRING <- function(from, ..., window=NULL, marks=NULL, fatal) {
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	y <- lapply(from, as.psp.LINESTRING, window=window)
     z <- do.call(spatstat.geom::superimpose,c(y,list(W=window)))
@@ -262,7 +262,7 @@ as.psp.MULTILINESTRING <- function(from, ..., window=NULL, marks=NULL, fatal) {
 as.psp.sfc_MULTILINESTRING <- function(from, ..., window=NULL, marks=NULL,
                                  characterMarks=FALSE, fatal) {
 
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	if (isTRUE(st_is_longlat(from)))
 		stop("Only projected coordinates may be converted to spatstat class objects")
@@ -285,7 +285,7 @@ as.psp.sfc = function(from, ...) {
 }
 
 as.psp.sf <- function(from, ..., window=NULL, marks=NULL, fatal) {
-	if (!requireNamespace("spatstat.core", quietly = TRUE))
+	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 		stop("package spatstat required: install first?")
 	if (isTRUE(st_is_longlat(from)))
 		stop("Only projected coordinates may be converted to spatstat class objects")

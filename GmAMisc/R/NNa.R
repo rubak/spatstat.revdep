@@ -42,7 +42,8 @@
 #'
 #' @export
 #'
-#' @importFrom spatstat area rpoint
+#' @importFrom spatstat.core rpoint
+#' @importFrom spatstat.geom area
 #' @import maptools
 #'
 #' @examples

@@ -14,7 +14,7 @@
 #' @examples file <- file.path(system.file(package = "RImageJROI"), "extdata", "ijroi", "ijzip.zip")
 #' x <- read.ijzip(file)
 #' ij2spatstat(x)
-#' @importFrom spatstat ppp psp owin as.psp as.ppp marks marks<-
+#' @importFrom spatstat.geom as.ppp as.psp marks marks<- owin ppp psp
 #' @export
 
 ij2spatstat <- function(X, window = NULL, pattern.type = NULL, unitname = NULL, scale = 1, return.type = FALSE, convert.only = NULL){

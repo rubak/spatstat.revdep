@@ -52,7 +52,7 @@
 #' @importFrom maptools unionSpatialPolygons
 #' @importFrom raster rasterToPolygons values
 #' @importFrom sp coordinates over
-#' @importFrom spatstat owin
+#' @importFrom spatstat.geom owin
 #' @importFrom tibble add_column
 #' @export
 #' 

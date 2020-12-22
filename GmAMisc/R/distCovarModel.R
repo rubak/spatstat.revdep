@@ -83,9 +83,10 @@
 #' @export
 #'
 #' @importFrom rgeos gConvexHull gDistance gBuffer
-#' @importFrom spatstat unmark as.ppp as.psp Window ppm distfun cdf.test Jfox auc effectfun
+#' @importFrom spatstat.core auc cdf.test effectfun Jfox ppm
+#' @importFrom spatstat.geom as.ppp as.psp distfun unmark Window
 #' @importFrom stats anova
-#' @import spatstat
+#' @import spatstat.geom spatstat.core spatstat.linnet
 #'
 #' @examples
 #'

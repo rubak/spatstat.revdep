@@ -87,7 +87,7 @@ setMethod(f = "setWindow",
 #' window <- data.frame(x = c(0, 2),
 #'                      y = c(0, 2))
 #' setWindow(x = gtPPP, to = window)
-#' @importFrom spatstat owin
+#' @importFrom spatstat.geom owin
 #' @export
 setMethod(f = "setWindow",
           signature = "ppp",

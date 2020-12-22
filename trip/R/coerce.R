@@ -65,7 +65,7 @@ setAs("trip", "ltraj", function(from) {
 
 
 ## @importClassesFrom maptools owin ppp psp
-#' @importFrom spatstat as.ppp
+#' @importFrom spatstat.geom as.ppp
 #' @export as.ppp
 #' @importFrom maptools as.ppp.SpatialPointsDataFrame
 #' @param X \code{trip} object.
@@ -89,7 +89,7 @@ as.ppp.trip <- function(X, ..., fatal) {
 setAs("trip", "ppp", function(from) as.ppp.trip(from))
 
 #' @export
-#' @importFrom spatstat as.psp owin psp superimpose
+#' @importFrom spatstat.geom as.psp owin psp superimpose
 #' @export as.psp
 #' @param x \code{trip} object
 #' @param from see \code{\link[spatstat.geom]{as.psp}} for that method.

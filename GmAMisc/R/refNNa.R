@@ -32,7 +32,7 @@
 #'
 #' @export
 #'
-#' @importFrom spatstat nndist
+#' @importFrom spatstat.geom nndist
 #'
 #' @examples
 #' data(springs)

@@ -26,9 +26,9 @@
 #' }
 #' @references \url{http://thibault.biz/Research/ThibaultMatrices/GLSZM/GLSZM.html}
 #' @importFrom reshape2 acast
-#' @importFrom spatstat as.im
-#' @importFrom spatstat levelset
-#' @importFrom spatstat connected
+#' @importFrom spatstat.geom as.im
+#' @importFrom spatstat.geom levelset
+#' @importFrom spatstat.geom connected
 #' @importFrom methods new 
 #' @export
 glszm <- setClass("glszm",

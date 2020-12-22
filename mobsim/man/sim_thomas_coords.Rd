@@ -36,7 +36,7 @@ If this is a vector of the same length as \code{abund_vec}, each species has
 a specific mean number of points per cluster.  If no value is provided, the
 number of points per cluster is determined from the abundance and from
 \code{mother_points}.  The parameter \code{cluster_points} corresponds to the
-\code{mu} parameter of \code{spatstat::rThomas}.}
+\code{mu} parameter of \code{spatstat.core::rThomas}.}
 
 \item{xrange}{Extent of the community in x-direction (numeric vector of length 2)}
 

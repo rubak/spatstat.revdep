@@ -64,7 +64,8 @@
 ###' @importFrom tcltk setTkProgressBar tclvalue tkProgressBar tkwinfo tkwm.geometry
 ###' @importFrom raster raster disaggregate aggregate resample brick as.data.frame
 ###' @importFrom sp spsample proj4string<- proj4string SpatialPixelsDataFrame SpatialGridDataFrame Polygon Polygons SpatialPolygons coordinates CRS geometry GridTopology over proj4string SpatialGrid SpatialPixels SpatialPoints SpatialPolygonsDataFrame split spTransform
-###' @importFrom spatstat npoints rescale.ppp resolve.2D.kernel convexhull density.ppp setminus.owin simplify.owin interp.im affine.ppp rescale as.ppp as.owin affine area area.owin as.im as.mask as.polygonal as.rectangle im inside.owin is.im is.multitype is.polygonal is.ppp is.rectangle Kest Kinhom marks nearest.raster.point owin pairdist pcf pcfinhom ppp rmax.rule spatstat.options verifyclass
+#' @importFrom spatstat.core density.ppp Kest Kinhom pcf pcfinhom resolve.2D.kernel rmax.rule
+#' @importFrom spatstat.geom affine affine.ppp area area.owin as.im as.mask as.owin as.polygonal as.ppp as.rectangle convexhull im inside.owin interp.im is.im is.multitype is.polygonal is.ppp is.rectangle marks nearest.raster.point npoints owin pairdist ppp rescale rescale.ppp setminus.owin simplify.owin spatstat.options verifyclass
 ###' @importFrom stats acf approx as.formula C coefficients density deriv df dlnorm dnorm end fft formula Gamma glm lm lowess median model.matrix optim optimise quantile rnorm rpois runif sd start terms vcov window quasipoisson
 ###' @importFrom graphics abline grid hist identify image legend lines locator par plot points title
 ###' @importFrom grDevices dev.off devAskNewPage heat.colors rainbow rgb

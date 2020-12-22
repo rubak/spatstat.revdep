@@ -2,7 +2,8 @@
 #'
 #' This function uses Rippley's K-function (see Details) to compute spatial dissimilarity of two point processes.
 #'
-#' @importFrom spatstat ppp owin Kest
+#' @importFrom spatstat.core Kest
+#' @importFrom spatstat.geom owin ppp
 #'
 #' @param MOD0 data frame containing 'y' and 'x' coordinates (projected coordinate system) to compare with MOD2.
 #' @param MOD2 data frame containing 'y' and 'x' coordinates (projected coordinate system) to compare with MOD0.

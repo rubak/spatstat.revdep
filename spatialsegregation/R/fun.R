@@ -24,7 +24,7 @@ kGraphs<-c("geometric","knn","gabriel","delaunay","bgeometric")
 #' @param prepGraph Precalculated graph for the point pattern. If given, The \code{prepRange}, \code{dodists} and \code{toroidal} are ignored and calculations are carried using the prepGraph as a starting point. Useful for huge datasets.
 #' @param prepGraphIsTarget If TRUE, precalculated graph \code{prepGraph} is used to calculate a single function value directly, all other neighbourhood parameters are ignored.
 #' @param weightMatrix See \code{isarF} for this.
-#' @param translate Use translation correction (see e.g. documentation of \code{spatstat::Kest} for details). Used only in mingling index.
+#' @param translate Use translation correction (see e.g. documentation of \code{spatstat.core::Kest} for details). Used only in mingling index.
 #' @param ... ignored.
 #' @details 
 #' This is the general function for computing the spatial exposure (segregation/mingling) features. Used by \link{minglingF}, \link{shannonF}, \link{simpsonF}, \link{isarF}, \link{mciF} and \link{biomassF}, which should be preferred for better (and nicer) outcome. 

@@ -85,7 +85,7 @@ to this subset of the window. See Details of
 }
 \value{
 Returns a \code{kdenv} object.  See documentation
-  for \code{spatstat::Kest}.
+  for \code{spatstat.core::Kest}.
 }
 \description{
 \code{kdest} determines the difference in estimated K

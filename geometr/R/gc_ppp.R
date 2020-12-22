@@ -23,7 +23,7 @@ if(!isGeneric("gc_ppp")){
 
 # geom ----
 #' @rdname gc_ppp
-#' @importFrom spatstat ppp
+#' @importFrom spatstat.geom ppp
 #' @export
 setMethod(f = "gc_ppp",
           signature = "geom",

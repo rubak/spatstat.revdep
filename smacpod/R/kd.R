@@ -23,7 +23,7 @@
 #' @inheritParams spatstat.core::Kest
 #'   
 #' @return Returns an \code{fv} object.  See documentation 
-#'   for \code{spatstat::Kest}.
+#'   for \code{spatstat.core::Kest}.
 #' @author Joshua French
 #' @seealso \code{\link[spatstat.core]{Kest}}, 
 #'   \code{\link[spatstat.core]{eval.fv}}

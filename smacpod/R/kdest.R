@@ -31,7 +31,7 @@
 #' @inheritParams spatstat.core::Kest
 #'   
 #' @return Returns a \code{kdenv} object.  See documentation
-#'   for \code{spatstat::Kest}.
+#'   for \code{spatstat.core::Kest}.
 #' @author Joshua French
 #' @export
 #' @seealso \code{\link[spatstat.core]{Kest}},

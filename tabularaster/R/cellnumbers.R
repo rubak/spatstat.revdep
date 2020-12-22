@@ -118,7 +118,7 @@ cellnumbers.sf <- function(x, query, ...) {
 
 
 
-#' @importFrom spatstat owin as.owin
+#' @importFrom spatstat.geom as.owin owin
 as.owin.BasicRaster <- function(W, ...) {
   msk <- matrix(TRUE, nrow(W), ncol(W))
   spatstat.geom::owin(c(raster::xmin(W), raster::xmax(W)), c(raster::ymin(W), raster::ymax(W)), mask = msk)

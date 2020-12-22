@@ -41,7 +41,8 @@
 #' \item{\code{bandw}}{Vector of length \code{sim_total} of the global t statistic.}
 #' }
 #' 
-#' @importFrom spatstat marks runifpoint rpoispp ppp superimpose
+#' @importFrom spatstat.core rpoispp runifpoint
+#' @importFrom spatstat.geom marks ppp superimpose
 #' @importFrom stats sd
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom foreach %do% %dopar% foreach

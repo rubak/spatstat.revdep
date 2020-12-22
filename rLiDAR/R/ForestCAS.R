@@ -49,7 +49,7 @@
 #'XY<-SpatialPoints(canopyList[,1:2])    # Spatial points
 #'plot(XY, col="black", add=T, pch="*")  # adding tree location to the plot
 #'} 
-#'@importFrom spatstat disc
+#' @importFrom spatstat.geom disc
 #'@importFrom sp coordinates gridded Polygon Polygons SpatialPolygons over
 #'@importFrom sp over SpatialPoints SpatialPolygonsDataFrame SpatialGridDataFrame SpatialPixelsDataFrame
 #'@importFrom deldir tile.list deldir 

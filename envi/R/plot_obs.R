@@ -15,7 +15,7 @@
 #' @importFrom fields image.plot
 #' @importFrom graphics par
 #' @importFrom raster cut raster values
-#' @importFrom spatstat plot.ppp setmarks superimpose
+#' @importFrom spatstat.geom plot.ppp setmarks superimpose
 #' @export
 #'
 #' @examples

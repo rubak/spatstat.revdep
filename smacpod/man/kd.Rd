@@ -74,7 +74,7 @@ to this subset of the window. See Details of
 }
 \value{
 Returns an \code{fv} object.  See documentation 
-  for \code{spatstat::Kest}.
+  for \code{spatstat.core::Kest}.
 }
 \description{
 \code{kd} determines the difference in estimated K 

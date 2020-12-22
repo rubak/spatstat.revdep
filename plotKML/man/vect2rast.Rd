@@ -46,7 +46,7 @@ This function basically extends the \code{\link{rasterize}} function available i
 }
 }
 \author{Tomislav Hengl }
-\seealso{ \code{\link{vect2rast.SpatialPoints}}, \code{raster::rasterize}, \code{spatstat::nndist}}
+\seealso{ \code{\link{vect2rast.SpatialPoints}}, \code{raster::rasterize}, \code{spatstat.geom::nndist}}
 \examples{
 \dontrun{
 data(eberg)

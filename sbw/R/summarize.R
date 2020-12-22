@@ -380,7 +380,7 @@
 #' @param digits The number of significant digits that will be displayed. The default is \code{6}.
 #' @param ... ignored arguments.
 #' 
-#' @importFrom spatstat unnormdensity
+#' @importFrom spatstat.geom unnormdensity
 #' 
 #' @return A list with the following elements:
 #' @return \code{variance}{, variance of the weights}

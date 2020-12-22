@@ -145,7 +145,7 @@ setMethod(f = "setFeatures",
 
 # ppp ----
 #' @rdname setFeatures
-#' @importFrom spatstat ppp
+#' @importFrom spatstat.geom ppp
 #' @export
 setMethod(f = "setFeatures",
           signature = "ppp",

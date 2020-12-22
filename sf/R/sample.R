@@ -20,7 +20,7 @@ st_sample = function(x, size, ...) UseMethod("st_sample")
 #' @param warn_if_not_integer logical; if \code{FALSE} then no warning is emitted if \code{size} is not an integer
 #' @param ... passed on to \link[base]{sample} for \code{multipoint} sampling, or to \code{spatstat} functions for spatstat sampling types (see details)
 #' @param type character; indicates the spatial sampling type; one of \code{random}, \code{hexagonal} (triangular really), \code{regular},
-#' or one of the \code{spatstat} methods such as \code{Thomas} for calling \code{spatstat::rThomas} (see Details).
+#' or one of the \code{spatstat} methods such as \code{Thomas} for calling \code{spatstat.core::rThomas} (see Details).
 #' @param exact logical; should the length of output be exactly
 #' @param by_polygon logical; for \code{MULTIPOLYGON} geometries, should the effort be split by \code{POLYGON}? See https://github.com/r-spatial/sf/issues/1480https://github.com/r-spatial/sf/issues/1480
 #' the same as specified by \code{size}? \code{TRUE} by default. Only applies to polygons, and
@@ -81,7 +81,7 @@ st_sample = function(x, size, ...) UseMethod("st_sample")
 #' st_sample(ls, 80)
 #' plot(st_sample(ls, 80))
 #' # spatstat example:
-#' if (require(spatstat.core)) {
+#' if (require(spatstat.linnet)) {
 #'  x <- sf::st_sfc(sf::st_polygon(list(rbind(c(0, 0), c(10, 0), c(10, 10), c(0, 0)))))
 #'  # for spatstat.core::rThomas(), set type = "Thomas":
 #'  pts <- st_sample(x, kappa = 1, mu = 10, scale = 0.1, type = "Thomas") 
@@ -183,7 +183,7 @@ st_poly_sample = function(x, size, ..., type = "random",
 		}
 		pts[x]
 	} else { # try to go into spatstat
-		if (!requireNamespace("spatstat.core", quietly = TRUE))
+		if (!requireNamespace("spatstat.linnet", quietly = TRUE))
 			stop("package spatstat required, please install it first")
 		spatstat_fun = try(get(paste0("r", type), asNamespace("spatstat")), silent = TRUE)
 		if (inherits(spatstat_fun, "try-error"))

@@ -222,7 +222,7 @@
 #' @param ask logical. If \code{TRUE} (and the R session is interactive) the user is asked for input, before a new figure is drawn.
 #' @param ... ignored arguments.
 #' 
-#' @importFrom spatstat unnormdensity
+#' @importFrom spatstat.geom unnormdensity
 #' 
 #' @examples 
 #' # Please see the examples in the function sbw above.

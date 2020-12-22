@@ -65,7 +65,7 @@
 #' @example R/examples/filter_csr.R
 #' @export
 #' @importFrom stats p.adjust.methods p.adjust cor
-#' @importFrom spatstat as.im
+#' @importFrom spatstat.geom as.im
 #'
 CSRPeaksFilter <- function(msiData,
                            method = "ClarkEvans",
@@ -186,10 +186,10 @@ CSRPeaksFilter <- function(msiData,
 }
 
 ## .csr.test.im
-#' @importFrom spatstat owin
-#' @importFrom spatstat ppp
-#' @importFrom spatstat clarkevans.test
-#' @importFrom spatstat cdf.test
+#' @importFrom spatstat.geom owin
+#' @importFrom spatstat.geom ppp
+#' @importFrom spatstat.core clarkevans.test
+#' @importFrom spatstat.core cdf.test
 .csr.test.im <- function(im,
                          method = "ClarkEvans",
                          ref.im = NULL,

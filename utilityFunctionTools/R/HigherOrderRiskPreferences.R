@@ -292,7 +292,7 @@ evaluate_cross_validation <- function(xi,
 #' find_optimal_lambda(x, y)
 #' @importFrom stats optim
 #' @importFrom utils combn
-#' @importFrom spatstat ppp pairdist
+#' @importFrom spatstat.geom pairdist ppp
 #' @export 
 find_optimal_lambda <- function(xi,
                                 yi,

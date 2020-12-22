@@ -17,7 +17,7 @@
 #' @importFrom stats na.omit
 #' @importFrom graphics text
 #' @importFrom sp coordinates gridded
-#' @importFrom spatstat plot.ppp plot.anylist
+#' @importFrom spatstat.geom plot.anylist plot.ppp
 #' @importFrom raster raster values reclassify
 #' @importFrom grDevices colorRampPalette
 #' @importFrom fields image.plot

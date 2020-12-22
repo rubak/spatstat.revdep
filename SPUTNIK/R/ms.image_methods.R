@@ -115,8 +115,8 @@ setMethod(
 #'
 #' @return \link{ms.image-class} smoothed msImage.
 #'
-#' @importFrom spatstat blur
-#' @importFrom spatstat as.im
+#' @importFrom spatstat.core blur
+#' @importFrom spatstat.geom as.im
 #'
 #' @example R/examples/msImage_smoothImage.R
 #'

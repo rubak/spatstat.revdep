@@ -20,7 +20,7 @@
 #' @importFrom fields image.plot
 #' @importFrom graphics par
 #' @importFrom raster crs raster projectRaster
-#' @importFrom spatstat pixellate
+#' @importFrom spatstat.geom pixellate
 #' 
 #' @export
 #' 

@@ -31,7 +31,7 @@ st_sample(x, size, ...)
 \item{...}{passed on to \link[base]{sample} for \code{multipoint} sampling, or to \code{spatstat} functions for spatstat sampling types (see details)}
 
 \item{type}{character; indicates the spatial sampling type; one of \code{random}, \code{hexagonal} (triangular really), \code{regular},
-or one of the \code{spatstat} methods such as \code{Thomas} for calling \code{spatstat::rThomas} (see Details).}
+or one of the \code{spatstat} methods such as \code{Thomas} for calling \code{spatstat.core::rThomas} (see Details).}
 
 \item{exact}{logical; should the length of output be exactly}
 
@@ -113,7 +113,7 @@ ls = st_sfc(st_linestring(rbind(c(0,0),c(0,1))),
 st_sample(ls, 80)
 plot(st_sample(ls, 80))
 # spatstat example:
-if (require(spatstat.core)) {
+if (require(spatstat.linnet)) {
  x <- sf::st_sfc(sf::st_polygon(list(rbind(c(0, 0), c(10, 0), c(10, 10), c(0, 0)))))
  # for spatstat.core::rThomas(), set type = "Thomas":
  pts <- st_sample(x, kappa = 1, mu = 10, scale = 0.1, type = "Thomas") 

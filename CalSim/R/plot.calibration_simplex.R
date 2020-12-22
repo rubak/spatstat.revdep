@@ -35,7 +35,7 @@
 #' @export
 #'
 #' @importFrom graphics arrows axis par plot segments symbols text title
-#' @importFrom spatstat owin coords hexgrid hextess square
+#' @importFrom spatstat.geom coords hexgrid hextess owin square
 
 plot.calibration_simplex = function(x,
                                     #alpha = 0.05,

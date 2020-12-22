@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom dplyr filter group_by select summarize
 #' @importFrom measuRing graySmoothed linearDetect
-#' @importFrom spatstat connected im
+#' @importFrom spatstat.geom connected im
 #' @importFrom magick image_info image_resize 
 #' @importFrom imager as.cimg cannyEdges dilate_rect erode_rect imgradient 
 #' mclosing_square threshold watershed

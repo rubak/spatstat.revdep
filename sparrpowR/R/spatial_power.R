@@ -70,7 +70,8 @@
 #' }
 #' 
 #' @importFrom stats rnorm sd
-#' @importFrom spatstat disc marks ppp rNeymanScott rpoispp rsyst runifdisc runifpoint shift superimpose unit.square
+#' @importFrom spatstat.core rNeymanScott rpoispp runifdisc runifpoint
+#' @importFrom spatstat.geom disc marks ppp rsyst shift superimpose unit.square
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom foreach %do% %dopar% foreach
 #' @importFrom parallel makeCluster stopCluster

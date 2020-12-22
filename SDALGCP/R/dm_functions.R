@@ -20,7 +20,7 @@
 ##' points <- SDALGCPSSIPoint(poly=PBCshp@polygons[[1]]@Polygons[[1]]@coords, delta=100)
 ##' @importFrom raster extract aggregate
 ##' @importFrom graphics axis
-##' @importFrom spatstat as.owin ppp
+#' @importFrom spatstat.geom as.owin ppp
 ##' @importFrom sp SpatialPolygons Polygons Polygon spsample
 ##' @importFrom splancs areapl csr
 ##' @author Olatunji O. Johnson \email{o.johnson@@lancaster.ac.uk}
@@ -163,7 +163,7 @@ SDALGCPSSIPoint <- function(poly, delta, weighted=FALSE, pop_shp=NULL, lambdamax
 ##' point <- SDALGCPUniformPoint(poly=poly, delta=100, n=1, bound = bound)
 ##' @importFrom raster extract aggregate
 ##' @importFrom graphics axis
-##' @importFrom spatstat as.owin ppp
+#' @importFrom spatstat.geom as.owin ppp
 ##' @importFrom sp SpatialPolygons Polygons Polygon spsample
 ##' @importFrom splancs areapl csr
 ##' @author Olatunji O. Johnson \email{o.johnson@@lancaster.ac.uk}
@@ -276,7 +276,7 @@ SDALGCPUniformPoint <- function(poly, delta, weighted=FALSE, pop_shp=NULL, lambd
 ##' point <- SDALGCPRegularPoint(poly=poly, delta=100, n=1, bound = bound)
 ##' @importFrom raster extract aggregate
 ##' @importFrom graphics axis
-##' @importFrom spatstat as.owin ppp
+#' @importFrom spatstat.geom as.owin ppp
 ##' @importFrom sp SpatialPolygons Polygons Polygon spsample
 ##' @importFrom splancs areapl csr
 ##' @author Olatunji O. Johnson \email{o.johnson@@lancaster.ac.uk}
@@ -323,7 +323,7 @@ SDALGCPRegularPoint <- function(poly, delta, weighted=FALSE, pop_shp=NULL, lambd
 ##' @seealso \link{SDALGCPSSIPoint}, \link{SDALGCPUniformPoint}, \link{SDALGCPRegularPoint}
 ##' @importFrom raster extract aggregate
 ##' @importFrom graphics axis
-##' @importFrom spatstat as.owin ppp
+#' @importFrom spatstat.geom as.owin ppp
 ##' @importFrom sp SpatialPolygons Polygons Polygon spsample
 ##' @importFrom splancs areapl csr
 ##' @importFrom maptools as.owin.SpatialPolygons
@@ -401,7 +401,7 @@ SDALGCPCreatePoint <- function(my_shp, delta, weighted=FALSE, lambdamax=NULL, po
 ##' @seealso \link{SDALGCPCreatePoint}, \link{SDALGCPSSIPoint}, \link{SDALGCPUniformPoint}, \link{SDALGCPRegularPoint}
 ##' @importFrom raster extract aggregate
 ##' @importFrom graphics axis
-##' @importFrom spatstat as.owin ppp
+#' @importFrom spatstat.geom as.owin ppp
 ##' @importFrom sp SpatialPolygons Polygons Polygon spsample
 ##' @importFrom splancs areapl csr
 ##' @author Olatunji O. Johnson \email{o.johnson@@lancaster.ac.uk}

@@ -36,7 +36,7 @@
 #' @importFrom graphics close.screen par screen split.screen 
 #' @importFrom grDevices chull
 #' @importFrom raster extent values
-#' @importFrom spatstat owin ppp
+#' @importFrom spatstat.geom owin ppp
 #' @importFrom sparr OS risk
 #' @importFrom stats relevel
 #' @export 

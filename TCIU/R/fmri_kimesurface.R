@@ -14,7 +14,8 @@
 #'
 #' @import plotly DT scales
 #' @importFrom extraDistr rlaplace
-#' @importFrom spatstat blur as.im
+#' @importFrom spatstat.core blur
+#' @importFrom spatstat.geom as.im
 #' 
 #' @examples
 #' # sample fMRI time-series vector of a single voxel

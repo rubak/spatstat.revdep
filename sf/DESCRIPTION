@@ -57,7 +57,7 @@ Imports: classInt (>= 0.4-1), DBI (>= 0.8), graphics, grDevices, grid,
 Suggests: blob, covr, dplyr (>= 0.8-3), ggplot2, knitr, lwgeom (>=
         0.2-1), maps, mapview, microbenchmark, odbc, pillar, pool,
         raster, rgdal, rgeos, rlang, rmarkdown, RPostgres (>= 1.1.0),
-        RPostgreSQL, RSQLite, s2 (>= 1.0.1), sp (>= 1.2-4), spatstat.geom, spatstat.core,
+        RPostgreSQL, RSQLite, s2 (>= 1.0.1), sp (>= 1.2-4), spatstat.geom, spatstat.core, spatstat.linnet,
         spatstat.utils, stars (>= 0.2-0), testthat, tibble (>= 1.4.1),
         tidyr (>= 1.0-0), tidyselect (>= 1.0.0), tmap (>= 2.0), vctrs
 LinkingTo: Rcpp

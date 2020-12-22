@@ -14,7 +14,7 @@
 #' }
 #'
 #' @importFrom raster cut raster
-#' @importFrom spatstat as.im
+#' @importFrom spatstat.geom as.im
 #' @export
 #'
 #' @keywords internal

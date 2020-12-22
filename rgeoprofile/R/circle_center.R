@@ -18,9 +18,9 @@
 #' #Using provided dataset for the Boston Strangler Incidents:
 #' data(desalvo)
 #' circle_center(desalvo$lat, desalvo$lon)
-#' @importFrom spatstat nndist.ppp
-#' @importFrom spatstat owin
-#' @importFrom spatstat ppp
+#' @importFrom spatstat.geom nndist.ppp
+#' @importFrom spatstat.geom owin
+#' @importFrom spatstat.geom ppp
 #' @export
 circle_center <- function(lat, lon){
   n <- length(lat)

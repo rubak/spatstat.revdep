@@ -6,7 +6,7 @@
 #' @importFrom rgeos      gBuffer gIntersection gUnionCascaded gTouches readWKT
 #' @importFrom spdep      poly2nb card nblag
 #' @importFrom deldir     deldir tile.list
-#' @importFrom spatstat   ripras
+#' @importFrom spatstat.geom ripras
 
 #' @import sp   
 

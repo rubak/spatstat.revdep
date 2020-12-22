@@ -68,7 +68,7 @@
 #' @importFrom rgeos gBuffer
 #' @importFrom sp bbox coordinates Polygon Polygons SpatialPolygons
 #' @importFrom sparr risk
-#' @importFrom spatstat owin ppp
+#' @importFrom spatstat.geom owin ppp
 #' @importFrom stats na.omit
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @import maptools

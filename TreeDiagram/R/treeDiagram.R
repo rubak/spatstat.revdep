@@ -12,7 +12,7 @@
 
 # =====================get tree information function ==================================
 ## This function allows users to retrieve tree information to know how many density plots to draw and how to draw
-#' @importFrom spatstat is.empty
+#' @importFrom spatstat.geom is.empty
 #' @importFrom stringr str_remove
 #' @keywords internal
 tree_info <- function(dataset){

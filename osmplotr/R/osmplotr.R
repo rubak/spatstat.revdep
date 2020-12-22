@@ -74,7 +74,8 @@
 #' @importFrom osmdata add_osm_feature opq osmdata_sf osmdata_sp
 #' @importFrom rgeos gIntersection
 #' @importFrom sp coordinates point.in.polygon Line SpatialLines SpatialPoints 
-#' @importFrom spatstat convexhull idw ppp Smooth
+#' @importFrom spatstat.core idw Smooth
+#' @importFrom spatstat.geom convexhull ppp
 #' @importFrom stats runif
 #' @importFrom utils combn head setTxtProgressBar tail txtProgressBar
 NULL

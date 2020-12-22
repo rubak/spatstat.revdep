@@ -53,7 +53,7 @@
 #' @importFrom foreach %do% %dopar% foreach
 #' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom raster crs
-#' @importFrom spatstat as.solist im.apply marks owin ppp rjitter superimpose
+#' @importFrom spatstat.geom as.solist im.apply marks owin ppp rjitter superimpose
 #' @importFrom stats sd
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @export

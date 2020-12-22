@@ -39,7 +39,7 @@ segregationFun(X, fun = "isar", r = NULL, ntype = "geometric",
 
 \item{weightMatrix}{See \code{isarF} for this.}
 
-\item{translate}{Use translation correction (see e.g. documentation of \code{spatstat::Kest} for details). Used only in mingling index.}
+\item{translate}{Use translation correction (see e.g. documentation of \code{spatstat.core::Kest} for details). Used only in mingling index.}
 
 \item{...}{ignored.}
 }
