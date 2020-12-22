@@ -1,0 +1,418 @@
+---
+title: "envi: Environmental Interpolation using Spatial Kernel Density Estimation"
+author: 'Ian D. Buller (Github: @idblr)'
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{envi: Environmental Interpolation using Spatial Kernel Density Estimation}
+  %\VignetteEngine{R.rsp::asis}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = FALSE, fig.width = 6, fig.height = 6, fig.show = "hold")
+```
+
+Start with the necessary packages and seed for the vignette.
+
+```{r packages}
+loadedPackages <- c("envi", "raster", "RStoolbox", "spatstat", "spatstat.data")
+invisible(lapply(loadedPackages, library, character.only = TRUE))
+set.seed(1234) # for reproducibility
+```
+
+We use the `gorillas` data and the accompanying covariate data in `gorillas.extra` from the `spatstat.data` package [on CRAN](https://CRAN.R-project.org/package=spatstat.data). These data are locations of nesting sites of gorillas in the Kagwene Gorilla Sanctuary in Cameroon. A detailed description and analysis of the data are reported in [Funwi-Gabga and Mateu (2012)](https://doi.org/10.1007/s00477-011-0541-1). The authors used a kernel density-based smoothing technique to detect hot-spots of nesting in the park. Here, we use another kernel density-based smoothing technique to detect hot-spots of nesting within the covariate information (i.e., the gorilla ecological niche) and then predict where these hot-spots are located within the park.
+
+### Data preparation for lrren
+
+We start by importing the two covariate data of class `im`:
+
+1. Slope gradient (degrees)
+2. Distance from water (meters)
+
+```{r covariate}
+slopeangle <- spatstat.data::gorillas.extra$slopeangle
+waterdist <- spatstat.data::gorillas.extra$waterdist
+```
+
+Center and scale the covariate data.
+
+```{r scale}
+slopeangle$v <- scale(slopeangle)
+waterdist$v <- scale(waterdist)
+```
+
+Convert the covariate data to class `RasterLayer`.
+
+```{r rasterize}
+slopeangle_raster <- raster::raster(slopeangle)
+waterdist_raster <- raster::raster(waterdist)
+```
+
+Add appropriate marks to the `gorillas` data from `spatstat.data` package. These points are considered our "presence" locations. 
+
+```{r presence}
+presence <- spatstat::unmark(spatstat.data::gorillas)
+spatstat::marks(presence) <- data.frame("presence" = rep(1, presence$n),
+                                             "lon" = presence$x,
+                                             "lat" = presence$y)
+spatstat::marks(presence)$slopeangle <- slopeangle[presence]
+spatstat::marks(presence)$waterdist <- waterdist[presence]
+```
+
+Randomly draw points from the study area and add the appropriate marks. These points are considered our "(pseudo-)absence" locations. 
+
+```{r absence}
+absence <- spatstat::rpoispp(0.00004, win = slopeangle)
+spatstat::marks(absence) <- data.frame("presence" = rep(0, absence$n),
+                                            "lon" = absence$x,
+                                            "lat" = absence$y)
+spatstat::marks(absence)$slopeangle <- slopeangle[absence]
+spatstat::marks(absence)$waterdist <- waterdist[absence]
+```
+
+```{r cleanup1, echo = FALSE}
+rm(waterdist, slopeangle) # conserve memory
+```
+
+Combine the presence (n = `r presence$n`) and absence (`r absence$n`) locations into one object of class `data.frame` and reorder the features required for the `lrren` function in the `envi` package:
+
+1. ID
+2. X-coordinate
+3. Y-coordinate
+4. Presence (binary)
+5. Covariate 1
+6. Covariate 2
+
+```{r obs_locs}
+obs_locs <- spatstat::superimpose(absence, presence, check = FALSE)
+spatstat::marks(obs_locs)$presence <- as.factor(spatstat::marks(obs_locs)$presence)
+spatstat::plot.ppp(obs_locs,
+                        which.marks = "presence",
+                        main = "Gorilla nesting sites (red-colored)\nPseudo-absence locations (blue-colored)",
+                        cols = c("#0000CD","#8B3A3A"),
+                        pch = 1,
+                        axes = TRUE,
+                        ann = TRUE)
+obs_locs <- spatstat::marks(obs_locs)
+obs_locs$id <- seq(1, nrow(obs_locs), 1)
+obs_locs <- obs_locs[ , c(6, 2, 3, 1, 4, 5)]
+```
+
+Extract the prediction locations within the study area from one of the covariates.
+
+```{r predict_locs}
+predict_locs <- data.frame(raster::rasterToPoints(slopeangle_raster))
+predict_locs$layer2 <- raster::extract(waterdist_raster, predict_locs[, 1:2])
+```
+
+```{r cleanup2, echo = FALSE}
+rm(waterdist_raster, slopeangle_raster) # conserve memory
+```
+
+### lrren with two covariates
+
+Run the `lrren` function within the `envi` package. We use the default settings except we want to predict the ecological niche within the study area (`predict = TRUE`), we conduct k-fold cross-validation model fit diagnostics (`cv = TRUE`) by undersampling absence locations to balance the prevalence (0.5) within all testing data sets (`balance = TRUE`).
+
+```{r lrren}
+start_time <- Sys.time() # record start time
+test_lrren <- lrren(obs_locs = obs_locs,
+                    predict_locs = predict_locs,
+                    predict = TRUE,
+                    cv = TRUE,
+                    balance = TRUE)
+end_time <- Sys.time() # record end time
+lrren_time <- end_time - start_time # calculate duration of lrren() example
+```
+
+A single run of the `lrren` function took approximately `r round(lrren_time, digits = 1)` seconds on a Macbook Pro macOS Mojave v. 10.14.6 with a 2.7 GHz Intel Core i7 processor and 16 GB 2133 MHz LPDDR3 of memory.
+
+We display the estimated ecological niche within a space of Covariate 1 by Covariate 2 using the `plot_obs` function. We use the default two-tailed alpha-level (`alpha = 0.05`) and the default colors where the yellow color denotes areas with covariate data combinations where we have sparse observations. As expected, extreme values of the log relative risk surface are located near the edges of the surface, however these areas are highly variable and are not statistically significant based on an asymptotic normal assumption. The default color key for the log relative risk surface hides the heterogeneity closer to the null value (zero). Therefore, we limit the color key for the log relative risk surface to (-1, 1).
+
+```{r plot_obs_limited}
+plot_obs(test_lrren,
+         lower_lrr = -1,
+         upper_lrr = 1)
+```
+
+We observe two areas of positive log relative risk and the center of these areas are statistically significant, suggesting two ecological niches of gorilla nesting sites compared to pseudo-absence points drawn randomly from within the park (based on only two covariates, slope gradient and distance from water). One niche is a combination of flat to moderate (about 10 - 30 degrees) slope gradient and moderate to far (about 200 - 400 meters) distance from water, which may correspond to top of ridges. The second niche is a combination of moderate (30 - 40 degrees) slope gradient and moderate (about 100 - 200 meters) distance from water, which may correspond to within valleys. 
+
+We display the estimated ecological niche predicted to the study area within geographic space using the `plot_predict` function. We use the default two-tailed alpha-level (`alpha = 0.05`) and the default colors where the yellow color denotes areas with covariate data combinations where we have sparse observations. We limit the color key for the log relative risk prediction to (-1, 1). 
+
+```{r plot_predict}
+plot_predict(test_lrren, cref0 = "+init=epsg:32632", cref1 = "+init=epsg:4326",
+             lower_lrr = -1,
+             upper_lrr = 1)
+```
+
+The two estimated ecological niches are located in many small regions throughout the the park reflected by the large spatial heterogeneity in the two covariates. For example, the tops of ridges are the farthest distance from water and are located in many areas throughout the park. Importantly, gorilla nesting sites were not observed in many of these areas, but this prediction represent areas with combinations of covariates that match (or are similar) to the combinations occurring at observed locations.
+
+This is an example of a scale mismatch. The scale of gorilla nesting site presence is a broad, elliptical-shaped area in the northwest region of the park. A spatial interpolation of the gorilla nesting sites (i.e., not considering covariate information) can be seen in Figure 5a within the original study by [Funwi-Gabga and Mateu (2012)](https://doi.org/10.1007/s00477-011-0541-1). The two covariates (slope gradient and distance from water) vary considerably within this area and we observe a full range of covariate values within the larger gorilla presence area. Our approach is a version of environmental interpolation and considers covariate information when predicting the spatial distribution of gorilla nesting sites. When the gorilla nesting sites are arranged in covariate space the smoothing bandwidth of our kernel-density based approach creates a smoother relative risk surface than the covariate surfaces themselves because the gorilla nesting sites are clustering in particular combinations of the two covariates (i.e., ecological niche) that are scattered throughout the park in geographic space. 
+
+We display the internal 10-fold cross-validation diagnostics using the `plot_cv` function. We use the default two-tailed alpha-level (`alpha = 0.05`) and our prevalence is fairly balanced at `r presence$n/(presence$n + absence$n)`.
+
+```{r plot_cv}
+plot_cv(test_lrren)
+```
+
+```{r cleanup3, echo = FALSE}
+rm(absence, presence, test_lrren) # conserve memory
+```
+
+The log relative risk estimate accurately predicts about 60% of the gorilla nesting sites, which is better than chance (50%) but not a large improvement. The pseudo-absence locations are drawn at random throughout the park and are located in areas estimated with higher log relative risk values, which reduces the prediction performance of the model. Using observed absences instead of pseudo-absences may improve the prediction of the spatial distribution of gorilla nesting sites. 
+
+### lrren with two principal components
+
+The choice in covariates is critical for ecological niche models and especially for `lrren` because we are limited to two covariates. The goal, if possible, is to discover covariates that separate presence locations (i.e., nesting sites) from absence locations. Because our pseudo-absence locations are randomly drawn within the park it will be challenging to completely separate presence and absence locations in covariate space. One approach to include more than two covariates is to conduct an orthogonal linear transformation on multiple covariates, such as a Principal Component Analysis (PCA). Here, we can use the first two components of a PCA of all seven available covariates in the `gorillas.extra` data in the `spatstat.data` package, which include:
+
+1. Aspect
+2. Elevation (meters)
+3. Heat index
+4. Slope gradient
+5. Slope position
+6. Vegetation type
+7. Distance from water
+
+We can use the `rasterPCA` function within the `RStoolbox` package to conduct a PCA of multiple spatial data layers. We start by centering and scaling the numeric-valued layers. We also center the factor-valued layer 'aspect' at "North" and we group flatter slope types together in the factor-valued layer 'slope type.'
+
+```{r pca}
+aspect <- spatstat.data::gorillas.extra$aspect # class factor
+elevation <- spatstat.data::gorillas.extra$elevation # class integer
+heat <- spatstat.data::gorillas.extra$heat # class factor
+slopeangle <- spatstat.data::gorillas.extra$slopeangle # class numeric
+slopetype <- spatstat.data::gorillas.extra$slopetype # class factor
+vegetation <- spatstat.data::gorillas.extra$vegetation # class factor
+waterdist <- spatstat.data::gorillas.extra$waterdist # class numeric
+
+# Center and scale numeric
+elevation$v <- scale(elevation$v)
+slopeangle$v <- scale(slopeangle$v)
+waterdist$v <- scale(waterdist$v)
+
+# Create rasters
+aspect <- raster::raster(aspect)
+elevation <- raster::raster(elevation)
+heat <- raster::raster(heat)
+slopeangle <- raster::raster(slopeangle)
+slopetype <- raster::raster(slopetype)
+vegetation <- raster::raster(vegetation)
+waterdist <- raster::raster(waterdist)
+
+# Reorder aspect to center by "N" instead of "S"
+raster::values(aspect) <- factor(values(aspect),
+                                 levels = c("5", "6", "7", "8", "1", "2", "3", "4"))
+
+# Reorder slopetypes to order flatter types next to each other
+raster::values(slopetype) <- factor(values(slopetype),
+                                 levels = c("1", "6", "3", "2", "4", "5"))
+
+# Save names for RasterLayers
+names(aspect) <- "aspect"
+names(elevation) <- "elevation"
+names(heat) <- "heat"
+names(slopeangle) <- "slopeangle"
+names(slopetype) <- "slopetype"
+names(vegetation) <- "vegetation"
+names(waterdist) <- "waterdist"
+
+# RasterStack
+park <- raster::stack(aspect, elevation, heat, slopeangle, slopetype, vegetation, waterdist)
+
+# Principal Component Analysis
+pca_park <- RStoolbox::rasterPCA(park)
+summary(pca_park$model) # PCA components
+```
+
+```{r cleanup4, echo = FALSE}
+rm(aspect, elevation, heat, slopeangle, slopetype, vegetation, waterdist, park) # conserve memory
+```
+
+The first two components of the PCA explain over 57% of the variation across the seven covariates. 
+
+```{r loadings}
+pca_park$model$loadings # PCA loadings
+```
+
+The loading of the first component is almost entirely the centered 'aspect' variable. Te loading of the second component is a combination of 'vegetation type,' centered 'slope type,' centered 'elevation', and centered 'distance from water.'
+
+```{r bands}
+# Extract Bands from PCA
+pca_bands <- pca_park$map
+pc1 <- pca_bands[[1]] # PC1
+pc2 <- pca_bands[[2]] # PC2
+pc1 <- spatstat::as.im(pc1) # convert to class 'im'
+pc2 <- spatstat::as.im(pc2) # convert to class 'im'
+spatstat::plot.im(pc1,
+                       main = 'Principal Component 1\nprimarily aspect (centered at "North")',
+                       ann = TRUE,
+                       axes = TRUE)
+spatstat::plot.im(pc2,
+                       main = 'Principal Component 2\ncombination of vegetation type, slope type,\nelevation, and distance from water',
+                       ann = TRUE,
+                       axes = TRUE)
+```
+
+```{r cleanup5, echo = FALSE}
+rm(pca_park) # conserve memory
+```
+
+For the first component (centered aspect), we can observe northern (i.e., North, North East, North West) aspects are primarily located in the northern section of the park. For the second component (combination), we can see a large cluster of middle loading values (between -2 and 0) in the center of the park surrounded by high loading values (> 0) and few smaller clusters of low loading values (< -2) within the large middle loading value cluster.
+
+We prepare inputs for a new `lrren` run similar to the first example above. For consistency, we also reset the random number generator to select similar pseudo-absence locations as the example above. 
+
+```{r pca_data}
+set.seed(1234) # for similar locations as above example
+presence <- spatstat::unmark(spatstat.data::gorillas)
+spatstat::marks(presence) <- data.frame("presence" = rep(1, presence$n),
+                                             "lon" = presence$x,
+                                             "lat" = presence$y)
+spatstat::marks(presence)$pc1 <- pc1[presence]
+spatstat::marks(presence)$pc2 <- pc2[presence]
+
+absence <- spatstat::rpoispp(0.00004, win = spatstat.data::gorillas.extra$aspect)
+spatstat::marks(absence) <- data.frame("presence" = rep(0, absence$n),
+                                            "lon" = absence$x,
+                                            "lat" = absence$y)
+spatstat::marks(absence)$pc1 <- pc1[absence]
+spatstat::marks(absence)$pc2 <- pc2[absence]
+
+obs_locs <- spatstat::superimpose(absence, presence, check = FALSE)
+spatstat::marks(obs_locs)$presence <- as.factor(spatstat::marks(obs_locs)$presence)
+obs_locs <- spatstat::marks(obs_locs)
+obs_locs$id <- seq(1, nrow(obs_locs), 1)
+obs_locs <- obs_locs[ , c(6, 2, 3, 1, 4, 5)]
+
+predict_locs <- data.frame(raster::rasterToPoints(pca_bands[[1]]))
+predict_locs$layer2 <- raster::extract(pca_bands[[2]], predict_locs[, 1:2])
+```
+
+```{r cleanup6, echo = FALSE}
+rm(pca_bands) # conserve memory
+```
+
+With the two principal components, we re-run the `lrren` function.
+
+```{r pca_lrren}
+start_time <- Sys.time() # record start time
+pca_lrren <- lrren(obs_locs = obs_locs,
+                    predict_locs = predict_locs,
+                    predict = TRUE,
+                    cv = TRUE,
+                    balance = TRUE)
+end_time <- Sys.time() # record end time
+pca_time <- end_time - start_time # calculate duration of lrren() example
+```
+
+A single run of the `lrren` function took approximately `r round(pca_time, digits = 1)` seconds on a Macbook Pro macOS Mojave v. 10.14.6 with a 2.7 GHz Intel Core i7 processor and 16 GB 2133 MHz LPDDR3 of memory.
+
+We display the estimated ecological niche within a space of Principal Component 1 by Principal Component 2 using the `plot_obs` function. We use the default two-tailed alpha-level (`alpha = 0.05`) and the default colors where the yellow color denotes areas with covariate data combinations where we have sparse observations. We limit the color key for the log relative risk surface to (-1, 1). 
+
+```{r pca_plot_obs}
+plot_obs(pca_lrren,
+         lower_lrr = -1,
+         upper_lrr = 1)
+```
+
+We display the estimated ecological niche predicted to the study area within geographic space using the `plot_predict` function. We use the default two-tailed alpha-level (`alpha = 0.05`) and we limit the color key for the log relative risk prediction to (-1, 1). 
+
+```{r pca_plot_predict}
+plot_predict(pca_lrren, cref0 = "+init=epsg:32632", cref1 = "+init=epsg:4326",
+             lower_lrr = -1,
+             upper_lrr = 1)
+```
+
+We display the internal 10-fold cross-validation diagnostics using the `plot_cv` function. We use the default two-tailed alpha-level (`alpha = 0.05`).
+
+```{r pca_plot_cv}
+plot_cv(pca_lrren)
+```
+
+```{r cleanup7, echo = FALSE}
+rm(pca_lrren, obs_locs, predict_locs) # conserve memory
+```
+
+Based on only the first two components of the Principal Component Analysis of seven covariates, we detected one ecological niche of gorillas compared to pseudo-absence points drawn randomly from within the park. Presence and absences appear more separated by Principal Component 2 (loading values between -4 and -1) than Principal Component 1. This is reflected in geographic space where the gorilla niche is located in an area similar to the large cluster of middle loading values of Principal Component 2, which is located in central northwestern section of the park. The log relative risk estimate accurately predicted about 73% of the gorilla nesting sites, which is markedly improved from our first example above (60%). 
+
+The two components captured about 57% of the variation across the seven covariates, which may not be important in separating presence locations from absence locations within covariate space. Further studies can assess different combinations of principal components (e.g., Principal Component 2 and Principal Component 3) or including another yet unavailable covariate that may be ecologically important for gorillas. 
+
+The original study by [Funwi-Gabga and Mateu (2012)](https://doi.org/10.1007/s00477-011-0541-1) used kernel density estimation techniques in geographic space (see: Figure 5a in reference). Our method applies a kernel density estimation technique in covariate space and shows results similar to the inhomogeneous spatial point process model results of the original study (see: Figure 10a in reference), which incorporates the same covariate information to predict the spatial distribution of gorilla nesting sites. Our approach predicted more nesting sites in the western section of the park than the original study. 
+
+### Sensitivity Analysis
+
+Now we perform a sensitivity analysis of our ecological niche model. For example, let us assume the investigators observed nesting sites at a distance and there is some spatial uncertainty in the exact coordinates of the nesting sites. Let us also assume there is more uncertainty about where the nesting sites of the 'major' gorilla group were located (within 100 meters) than the 'minor' gorilla group (within 50 meters). We can examine the influence of this type of uncertainty on our estimated ecological niche model and its predicted spatial distribution in the park. We assume there is no spatial uncertainty in the spatial location of pseudo-absence points (0.1 meter). The three groups must be categorized within a new feature named `levels` within the observation data.
+
+We start by preparing the observation data. Here, the data must be a marked planar point pattern of class 'ppp'.
+
+```{r sensitivity_data}
+# Preserve 'group' feature from 'gorillas' data within {spatstat.data}
+## Assign as a new mark named 'level'
+spatstat::marks(presence)$levels <- spatstat::marks(spatstat.data::gorillas)$group
+
+# Assign a third 'level' for the pseudo-absences
+spatstat::marks(absence)$levels <- "none"
+
+# Combine
+obs_locs <- spatstat::superimpose(absence, presence, check = FALSE)
+
+# Set variables as class 'factor'
+spatstat::marks(obs_locs)$presence <- as.factor(spatstat::marks(obs_locs)$presence)
+spatstat::marks(obs_locs)$levels <- as.factor(spatstat::marks(obs_locs)$levels)
+
+# Create 'id' feature
+spatstat::marks(obs_locs)$id <- seq(1, obs_locs$n, 1)
+
+# Reorder and drop the two covariate features
+spatstat:: marks(obs_locs) <- spatstat:: marks(obs_locs)[ , c(7, 2, 3, 1, 6)]
+```
+
+```{r cleanup8, echo = FALSE}
+rm(absence, presence) # conserve memory
+```
+
+The two covariate values will be assigned to all points in every iteration and are drawn from a list of objects of class 'im'. Here, we use the same variables as above (slope gradient and distance from water), centered and scaled.
+
+```{r ims}
+ims <- spatstat::solist(pc1,pc2)
+names(ims) <- c("Component_1", "Component_2")
+```
+
+```{r cleanup9, echo = FALSE}
+rm(pc1, pc2) # conserve memory
+```
+
+Run the `perlrren` function within the `envi` package. We use the default settings and 10 simulated iterations. The `radii` argument is a string of numeric values in the order of the `levels` feature of class 'factor' within the `obs_locs` object.
+
+```{r perlrren}
+n_sim <- 100
+start_time <- Sys.time() # record start time
+test_perlrren <- perlrren(obs_ppp = obs_locs,
+                          covariates = ims,
+                          radii = c(100, 50, 0.1),
+                          n_sim = n_sim)
+end_time <- Sys.time() # record end time
+perlrren_time <- end_time - start_time # calculate duration of perlrren() example
+```
+
+```{r cleanup10, echo = FALSE}
+rm(obs_locs, ims) # conserve memory
+```
+
+A single (non-parallel) run of the `perlrren` function with `r n_sim` iterations took approximately `r round(perlrren_time, digits = 1)` minutes on a Macbook Pro macOS Mojave v. 10.14.6 with a 2.7 GHz Intel Core i7 processor and 16 GB 2133 MHz LPDDR3 of memory. In practice, a larger number of simulated iterations would be recommended (e.g., n = 10,000). 
+
+We display the summary statistics from the sensitivity analysis with the `plot_perturb` function. Here, we use the default settings except we limit the color key for the log relative risk surface and log relative risk prediction to (-1, 1). We only display the plots pertaining to the proportion of iterations with a significant p-value, both in covariate space and predicted into geographic space (i.e., the park).
+
+```{r plot_perturb, fig.keep = c(4,8)}
+plot_perturb(test_perlrren,
+             cov_labs = c("Component 1", "Component 2"),
+             cref0 = "+init=epsg:32632",
+             cref1 = "+init=epsg:4326",
+             lower_lrr = -1,
+             upper_lrr = 1)
+```
+
+```{r cleanup11, echo = FALSE}
+rm(test_perlrren) # conserve memory
+```
+
+The uncertainty in the spatial coordinates of gorilla nesting sites greatly influences the estimate ecological niche of gorillas (based on the two principal components) compared to pseudo-absence points drawn randomly from within the park. The significant hot-spot (i.e., ecological niche) within the covariate space diminished in size when adding this type of spatial uncertainty to the model. The geographic location of areas the model is unable to distinguish as suitable or unsuitable for gorilla nesting locations is in the center of the park, or the southern edge of the secondary forest with a southern facing aspect. 
