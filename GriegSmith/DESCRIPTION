@@ -9,7 +9,7 @@ Description: The function GriegSmith accepts either quadrat count data,
         a point process object(ppp) or a matrix of x and y coordinates.
         The function calculates a nested analysis of variance and
         simulation envelopes.
-Depends: spatstat.geom, spatstat.core, spatstat.linnet, spatstat
+Depends: spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0)
 License: GPL-2
 LazyLoad: yes
 Packaged: 2013-03-14 07:09:33 UTC; ripley

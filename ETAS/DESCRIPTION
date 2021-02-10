@@ -26,7 +26,7 @@ Authors@R: c(
 Author: Abdollah Jalilian [aut, cre] (<https://orcid.org/0000-0002-6573-0069>),
   Jiancang Zhuang [ctb] (<https://orcid.org/0000-0002-9708-3871>)
 Depends: R (>= 3.3.0), stats, graphics, utils, maps
-Imports: lattice, goftest, spatstat.geom, spatstat.core, Rcpp, fields
+Imports: lattice, goftest, spatstat.geom, spatstat.core, spatstat (>= 2.0-0), Rcpp, fields
 LinkingTo: Rcpp (>= 1.0.0)
 License: GPL (>= 2)
 LazyData: true

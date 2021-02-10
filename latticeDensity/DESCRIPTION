@@ -7,7 +7,7 @@ Date: 2020-05-08
 Author: Ronald Barry <rpbarry@alaska.edu>
 Maintainer: Ronald Barry <rpbarry@alaska.edu>
 Depends: R (>= 3.5.0)
-Imports: splancs, spdep, spatstat.geom, spatstat.core, spatstat.linnet, spam, stats, utils, graphics,
+Imports: splancs, spdep, spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0), spam, stats, utils, graphics,
         grDevices, sp, spatialreg
 LazyData: true
 Suggests: knitr, devtools, roxygen2, testthat, rmarkdown, rgdal

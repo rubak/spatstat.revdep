@@ -23,7 +23,7 @@ RoxygenNote: 7.1.1
 NeedsCompilation: no
 SystemRequirements: MOSEK (http://www.mosek.com) and MOSEK license.
 URL: https://github.com/NabarunD/NPMLEmix
-Imports: R.utils, dplyr, spatstat.core, methods, latexpdf, Matrix, FDRreg,
+Imports: R.utils, dplyr, spatstat.core, spatstat (>= 2.0-0), methods, latexpdf, Matrix, FDRreg,
         Rcpp, REBayes, CAMAN, progress, pbapply, Hmisc, pracma, mosaic
 Packaged: 2020-12-05 23:47:37 UTC; Nabarun Deb
 Repository: CRAN

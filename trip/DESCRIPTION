@@ -9,7 +9,7 @@ Authors@R: c(person("Michael D.","Sumner", role = c("aut", "cre"),
 Version: 1.8.0
 Depends: R (>= 3.3.0)
 Imports: geodist, maptools, MASS, methods, raster, reproj, sp,
-        spatstat.geom, spatstat.core, glue, viridis, traipse (>= 0.2.0), crsmeta, dplyr,
+        spatstat.geom, spatstat.core, spatstat (>= 2.0-0), glue, viridis, traipse (>= 0.2.0), crsmeta, dplyr,
         rlang
 Suggests: adehabitatLT, knitr, testthat, covr, rmarkdown, lubridate,
         maps, spelling

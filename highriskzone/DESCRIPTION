@@ -9,7 +9,7 @@ Author: Heidi Seibold <Heidi.Seibold@uzh.ch>, Monia Mahling
     <felix.guenther@stat.uni-muenchen.de>
 Maintainer: Felix Guenther <felix.guenther@stat.uni-muenchen.de>
 Depends: fields, rgeos
-Imports: spatstat.geom, spatstat.core, spatstat.linnet, methods, stats, utils, mvtnorm, ks,
+Imports: spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0), methods, stats, utils, mvtnorm, ks,
         deldir, Matrix, maps
 Suggests: INLA
 Additional_repositories: https://inla.r-inla-download.org/R/stable/

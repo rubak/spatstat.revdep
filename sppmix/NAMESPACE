@@ -82,6 +82,6 @@ importFrom("grDevices", "colorRampPalette", "dev.new", "graphics.off",
              "rnorm", "rpois", "runif", "var")
   importFrom("utils", "browseVignettes", "demo")
 
-import(ggplot2,rgl,spatstat.geom,spatstat.core,spatstat.linnet,fields,mvtnorm)
+import(ggplot2,rgl,spatstat.geom,spatstat.core,spatstat.linnet,spatstat,fields,mvtnorm)
 importFrom(Rcpp,sourceCpp)
 useDynLib(sppmix)

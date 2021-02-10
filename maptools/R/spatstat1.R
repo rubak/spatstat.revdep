@@ -1,10 +1,10 @@
 # as.ppp method to be used in spatstat:
 
 as.ppp.SpatialPoints = function(X) {
-	# require(spatstat.linnet)
+	# require(spatstat.core)
         if (!is.na(sp::is.projected(X)) && !sp::is.projected(X))
           stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.ppp.SpatialPoints")
         bb <- bbox(X)
         colnames(bb) <- NULL
@@ -17,10 +17,10 @@ setAs("SpatialPoints", "ppp", function(from) as.ppp.SpatialPoints(from))
 
 # Mike Sumner 20101011
 as.ppp.SpatialPointsDataFrame = function(X) {
-	# require(spatstat.linnet)
+	# require(spatstat.core)
         if (!is.na(sp::is.projected(X)) && !sp::is.projected(X))
           stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.ppp.SpatialPointsDataFrame")
 	bb <- bbox(X)
         colnames(bb) <- NULL
@@ -36,10 +36,10 @@ as.ppp.SpatialPointsDataFrame = function(X) {
 setAs("SpatialPointsDataFrame", "ppp", function(from) as.ppp.SpatialPointsDataFrame(from))
 
 as.owin.SpatialGridDataFrame = function(W, ..., fatal) {
-	# require(spatstat.linnet)
+	# require(spatstat.core)
         if (!is.na(sp::is.projected(W)) && !sp::is.projected(W))
           stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialGridDataFrame")
 	# W = from
 	m = t(!is.na(as(W, "matrix")))
@@ -49,10 +49,10 @@ as.owin.SpatialGridDataFrame = function(W, ..., fatal) {
 setAs("SpatialGridDataFrame", "owin", function(from) as.owin.SpatialGridDataFrame(from))
 
 as.owin.SpatialPixelsDataFrame = function(W, ..., fatal) {
-	# require(spatstat.linnet)
+	# require(spatstat.core)
         if (!is.na(sp::is.projected(W)) && !sp::is.projected(W))
           stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialPixelsDataFrame")
 	# W = from
 	m = t(!is.na(as(W, "matrix")))
@@ -62,7 +62,7 @@ as.owin.SpatialPixelsDataFrame = function(W, ..., fatal) {
 setAs("SpatialPixelsDataFrame", "owin", function(from) as.owin.SpatialPixelsDataFrame(from))
 
 as.owin.SpatialPolygons = function(W, ..., fatal) {
-	# require(spatstat.linnet)
+	# require(spatstat.core)
 	# W = from
         if (!is.na(sp::is.projected(W)) && !sp::is.projected(W))
           stop("Only projected coordinates may be converted to spatstat class objects")
@@ -77,7 +77,7 @@ setAs("SpatialPolygons", "owin", function(from) as.owin.SpatialPolygons(from))
 # methods for coercion to Spatial Polygons by Adrian Baddeley
 
 owin2Polygons <- function(x, id="1") {
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialPixelsDataFrame")
   stopifnot(spatstat.geom::is.owin(x))
   x <- spatstat.geom::as.polygonal(x)
@@ -107,8 +107,8 @@ owin2Polygons <- function(x, id="1") {
 }
 
 as.SpatialPolygons.tess <- function(x) {
-	#require(spatstat.linnet)
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	#require(spatstat.core)
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialPixelsDataFrame")
   stopifnot(spatstat.geom::is.tess(x))
   y <- spatstat.geom::tiles(x)
@@ -129,9 +129,9 @@ setAs("tess", "SpatialPolygons", function(from) as.SpatialPolygons.tess(from))
 
 
 as.SpatialPolygons.owin <- function(x) {
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialPixelsDataFrame")
-	#require(spatstat.linnet)
+	#require(spatstat.core)
   stopifnot(spatstat.geom::is.owin(x))
   y <- owin2Polygons(x)
   z <- SpatialPolygons(list(y))
@@ -145,8 +145,8 @@ setAs("owin", "SpatialPolygons", function(from) as.SpatialPolygons.owin(from))
 # methods for 'as.psp' for sp classes by Adrian Baddeley
 
 as.psp.Line <- function(from, ..., window=NULL, marks=NULL, fatal) {
-	#require(spatstat.linnet)
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	#require(spatstat.core)
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialPixelsDataFrame")
   xy <- slot(from, "coords")
   df <- as.data.frame(cbind(xy[-nrow(xy), , drop=FALSE], xy[-1, ,
@@ -162,8 +162,8 @@ drop=FALSE]))
 setAs("Line", "psp", function(from) as.psp.Line(from))
   
 as.psp.Lines <- function(from, ..., window=NULL, marks=NULL, fatal) {
-	# require(spatstat.linnet)
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	# require(spatstat.core)
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialPixelsDataFrame")
   y <- lapply(slot(from, "Lines"), as.psp.Line, window=window)
 #  if (as.character(packageVersion("spatstat")) < "1.22.0") {
@@ -181,10 +181,10 @@ setAs("Lines", "psp", function(from) as.psp.Lines(from))
 
 as.psp.SpatialLines <- function(from, ..., window=NULL, marks=NULL,
                                  characterMarks=FALSE, fatal) {
-	# require(spatstat.linnet)
+	# require(spatstat.core)
         if (!is.na(sp::is.projected(from)) && !sp::is.projected(from))
           stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialPixelsDataFrame")
   if(is.null(window)) {
     w <- slot(from, "bbox")
@@ -213,10 +213,10 @@ as.psp.SpatialLines <- function(from, ..., window=NULL, marks=NULL,
 setAs("SpatialLines", "psp", function(from) as.psp.SpatialLines(from))
 
 as.psp.SpatialLinesDataFrame <- function(from, ..., window=NULL, marks=NULL, fatal) {
-	# require(spatstat.linnet)
+	# require(spatstat.core)
         if (!is.na(sp::is.projected(from)) && !sp::is.projected(from))
           stop("Only projected coordinates may be converted to spatstat class objects")
-	if (!requireNamespace("spatstat.linnet", quietly = TRUE))
+	if (!requireNamespace("spatstat.core", quietly = TRUE))
 		stop("package spatstat required for as.owin.SpatialPixelsDataFrame")
   y <- as(from, "SpatialLines")
   z <- spatstat.geom::as.psp(y, window=window, marks=marks)

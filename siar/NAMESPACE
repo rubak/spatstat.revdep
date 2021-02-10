@@ -38,3 +38,4 @@ export(
 "siber.hull.metrics",
 "standard.ellipse"
 )
+import(spatstat)

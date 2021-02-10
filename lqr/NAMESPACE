@@ -9,3 +9,4 @@ importFrom(stats, dbeta, dnorm, optim, optimize, pgamma,
 importFrom(MomTrunc,pmvnormt,onlymeanTMD,meanvarTMD)
 importFrom(quantreg,rq)
 importFrom(spatstat.geom, ewcdf)
+import(spatstat)

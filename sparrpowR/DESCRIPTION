@@ -33,7 +33,7 @@ License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
-Depends: R (>= 3.5.0), spatstat.geom, spatstat.core, spatstat.linnet, spatstat
+Depends: R (>= 3.5.0), spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0)
 Imports: doParallel, fields, foreach, graphics, grDevices, parallel,
         raster, sp, sparr, stats, utils
 Suggests: tidyverse, testthat, spelling, R.rsp

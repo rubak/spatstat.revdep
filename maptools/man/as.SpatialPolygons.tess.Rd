@@ -23,7 +23,7 @@ as.SpatialPolygons.tess(x)
 \author{Edzer Pebesma \email{edzer.pebesma@uni-muenster.de}, Roger Bivand}
 \examples{
 run <- FALSE
-if (require(spatstat.linnet, quietly=TRUE)) run <- TRUE
+if (require(spatstat.core, quietly=TRUE)) run <- TRUE
 if (run) {
 A <- tess(xgrid=0:4,ygrid=0:4)
 A_sp <- as(A, "SpatialPolygons")

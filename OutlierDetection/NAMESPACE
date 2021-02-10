@@ -16,3 +16,4 @@ importFrom(plotly,plot_ly)
 
 import(ggplot2)
 importFrom(spatstat.core, CDF)
+import(spatstat)

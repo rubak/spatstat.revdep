@@ -2,7 +2,7 @@
 export("K2w")
 
 # imports
-import(spatstat.geom,spatstat.core,spatstat.linnet)
+import(spatstat.geom,spatstat.core,spatstat.linnet,spatstat)
 importFrom(spatstat.utils, short.deparse)
 # ToDo: "importFrom" only required functions 
 

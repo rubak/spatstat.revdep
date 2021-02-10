@@ -5,7 +5,7 @@ Version: 0.5.1
 Author: Johannes Resin
 Maintainer: Johannes Resin <johannes.resin@h-its.org>
 Depends: R (>= 3.5)
-Imports: spatstat.geom, stats, ExactMultinom
+Imports: spatstat.geom, spatstat (>= 2.0-0), stats, ExactMultinom
 Description: Generates the calibration simplex (a generalization of the reliability diagram) for three-category probability forecasts, as proposed by Wilks (2013) <doi:10.1175/WAF-D-13-00027.1>.
 License: GPL-2
 Encoding: UTF-8

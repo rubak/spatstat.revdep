@@ -7,7 +7,7 @@ Author: Marcelino de la Cruz Rot
 Depends: spatstat.utils
 Maintainer: Marcelino de la Cruz <marcelino.delacruz@urjc.es>
 Description: Test for effects of  both individual factors and their interaction on  replicated spatial patterns in a two factorial design, as explained in Ramon et al. (2016) <doi:10.1111/ecog.01848>.
-Imports: spatstat.geom, spatstat.core, spatstat.linnet
+Imports: spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0)
 License: GPL (>= 2)
 NeedsCompilation: no
 Packaged: 2017-11-24 09:56:13 UTC; marcelino

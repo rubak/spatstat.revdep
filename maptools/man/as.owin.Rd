@@ -70,7 +70,7 @@ To perform the checking later, \code{owinpolycheck(W, verbose=TRUE)}.}
 \author{Edzer Pebesma \email{edzer.pebesma@uni-muenster.de}, Roger Bivand}
 \examples{
 run <- FALSE
-if (require(spatstat.linnet, quietly=TRUE)) run <- TRUE
+if (require(spatstat.core, quietly=TRUE)) run <- TRUE
 if (run) {
 ## SpatialPixelsDataFrame -> owin
 data(meuse.grid) # A data.frame

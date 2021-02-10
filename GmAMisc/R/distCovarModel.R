@@ -86,7 +86,7 @@
 #' @importFrom spatstat.core auc cdf.test effectfun Jfox ppm
 #' @importFrom spatstat.geom as.ppp as.psp distfun unmark Window
 #' @importFrom stats anova
-#' @import spatstat.geom spatstat.core spatstat.linnet
+#' @import spatstat.geom spatstat.core spatstat.linnet spatstat
 #'
 #' @examples
 #'

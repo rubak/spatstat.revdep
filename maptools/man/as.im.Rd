@@ -56,7 +56,7 @@ the example below.}
 \author{Edzer Pebesma \email{edzer.pebesma@uni-muenster.de}, Roger Bivand}
 \examples{
 run <- FALSE
-if (require(spatstat.linnet, quietly=TRUE)) run <- TRUE
+if (require(spatstat.core, quietly=TRUE)) run <- TRUE
 if (run) {
 ## Extract an example SpatialGridDataFrame and plot it
 data(meuse.grid) # A data.frame

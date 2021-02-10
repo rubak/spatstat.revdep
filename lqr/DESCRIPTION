@@ -5,7 +5,7 @@ Version: 3.31
 Date: 2020-10-12
 Author: Christian E. Galarza, Luis Benites, Marcelo Bourguignon, Victor H. Lachos
 Maintainer: Christian E. Galarza <cgalarza88@gmail.com>
-Imports: graphics, stats, spatstat.geom, spatstat.core, numDeriv, MomTrunc, quantreg
+Imports: graphics, stats, spatstat.geom, spatstat.core, spatstat (>= 2.0-0), numDeriv, MomTrunc, quantreg
 Suggests: ald, qrLMM, qrNLMM
 Description: It fits a robust linear quantile regression model using a new
     family of zero-quantile distributions for the error term. Missing values and censored observations can be handled as well. This family of

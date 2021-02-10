@@ -34,7 +34,7 @@ Suggests: PCICt, RNetCDF (>= 1.8-2), covr, cubelyr, digest, dplyr (>=
         0.7-0), exactextractr, future.apply, ggforce, ggplot2,
         ggthemes, gstat, httr, jsonlite, knitr, maps, ncdfgeom, ncmeta
         (>= 0.0.3), pbapply, plm, raster, rmarkdown, s2 (>= 1.0.0), sp,
-        spacetime, spatstat.geom, starsdata, testthat, viridis, xts, zoo
+        spacetime, spatstat.geom, spatstat (>= 2.0-0), starsdata, testthat, viridis, xts, zoo
 VignetteBuilder: knitr
 Encoding: UTF-8
 RoxygenNote: 7.1.0

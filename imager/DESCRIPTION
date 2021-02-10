@@ -30,7 +30,7 @@ LinkingTo: Rcpp
 LazyData: true
 RoxygenNote: 7.1.0
 Suggests: knitr, rmarkdown,ggplot2,dplyr,scales,
-        testthat,OpenMPController,raster,spatstat.geom, spatstat.core, magick,Cairo
+        testthat,OpenMPController,raster,spatstat.geom, spatstat.core, spatstat (>= 2.0-0), magick,Cairo
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2020-05-10 00:45:00 UTC; root

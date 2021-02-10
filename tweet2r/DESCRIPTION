@@ -9,7 +9,7 @@ Description: This is an improved implementation of the package 'StreamR' to
 Author: Pau Aragó, Pablo Juan, Jeroen Staab.
 Depends: R (>= 3.2),
 Imports: ROAuth, streamR, RPostgreSQL, rgdal, sp, RSQLite, ggmap,
-        ggplot2, plyr, spacetime, spatstat.geom, spatstat.core, spatstat.linnet, splancs, maptools
+        ggplot2, plyr, spacetime, spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0), splancs, maptools
 Maintainer: Pau Aragó <parago@uji.es>
 License: GPL-3 | file LICENSE
 Encoding: UTF-8

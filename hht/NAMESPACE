@@ -5,3 +5,4 @@ importFrom("graphics", "axis", "image", "legend", "lines", "plot",
 importFrom("stats", "fft", "mvfft", "rnorm", "runif", "spec.taper",
              "var")
 
+import(spatstat)
