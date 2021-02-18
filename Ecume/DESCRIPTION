@@ -12,7 +12,7 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 biocViews: Software, Infrastructure
-Imports: stats, spatstat, magrittr, caret, dplyr, e1071, methods,
+Imports: stats, spatstat.geom, spatstat (>= 2.0-0), magrittr, caret, dplyr, e1071, methods,
         pbapply, kernlab, transport
 RoxygenNote: 7.1.1
 Suggests: testthat, covr, knitr, rmarkdown

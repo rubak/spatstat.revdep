@@ -11,9 +11,10 @@ Description: Summaries for measuring segregation/mingling in multitype spatial
     Mingling, Shannon, Simpson, ISAR, MCI. Included neighbourhoods: Geometric, k-
     nearest neighbours, Gabriel, Delaunay. Dixon's test.
 License: GPL
-Depends: spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0)
+Depends: spatstat (>= 2.0-0)
 RoxygenNote: 6.1.1
 NeedsCompilation: yes
 Packaged: 2019-03-25 18:18:09 UTC; antiphon
 Repository: CRAN
 Date/Publication: 2019-03-26 13:10:03 UTC
+Imports: spatstat.geom, spatstat.core, spatstat.linnet

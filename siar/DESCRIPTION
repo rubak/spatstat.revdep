@@ -3,7 +3,7 @@ Type: Package
 Title: Stable Isotope Analysis in R
 Version: 4.2
 Date: 2013-4-23
-Depends: hdrcde, coda, MASS, bayesm, mnormt, spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0)
+Depends: hdrcde, coda, MASS, bayesm, mnormt, spatstat (>= 2.0-0)
 Author: Andrew Parnell and Andrew Jackson
 Maintainer: Andrew Parnell <Andrew.Parnell@ucd.ie>
 Description: This package takes data on organism isotopes and fits a
@@ -19,3 +19,4 @@ Packaged: 2013-04-23 13:40:37 UTC; andrewparnell
 NeedsCompilation: yes
 Repository: CRAN
 Date/Publication: 2013-04-23 16:50:07
+Imports: spatstat.geom, spatstat.core, spatstat.linnet

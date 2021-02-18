@@ -6,7 +6,7 @@ Version: 2.7
 Date: 2019-03-25
 Author: Tuomas Rajala
 Maintainer: Tuomas Rajala <tuomas.rajala@iki.fi>
-Depends: spatstat.geom, spatstat.core, spatstat.linnet, spatstat (>= 2.0-0)
+Depends: spatstat (>= 2.0-0)
 Description: Graph based clustering summaries for spatial point patterns.
     Includes Connectivity function, Cumulative connectivity function and clustering
     function, plus the triangle/triplet intensity function T.
@@ -16,3 +16,4 @@ NeedsCompilation: yes
 Packaged: 2019-03-25 17:44:16 UTC; antiphon
 Repository: CRAN
 Date/Publication: 2019-03-25 18:53:32 UTC
+Imports: spatstat.geom, spatstat.core, spatstat.linnet

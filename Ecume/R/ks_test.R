@@ -54,7 +54,7 @@
 #' @param thresh The threshold needed to clear between the two cumulative distributions
 #' @param w_x The observation weights for x
 #' @param w_y The observation weights for y
-#' @importFrom spatstat ewcdf
+#' @importFrom spatstat.geom ewcdf
 #' @examples
 #'  x <- runif(100)
 #'  y <- runif(100, min = .5, max = .5)
@@ -114,8 +114,8 @@ ks_test <-  function (x, y, thresh = .05, w_x = rep(1, length(x)),
   n.x <- sum(w_x)^2/sum(w_x^2)
   n.y <- sum(w_y)^2/sum(w_y^2)
   w <- n.x * n.y / (n.x + n.y)
-  x_ewcdf <- spatstat::ewcdf(x, weights = w_x)
-  y_ewcdf <- spatstat::ewcdf(y, weights = w_y)
+  x_ewcdf <- spatstat.geom::ewcdf(x, weights = w_x)
+  y_ewcdf <- spatstat.geom::ewcdf(y, weights = w_y)
   xy <- c(x, y)
   STATISTIC <- max(abs(x_ewcdf(xy) - y_ewcdf(xy)) - thresh, 0)
   pkstwo <- function(x, tol = 1e-06) {
