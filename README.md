@@ -74,7 +74,9 @@ webform](https://forms.gle/W2VzUshfM3zWaQow9).
     currently in: <https://github.com/rubak/spatstat.revdep>
 
 4.  Run the CRAN package checker on your modified package (possibly with
-    development versions of other packages installed as detailed above)
+    [development versions of other packages
+    installed](https://github.com/rubak/spatstat.revdep/issues/2) as
+    detailed above)
 
 5.  Let us know that your package is updated and ready for submission by
     typing its name in [the webform mention
@@ -151,12 +153,17 @@ This line can be deleted in a few months together with the dependence on
 umbrella spatstat when the dust has settled, and then you should only
 depend on relevant sub-packages.
 
-Much of this code update may be achieved by using the automated script,
-but many will also need manual changes to `DESCRIPTION` and `NAMESPACE`
-as detailed above. Please reach out if you are in doubt or need help. In
-particular if your package is on GitHub Ege is happy to run the script
-for you and make a pull request with the relevant changes if you send
-him an email with the repository information.
+### Summary of how to update code
+
+Much of this code update may be achieved by using [the script
+here](https://github.com/rubak/spatstat.revdep.helpers), but many will
+also need manual changes to `DESCRIPTION` and `NAMESPACE` as detailed
+above as well as [development versions of other
+packages](https://github.com/rubak/spatstat.revdep/issues/2). Please
+reach out if you are in doubt or need help. In particular if your
+package is on GitHub Ege is happy to run the script for you and make a
+pull request with the relevant changes if you send him an email with the
+repository information.
 
 ## Collision Avoidance
 
